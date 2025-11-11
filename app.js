@@ -24,14 +24,58 @@
 
   let files = [];
   let currentIndex = -1;
-  let currentObjectUrl = null;
+  let currentObjectUrl = null; // for video preview
+  let createdObjectUrls = [];  // track blob: URLs we generate (photos, ZIPs)
 
   const MAX_FILES = 10;
-  const lastHref = {};
-  const batchOutputs = []; // { name, href }
+  const lastHref = [];         // array: rowIndex -> href
+  const batchOutputs = [];     // { name, href }
 
+  // ---------------- helpers ----------------
   const setStatus = (m) => { statusEl.textContent = m; console.log(m); };
-  const getUploadUrl = () => (uploadUrlEl && uploadUrlEl.value ? uploadUrlEl.value : "http://localhost:3001/upload");
+
+  function getApiBase() {
+    const v = uploadUrlEl && uploadUrlEl.value ? uploadUrlEl.value.trim() : "";
+    if (v) {
+      try { return new URL(v, window.location.origin).origin; } catch {}
+    }
+    // fallback (local dev)
+    return "http://localhost:3001";
+  }
+  function getUploadUrl() {
+    const v = uploadUrlEl && uploadUrlEl.value ? uploadUrlEl.value.trim() : "";
+    if (v) {
+      try { return new URL(v, window.location.origin).href; } catch {}
+    }
+    return `${getApiBase()}/upload`;
+  }
+
+  function trackUrl(u){ if (u) createdObjectUrls.push(u); }
+  function revokeObjectUrl(u){ if (u) URL.revokeObjectURL(u); }
+  function revokeAllCreatedObjectUrls(){ for (const u of createdObjectUrls) URL.revokeObjectURL(u); createdObjectUrls = []; }
+
+  // Trigger a browser download to the user's default Downloads folder
+  function triggerDownloadFromUrl(url, filename){
+    const a = document.createElement('a');
+    a.href = url;
+    if (filename) a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+  function triggerDownloadFromBlob(blob, filename){
+    const url = URL.createObjectURL(blob);
+    trackUrl(url);
+    triggerDownloadFromUrl(url, filename);
+  }
+
+  // NEW: cross-origin safe video downloader
+  async function downloadCrossOriginAsBlob(url, filename){
+    const resp = await fetch(url, { mode: "cors" });
+    if (!resp.ok) throw new Error("Failed to fetch output");
+    const blob = await resp.blob();
+    triggerDownloadFromBlob(blob, filename);
+  }
 
   function getFactor(){
     let f = desqPreset.value === "custom" ? parseFloat(desqCustom.value) : parseFloat(desqPreset.value);
@@ -47,31 +91,37 @@
     }
   }
 
-  function revokeObjectUrl(){
+  function revokeVideoObjectUrl(){
     if (currentObjectUrl) { URL.revokeObjectURL(currentObjectUrl); currentObjectUrl = null; }
   }
 
-  function resolveDownloadHref(raw, uploadUrl) {
-  if (!raw) return null;
-  const base = new URL(uploadUrl).origin;
+  // ADAPTED: accept absolute URLs and /downloads/*; fall back to /download/<basename>
+  function resolveDownloadHref(raw){
+    if (!raw) return null;
+    const base = getApiBase();
+    try {
+      let name = String(raw).trim();
+      if (!name) return null;
 
-  // pull just the filename from any form the server sends
-  let name = String(raw).trim();
-  // absolute URL? strip to filename
-  try {
-    if (/^https?:\/\//i.test(name)) {
-      name = name.split("/").pop();
+      // absolute link from server → keep as-is
+      if (/^https?:\/\//i.test(name)) return name;
+
+      // server path already under /downloads → prefix with base
+      if (name.startsWith("/downloads/")) return `${base}${name}`;
+
+      // otherwise reduce to basename
+      name = name.replace(/^.*\//, "");
+      name = name.split("?")[0].split("#")[0];
+
+      if (!name) return null;
+      return `${base}/download/${encodeURIComponent(name)}`;
+    } catch (e) {
+      console.error("resolveDownloadHref failed:", e, raw);
+      return null;
     }
-  } catch {}
-  // handles `/downloads/foo.mp4`, `/download/foo.mp4`, `foo.mp4`
-  name = name.replace(/^.*\//, ""); // basename
+  }
 
-  if (!name) return null;
-  // ✅ final canonical URL used everywhere (single download & ZIP fetch)
-  return `${base}/download/${name}`;
-}
-
-  // UI
+  // ---------------- UI wiring ----------------
   desqPreset.addEventListener("change", () => {
     const show = desqPreset.value === "custom";
     desqCustom.classList.toggle("hidden", !show);
@@ -84,21 +134,35 @@
   pauseBtn.addEventListener("click", () => { video.pause(); setStatus("Paused"); });
 
   fileInput.addEventListener("change", (e) => {
+    // reset transient state
+    revokeVideoObjectUrl();
+    revokeAllCreatedObjectUrls();
+    download.classList.add("hidden");
+    downloadLink.removeAttribute("href");
+    downloadLink.removeAttribute("download");
+
     files = Array.from(e.target.files || [])
       .filter(f => f.type.startsWith("video/") || f.type.startsWith("image/"))
       .slice(0, MAX_FILES);
 
     batchOutputs.length = 0;
-    lastHref.length = 0;
+    lastHref.length = 0; // clear the array
 
-    if (!files.length) { setStatus("No supported files."); exportSelectedBtn.disabled = true; exportBatchBtn.disabled = true; return; }
+    if (!files.length) {
+      setStatus("No supported files.");
+      exportSelectedBtn.disabled = true;
+      exportBatchBtn.disabled = true;
+      if (previewBox) previewBox.classList.add("hidden");
+      return;
+    }
 
     currentIndex = 0;
     rebuildQueue();
     showPreview(files[0]);
+    if (previewBox) previewBox.classList.remove("hidden");
 
     exportSelectedBtn.disabled = false;
-    exportBatchBtn.disabled = files.length < 2; // only enable when 2–10 files
+    exportBatchBtn.disabled = files.length < 2; // enable only when 2–10 files
   });
 
   function rebuildQueue(){
@@ -129,7 +193,7 @@
     if (file.type.startsWith("video/")){
       canvas.classList.add("hidden");
       video.classList.remove("hidden");
-      revokeObjectUrl();
+      revokeVideoObjectUrl();
       currentObjectUrl = URL.createObjectURL(file);
       video.src = currentObjectUrl;
       video.onloadedmetadata = () => {
@@ -149,29 +213,40 @@
   function drawImagePreview(file){
     const f = getFactor();
     const img = new Image();
+    const tmpUrl = URL.createObjectURL(file);
     img.onload = () => {
       const W = Math.round(img.width * f), H = img.height;
       canvas.width = W; canvas.height = H;
       ctx.setTransform(f, 0, 0, 1, 0, 0);
       ctx.drawImage(img, 0, 0);
       ctx.setTransform(1, 0, 0, 1, 0, 0);
+      revokeObjectUrl(tmpUrl);
     };
-    img.onerror = () => setStatus("❌ Failed to load image");
-    img.src = URL.createObjectURL(file);
+    img.onerror = () => { setStatus("❌ Failed to load image"); revokeObjectUrl(tmpUrl); };
+    img.src = tmpUrl;
   }
 
+  // ---------------- export actions ----------------
   // Export Selected (single current file)
   exportSelectedBtn.addEventListener("click", async () => {
     if (currentIndex < 0 || !files[currentIndex]) return setStatus("Pick a file first");
+    exportSelectedBtn.disabled = true;
+    exportBatchBtn.disabled = true;
     progressBar.classList.remove("hidden");
     progressBar.value = 0;
+
     await exportOne(files[currentIndex], currentIndex);
+
     progressBar.classList.add("hidden");
+    exportSelectedBtn.disabled = false;
+    exportBatchBtn.disabled = files.length < 2 ? true : false;
   });
 
   // Export Batch (2–10 files, build ZIP if >= 2)
   exportBatchBtn.addEventListener("click", async () => {
     if (files.length < 2) return setStatus("Add at least two files for batch export");
+    exportSelectedBtn.disabled = true;
+    exportBatchBtn.disabled = true;
     progressBar.classList.remove("hidden");
     progressBar.value = 0;
     batchOutputs.length = 0;
@@ -186,9 +261,13 @@
       try {
         const zipBlob = await buildZip(batchOutputs);
         const zipUrl = URL.createObjectURL(zipBlob);
+        trackUrl(zipUrl);
+        const zipName = `desqueezed_batch_${batchOutputs.length}_${Date.now()}.zip`;
         downloadLink.href = zipUrl;
-        downloadLink.download = `desqueezed_batch_${batchOutputs.length}_${Date.now()}.zip`;
+        downloadLink.download = zipName;
         download.classList.remove("hidden");
+        // Auto-download ZIP
+        triggerDownloadFromBlob(zipBlob, zipName);
         setStatus("✅ Batch complete (ZIP ready)");
       } catch (e) {
         console.error(e);
@@ -199,6 +278,8 @@
     }
 
     progressBar.classList.add("hidden");
+    exportSelectedBtn.disabled = false;
+    exportBatchBtn.disabled = files.length < 2 ? true : false;
   });
 
   async function exportOne(file, rowIndex){
@@ -208,19 +289,25 @@
     setStatus("Exporting…");
     download.classList.add("hidden");
 
-    // Photo → client
+    // Photo → client (canvas)
     if (file.type.startsWith("image/")){
       try {
         const blob = await exportPhotoBlob(file);
         const url = URL.createObjectURL(blob);
+        trackUrl(url);
         lastHref[rowIndex] = url;
-        batchOutputs.push({ name: makeOutName(file, true), href: url });
-        setRowStatus(rowIndex, "done"); setRowProgress(rowIndex, 100);
+        const outName = makeOutName(file, true);
+        batchOutputs.push({ name: outName, href: url });
 
-        // Also surface the latest in the main Download link
+        setRowStatus(rowIndex, "done");
+        setRowProgress(rowIndex, 100);
+
         downloadLink.href = url;
-        downloadLink.download = makeOutName(file, true);
+        downloadLink.download = outName;
         download.classList.remove("hidden");
+
+        // Auto-download
+        triggerDownloadFromBlob(blob, outName);
         setStatus("✅ Photo exported");
       } catch (e) {
         console.error(e);
@@ -230,7 +317,7 @@
       return;
     }
 
-    // Video → server
+    // Video → server (/upload)
     try {
       const form = new FormData();
       form.append("file", file);
@@ -239,6 +326,10 @@
       form.append("bitrate", bitratePreset.value);
 
       const uploadUrl = getUploadUrl();
+      if (!/^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname) && /localhost:3001/.test(uploadUrl)){
+        setStatus("⚠️ Upload URL points to localhost; set your API base or deploy the server.");
+      }
+
       const res = await fetch(uploadUrl, { method: "POST", body: form });
       if (!res.ok || !res.body) throw new Error("Upload failed");
 
@@ -249,9 +340,10 @@
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        buffer += decoder.decode(value, { stream: true });
 
+        buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split(/\r?\n/);
+
         for (let k = 0; k < lines.length - 1; k++) {
           const line = lines[k].trim();
           if (!line) continue;
@@ -262,22 +354,29 @@
             setStatus("Exporting… " + (isFinite(pct) ? pct : 0) + "%");
           } else if (line.startsWith("download:")) {
             const raw = line.slice(9);
-            const href = resolveDownloadHref(raw, uploadUrl);
+            const href = resolveDownloadHref(raw);
             if (href) {
+              const outName = makeOutName(file, false);
               lastHref[rowIndex] = href;
-              batchOutputs.push({ name: makeOutName(file, false), href });
+              batchOutputs.push({ name: outName, href });
+
+              // Show persistent link
               downloadLink.href = href;
-              downloadLink.download = makeOutName(file, false);
+              downloadLink.download = outName;
+              download.classList.remove("hidden");
+
+              // Auto-download finished video (cross-origin safe)
+              downloadCrossOriginAsBlob(href, outName).catch(console.error);
             }
           } else if (line.startsWith("status:done")) {
             setRowStatus(rowIndex, "done");
-            if (lastHref[rowIndex]) download.classList.remove("hidden");
             setStatus("✅ Export complete");
           } else if (line.startsWith("status:error")) {
             setRowStatus(rowIndex, "error");
             setStatus("❌ Export failed");
           }
         }
+
         buffer = lines[lines.length - 1];
       }
     } catch (err) {
@@ -291,25 +390,28 @@
     return new Promise((resolve, reject) => {
       const fac = getFactor();
       const img = new Image();
+      const tmpUrl = URL.createObjectURL(file);
       img.onload = () => {
         const W = Math.round(img.width * fac), H = img.height;
         canvas.width = W; canvas.height = H;
         ctx.setTransform(fac, 0, 0, 1, 0, 0);
         ctx.drawImage(img, 0, 0);
         ctx.setTransform(1, 0, 0, 1, 0, 0);
+        revokeObjectUrl(tmpUrl);
+
         const mime = photoFormat.value || "image/jpeg";
         canvas.toBlob(b => (b ? resolve(b) : reject(new Error("Canvas export failed"))),
                       mime, mime.includes("jpeg") ? 0.95 : undefined);
       };
-      img.onerror = () => reject(new Error("Image decode failed"));
-      img.src = URL.createObjectURL(file);
+      img.onerror = () => { revokeObjectUrl(tmpUrl); reject(new Error("Image decode failed")); };
+      img.src = tmpUrl;
     });
   }
 
   function makeOutName(f, isPhoto){
     const base = f.name.replace(/\.[^.]+$/, "");
     if (isPhoto){
-      const ext = photoFormat.value.endsWith("png") ? "png" : "jpg";
+      const ext = (photoFormat.value && /png$/i.test(photoFormat.value)) ? "png" : "jpg";
       return `${base}_desq.${ext}`;
     }
     return `${base}_desq.mp4`;
@@ -319,15 +421,15 @@
     if (!window.JSZip) throw new Error("JSZip not loaded");
     const zip = new JSZip();
     for (const it of items) {
-      const resp = await fetch(it.href);
+      const resp = await fetch(it.href, { mode: "cors" });
+      if (!resp.ok) throw new Error("Failed to fetch ZIP member");
       const buf = await resp.arrayBuffer();
       zip.file(it.name, buf);
     }
     return zip.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 6 } });
   }
 
-  // init
+  // ---------------- init ----------------
   setStatus("Idle");
   applyPreviewDesqueeze();
 })();
-
