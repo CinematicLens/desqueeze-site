@@ -139,6 +139,7 @@
             <select id="desqPreset">
               <option value="1">None (1.00×)</option>
               <option value="1.25">1.25×</option>
+              <option value="1.25">1.25×</option>
               <option value="1.33" selected>1.33× (Classic)</option>
               <option value="1.5">1.50×</option>
               <option value="1.8">1.80×</option>
@@ -273,7 +274,7 @@
         const email = (emailEl.value || '').trim();
         const prefill = `Message: ${msg}${email ? `\n\nEmail: ${email}` : ''}`;
         try { navigator.clipboard && navigator.clipboard.writeText(prefill).catch(function(){}); } catch(e) {}
-        const target = new URL('https://forms.gle/feedback');
+        https://docs.google.com/forms/d/e/1FAIpQLSeZEIzfe-UMKQntHC97awMG_uO74tx3XR9CboLh-wByuPzT6A/viewform?usp=dialog
         target.searchParams.set('q', prefill);
         window.open(target.toString(), '_blank', 'noopener');
         hint.textContent = 'Opening feedback page in a new tab. Your message was copied to clipboard.';
