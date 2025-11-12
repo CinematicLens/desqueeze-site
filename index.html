@@ -128,7 +128,7 @@
         <div class="row">
           <label>Files</label>
           <div>
-            <input id="fileInput" type="file" accept="video/*,image/*" multiple />
+             <input id="fileInput" type="file" accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg" multiple />
             <small>Select up to 10 files. The first item previews above.</small>
           </div>
         </div>
@@ -259,34 +259,29 @@
   <script src="./app.js"></script>
 
   <!-- Feedback: opens Google Form with prefilled text + clipboard copy -->
- <script>
-(function () {
-  document.getElementById('y').textContent = new Date().getFullYear();
+<script>
+    (function(){
+      document.getElementById('y').textContent = new Date().getFullYear();
 
-  const btn = document.getElementById('sendFeedback');
-  const msgEl = document.getElementById('feedbackMessage');
-  const emailEl = document.getElementById('feedbackEmail');
-  const hint = document.getElementById('feedbackHint');
-  if (!btn) return;
-
-  btn.addEventListener('click', function () {
-    const msg = (msgEl.value || '').trim();
-    if (!msg) { hint.textContent = 'Please enter your message before sending.'; return; }
-    const email = (emailEl.value || '').trim();
-
-    // Optional: copy to clipboard for the user
-    const prefill = `Message: ${msg}${email ? `\n\nEmail: ${email}` : ''}`;
-    try { navigator.clipboard?.writeText(prefill).catch(() => {}); } catch {}
-
-    // ✅ Use your real Google Form link (what you pasted)
-    const target = new URL('https://docs.google.com/forms/d/e/1FAIpQLSeZEIzfe-UMKQntHC97awMG_uO74tx3XR9CboLh-wByuPzT6A/viewform?usp=header');
-
-    window.open(target.toString(), '_blank', 'noopener');
-    hint.textContent = 'Opening feedback page in a new tab. Your message was copied to clipboard.';
-    msgEl.value = '';
-    emailEl.value = '';
-  });
-})();
-</script>
+      const btn = document.getElementById('sendFeedback');
+      const msgEl = document.getElementById('feedbackMessage');
+      const emailEl = document.getElementById('feedbackEmail');
+      const hint = document.getElementById('feedbackHint');
+      if (!btn) return;
+      btn.addEventListener('click', function(){
+        const msg = (msgEl.value || '').trim();
+        if (!msg) { hint.textContent = 'Please enter your message before sending.'; return; }
+        const email = (emailEl.value || '').trim();
+        const prefill = `Message: ${msg}${email ? `\n\nEmail: ${email}` : ''}`;
+        try { navigator.clipboard && navigator.clipboard.writeText(prefill).catch(function(){}); } catch(e) {}
+        const target = new URL('https://forms.gle/feedback');
+        target.searchParams.set('q', prefill);
+        window.open(target.toString(), '_blank', 'noopener');
+        hint.textContent = 'Opening feedback page in a new tab. Your message was copied to clipboard.';
+        msgEl.value = '';
+        emailEl.value = '';
+      });
+    })();
+  </script>
 </body>
 </html>
