@@ -88,6 +88,7 @@
     if (currentObjectUrl) { URL.revokeObjectURL(currentObjectUrl); currentObjectUrl = null; }
   }
 
+  // --- CHANGE #1: accept /files/ path from the server as a valid download URL
   function resolveDownloadHref(raw){
     if (!raw) return null;
     const base = getApiBase();
@@ -95,13 +96,14 @@
       let name = String(raw).trim();
       if (!name) return null;
 
-      if (/^https?:\/\//i.test(name)) return name;            // absolute URL
-      if (name.startsWith("/downloads/")) return `${base}${name}`; // server path
+      if (/^https?:\/\//i.test(name)) return name;                 // absolute URL
+      if (name.startsWith("/downloads/") || name.startsWith("/files/"))
+        return `${base}${name}`;                                   // server path
 
-      name = name.replace(/^.*\//, "");                       // basename
+      name = name.replace(/^.*\//, "");                            // basename
       name = name.split("?")[0].split("#")[0];
       if (!name) return null;
-      return `${base}/download/${encodeURIComponent(name)}`;  // legacy
+      return `${base}/download/${encodeURIComponent(name)}`;       // legacy
     } catch (e) {
       console.error("resolveDownloadHref failed:", e, raw);
       return null;
@@ -300,7 +302,10 @@
       const form = new FormData();
       form.append("file", file);
       form.append("factor", String(getFactor()));
-      form.append("fps", fpsPreset.value);
+      // --- CHANGE #2: don't send fps=copy; let server keep original FPS
+      if (fpsPreset.value !== "copy") {
+        form.append("fps", fpsPreset.value);
+      }
       form.append("bitrate", bitratePreset.value);
 
       const uploadUrl = getUploadUrl();
@@ -399,9 +404,87 @@
       const buf = await resp.arrayBuffer();
       zip.file(it.name, buf);
     }
-    return zip.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 6 } });
+    // already using level 1 (fast) — leaving as-is
+    return zip.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 1 } });
   }
 
   setStatus("Idle");
   applyPreviewDesqueeze();
+
+  /* ===== CHANGE #3: PRO ENTITLEMENT + GATING (keeps 2.0× free) ===== */
+  (function(){
+    function hasPro(){ try { return localStorage.getItem("proEntitled")==="1"; } catch { return false; } }
+    function grantPro(){ try { localStorage.setItem("proEntitled","1"); } catch {} }
+    function consumeProFromUrl(){
+      const usp = new URLSearchParams(location.search);
+      if (usp.get("pro")==="1"){
+        grantPro();
+        usp.delete("pro");
+        const clean = location.pathname + (usp.toString()?`?${usp}`:"") + location.hash;
+        history.replaceState(null,"",clean);
+        setStatus("✅ Pro activated");
+      }
+    }
+
+    const FREE_DESQ = new Set(["2","1"]); // 2.00× and None are free
+    const PRO_FPS   = new Set(["24","25","30","50","60"]);
+    const PRO_BR    = new Set(["12000000","16000000","25000000"]);
+    const PRO_FMT   = new Set(["image/png"]);
+
+    function isProOption(selectEl, val){
+      if (selectEl===desqPreset)    return !FREE_DESQ.has(String(val));
+      if (selectEl===fpsPreset)     return PRO_FPS.has(String(val));
+      if (selectEl===bitratePreset) return PRO_BR.has(String(val));
+      if (selectEl===photoFormat)   return PRO_FMT.has(String(val));
+      return false;
+    }
+
+    function lockNonProOptions(){
+      const pro = hasPro();
+      [...desqPreset.options].forEach(o => o.disabled = !pro && isProOption(desqPreset,o.value));
+      [...fpsPreset.options].forEach(o => o.disabled = !pro && isProOption(fpsPreset,o.value));
+      [...bitratePreset.options].forEach(o => o.disabled = !pro && isProOption(bitratePreset,o.value));
+      [...photoFormat.options].forEach(o => o.disabled = !pro && isProOption(photoFormat,o.value));
+
+      if (!pro){
+        exportBatchBtn.disabled = true;
+        exportBatchBtn.setAttribute("data-locked","1");
+        exportBatchBtn.title = "Unlock Pro to enable batch export";
+      } else {
+        exportBatchBtn.disabled = files.length < 2 ? true : false;
+        exportBatchBtn.removeAttribute("data-locked");
+        exportBatchBtn.title = "";
+      }
+    }
+
+    function intercept(selectEl){
+      let prev = selectEl.value;
+      selectEl.addEventListener("change", () => {
+        const next = selectEl.value;
+        if (!hasPro() && isProOption(selectEl, next)){
+          selectEl.value = prev;           // revert immediately
+          setStatus("🔒 Pro feature — use Unlock Pro below");
+          return;
+        }
+        prev = next;
+      });
+    }
+
+    exportBatchBtn.addEventListener("click", (e) => {
+      if (!hasPro()){
+        e.preventDefault();
+        setStatus("🔒 Batch export is a Pro feature — unlock below");
+      }
+    });
+
+    consumeProFromUrl();
+    lockNonProOptions();
+    intercept(desqPreset);
+    intercept(fpsPreset);
+    intercept(bitratePreset);
+    intercept(photoFormat);
+
+    if (hasPro()) setStatus("✅ Pro active");
+  })();
+
 })();
