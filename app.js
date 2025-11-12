@@ -24,14 +24,13 @@
 
   let files = [];
   let currentIndex = -1;
-  let currentObjectUrl = null; // for video preview
-  let createdObjectUrls = [];  // track blob: URLs we generate (photos, ZIPs)
+  let currentObjectUrl = null;
+  let createdObjectUrls = [];
 
   const MAX_FILES = 10;
-  const lastHref = [];         // array: rowIndex -> href
-  const batchOutputs = [];     // { name, href }
+  const lastHref = [];
+  const batchOutputs = [];
 
-  // ---------------- helpers ----------------
   const setStatus = (m) => { statusEl.textContent = m; console.log(m); };
 
   function getApiBase() {
@@ -39,8 +38,7 @@
     if (v) {
       try { return new URL(v, window.location.origin).origin; } catch {}
     }
-    // fallback (local dev)
-    return "http://localhost:3001";
+    return window.location.origin;
   }
   function getUploadUrl() {
     const v = uploadUrlEl && uploadUrlEl.value ? uploadUrlEl.value.trim() : "";
@@ -54,7 +52,6 @@
   function revokeObjectUrl(u){ if (u) URL.revokeObjectURL(u); }
   function revokeAllCreatedObjectUrls(){ for (const u of createdObjectUrls) URL.revokeObjectURL(u); createdObjectUrls = []; }
 
-  // Trigger a browser download to the user's default Downloads folder
   function triggerDownloadFromUrl(url, filename){
     const a = document.createElement('a');
     a.href = url;
@@ -68,8 +65,6 @@
     trackUrl(url);
     triggerDownloadFromUrl(url, filename);
   }
-
-  // NEW: cross-origin safe video downloader
   async function downloadCrossOriginAsBlob(url, filename){
     const resp = await fetch(url, { mode: "cors" });
     if (!resp.ok) throw new Error("Failed to fetch output");
@@ -82,7 +77,6 @@
     if (!Number.isFinite(f) || f < 1) f = 1;
     return Math.round(f * 100) / 100;
   }
-
   function applyPreviewDesqueeze(){
     const f = getFactor();
     video.style.setProperty("--d", f);
@@ -90,12 +84,10 @@
       drawImagePreview(files[currentIndex]);
     }
   }
-
   function revokeVideoObjectUrl(){
     if (currentObjectUrl) { URL.revokeObjectURL(currentObjectUrl); currentObjectUrl = null; }
   }
 
-  // ADAPTED: accept absolute URLs and /downloads/*; fall back to /download/<basename>
   function resolveDownloadHref(raw){
     if (!raw) return null;
     const base = getApiBase();
@@ -103,25 +95,19 @@
       let name = String(raw).trim();
       if (!name) return null;
 
-      // absolute link from server → keep as-is
-      if (/^https?:\/\//i.test(name)) return name;
+      if (/^https?:\/\//i.test(name)) return name;            // absolute URL
+      if (name.startsWith("/downloads/")) return `${base}${name}`; // server path
 
-      // server path already under /downloads → prefix with base
-      if (name.startsWith("/downloads/")) return `${base}${name}`;
-
-      // otherwise reduce to basename
-      name = name.replace(/^.*\//, "");
+      name = name.replace(/^.*\//, "");                       // basename
       name = name.split("?")[0].split("#")[0];
-
       if (!name) return null;
-      return `${base}/download/${encodeURIComponent(name)}`;
+      return `${base}/download/${encodeURIComponent(name)}`;  // legacy
     } catch (e) {
       console.error("resolveDownloadHref failed:", e, raw);
       return null;
     }
   }
 
-  // ---------------- UI wiring ----------------
   desqPreset.addEventListener("change", () => {
     const show = desqPreset.value === "custom";
     desqCustom.classList.toggle("hidden", !show);
@@ -134,7 +120,6 @@
   pauseBtn.addEventListener("click", () => { video.pause(); setStatus("Paused"); });
 
   fileInput.addEventListener("change", (e) => {
-    // reset transient state
     revokeVideoObjectUrl();
     revokeAllCreatedObjectUrls();
     download.classList.add("hidden");
@@ -146,7 +131,7 @@
       .slice(0, MAX_FILES);
 
     batchOutputs.length = 0;
-    lastHref.length = 0; // clear the array
+    lastHref.length = 0;
 
     if (!files.length) {
       setStatus("No supported files.");
@@ -162,7 +147,7 @@
     if (previewBox) previewBox.classList.remove("hidden");
 
     exportSelectedBtn.disabled = false;
-    exportBatchBtn.disabled = files.length < 2; // enable only when 2–10 files
+    exportBatchBtn.disabled = files.length < 2;
   });
 
   function rebuildQueue(){
@@ -226,8 +211,6 @@
     img.src = tmpUrl;
   }
 
-  // ---------------- export actions ----------------
-  // Export Selected (single current file)
   exportSelectedBtn.addEventListener("click", async () => {
     if (currentIndex < 0 || !files[currentIndex]) return setStatus("Pick a file first");
     exportSelectedBtn.disabled = true;
@@ -242,7 +225,6 @@
     exportBatchBtn.disabled = files.length < 2 ? true : false;
   });
 
-  // Export Batch (2–10 files, build ZIP if >= 2)
   exportBatchBtn.addEventListener("click", async () => {
     if (files.length < 2) return setStatus("Add at least two files for batch export");
     exportSelectedBtn.disabled = true;
@@ -266,7 +248,6 @@
         downloadLink.href = zipUrl;
         downloadLink.download = zipName;
         download.classList.remove("hidden");
-        // Auto-download ZIP
         triggerDownloadFromBlob(zipBlob, zipName);
         setStatus("✅ Batch complete (ZIP ready)");
       } catch (e) {
@@ -289,7 +270,6 @@
     setStatus("Exporting…");
     download.classList.add("hidden");
 
-    // Photo → client (canvas)
     if (file.type.startsWith("image/")){
       try {
         const blob = await exportPhotoBlob(file);
@@ -306,7 +286,6 @@
         downloadLink.download = outName;
         download.classList.remove("hidden");
 
-        // Auto-download
         triggerDownloadFromBlob(blob, outName);
         setStatus("✅ Photo exported");
       } catch (e) {
@@ -317,7 +296,6 @@
       return;
     }
 
-    // Video → server (/upload)
     try {
       const form = new FormData();
       form.append("file", file);
@@ -326,9 +304,6 @@
       form.append("bitrate", bitratePreset.value);
 
       const uploadUrl = getUploadUrl();
-      if (!/^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname) && /localhost:3001/.test(uploadUrl)){
-        setStatus("⚠️ Upload URL points to localhost; set your API base or deploy the server.");
-      }
 
       const res = await fetch(uploadUrl, { method: "POST", body: form });
       if (!res.ok || !res.body) throw new Error("Upload failed");
@@ -360,12 +335,10 @@
               lastHref[rowIndex] = href;
               batchOutputs.push({ name: outName, href });
 
-              // Show persistent link
               downloadLink.href = href;
               downloadLink.download = outName;
               download.classList.remove("hidden");
 
-              // Auto-download finished video (cross-origin safe)
               downloadCrossOriginAsBlob(href, outName).catch(console.error);
             }
           } else if (line.startsWith("status:done")) {
@@ -429,7 +402,6 @@
     return zip.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 6 } });
   }
 
-  // ---------------- init ----------------
   setStatus("Idle");
   applyPreviewDesqueeze();
 })();

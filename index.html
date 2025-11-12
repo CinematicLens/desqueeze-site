@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -27,11 +26,8 @@
           <div class="actions">
             <button id="play" class="start">Play</button>
             <button id="pause" class="stop">Pause</button>
-
-            <!-- NEW: separate buttons -->
             <button id="exportSelected" class="start" disabled>Export Selected</button>
             <button id="exportBatch" class="start" disabled>Export Batch</button>
-
             <span id="status" class="status">Idle</span>
           </div>
 
@@ -109,18 +105,16 @@
           </div>
         </div>
 
-        <!-- Hidden Upload URL used by the app -->
+        <!-- IMPORTANT: point to your live backend -->
         <div class="row" style="display:none">
           <label>Upload URL</label>
-          <input id="uploadUrl" type="text" value="http://localhost:3001/upload" />
+          <input id="uploadUrl" type="text" value="https://api.anamorphic-desqueeze.com/upload" />
         </div>
       </section>
     </main>
   </div>
 
-  <!-- JSZip for client-side ZIP when exporting batch -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-
   <script src="./app.js"></script>
 </body>
 </html>
