@@ -1,28 +1,27 @@
 <!doctype html>
-
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Web Desqueeze Studio — Batch Desqueezer</title>
+  <title>Anamorphic Desqueeze — Batch Desqueeze</title>
 
   <!-- SEO -->
-  <meta name="description" content="Web Desqueeze Studio lets you preview and export de-squeezed anamorphic video and photos — fast, with batch processing in your browser." />
-  <meta name="keywords" content="anamorphic, desqueeze, de-squeeze, batch desqueezer, video editor, aspect ratio, cinema lens, 1.33x, 1.5x, 1.8x, 2.0x" />
+  <meta name="description" content="Anamorphic Desqueeze — Batch Desqueeze lets you preview and export de-squeezed anamorphic video and photos — fast, with batch processing in your browser." />
+  <meta name="keywords" content="anamorphic, desqueeze, batch desqueeze, batch desqueezer, video editor, aspect ratio, cinema lens, 1.33x, 1.5x, 1.8x, 2.0x" />
   <link rel="canonical" href="https://anamorphic-desqueeze.com/" />
   <meta name="robots" content="index,follow" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Web Desqueeze Studio — Batch Desqueezer" />
-  <meta property="og:description" content="Preview horizontal de-squeeze; App exports to the user's local system Downloads folder with fully corrected MP4/JPG/PNG files and batch export as a ZIP file." />
+  <meta property="og:title" content="Anamorphic Desqueeze — Batch Desqueeze" />
+  <meta property="og:description" content="Preview horizontal de-squeeze; export fully corrected MP4/JPG/PNG with Batch Desqueeze and ZIP export." />
   <meta property="og:url" content="https://anamorphic-desqueeze.com/" />
   <meta property="og:image" content="https://anamorphic-desqueeze.com/og-cover.jpg" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Web Desqueeze Studio — Batch Desqueezer" />
-  <meta name="twitter:description" content="Preview horizontal de-squeeze; export fully corrected MP4/JPG/PNG with batch processing." />
+  <meta name="twitter:title" content="Anamorphic Desqueeze — Batch Desqueeze" />
+  <meta name="twitter:description" content="Preview horizontal desqueeze; export fully corrected MP4/JPG/PNG with Batch Desqueeze processing." />
   <meta name="twitter:image" content="https://anamorphic-desqueeze.com/og-cover.jpg" />
 
   <!-- GA4 -->
@@ -67,12 +66,12 @@
   </style>
 </head>
 <body>
-  <!-- Professional site header -->
+  <!-- Header -->
   <header class="site-header">
     <div class="site-header__inner">
       <div class="brand">
         <span class="brand__dot"></span>
-        <span>Web Desqueeze Studio</span>
+        <span>Anamorphic Desqueeze</span>
       </div>
       <nav class="nav">
         <a href="#settings">Settings</a>
@@ -92,12 +91,13 @@
   <div class="wrapper">
     <header class="hero">
       <div class="card">
-        <h1>Web Desqueeze Studio — Batch Desqueezer</h1>
-        <p class="sub">Preview horizontal de-squeeze; export fully corrected MP4/JPG/PNG — batch up to 10 files at once.</p>
+        <h1>Anamorphic Desqueeze — Batch Desqueeze</h1>
+        <p class="sub">Batch Desqueeze up to 10 anamorphic clips or photos at once, with live preview and corrected exports.</p>
       </div>
     </header>
 
     <main class="grid">
+      <!-- Preview + controls -->
       <section class="panel monitor">
         <div class="preview" id="previewBox">
           <video id="video" playsinline controls preload="metadata"></video>
@@ -123,6 +123,7 @@
         </div>
       </section>
 
+      <!-- Settings -->
       <section class="panel" id="settings">
         <h2>Settings</h2>
 
@@ -130,7 +131,7 @@
           <label>Files</label>
           <div>
             <input id="fileInput" type="file" accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg" multiple />
-            <small>Select up to 10 files. The first item previews above. Free works with 5mb or smaller files only</small>
+            <small>Select up to 10 files. The first item previews above. Free works with 5mb or smaller files only.</small>
           </div>
         </div>
 
@@ -188,18 +189,18 @@
           </div>
         </div>
 
-        <!-- IMPORTANT: point to your live backend (unchanged; still hidden) -->
+        <!-- Hidden: backend upload URL -->
         <div class="row" style="display:none">
           <label>Upload URL</label>
           <input id="uploadUrl" type="text" value="https://api.anamorphic-desqueeze.com/upload" />
         </div>
       </section>
 
-      <!-- Go Pro -->
+      <!-- Pro -->
       <section class="panel" id="pro">
         <h2>Go Pro</h2>
         <div class="row">
-          <label>Unlock Pro, Coming Soon</label>
+          <label>Unlock Pro (coming soon)</label>
           <div>
             <a
               class="btn btn--primary lemonsqueezy-button"
@@ -208,8 +209,9 @@
               data-ls-success="https://anamorphic-desqueeze.com/?pro=1"
               data-ls-cancel="https://anamorphic-desqueeze.com/"
             >
-              Unlock Pro — $49 Lifetime , coming soon !
+              Unlock Pro — $49 Lifetime (coming soon)
             </a>
+
             <!-- INR helper (for Razorpay / Indian users) -->
             <div id="inrPrice" class="note" style="margin-top:6px;">
               Approx in INR: <span id="inrValue">loading…</span>
@@ -218,7 +220,7 @@
             <ul class="feature-list">
               <li>2.0× de-squeeze is free for everyone</li>
               <li>Other ratios & advanced controls unlock with Pro</li>
-              <li>Batch up to 10 videos/photos at once</li>
+              <li>Batch Desqueeze up to 10 videos/photos at once</li>
               <li>Faster exports & premium updates</li>
             </ul>
           </div>
@@ -245,10 +247,10 @@
     </main>
   </div>
 
-  <!-- Professional footer -->
+  <!-- Footer -->
   <footer class="site-footer">
     <div class="site-footer__inner">
-      <div>© <span id="y"></span> Web Desqueeze Studio</div>
+      <div>© <span id="y"></span> Anamorphic Desqueeze</div>
       <div class="site-footer__links">
         <a href="#pro">Go Pro</a>
         <a href="#support">Support</a>
@@ -264,7 +266,7 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script src="./app.js"></script>
 
-  <!-- Feedback: opens Google Form with prefilled text + clipboard copy -->
+  <!-- Feedback helper -->
   <script>
     (function(){
       document.getElementById('y').textContent = new Date().getFullYear();
