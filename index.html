@@ -3,25 +3,25 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Anamorphic Desqueeze — Batch Desqueeze</title>
+  <title>Web Desqueeze Studio — Batch Desqueezer</title>
 
   <!-- SEO -->
-  <meta name="description" content="Anamorphic Desqueeze — Batch Desqueeze lets you preview and export de-squeezed anamorphic video and photos — fast, with batch processing in your browser." />
-  <meta name="keywords" content="anamorphic, desqueeze, batch desqueeze, batch desqueezer, video editor, aspect ratio, cinema lens, 1.33x, 1.5x, 1.8x, 2.0x" />
+  <meta name="description" content="Web Desqueeze Studio lets you preview and export de-squeezed anamorphic video and photos — fast, with batch processing in your browser." />
+  <meta name="keywords" content="anamorphic, desqueeze, de-squeeze, batch desqueezer, video editor, aspect ratio, cinema lens, 1.33x, 1.5x, 1.8x, 2.0x" />
   <link rel="canonical" href="https://anamorphic-desqueeze.com/" />
   <meta name="robots" content="index,follow" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Anamorphic Desqueeze — Batch Desqueeze" />
-  <meta property="og:description" content="Preview horizontal de-squeeze; export fully corrected MP4/JPG/PNG with Batch Desqueeze and ZIP export." />
+  <meta property="og:title" content="Web Desqueeze Studio — Batch Desqueezer" />
+  <meta property="og:description" content="Preview horizontal de-squeeze; App exports to the user's local system Downloads folder with fully corrected MP4/JPG/PNG files and batch export as a ZIP file." />
   <meta property="og:url" content="https://anamorphic-desqueeze.com/" />
   <meta property="og:image" content="https://anamorphic-desqueeze.com/og-cover.jpg" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Anamorphic Desqueeze — Batch Desqueeze" />
-  <meta name="twitter:description" content="Preview horizontal desqueeze; export fully corrected MP4/JPG/PNG with Batch Desqueeze processing." />
+  <meta name="twitter:title" content="Web Desqueeze Studio — Batch Desqueezer" />
+  <meta name="twitter:description" content="Preview horizontal de-squeeze; export fully corrected MP4/JPG/PNG with batch processing." />
   <meta name="twitter:image" content="https://anamorphic-desqueeze.com/og-cover.jpg" />
 
   <!-- GA4 -->
@@ -66,12 +66,16 @@
   </style>
 </head>
 <body>
-  <!-- Header -->
+  <!-- Hidden buttons so app.js can safely attach listeners (no logic change) -->
+  <button id="start" style="display:none"></button>
+  <button id="stop" style="display:none"></button>
+
+  <!-- Professional site header -->
   <header class="site-header">
     <div class="site-header__inner">
       <div class="brand">
         <span class="brand__dot"></span>
-        <span>Anamorphic Desqueeze</span>
+        <span>Web Desqueeze Studio</span>
       </div>
       <nav class="nav">
         <a href="#settings">Settings</a>
@@ -91,13 +95,12 @@
   <div class="wrapper">
     <header class="hero">
       <div class="card">
-        <h1>Anamorphic Desqueeze — Batch Desqueeze</h1>
-        <p class="sub">Batch Desqueeze up to 10 anamorphic clips or photos at once, with live preview and corrected exports.</p>
+        <h1>Web Desqueeze Studio — Batch Desqueezer</h1>
+        <p class="sub">Preview horizontal de-squeeze; export fully corrected MP4/JPG/PNG — batch up to 10 files at once.</p>
       </div>
     </header>
 
     <main class="grid">
-      <!-- Preview + controls -->
       <section class="panel monitor">
         <div class="preview" id="previewBox">
           <video id="video" playsinline controls preload="metadata"></video>
@@ -123,7 +126,6 @@
         </div>
       </section>
 
-      <!-- Settings -->
       <section class="panel" id="settings">
         <h2>Settings</h2>
 
@@ -131,7 +133,7 @@
           <label>Files</label>
           <div>
             <input id="fileInput" type="file" accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg" multiple />
-            <small>Select up to 10 files. The first item previews above. Free works with 5mb or smaller files only.</small>
+            <small>Select up to 10 files. The first item previews above. Free works with 5mb or smaller files only</small>
           </div>
         </div>
 
@@ -189,18 +191,18 @@
           </div>
         </div>
 
-        <!-- Hidden: backend upload URL -->
+        <!-- IMPORTANT: point to your live backend (unchanged; still hidden) -->
         <div class="row" style="display:none">
           <label>Upload URL</label>
           <input id="uploadUrl" type="text" value="https://api.anamorphic-desqueeze.com/upload" />
         </div>
       </section>
 
-      <!-- Pro -->
+      <!-- Go Pro -->
       <section class="panel" id="pro">
         <h2>Go Pro</h2>
         <div class="row">
-          <label>Unlock Pro (coming soon)</label>
+          <label>Unlock Pro</label>
           <div>
             <a
               class="btn btn--primary lemonsqueezy-button"
@@ -209,10 +211,10 @@
               data-ls-success="https://anamorphic-desqueeze.com/?pro=1"
               data-ls-cancel="https://anamorphic-desqueeze.com/"
             >
-              Unlock Pro — $49 Lifetime (coming soon)
+              Unlock Pro — $49 Lifetime
             </a>
 
-            <!-- INR helper (for Razorpay / Indian users) -->
+            <!-- INR conversion helper (for Razorpay etc.) -->
             <div id="inrPrice" class="note" style="margin-top:6px;">
               Approx in INR: <span id="inrValue">loading…</span>
             </div>
@@ -220,7 +222,7 @@
             <ul class="feature-list">
               <li>2.0× de-squeeze is free for everyone</li>
               <li>Other ratios & advanced controls unlock with Pro</li>
-              <li>Batch Desqueeze up to 10 videos/photos at once</li>
+              <li>Batch up to 10 videos/photos at once</li>
               <li>Faster exports & premium updates</li>
             </ul>
           </div>
@@ -247,10 +249,10 @@
     </main>
   </div>
 
-  <!-- Footer -->
+  <!-- Professional footer -->
   <footer class="site-footer">
     <div class="site-footer__inner">
-      <div>© <span id="y"></span> Anamorphic Desqueeze</div>
+      <div>© <span id="y"></span> Web Desqueeze Studio</div>
       <div class="site-footer__links">
         <a href="#pro">Go Pro</a>
         <a href="#support">Support</a>
@@ -266,7 +268,7 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script src="./app.js"></script>
 
-  <!-- Feedback helper -->
+  <!-- Feedback: opens Google Form with prefilled text + clipboard copy -->
   <script>
     (function(){
       document.getElementById('y').textContent = new Date().getFullYear();
@@ -292,22 +294,30 @@
     })();
   </script>
 
-  <!-- INR converter: $49 -> INR (approx) -->
+  <!-- USD -> INR converter for the $49 price -->
   <script>
     (function () {
-      var USD_PRICE = 49;
-      var inrSpan = document.getElementById('inrValue');
+      const USD_PRICE = 49;
+      const inrSpan = document.getElementById('inrValue');
       if (!inrSpan) return;
 
       async function updateInr() {
         try {
-          var res = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=INR');
+          const res = await fetch('https://open.er-api.com/v6/latest/USD');
           if (!res.ok) throw new Error('HTTP ' + res.status);
-          var data = await res.json();
-          var rate = data && data.rates && data.rates.INR;
-          if (!rate || !isFinite(rate)) throw new Error('Bad rate');
-          var inr = Math.round(USD_PRICE * rate);
-          inrSpan.textContent = '₹' + inr.toLocaleString('en-IN') + ' (approx)';
+          const data = await res.json();
+
+          if (data.result !== 'success') {
+            throw new Error('API result not success');
+          }
+
+          const rate = data && data.rates && data.rates.INR;
+          if (!rate || !isFinite(rate)) {
+            throw new Error('No INR rate');
+          }
+
+          const inr = Math.round(USD_PRICE * rate);
+          inrSpan.textContent = `₹${inr.toLocaleString('en-IN')} (approx)`;
         } catch (e) {
           console.error('FX fetch failed', e);
           inrSpan.textContent = '₹– (FX unavailable)';
