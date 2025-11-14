@@ -175,13 +175,19 @@
       <section class="panel" id="settings">
         <h2>Settings</h2>
 
-        <div class="row">
-          <label>Files</label>
-          <div>
-            <input id="fileInput" type="file" accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg" multiple />
-            <small>Select up to 10 files. The first item previews above.</small>
-          </div>
-        </div>
+		 <div class="row">
+		  <label>Files</label>
+		  <div>
+			<div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+			  <button id="clearAll" type="button" class="btn">Clear</button>
+
+			  <input id="fileInput" type="file"
+					 accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg"
+					 multiple />
+			</div>
+			<small>Select up to 10 files. The first item previews above.</small>
+		  </div>
+		</div>
 
         <div class="row">
           <label>De-squeeze</label>

@@ -11,6 +11,7 @@
   const exportSelectedEl = document.getElementById('exportSelected');
   const exportBatchEl    = document.getElementById('exportBatch');
   const queueEl          = document.getElementById('queue');
+  const clearAllBtn      = document.getElementById('clearAll'); // ← add this
 
   const playBtn  = document.getElementById('play');
   const pauseBtn = document.getElementById('pause');
@@ -232,6 +233,55 @@
     // anything else -> /downloads/<encoded>
     return origin + '/downloads/' + encodeURIComponent(val);
   }
+  
+  function clearAll() {
+  // reset state
+  state.items = [];
+  state.selectedId = null;
+  state.currentPreviewId = null;
+
+  // clear queue UI
+  if (queueEl) {
+    queueEl.innerHTML = '';
+    queueEl.classList.add('hidden');
+  }
+
+  // reset progress bar
+  if (progressBarEl) {
+    progressBarEl.value = 0;
+    progressBarEl.classList.add('hidden');
+  }
+
+  // stop and clear video
+  if (videoEl) {
+    try { videoEl.pause(); } catch {}
+    videoEl.removeAttribute('src');
+    videoEl.load();
+  }
+
+  // clear canvas
+  if (canvasEl) {
+    const ctx = canvasEl.getContext('2d');
+    if (ctx) ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+    canvasEl.classList.add('hidden');
+  }
+
+  // hide download box
+  if (downloadBoxEl) downloadBoxEl.classList.add('hidden');
+  if (downloadLinkEl) {
+    downloadLinkEl.removeAttribute('href');
+    downloadLinkEl.removeAttribute('download');
+  }
+
+  // reset file input
+  if (fileInputEl) fileInputEl.value = '';
+
+  // buttons & status
+  disableUiWhileBusy(false);
+  updateGlobalProgress();
+  ensureQueueVisible();
+  setStatus('Idle');
+}
 
   // === QUEUE RENDERING ===
 
@@ -517,7 +567,7 @@
     formData.append('file', item.file, item.file.name);
     formData.append('sessionId', sessionId);
     formData.append('kind', 'video');
-    formData.append('desqFactor', String(cfg.desqFactor || 1));
+    formData.append('factor', String(cfg.desqFactor || 1));
     formData.append('fps', cfg.fps == null ? 'copy' : String(cfg.fps));
     formData.append('bitrate', String(cfg.bitrate || 0));
     formData.append('photoFormat', cfg.photoFormat || 'image/jpeg');
@@ -816,6 +866,10 @@
 
     initProState();
     applyProGate();
+	
+	 if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', clearAll); // ← add this
+  }
 
     if (fileInputEl) {
       fileInputEl.addEventListener('change', e => {
