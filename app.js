@@ -298,20 +298,25 @@
       return;
     }
 
-    try {
+     try {
       const form = new FormData();
       form.append("file", file);
       form.append("factor", String(getFactor()));
-      // --- CHANGE #2: don't send fps=copy; let server keep original FPS
+      // don't send fps=copy; let server keep original FPS
       if (fpsPreset.value !== "copy") {
         form.append("fps", fpsPreset.value);
       }
       form.append("bitrate", bitratePreset.value);
 
       const uploadUrl = getUploadUrl();
+      console.log("Export: POST ->", uploadUrl);
 
       const res = await fetch(uploadUrl, { method: "POST", body: form });
-      if (!res.ok || !res.body) throw new Error("Upload failed");
+
+      // 🔍 If server responded but with an error code, throw HTTP status
+      if (!res.ok || !res.body) {
+        throw new Error(`HTTP ${res.status}`);
+      }
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -351,18 +356,31 @@
             setStatus("✅ Export complete");
           } else if (line.startsWith("status:error")) {
             setRowStatus(rowIndex, "error");
-            setStatus("❌ Export failed");
+            setStatus("❌ Export failed (server reported error)");
           }
         }
 
         buffer = lines[lines.length - 1];
       }
     } catch (err) {
-      console.error(err);
+      console.error("Export failed:", err);
       setRowStatus(rowIndex, "error");
-      setStatus("❌ Export failed (check server & CORS)");
+
+      const msg = (err && err.message) || "";
+
+      if (/^HTTP \d+/.test(msg)) {
+        // ✅ Request reached the server, but server returned error status
+        setStatus("❌ Server error: " + msg);
+      } else if (/Failed to fetch|NetworkError|TypeError: Failed to fetch/i.test(msg)) {
+        // ❌ Browser could not even talk to the backend (CORS / mixed content / offline / wrong URL)
+        setStatus("❌ Network/CORS error – browser could not reach the backend");
+      } else {
+        // generic
+        setStatus("❌ Export failed: " + (msg || "unknown error"));
+      }
     }
   }
+
 
   function exportPhotoBlob(file){
     return new Promise((resolve, reject) => {
@@ -488,3 +506,4 @@
   })();
 
 })();
+
