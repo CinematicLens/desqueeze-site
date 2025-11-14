@@ -1,509 +1,219 @@
 (() => {
-  const previewBox = document.getElementById("previewBox");
-  const video = document.getElementById("video");
-  const canvas = document.getElementById("photoCanvas");
-  const ctx = canvas.getContext("2d");
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const startBtn = document.getElementById('start');
+  const stopBtn = document.getElementById('stop');
+  const statusEl = document.getElementById('status');
+  const download = document.getElementById('download');
+  const downloadLink = document.getElementById('downloadLink');
+  const toggleManagedBtn = document.getElementById('toggleManaged');
 
-  const playBtn = document.getElementById("play");
-  const pauseBtn = document.getElementById("pause");
-  const exportSelectedBtn = document.getElementById("exportSelected");
-  const exportBatchBtn = document.getElementById("exportBatch");
-  const statusEl = document.getElementById("status");
-  const progressBar = document.getElementById("progressBar");
-  const download = document.getElementById("download");
-  const downloadLink = document.getElementById("downloadLink");
-  const queueEl = document.getElementById("queue");
+  const desqPreset = document.getElementById('desqPreset');
+  const desqCustom = document.getElementById('desqCustom');
+  const fpsPreset = document.getElementById('fpsPreset');
+  const fpsCustom = document.getElementById('fpsCustom');
+  const bitratePreset = document.getElementById('bitratePreset');
+  const bitrateCustom = document.getElementById('bitrateCustom');
 
-  const fileInput = document.getElementById("fileInput");
-  const desqPreset = document.getElementById("desqPreset");
-  const desqCustom = document.getElementById("desqCustom");
-  const fpsPreset = document.getElementById("fpsPreset");
-  const bitratePreset = document.getElementById("bitratePreset");
-  const photoFormat = document.getElementById("photoFormat");
-  const uploadUrlEl = document.getElementById("uploadUrl");
+  const uploadUrlInput = document.getElementById('uploadUrl');
+  const pickCameraBtn = document.getElementById('pickCamera');
+  const fileInput = document.getElementById('fileInput');
+  const modeButtons = Array.from(document.querySelectorAll('.mode-btn'));
 
-  let files = [];
-  let currentIndex = -1;
-  let currentObjectUrl = null;
-  let createdObjectUrls = [];
+  let mode = 'disk'; // disk | live | both
+  let managedS3 = false;
+  let mediaRecorder = null;
+  let chunks = [];
+  let drawLoop = null;
+  let streamRef = null;
+  let sessionId = null;
 
-  const MAX_FILES = 10;
-  const lastHref = [];
-  const batchOutputs = [];
-
-  const setStatus = (m) => { statusEl.textContent = m; console.log(m); };
-
-  function getApiBase() {
-    const v = uploadUrlEl && uploadUrlEl.value ? uploadUrlEl.value.trim() : "";
-    if (v) {
-      try { return new URL(v, window.location.origin).origin; } catch {}
-    }
-    return window.location.origin;
+  function setStatus(s){ statusEl.textContent = s; }
+  function pickMime(){
+    const list = ['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+    for (const m of list){ if (window.MediaRecorder && MediaRecorder.isTypeSupported(m)) return m; }
+    return 'video/webm';
   }
-  function getUploadUrl() {
-    const v = uploadUrlEl && uploadUrlEl.value ? uploadUrlEl.value.trim() : "";
-    if (v) {
-      try { return new URL(v, window.location.origin).href; } catch {}
-    }
-    return `${getApiBase()}/upload`;
+  function valOrCustom(sel, custom, parser=parseFloat){
+    if (sel.value === 'custom'){ custom.classList.remove('hidden'); return parser(custom.value || ''); }
+    custom.classList.add('hidden'); return parser(sel.value);
   }
 
-  function trackUrl(u){ if (u) createdObjectUrls.push(u); }
-  function revokeObjectUrl(u){ if (u) URL.revokeObjectURL(u); }
-  function revokeAllCreatedObjectUrls(){ for (const u of createdObjectUrls) URL.revokeObjectURL(u); createdObjectUrls = []; }
-
-  function triggerDownloadFromUrl(url, filename){
-    const a = document.createElement('a');
-    a.href = url;
-    if (filename) a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  }
-  function triggerDownloadFromBlob(blob, filename){
-    const url = URL.createObjectURL(blob);
-    trackUrl(url);
-    triggerDownloadFromUrl(url, filename);
-  }
-  async function downloadCrossOriginAsBlob(url, filename){
-    const resp = await fetch(url, { mode: "cors" });
-    if (!resp.ok) throw new Error("Failed to fetch output");
-    const blob = await resp.blob();
-    triggerDownloadFromBlob(blob, filename);
-  }
-
-  function getFactor(){
-    let f = desqPreset.value === "custom" ? parseFloat(desqCustom.value) : parseFloat(desqPreset.value);
-    if (!Number.isFinite(f) || f < 1) f = 1;
-    return Math.round(f * 100) / 100;
-  }
-  function applyPreviewDesqueeze(){
-    const f = getFactor();
-    video.style.setProperty("--d", f);
-    if (currentIndex >= 0 && files[currentIndex] && files[currentIndex].type.startsWith("image/")) {
-      drawImagePreview(files[currentIndex]);
-    }
-  }
-  function revokeVideoObjectUrl(){
-    if (currentObjectUrl) { URL.revokeObjectURL(currentObjectUrl); currentObjectUrl = null; }
-  }
-
-  // --- CHANGE #1: accept /files/ path from the server as a valid download URL
-  function resolveDownloadHref(raw){
-    if (!raw) return null;
-    const base = getApiBase();
+  async function pickCamera(){
     try {
-      let name = String(raw).trim();
-      if (!name) return null;
-
-      if (/^https?:\/\//i.test(name)) return name;                 // absolute URL
-      if (name.startsWith("/downloads/") || name.startsWith("/files/"))
-        return `${base}${name}`;                                   // server path
-
-      name = name.replace(/^.*\//, "");                            // basename
-      name = name.split("?")[0].split("#")[0];
-      if (!name) return null;
-      return `${base}/download/${encodeURIComponent(name)}`;       // legacy
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      video.srcObject = stream;
+      await video.play();
+      streamRef = stream;
     } catch (e) {
-      console.error("resolveDownloadHref failed:", e, raw);
-      return null;
+      console.error(e);
+      setStatus('Camera permission denied or unavailable');
+    }
+  }
+  async function handleFile(file){
+    const url = URL.createObjectURL(file);
+    video.src = url;
+    await video.play();
+  }
+
+  function uploadChunk(url, blob){
+    return fetch(url + '?session=' + encodeURIComponent(sessionId), {
+      method: 'POST',
+      headers: { 'Content-Type': blob.type || 'application/octet-stream' },
+      body: blob
+    }).catch(err => console.error('Upload failed', err));
+  }
+  async function uploadFinalBlobToManagedS3(blob){
+    try {
+      const res = await fetch('http://localhost:3000/presign', { method: 'POST' });
+      const { url, key } = await res.json();
+      if (!url) throw new Error('No presigned URL');
+      const put = await fetch(url, { method: 'PUT', headers: { 'Content-Type': blob.type || 'application/octet-stream' }, body: blob });
+      if (!put.ok) throw new Error('PUT to S3 failed');
+      setStatus('Uploaded to S3 (' + key + ')');
+    } catch (e) {
+      console.error(e);
+      setStatus('Managed S3 upload failed');
     }
   }
 
-  desqPreset.addEventListener("change", () => {
-    const show = desqPreset.value === "custom";
-    desqCustom.classList.toggle("hidden", !show);
-    if (show && (!desqCustom.value || parseFloat(desqCustom.value) < 1)) desqCustom.value = "1.33";
-    applyPreviewDesqueeze();
-  });
-  desqCustom.addEventListener("input", applyPreviewDesqueeze);
+  function start(){
+    const desq = Math.max(1, parseFloat(valOrCustom(desqPreset, desqCustom, parseFloat)) || 1.33);
+    const fps  = Math.max(1, Math.min(60, parseInt(valOrCustom(fpsPreset, fpsCustom, parseInt) || '30', 10)));
+    const bps  = Math.max(1_000_000, parseInt(valOrCustom(bitratePreset, bitrateCustom, parseInt) || '8000000', 10));
+    const uploadUrl = uploadUrlInput.value.trim();
+    sessionId = 'sess_' + Date.now();
 
-  playBtn.addEventListener("click", () => { video.play(); setStatus("Playing"); });
-  pauseBtn.addEventListener("click", () => { video.pause(); setStatus("Paused"); });
+    chunks = [];
+    download.classList.add('hidden');
+    setStatus('Initializing…');
 
-  fileInput.addEventListener("change", (e) => {
-    revokeVideoObjectUrl();
-    revokeAllCreatedObjectUrls();
-    download.classList.add("hidden");
-    downloadLink.removeAttribute("href");
-    downloadLink.removeAttribute("download");
+    const ctx = canvas.getContext('2d');
+    const vw = video.videoWidth || 1280;
+    const vh = video.videoHeight || 720;
 
-    files = Array.from(e.target.files || [])
-      .filter(f => f.type.startsWith("video/") || f.type.startsWith("image/"))
-      .slice(0, MAX_FILES);
+    const outW = Math.round(vw * desq);
+    const outH = vh;
+    canvas.width = outW;
+    canvas.height = outH;
 
-    batchOutputs.length = 0;
-    lastHref.length = 0;
-
-    if (!files.length) {
-      setStatus("No supported files.");
-      exportSelectedBtn.disabled = true;
-      exportBatchBtn.disabled = true;
-      if (previewBox) previewBox.classList.add("hidden");
-      return;
-    }
-
-    currentIndex = 0;
-    rebuildQueue();
-    showPreview(files[0]);
-    if (previewBox) previewBox.classList.remove("hidden");
-
-    exportSelectedBtn.disabled = false;
-    exportBatchBtn.disabled = files.length < 2;
-  });
-
-  function rebuildQueue(){
-    queueEl.innerHTML = "";
-    queueEl.classList.toggle("hidden", files.length <= 1);
-    files.forEach((f, i) => {
-      const row = document.createElement("div");
-      row.className = "queue-item";
-      row.dataset.index = i;
-      row.innerHTML = `
-        <div>
-          <div class="queue-name">${f.name}</div>
-          <div class="queue-status" id="qs-${i}">queued</div>
-        </div>
-        <progress id="qp-${i}" class="queue-progress" value="0" max="100"></progress>
-      `;
-      row.addEventListener("click", () => { currentIndex = i; showPreview(files[i]); });
-      queueEl.appendChild(row);
-    });
-  }
-  function setRowStatus(i, text){ const el = document.getElementById("qs-" + i); if (el) el.textContent = text; }
-  function setRowProgress(i, v){ const el = document.getElementById("qp-" + i); if (el) el.value = Math.max(0, Math.min(100, v)); }
-
-  function showPreview(file){
-    download.classList.add("hidden");
-    if (!file) return;
-
-    if (file.type.startsWith("video/")){
-      canvas.classList.add("hidden");
-      video.classList.remove("hidden");
-      revokeVideoObjectUrl();
-      currentObjectUrl = URL.createObjectURL(file);
-      video.src = currentObjectUrl;
-      video.onloadedmetadata = () => {
-        applyPreviewDesqueeze();
-        video.play().catch(()=>{});
-        setStatus("Loaded video: " + file.name);
-      };
-      video.onerror = () => setStatus("❌ Video load error (try H.264 MP4).");
-    } else {
-      video.classList.add("hidden");
-      canvas.classList.remove("hidden");
-      drawImagePreview(file);
-      setStatus("Loaded photo: " + file.name);
-    }
-  }
-
-  function drawImagePreview(file){
-    const f = getFactor();
-    const img = new Image();
-    const tmpUrl = URL.createObjectURL(file);
-    img.onload = () => {
-      const W = Math.round(img.width * f), H = img.height;
-      canvas.width = W; canvas.height = H;
-      ctx.setTransform(f, 0, 0, 1, 0, 0);
-      ctx.drawImage(img, 0, 0);
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      revokeObjectUrl(tmpUrl);
+    const draw = () => {
+      ctx.save();
+      ctx.clearRect(0, 0, outW, outH);
+      ctx.scale(desq, 1);
+      ctx.drawImage(video, 0, 0, vw, vh);
+      ctx.restore();
+      drawLoop = requestAnimationFrame(draw);
     };
-    img.onerror = () => { setStatus("❌ Failed to load image"); revokeObjectUrl(tmpUrl); };
-    img.src = tmpUrl;
-  }
+    drawLoop = requestAnimationFrame(draw);
 
-  exportSelectedBtn.addEventListener("click", async () => {
-    if (currentIndex < 0 || !files[currentIndex]) return setStatus("Pick a file first");
-    exportSelectedBtn.disabled = true;
-    exportBatchBtn.disabled = true;
-    progressBar.classList.remove("hidden");
-    progressBar.value = 0;
+    const canvasStream = canvas.captureStream(fps);
+    const inStream = streamRef || (video.srcObject instanceof MediaStream ? video.srcObject : null);
+    if (inStream) inStream.getAudioTracks().forEach(t => canvasStream.addTrack(t));
 
-    await exportOne(files[currentIndex], currentIndex);
+    const rec = new MediaRecorder(canvasStream, { mimeType: pickMime(), bitsPerSecond: bps });
+    mediaRecorder = rec;
 
-    progressBar.classList.add("hidden");
-    exportSelectedBtn.disabled = false;
-    exportBatchBtn.disabled = files.length < 2 ? true : false;
-  });
+    rec.ondataavailable = (e) => {
+      if (!e.data || e.data.size === 0) return;
+      if (mode === 'disk' || mode === 'both') chunks.push(e.data);
+      if (mode === 'live' || mode === 'both') uploadChunk(uploadUrl, e.data);
+    };
+    rec.onstart = () => setStatus(`Recording… (${mode}) • ${desq.toFixed(2)}× • ${fps}fps • ${(bps/1e6).toFixed(1)}Mbps`);
+    rec.onerror = (e) => { setStatus('Recorder error'); console.error(e); };
+    rec.onstop = async () => {
+      if (drawLoop) cancelAnimationFrame(drawLoop), drawLoop = null;
+      const blob = new Blob(chunks, { type: rec.mimeType || 'video/webm' });
 
-  exportBatchBtn.addEventListener("click", async () => {
-    if (files.length < 2) return setStatus("Add at least two files for batch export");
-    exportSelectedBtn.disabled = true;
-    exportBatchBtn.disabled = true;
-    progressBar.classList.remove("hidden");
-    progressBar.value = 0;
-    batchOutputs.length = 0;
-
-    for (let i = 0; i < files.length; i++) {
-      await exportOne(files[i], i);
-      progressBar.value = Math.round(((i + 1) / files.length) * 100);
-    }
-
-    if (batchOutputs.length >= 2) {
-      setStatus("Packing ZIP…");
-      try {
-        const zipBlob = await buildZip(batchOutputs);
-        const zipUrl = URL.createObjectURL(zipBlob);
-        trackUrl(zipUrl);
-        const zipName = `desqueezed_batch_${batchOutputs.length}_${Date.now()}.zip`;
-        downloadLink.href = zipUrl;
-        downloadLink.download = zipName;
-        download.classList.remove("hidden");
-        triggerDownloadFromBlob(zipBlob, zipName);
-        setStatus("✅ Batch complete (ZIP ready)");
-      } catch (e) {
-        console.error(e);
-        setStatus("❌ ZIP create failed (check console)");
-      }
-    } else {
-      setStatus("✅ Batch complete");
-    }
-
-    progressBar.classList.add("hidden");
-    exportSelectedBtn.disabled = false;
-    exportBatchBtn.disabled = files.length < 2 ? true : false;
-  });
-
-  async function exportOne(file, rowIndex){
-    if (!file) return;
-    setRowStatus(rowIndex, "exporting…");
-    setRowProgress(rowIndex, 0);
-    setStatus("Exporting…");
-    download.classList.add("hidden");
-
-    if (file.type.startsWith("image/")){
-      try {
-        const blob = await exportPhotoBlob(file);
+      if (mode === 'disk' || mode === 'both') {
         const url = URL.createObjectURL(blob);
-        trackUrl(url);
-        lastHref[rowIndex] = url;
-        const outName = makeOutName(file, true);
-        batchOutputs.push({ name: outName, href: url });
-
-        setRowStatus(rowIndex, "done");
-        setRowProgress(rowIndex, 100);
-
         downloadLink.href = url;
-        downloadLink.download = outName;
-        download.classList.remove("hidden");
-
-        triggerDownloadFromBlob(blob, outName);
-        setStatus("✅ Photo exported");
-      } catch (e) {
-        console.error(e);
-        setRowStatus(rowIndex, "error");
-        setStatus("❌ Photo export failed");
-      }
-      return;
-    }
-
-     try {
-      const form = new FormData();
-      form.append("file", file);
-      form.append("factor", String(getFactor()));
-      // don't send fps=copy; let server keep original FPS
-      if (fpsPreset.value !== "copy") {
-        form.append("fps", fpsPreset.value);
-      }
-      form.append("bitrate", bitratePreset.value);
-
-      const uploadUrl = getUploadUrl();
-      console.log("Export: POST ->", uploadUrl);
-
-      const res = await fetch(uploadUrl, { method: "POST", body: form });
-
-      // 🔍 If server responded but with an error code, throw HTTP status
-      if (!res.ok || !res.body) {
-        throw new Error(`HTTP ${res.status}`);
-      }
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split(/\r?\n/);
-
-        for (let k = 0; k < lines.length - 1; k++) {
-          const line = lines[k].trim();
-          if (!line) continue;
-
-          if (line.startsWith("progress:")) {
-            const pct = parseFloat(line.slice(9) || "0");
-            setRowProgress(rowIndex, isFinite(pct) ? pct : 0);
-            setStatus("Exporting… " + (isFinite(pct) ? pct : 0) + "%");
-          } else if (line.startsWith("download:")) {
-            const raw = line.slice(9);
-            const href = resolveDownloadHref(raw);
-            if (href) {
-              const outName = makeOutName(file, false);
-              lastHref[rowIndex] = href;
-              batchOutputs.push({ name: outName, href });
-
-              downloadLink.href = href;
-              downloadLink.download = outName;
-              download.classList.remove("hidden");
-
-              downloadCrossOriginAsBlob(href, outName).catch(console.error);
-            }
-          } else if (line.startsWith("status:done")) {
-            setRowStatus(rowIndex, "done");
-            setStatus("✅ Export complete");
-          } else if (line.startsWith("status:error")) {
-            setRowStatus(rowIndex, "error");
-            setStatus("❌ Export failed (server reported error)");
-          }
-        }
-
-        buffer = lines[lines.length - 1];
-      }
-    } catch (err) {
-      console.error("Export failed:", err);
-      setRowStatus(rowIndex, "error");
-
-      const msg = (err && err.message) || "";
-
-      if (/^HTTP \d+/.test(msg)) {
-        // ✅ Request reached the server, but server returned error status
-        setStatus("❌ Server error: " + msg);
-      } else if (/Failed to fetch|NetworkError|TypeError: Failed to fetch/i.test(msg)) {
-        // ❌ Browser could not even talk to the backend (CORS / mixed content / offline / wrong URL)
-        setStatus("❌ Network/CORS error – browser could not reach the backend");
+        downloadLink.download = 'desqueezed_' + Date.now() + '.webm';
+        download.classList.remove('hidden');
+        setStatus('Saved (disk)');
       } else {
-        // generic
-        setStatus("❌ Export failed: " + (msg || "unknown error"));
+        setStatus('Stopped (live)');
       }
-    }
+
+      if (managedS3) await uploadFinalBlobToManagedS3(blob);
+    };
+
+    rec.start(1000); // 1s slices for live upload
   }
 
+  function stop(){
+    if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+    if (drawLoop) cancelAnimationFrame(drawLoop), drawLoop = null;
+  }
 
-  function exportPhotoBlob(file){
-    return new Promise((resolve, reject) => {
-      const fac = getFactor();
-      const img = new Image();
-      const tmpUrl = URL.createObjectURL(file);
-      img.onload = () => {
-        const W = Math.round(img.width * fac), H = img.height;
-        canvas.width = W; canvas.height = H;
-        ctx.setTransform(fac, 0, 0, 1, 0, 0);
-        ctx.drawImage(img, 0, 0);
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        revokeObjectUrl(tmpUrl);
+  // UI wiring
+  modeButtons.forEach(btn => {
+    const m = btn.dataset.mode;
+    if (!m) return;
+    btn.addEventListener('click', () => {
+      modeButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      mode = btn.dataset.mode;
+    });
+  });
+  toggleManagedBtn?.addEventListener('click', () => {
+    managedS3 = !managedS3;
+    toggleManagedBtn.textContent = 'Managed S3: ' + (managedS3 ? 'On' : 'Off');
+  });
+  startBtn.addEventListener('click', start);
+  stopBtn.addEventListener('click', stop);
+  pickCameraBtn?.addEventListener('click', pickCamera);
+  fileInput?.addEventListener('change', e => { const f=e.target.files?.[0]; if (f) handleFile(f); });
 
-        const mime = photoFormat.value || "image/jpeg";
-        canvas.toBlob(b => (b ? resolve(b) : reject(new Error("Canvas export failed"))),
-                      mime, mime.includes("jpeg") ? 0.95 : undefined);
-      };
-      img.onerror = () => { revokeObjectUrl(tmpUrl); reject(new Error("Image decode failed")); };
-      img.src = tmpUrl;
+  // Ensure correct visibility of custom fields on load and change
+  const map = [
+    [desqPreset, desqCustom],
+    [fpsPreset, fpsCustom],
+    [bitratePreset, bitrateCustom]
+  ];
+  function refreshCustomVisibility(){
+    map.forEach(([sel, custom]) => {
+      if (sel.value === 'custom') custom.classList.remove('hidden');
+      else custom.classList.add('hidden');
     });
   }
+  map.forEach(([sel, custom]) => sel.addEventListener('change', refreshCustomVisibility));
+  refreshCustomVisibility();
 
-  function makeOutName(f, isPhoto){
-    const base = f.name.replace(/\.[^.]+$/, "");
-    if (isPhoto){
-      const ext = (photoFormat.value && /png$/i.test(photoFormat.value)) ? "png" : "jpg";
-      return `${base}_desq.${ext}`;
-    }
-    return `${base}_desq.mp4`;
-  }
-
-  async function buildZip(items){
-    if (!window.JSZip) throw new Error("JSZip not loaded");
-    const zip = new JSZip();
-    for (const it of items) {
-      const resp = await fetch(it.href, { mode: "cors" });
-      if (!resp.ok) throw new Error("Failed to fetch ZIP member");
-      const buf = await resp.arrayBuffer();
-      zip.file(it.name, buf);
-    }
-    // already using level 1 (fast) — leaving as-is
-    return zip.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 1 } });
-  }
-
-  setStatus("Idle");
-  applyPreviewDesqueeze();
-
-  /* ===== CHANGE #3: PRO ENTITLEMENT + GATING (keeps 2.0× free) ===== */
-  (function(){
-    function hasPro(){ try { return localStorage.getItem("proEntitled")==="1"; } catch { return false; } }
-    function grantPro(){ try { localStorage.setItem("proEntitled","1"); } catch {} }
-    function consumeProFromUrl(){
-      const usp = new URLSearchParams(location.search);
-      if (usp.get("pro")==="1"){
-        grantPro();
-        usp.delete("pro");
-        const clean = location.pathname + (usp.toString()?`?${usp}`:"") + location.hash;
-        history.replaceState(null,"",clean);
-        setStatus("✅ Pro activated");
-      }
-    }
-
-    const FREE_DESQ = new Set(["2","1"]); // 2.00× and None are free
-    const PRO_FPS   = new Set(["24","25","30","50","60"]);
-    const PRO_BR    = new Set(["12000000","16000000","25000000"]);
-    const PRO_FMT   = new Set(["image/png"]);
-
-    function isProOption(selectEl, val){
-      if (selectEl===desqPreset)    return !FREE_DESQ.has(String(val));
-      if (selectEl===fpsPreset)     return PRO_FPS.has(String(val));
-      if (selectEl===bitratePreset) return PRO_BR.has(String(val));
-      if (selectEl===photoFormat)   return PRO_FMT.has(String(val));
-      return false;
-    }
-
-    function lockNonProOptions(){
-      const pro = hasPro();
-      [...desqPreset.options].forEach(o => o.disabled = !pro && isProOption(desqPreset,o.value));
-      [...fpsPreset.options].forEach(o => o.disabled = !pro && isProOption(fpsPreset,o.value));
-      [...bitratePreset.options].forEach(o => o.disabled = !pro && isProOption(bitratePreset,o.value));
-      [...photoFormat.options].forEach(o => o.disabled = !pro && isProOption(photoFormat,o.value));
-
-      if (!pro){
-        exportBatchBtn.disabled = true;
-        exportBatchBtn.setAttribute("data-locked","1");
-        exportBatchBtn.title = "Unlock Pro to enable batch export";
-      } else {
-        exportBatchBtn.disabled = files.length < 2 ? true : false;
-        exportBatchBtn.removeAttribute("data-locked");
-        exportBatchBtn.title = "";
-      }
-    }
-
-    function intercept(selectEl){
-      let prev = selectEl.value;
-      selectEl.addEventListener("change", () => {
-        const next = selectEl.value;
-        if (!hasPro() && isProOption(selectEl, next)){
-          selectEl.value = prev;           // revert immediately
-          setStatus("🔒 Pro feature — use Unlock Pro below");
-          return;
-        }
-        prev = next;
-      });
-    }
-
-    exportBatchBtn.addEventListener("click", (e) => {
-      if (!hasPro()){
-        e.preventDefault();
-        setStatus("🔒 Batch export is a Pro feature — unlock below");
-      }
-    });
-
-    consumeProFromUrl();
-    lockNonProOptions();
-    intercept(desqPreset);
-    intercept(fpsPreset);
-    intercept(bitratePreset);
-    intercept(photoFormat);
-
-    if (hasPro()) setStatus("✅ Pro active");
-  })();
-
+  setStatus('Idle');
 })();
 
+
+// === Live desqueeze preview ===
+function readDesqueeze() {
+  const sel = document.getElementById('desqPreset');
+  const custom = document.getElementById('desqCustom');
+  if (sel.value === 'custom') {
+    const v = parseFloat(custom.value || '1');
+    return isFinite(v) && v >= 1 ? v : 1;
+  }
+  return parseFloat(sel.value) || 1;
+}
+
+function updatePreviewScale() {
+  const d = readDesqueeze();
+  const video = document.getElementById('video');
+  if (video) video.style.transform = `scaleX(${d})`;
+}
+
+function toggleDesqCustomVisibility() {
+  const sel = document.getElementById('desqPreset');
+  const custom = document.getElementById('desqCustom');
+  if (sel.value === 'custom') custom.classList.remove('hidden');
+  else custom.classList.add('hidden');
+  updatePreviewScale();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const desqPreset = document.getElementById('desqPreset');
+  const desqCustom = document.getElementById('desqCustom');
+  desqPreset.addEventListener('change', toggleDesqCustomVisibility);
+  desqCustom.addEventListener('input', updatePreviewScale);
+  toggleDesqCustomVisibility();
+  updatePreviewScale();
+});
