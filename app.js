@@ -27,7 +27,9 @@
   let drawLoop = null;
   let streamRef = null;
   let sessionId = null;
-
+<!-- Added ONLY to satisfy app.js; does NOT affect UI -->
+<button id="start" style="display:none"></button>
+<button id="stop" style="display:none"></button>
   // config of the current recording (used when uploading to backend)
   let currentConfig = null;
 
@@ -385,3 +387,4 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleDesqCustomVisibility();
   updatePreviewScale();
 });
+
