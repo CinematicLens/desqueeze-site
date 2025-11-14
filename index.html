@@ -4,10 +4,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Anamorphic Desqueeze Batch Desqueezer</title>
+  <title>Web Desqueeze Studio — Batch Desqueezer</title>
 
   <!-- SEO -->
-  <meta name="description" content=">Anamorphic Desqueeze you preview and export de-squeezed anamorphic video and photos — fast, with batch processing in your browser." />
+  <meta name="description" content="Web Desqueeze Studio lets you preview and export de-squeezed anamorphic video and photos — fast, with batch processing in your browser." />
   <meta name="keywords" content="anamorphic, desqueeze, de-squeeze, batch desqueezer, video editor, aspect ratio, cinema lens, 1.33x, 1.5x, 1.8x, 2.0x" />
   <link rel="canonical" href="https://anamorphic-desqueeze.com/" />
   <meta name="robots" content="index,follow" />
@@ -15,7 +15,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Web Desqueeze Studio — Batch Desqueezer" />
- <meta property="og:description" content="Preview horizontal de-squeeze; App exports to the user's local system Downloads folder with fully corrected MP4/JPG/PNG files and batch export as a ZIP file." />
+  <meta property="og:description" content="Preview horizontal de-squeeze; App exports to the user's local system Downloads folder with fully corrected MP4/JPG/PNG files and batch export as a ZIP file." />
   <meta property="og:url" content="https://anamorphic-desqueeze.com/" />
   <meta property="og:image" content="https://anamorphic-desqueeze.com/og-cover.jpg" />
 
@@ -67,9 +67,6 @@
   </style>
 </head>
 <body>
-  <canvas id="canvas"></canvas>      <!-- if JS expects #canvas -->
-<button id="start">Start</button>
-<button id="stop">Stop</button>
   <!-- Professional site header -->
   <header class="site-header">
     <div class="site-header__inner">
@@ -132,8 +129,8 @@
         <div class="row">
           <label>Files</label>
           <div>
-             <input id="fileInput" type="file" accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg" multiple />
-            <small>Select up to 10 files. The first item previews above.Free works with 5mb or smaller files only</small>
+            <input id="fileInput" type="file" accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg" multiple />
+            <small>Select up to 10 files. The first item previews above. Free works with 5mb or smaller files only</small>
           </div>
         </div>
 
@@ -194,7 +191,7 @@
         <!-- IMPORTANT: point to your live backend (unchanged; still hidden) -->
         <div class="row" style="display:none">
           <label>Upload URL</label>
-           <input id="uploadUrl" type="text" value="https://api.anamorphic-desqueeze.com/upload" />
+          <input id="uploadUrl" type="text" value="https://api.anamorphic-desqueeze.com/upload" />
         </div>
       </section>
 
@@ -202,7 +199,7 @@
       <section class="panel" id="pro">
         <h2>Go Pro</h2>
         <div class="row">
-          <label>Unlock Pro</label>
+          <label>Unlock Pro, Coming Soon</label>
           <div>
             <a
               class="btn btn--primary lemonsqueezy-button"
@@ -211,8 +208,13 @@
               data-ls-success="https://anamorphic-desqueeze.com/?pro=1"
               data-ls-cancel="https://anamorphic-desqueeze.com/"
             >
-              Unlock Pro — $49 Lifetime
+              Unlock Pro — $49 Lifetime , coming soon !
             </a>
+            <!-- INR helper (for Razorpay / Indian users) -->
+            <div id="inrPrice" class="note" style="margin-top:6px;">
+              Approx in INR: <span id="inrValue">loading…</span>
+            </div>
+
             <ul class="feature-list">
               <li>2.0× de-squeeze is free for everyone</li>
               <li>Other ratios & advanced controls unlock with Pro</li>
@@ -246,7 +248,7 @@
   <!-- Professional footer -->
   <footer class="site-footer">
     <div class="site-footer__inner">
-      <div>© <span id="y"></span> >Anamorphic Desqueeze Batch Desqueezer</div>
+      <div>© <span id="y"></span> Web Desqueeze Studio</div>
       <div class="site-footer__links">
         <a href="#pro">Go Pro</a>
         <a href="#support">Support</a>
@@ -263,7 +265,7 @@
   <script src="./app.js"></script>
 
   <!-- Feedback: opens Google Form with prefilled text + clipboard copy -->
-<script>
+  <script>
     (function(){
       document.getElementById('y').textContent = new Date().getFullYear();
 
@@ -287,24 +289,31 @@
       });
     })();
   </script>
+
+  <!-- INR converter: $49 -> INR (approx) -->
+  <script>
+    (function () {
+      var USD_PRICE = 49;
+      var inrSpan = document.getElementById('inrValue');
+      if (!inrSpan) return;
+
+      async function updateInr() {
+        try {
+          var res = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=INR');
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          var data = await res.json();
+          var rate = data && data.rates && data.rates.INR;
+          if (!rate || !isFinite(rate)) throw new Error('Bad rate');
+          var inr = Math.round(USD_PRICE * rate);
+          inrSpan.textContent = '₹' + inr.toLocaleString('en-IN') + ' (approx)';
+        } catch (e) {
+          console.error('FX fetch failed', e);
+          inrSpan.textContent = '₹– (FX unavailable)';
+        }
+      }
+
+      updateInr();
+    })();
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
