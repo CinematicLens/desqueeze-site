@@ -1,215 +1,426 @@
 (() => {
-  const video = document.getElementById('video');
-  const canvas = document.getElementById('photoCanvas');
-  const startBtn = document.getElementById('play');
-  const stopBtn = document.getElementById('pause');
+  'use strict';
+
+  // === DOM LOOKUPS ===
+  const videoEl = document.getElementById('video');
+  const canvasEl = document.getElementById('photoCanvas');
   const statusEl = document.getElementById('status');
-  const download = document.getElementById('download');
-  const downloadLink = document.getElementById('downloadLink');
-  const toggleManagedBtn = document.getElementById('toggleManaged');
+  const progressBarEl = document.getElementById('progressBar');
 
-  const desqPreset = document.getElementById('desqPreset');
-  const desqCustom = document.getElementById('desqCustom');
-  const fpsPreset = document.getElementById('fpsPreset');
-  const fpsCustom = document.getElementById('fpsCustom');
-  const bitratePreset = document.getElementById('bitratePreset');
-  const bitrateCustom = document.getElementById('bitrateCustom');
+  const fileInputEl = document.getElementById('fileInput');
+  const exportSelectedBtn = document.getElementById('exportSelected');
+  const exportBatchBtn = document.getElementById('exportBatch');
+  const queueEl = document.getElementById('queue');
 
-  const uploadUrlInput = document.getElementById('uploadUrl');
-  const pickCameraBtn = document.getElementById('pickCamera');
-  const fileInput = document.getElementById('fileInput');
+  const playBtn = document.getElementById('play');
+  const pauseBtn = document.getElementById('pause');
 
-  let mediaRecorder = null;
-  let chunks = [];
-  let drawLoop = null;
-  let streamRef = null;
-  let sessionId = null;
+  const desqPresetEl = document.getElementById('desqPreset');
+  const desqCustomEl = document.getElementById('desqCustom');
+  const fpsPresetEl = document.getElementById('fpsPreset');
+  const bitratePresetEl = document.getElementById('bitratePreset');
+  const photoFormatEl = document.getElementById('photoFormat');
+  const uploadUrlInputEl = document.getElementById('uploadUrl');
 
-  // config of the current recording (used when uploading to backend)
-  let currentConfig = null;
+  // === STATE ===
+  const state = {
+    items: [],          // { id, file, type: 'image' | 'video', status, progress, downloadUrl }
+    selectedId: null,
+    currentPreviewId: null,
+    busy: false
+  };
 
-  function setStatus(s){ statusEl.textContent = s; console.log('[status]', s); }
+  const MAX_ITEMS = 10;
+  const FREE_MAX_BYTES = 5 * 1024 * 1024; // 5 MB (matches copy in HTML) :contentReference[oaicite:1]{index=1}
 
-  function pickMime(){
-    const list = ['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
-    for (const m of list){ if (window.MediaRecorder && MediaRecorder.isTypeSupported(m)) return m; }
-    return 'video/webm';
+  // === HELPERS ===
+
+  function setStatus(msg) {
+    if (statusEl) statusEl.textContent = msg;
+    console.log('[status]', msg);
   }
 
-  function valOrCustom(sel, custom, parser=parseFloat){
-    if (sel.value === 'custom'){
-      custom.classList.remove('hidden');
-      return parser(custom.value || '');
+  function readDesqFactor() {
+    if (!desqPresetEl) return 1;
+    const selVal = desqPresetEl.value;
+    if (selVal === 'custom' && desqCustomEl) {
+      const v = parseFloat(desqCustomEl.value || '1');
+      return Number.isFinite(v) && v >= 1 ? v : 1;
     }
-    custom.classList.add('hidden');
-    return parser(sel.value);
+    const v = parseFloat(selVal || '1');
+    return Number.isFinite(v) && v >= 1 ? v : 1;
   }
 
-  async function pickCamera(){
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      video.srcObject = stream;
-      await video.play();
-      streamRef = stream;
-      setStatus('Camera selected');
-    } catch (err) {
-      console.error('getUserMedia failed', err);
-      setStatus('❌ Could not access camera/mic: ' + (err.message || err.name || 'unknown error'));
+  function readFps() {
+    if (!fpsPresetEl) return null;
+    const val = fpsPresetEl.value;
+    if (val === 'copy') return null; // let backend keep original fps
+    const n = parseFloat(val);
+    return Number.isFinite(n) && n > 0 ? n : null;
+  }
+
+  function readBitrate() {
+    if (!bitratePresetEl) return null;
+    const n = parseInt(bitratePresetEl.value, 10);
+    return Number.isFinite(n) && n > 0 ? n : null;
+  }
+
+  function readPhotoFormat() {
+    return (photoFormatEl && photoFormatEl.value) || 'image/jpeg';
+  }
+
+  function getUploadUrl() {
+    return (
+      (uploadUrlInputEl && uploadUrlInputEl.value) ||
+      'https://api.anamorphic-desqueeze.com/upload'
+    );
+  }
+
+  function updateButtonsEnabled() {
+    const hasItems = state.items.length > 0;
+    if (fileInputEl) fileInputEl.disabled = state.busy;
+    if (exportSelectedBtn) {
+      exportSelectedBtn.disabled = state.busy || !hasItems;
+    }
+    if (exportBatchBtn) {
+      exportBatchBtn.disabled = state.busy || !hasItems;
     }
   }
 
-  function readConfig(){
-    const desqFactor = valOrCustom(desqPreset, desqCustom, parseFloat);
-    const fps = valOrCustom(fpsPreset, fpsCustom, parseFloat);
-    const bitrate = valOrCustom(bitratePreset, bitrateCustom, parseInt);
-
-    return { desqFactor, fps, bitrate };
+  function disableUiWhileBusy(busy) {
+    state.busy = busy;
+    updateButtonsEnabled();
   }
 
-  function startDrawing(desqFactor){
-    if (!canvas || !video) return;
+  function ensureQueueVisible() {
+    if (!queueEl) return;
+    if (state.items.length) queueEl.classList.remove('hidden');
+    else queueEl.classList.add('hidden');
+  }
 
-    const inW = video.videoWidth || 1280;
-    const inH = video.videoHeight || 720;
-    // For simplicity, keep height same, stretch width by desqFactor
-    const outH = inH;
-    const outW = Math.round(inW * desqFactor);
+  function updateGlobalProgress() {
+    if (!progressBarEl) return;
+    if (!state.items.length) {
+      progressBarEl.classList.add('hidden');
+      progressBarEl.value = 0;
+      return;
+    }
 
-    canvas.width = outW;
-    canvas.height = outH;
+    const total = state.items.length;
+    const sum = state.items.reduce((acc, it) => acc + (it.progress || 0), 0);
+    const pct = Math.round(sum / total);
 
-    const ctx = canvas.getContext('2d');
+    if (pct <= 0 || pct >= 100) {
+      progressBarEl.classList.add('hidden');
+      progressBarEl.value = 0;
+    } else {
+      progressBarEl.classList.remove('hidden');
+      progressBarEl.value = pct;
+    }
+  }
 
-    function drawFrame(){
-      if (!video || video.readyState < 2){
-        drawLoop = requestAnimationFrame(drawFrame);
-        return;
+  function makeId() {
+    return 'item-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+  }
+
+  function guessType(file) {
+    if (!file || !file.type) return 'video';
+    if (file.type.startsWith('image/')) return 'image';
+    if (file.type.startsWith('video/')) return 'video';
+
+    const name = file.name.toLowerCase();
+    if (/\.(png|jpe?g|webp|heic|heif)$/.test(name)) return 'image';
+    return 'video';
+  }
+
+  function clearQueueDom() {
+    if (!queueEl) return;
+    queueEl.innerHTML = '';
+  }
+
+  function renderQueue() {
+    if (!queueEl) return;
+    clearQueueDom();
+
+    state.items.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'queue-item';
+      row.dataset.id = item.id;
+
+      const left = document.createElement('div');
+      const nameEl = document.createElement('div');
+      nameEl.className = 'queue-name';
+      nameEl.textContent = item.file.name;
+
+      const statusNode = document.createElement('div');
+      statusNode.className = 'queue-status';
+      statusNode.textContent = item.status || 'Idle';
+
+      left.appendChild(nameEl);
+      left.appendChild(statusNode);
+
+      const right = document.createElement('div');
+      right.style.display = 'flex';
+      right.style.alignItems = 'center';
+      right.style.gap = '6px';
+
+      const prog = document.createElement('progress');
+      prog.className = 'queue-progress';
+      prog.max = 100;
+      prog.value = item.progress || 0;
+
+      const dl = document.createElement('a');
+      dl.className = 'queue-download hidden';
+      dl.textContent = 'Download';
+      dl.target = '_blank';
+      dl.rel = 'noopener';
+
+      if (item.downloadUrl) {
+        dl.href = item.downloadUrl;
+        dl.classList.remove('hidden');
       }
 
-      ctx.save();
+      right.appendChild(prog);
+      right.appendChild(dl);
 
-      // Fill black
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, outW, outH);
+      row.appendChild(left);
+      row.appendChild(right);
 
-      // Basic anamorphic "desqueeze" effect: scale X
-      ctx.translate(outW / 2, outH / 2);
-      ctx.scale(desqFactor, 1);
-      ctx.drawImage(
-        video,
-        -inW / 2,
-        -inH / 2,
-        inW,
-        inH
-      );
+      // selection
+      row.addEventListener('click', () => {
+        state.selectedId = item.id;
+        highlightSelectedRow();
+        previewItemById(item.id);
+      });
 
-      ctx.restore();
-
-      drawLoop = requestAnimationFrame(drawFrame);
-    }
-
-    if (drawLoop) cancelAnimationFrame(drawLoop);
-    drawLoop = requestAnimationFrame(drawFrame);
-  }
-
-  function stopDrawing(){
-    if (drawLoop) cancelAnimationFrame(drawLoop);
-    drawLoop = null;
-  }
-
-  function startRecording(stream, config){
-    const { fps, bitrate } = config;
-    const mimeType = pickMime();
-
-    const recorder = new MediaRecorder(stream, {
-      mimeType,
-      videoBitsPerSecond: bitrate || 3_000_000,
+      queueEl.appendChild(row);
     });
 
-    chunks = [];
-
-    recorder.ondataavailable = (e) => {
-      if (e.data && e.data.size > 0) {
-        chunks.push(e.data);
-      }
-    };
-
-    recorder.onstop = () => {
-      stopDrawing();
-      stream.getTracks().forEach(t => t.stop());
-      streamRef = null;
-      setStatus('Stopped recording; ready to upload.');
-
-      if (!chunks.length) {
-        setStatus('No data recorded.');
-        return;
-      }
-
-      const blob = new Blob(chunks, { type: mimeType });
-      uploadToBackend(blob, config).catch(err => {
-        console.error('upload error', err);
-      });
-    };
-
-    const intervalMs = fps && fps > 0 ? 1000 / fps : 1000 / 30;
-    recorder.start(intervalMs);
-    mediaRecorder = recorder;
+    highlightSelectedRow();
+    ensureQueueVisible();
+    updateGlobalProgress();
+    updateButtonsEnabled();
   }
 
-  async function uploadToBackend(blob, config){
-    const uploadUrl = (uploadUrlInput && uploadUrlInput.value) || 'https://api.anamorphic-desqueeze.com/upload';
+  function highlightSelectedRow() {
+    if (!queueEl) return;
+    const rows = Array.from(queueEl.querySelectorAll('.queue-item'));
+    rows.forEach(row => {
+      if (row.dataset.id === state.selectedId) {
+        row.style.border = '1px solid rgba(100, 135, 255, 0.9)';
+      } else {
+        row.style.border = '1px solid transparent';
+      }
+    });
+  }
 
-    setStatus('Uploading/processing… 0%');
-    download.classList.add('hidden');
-    downloadLink.removeAttribute('href');
+  function findItem(id) {
+    return state.items.find(it => it.id === id) || null;
+  }
+
+  function updateItem(id, patch) {
+    const item = findItem(id);
+    if (!item) return;
+    Object.assign(item, patch);
+
+    if (!queueEl) return;
+    const row = queueEl.querySelector(`.queue-item[data-id="${id}"]`);
+    if (!row) return;
+
+    const statusNode = row.querySelector('.queue-status');
+    const progNode = row.querySelector('.queue-progress');
+    const dlNode = row.querySelector('.queue-download');
+
+    if (patch.status != null && statusNode) {
+      statusNode.textContent = patch.status;
+    }
+    if (patch.progress != null && progNode) {
+      progNode.value = patch.progress;
+    }
+    if (patch.downloadUrl && dlNode) {
+      dlNode.href = patch.downloadUrl;
+      dlNode.classList.remove('hidden');
+    }
+
+    updateGlobalProgress();
+  }
+
+  // === PREVIEW LOGIC ===
+
+  function showVideoPreview() {
+    if (!videoEl || !canvasEl) return;
+    videoEl.classList.remove('hidden');
+    canvasEl.classList.add('hidden');
+  }
+
+  function showCanvasPreview() {
+    if (!videoEl || !canvasEl) return;
+    videoEl.classList.add('hidden');
+    canvasEl.classList.remove('hidden');
+  }
+
+  function previewItemById(id) {
+    const item = findItem(id);
+    if (!item) return;
+    state.currentPreviewId = id;
+    previewItem(item);
+  }
+
+  function previewItem(item) {
+    if (!item) return;
+    const { type, file } = item;
+    if (type === 'image') previewImage(file);
+    else previewVideo(file);
+  }
+
+  function previewImage(file) {
+    if (!canvasEl) return;
+    const ctx = canvasEl.getContext('2d');
+    if (!ctx) return;
+
+    const img = new Image();
+    img.onload = () => {
+      const desq = readDesqFactor();
+      const inW = img.width;
+      const inH = img.height;
+
+      const outW = Math.round(inW * desq);
+      const outH = inH;
+
+      canvasEl.width = outW;
+      canvasEl.height = outH;
+
+      ctx.save();
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, outW, outH);
+      ctx.scale(desq, 1);
+      ctx.drawImage(img, 0, 0, inW, inH);
+      ctx.restore();
+
+      showCanvasPreview();
+      setStatus('Previewing photo with de-squeeze');
+    };
+    img.onerror = () => {
+      setStatus('❌ Could not preview this image');
+    };
+    img.src = URL.createObjectURL(file);
+  }
+
+  function previewVideo(file) {
+    if (!videoEl) return;
+    const url = URL.createObjectURL(file);
+    videoEl.srcObject = null;
+    videoEl.src = url;
+
+    videoEl.onloadedmetadata = () => {
+      updatePreviewScale();
+      setStatus('Previewing video; press play to view.');
+    };
+
+    showVideoPreview();
+  }
+
+  // === EXPORT / UPLOAD LOGIC ===
+
+  async function exportItems(items) {
+    if (!items || !items.length) return;
+
+    disableUiWhileBusy(true);
+    setStatus(`Exporting ${items.length} file${items.length > 1 ? 's' : ''}…`);
+
+    const desqFactor = readDesqFactor();
+    const fps = readFps();
+    const bitrate = readBitrate();
+    const photoFormat = readPhotoFormat();
+
+    const cfg = { desqFactor, fps, bitrate, photoFormat };
+
+    items.forEach(it => updateItem(it.id, { progress: 0, status: 'Queued…' }));
+    updateGlobalProgress();
+
+    try {
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        await uploadToBackend(item, cfg);
+      }
+      setStatus('✅ Export finished for all selected items.');
+    } catch (err) {
+      console.error('Batch export error', err);
+      setStatus('❌ Export failed for one or more items.');
+    } finally {
+      disableUiWhileBusy(false);
+      updateGlobalProgress();
+    }
+  }
+
+  async function uploadToBackend(item, cfg) {
+    const uploadUrl = getUploadUrl();
+    const file = item.file;
+
+    if (file.size > FREE_MAX_BYTES) {
+      updateItem(item.id, {
+        status: 'File > 5MB – may require Pro / larger plan.',
+        progress: 0
+      });
+    } else {
+      updateItem(item.id, {
+        status: 'Uploading… 0%',
+        progress: 0
+      });
+    }
 
     const formData = new FormData();
 
-    const newId = 'sess-' + Date.now() + '-' + Math.random().toString(16).slice(2);
-    sessionId = newId;
+    const sessionId =
+      'sess-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+    formData.append('file', file, file.name);
+    formData.append('sessionId', sessionId);
+    formData.append('kind', item.type); // "image" or "video"
 
-    formData.append('file', blob, 'recorded.webm');
-    formData.append('sessionId', newId);
+    formData.append('desqFactor', String(cfg.desqFactor || 1));
+    formData.append('fps', cfg.fps == null ? 'copy' : String(cfg.fps));
+    formData.append('bitrate', String(cfg.bitrate || 0));
+    formData.append('photoFormat', cfg.photoFormat || 'image/jpeg');
 
-    formData.append('desqFactor', String(config.desqFactor || 1));
-    formData.append('fps', String(config.fps || 0));
-    formData.append('bitrate', String(config.bitrate || 0));
-
-    // new toggles for managed vs direct S3 or any other flags can be appended here later
-    formData.append('managedS3', String(!!config.managedS3));
+    formData.append('managedS3', 'false');
 
     try {
-      const res = await fetch(uploadUrl, {
-        method: 'POST',
-        body: formData,
-      });
+      const res = await fetch(uploadUrl, { method: 'POST', body: formData });
 
       if (!res.ok) {
-        throw new Error(`HTTP ${res.status} ${res.statusText}`);
+        const msg = `HTTP ${res.status} ${res.statusText}`;
+        updateItem(item.id, { status: '❌ Server error: ' + msg, progress: 0 });
+        throw new Error(msg);
       }
 
-      // We now assume the server may stream back lines "progress:xx", "download:URL", etc.
-      const reader = res.body?.getReader();
+      const reader = res.body && res.body.getReader
+        ? res.body.getReader()
+        : null;
+
       if (!reader) {
-        // fallback: treat as simple JSON or text if there's no streaming body
         const txt = await res.text();
         try {
           const data = JSON.parse(txt);
-          if (data && data.download){
+          if (data && data.download) {
             const href = resolveDownloadHref(data.download, uploadUrl);
-            if (href){
-              downloadLink.href = href;
-              downloadLink.download = 'desqueezed_from_server.mp4';
-              download.classList.remove('hidden');
-              setStatus('✅ Server export ready');
-            } else {
-              setStatus('❌ Server returned invalid download link');
+            if (href) {
+              updateItem(item.id, {
+                status: '✅ Done (download ready)',
+                progress: 100,
+                downloadUrl: href
+              });
+              return;
             }
-          } else {
-            setStatus('✅ Server processed (no direct download link given)');
           }
+          updateItem(item.id, {
+            status: '✅ Processed (no direct download link)',
+            progress: 100
+          });
         } catch {
-          setStatus('✅ Upload finished (server returned non-JSON text)');
+          updateItem(item.id, {
+            status: '✅ Processed (non-JSON response)',
+            progress: 100
+          });
         }
         return;
       }
@@ -230,225 +441,227 @@
 
           if (line.startsWith('progress:')) {
             const pct = parseFloat(line.slice(9) || '0');
-            const p = Number.isFinite(pct) ? pct : 0;
-            setStatus(`Uploading/processing… ${p}%`);
+            const p = Number.isFinite(pct)
+              ? Math.max(0, Math.min(100, pct))
+              : 0;
+            updateItem(item.id, {
+              status: `Uploading/processing… ${p}%`,
+              progress: p
+            });
           } else if (line.startsWith('download:')) {
             const raw = line.slice(9);
             const href = resolveDownloadHref(raw, uploadUrl);
             if (href) {
-              downloadLink.href = href;
-              downloadLink.download = 'desqueezed_from_server.mp4';
-              download.classList.remove('hidden');
-              setStatus('✅ Server export ready');
+              updateItem(item.id, {
+                status: '✅ Done (download ready)',
+                progress: 100,
+                downloadUrl: href
+              });
+            } else {
+              updateItem(item.id, {
+                status: '❌ Invalid download link',
+                progress: 100
+              });
             }
           } else if (line.startsWith('status:done')) {
-            setStatus('✅ Server processing complete');
+            if (!item.downloadUrl) {
+              updateItem(item.id, {
+                status: '✅ Server processing complete',
+                progress: 100
+              });
+            }
           } else if (line.startsWith('status:error')) {
-            setStatus('❌ Server reported an error');
+            updateItem(item.id, {
+              status: '❌ Server reported an error',
+              progress: 0
+            });
           }
         }
 
         buffer = lines[lines.length - 1];
       }
     } catch (err) {
-      console.error('Upload to backend failed:', err);
+      console.error('Upload failed', err);
       const msg = (err && err.message) || '';
+      let uiMsg;
       if (/^HTTP \d+/.test(msg)) {
-        setStatus('❌ Server error: ' + msg);
+        uiMsg = '❌ Server error: ' + msg;
       } else if (/Failed to fetch|NetworkError|TypeError: Failed to fetch/i.test(msg)) {
-        setStatus('❌ Network/CORS error – browser could not reach the backend');
+        uiMsg = '❌ Network/CORS error – could not reach backend';
       } else {
-        setStatus('❌ Upload failed: ' + (msg || 'unknown error'));
+        uiMsg = '❌ Upload failed: ' + (msg || 'unknown error');
       }
+      updateItem(item.id, { status: uiMsg, progress: 0 });
+      throw err;
     }
   }
 
-  function resolveDownloadHref(raw, uploadUrl){
+  function resolveDownloadHref(raw, uploadUrl) {
     if (!raw) return null;
-    raw = String(raw).trim();
-
-    // If it's a full URL, return as-is (or check if it's same origin).
+    let val = String(raw).trim();
     try {
-      const u = new URL(raw);
+      const u = new URL(val);
       return u.href;
-    } catch {}
+    } catch {
+      // not a full URL
+    }
 
-    // 2) build from backend origin if only path/name
     try {
       const backendOrigin = new URL(uploadUrl).origin;
-      // if backend already returns full /downloads/..., just attach to origin
-      if (raw.startsWith('/')) {
-        return backendOrigin + raw;
-      }
-      // if it's just a filename, assume legacy /download/ route
-      return backendOrigin + '/download/' + encodeURIComponent(raw);
-    } catch (e) {
-      console.error('resolveDownloadHref failed:', e);
+      if (val.startsWith('/')) return backendOrigin + val;
+      return backendOrigin + '/download/' + encodeURIComponent(val);
+    } catch (err) {
+      console.error('resolveDownloadHref failed', err);
       return null;
     }
   }
 
-  let managedS3 = false;
+  // === FILE INPUT HANDLING ===
 
-  async function start(){
-    if (!video) {
-      setStatus('❌ No video element found.');
+  function handleFilesSelected(fileList) {
+    if (!fileList || !fileList.length) return;
+
+    const incoming = Array.from(fileList);
+    const remainingSlots = MAX_ITEMS - state.items.length;
+    const used = remainingSlots <= 0
+      ? []
+      : incoming.slice(0, remainingSlots);
+
+    if (!used.length) {
+      setStatus(`Queue is full (max ${MAX_ITEMS} items). Remove some before adding more.`);
       return;
     }
 
-    const cfg = readConfig();
-    currentConfig = { ...cfg, managedS3 };
-    setStatus('Requesting camera/mic…');
-
-    try {
-      const stream = streamRef || await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      video.srcObject = stream;
-      await video.play();
-      streamRef = stream;
-
-      startDrawing(cfg.desqFactor);
-      startRecording(makeCanvasStream(stream, cfg), cfg);
-      setStatus('Recording…');
-    } catch (err) {
-      console.error(err);
-      setStatus('❌ Failed to start recording: ' + (err.message || err.name || 'unknown error'));
-    }
-  }
-
-  function makeCanvasStream(inStream, cfg){
-    const { fps } = cfg;
-
-    if (!canvas) throw new Error('No canvas element');
-    const ctx = canvas.getContext('2d');
-
-    const inW = video.videoWidth || 1280;
-    const inH = video.videoHeight || 720;
-    const outH = inH;
-    const outW = Math.round(inW * cfg.desqFactor);
-
-    canvas.width = outW;
-    canvas.height = outH;
-
-    function drawFrame(){
-      if (video.readyState >= 2) {
-        ctx.save();
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, outW, outH);
-
-        ctx.translate(outW / 2, outH / 2);
-        ctx.scale(cfg.desqFactor, 1);
-        ctx.drawImage(video, -inW / 2, -inH / 2, inW, inH);
-        ctx.restore();
-      }
-      requestAnimationFrame(drawFrame);
-    }
-    requestAnimationFrame(drawFrame);
-
-    const canvasStream = canvas.captureStream(fps);
-    if (inStream) inStream.getAudioTracks().forEach(t => canvasStream.addTrack(t));
-
-    const rec = new MediaRecorder(canvasStream, {
-      mimeType: pickMime(),
-      videoBitsPerSecond: cfg.bitrate || 3_000_000,
+    used.forEach(file => {
+      const item = {
+        id: makeId(),
+        file,
+        type: guessType(file),
+        status: file.size > FREE_MAX_BYTES
+          ? 'Ready (file > 5MB – may require Pro / larger plan)'
+          : 'Ready',
+        progress: 0,
+        downloadUrl: null
+      };
+      state.items.push(item);
+      if (!state.selectedId) state.selectedId = item.id;
     });
 
-    chunks = [];
+    renderQueue();
 
-    rec.ondataavailable = (e) => {
-      if (e.data && e.data.size > 0) {
-        chunks.push(e.data);
-      }
-    };
+    if (!state.currentPreviewId && state.items.length) {
+      state.currentPreviewId = state.items[0].id;
+      previewItemById(state.currentPreviewId);
+    } else if (state.currentPreviewId) {
+      previewItemById(state.currentPreviewId);
+    }
 
-    rec.onstop = () => {
-      canvasStream.getTracks().forEach(t => t.stop());
-    };
-
-    mediaRecorder = rec;
-    const intervalMs = fps && fps > 0 ? 1000 / fps : 1000 / 30;
-    rec.start(intervalMs);
-
-    return canvasStream;
+    setStatus(`Added ${used.length} file${used.length > 1 ? 's' : ''} to queue.`);
   }
 
-  function stop(){
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      mediaRecorder.stop();
+  // === BUTTON HANDLERS ===
+
+  function onExportSelected() {
+    if (!state.items.length) return;
+    const id = state.selectedId || state.items[0].id;
+    const item = findItem(id);
+    if (!item) return;
+    exportItems([item]);
+  }
+
+  function onExportBatch() {
+    if (!state.items.length) return;
+    exportItems([...state.items]);
+  }
+
+  // === LIVE DESQUEEZE PREVIEW (VIDEO) ===
+
+  function updatePreviewScale() {
+    const d = readDesqFactor();
+    if (!videoEl) return;
+    videoEl.style.transform = `scaleX(${d})`;
+    videoEl.style.transformOrigin = 'center center';
+  }
+
+  function toggleDesqCustomVisibility() {
+    if (!desqPresetEl || !desqCustomEl) {
+      updatePreviewScale();
+      return;
+    }
+    if (desqPresetEl.value === 'custom') {
+      desqCustomEl.classList.remove('hidden');
     } else {
-      setStatus('Not recording.');
+      desqCustomEl.classList.add('hidden');
+    }
+    updatePreviewScale();
+
+    if (state.currentPreviewId) {
+      const current = findItem(state.currentPreviewId);
+      if (current && current.type === 'image') {
+        previewImage(current.file);
+      }
     }
   }
 
-  const map = [
-    [desqPreset, desqCustom],
-    [fpsPreset, fpsCustom],
-    [bitratePreset, bitrateCustom],
-  ];
+  // === INIT ===
 
-  function refreshCustomVisibility(){
-    map.forEach(([sel, custom]) => {
-      if (sel.value === 'custom') custom.classList.remove('hidden');
-      else custom.classList.add('hidden');
-    });
+  function init() {
+    setStatus('Idle');
+
+    if (fileInputEl) {
+      fileInputEl.addEventListener('change', e => {
+        const files = e.target.files;
+        handleFilesSelected(files);
+        // do NOT clear e.target.value so the "Choose Files" label shows the selection
+      });
+    }
+
+    if (exportSelectedBtn) {
+      exportSelectedBtn.addEventListener('click', onExportSelected);
+    }
+
+    if (exportBatchBtn) {
+      exportBatchBtn.addEventListener('click', onExportBatch);
+    }
+
+    if (playBtn) {
+      playBtn.addEventListener('click', () => {
+        if (!videoEl) return;
+        videoEl.play().catch(() => {});
+      });
+    }
+
+    if (pauseBtn) {
+      pauseBtn.addEventListener('click', () => {
+        if (!videoEl) return;
+        videoEl.pause();
+      });
+    }
+
+    if (desqPresetEl) {
+      desqPresetEl.addEventListener('change', toggleDesqCustomVisibility);
+    }
+    if (desqCustomEl) {
+      desqCustomEl.addEventListener('input', () => {
+        updatePreviewScale();
+        if (state.currentPreviewId) {
+          const current = findItem(state.currentPreviewId);
+          if (current && current.type === 'image') {
+            previewImage(current.file);
+          }
+        }
+      });
+    }
+
+    toggleDesqCustomVisibility();
+    updatePreviewScale();
+    ensureQueueVisible();
+    disableUiWhileBusy(false);
   }
 
-  map.forEach(([sel]) => sel.addEventListener('change', refreshCustomVisibility));
-  refreshCustomVisibility();
-
-  setStatus('Idle');
-
-  toggleManagedBtn?.addEventListener('click', () => {
-    managedS3 = !managedS3;
-    toggleManagedBtn.textContent = 'Managed S3: ' + (managedS3 ? 'On' : 'Off');
-  });
-
-  startBtn?.addEventListener('click', start);
-  stopBtn?.addEventListener('click', stop);
-  pickCameraBtn?.addEventListener('click', pickCamera);
-  fileInput?.addEventListener('change', e => {
-    const f = e.target.files?.[0];
-    if (!f) return;
-    // If you want to handle file uploads instead of live camera, you can:
-    //   - create a blob URL, set it as video.src, then call startDrawing, etc.
-    const url = URL.createObjectURL(f);
-    video.src = url;
-    video.play().then(() => {
-      setStatus('Playing selected file');
-    });
-  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
-
-
-// === Live desqueeze preview ===
-function readDesqueeze() {
-  const sel = document.getElementById('desqPreset');
-  const custom = document.getElementById('desqCustom');
-  if (sel.value === 'custom') {
-    const v = parseFloat(custom.value || '1');
-    return isFinite(v) && v >= 1 ? v : 1;
-  }
-  return parseFloat(sel.value) || 1;
-}
-
-function updatePreviewScale() {
-  const d = readDesqueeze();
-  const video = document.getElementById('video');
-  if (video) video.style.transform = `scaleX(${d})`;
-}
-
-function toggleDesqCustomVisibility() {
-  const sel = document.getElementById('desqPreset');
-  const custom = document.getElementById('desqCustom');
-  if (sel.value === 'custom') custom.classList.remove('hidden');
-  else custom.classList.add('hidden');
-  updatePreviewScale();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const desqPreset = document.getElementById('desqPreset');
-  const desqCustom = document.getElementById('desqCustom');
-  desqPreset.addEventListener('change', toggleDesqCustomVisibility);
-  desqCustom.addEventListener('input', updatePreviewScale);
-  toggleDesqCustomVisibility();
-  updatePreviewScale();
-});
