@@ -1,60 +1,72 @@
 (() => {
   'use strict';
 
-  // === DOM LOOKUPS ===
-  const videoEl = document.getElementById('video');
-  const canvasEl = document.getElementById('photoCanvas');
-  const statusEl = document.getElementById('status');
+  // === DOM ===
+  const videoEl       = document.getElementById('video');
+  const canvasEl      = document.getElementById('photoCanvas');
+  const statusEl      = document.getElementById('status');
   const progressBarEl = document.getElementById('progressBar');
 
-  const fileInputEl = document.getElementById('fileInput');
-  const exportSelectedBtn = document.getElementById('exportSelected');
-  const exportBatchBtn = document.getElementById('exportBatch');
-  const queueEl = document.getElementById('queue');
+  const fileInputEl      = document.getElementById('fileInput');
+  const exportSelectedEl = document.getElementById('exportSelected');
+  const exportBatchEl    = document.getElementById('exportBatch');
+  const queueEl          = document.getElementById('queue');
 
-  const playBtn = document.getElementById('play');
+  const playBtn  = document.getElementById('play');
   const pauseBtn = document.getElementById('pause');
 
-  const desqPresetEl = document.getElementById('desqPreset');
-  const desqCustomEl = document.getElementById('desqCustom');
-  const fpsPresetEl = document.getElementById('fpsPreset');
+  const desqPresetEl    = document.getElementById('desqPreset');
+  const desqCustomEl    = document.getElementById('desqCustom');
+  const fpsPresetEl     = document.getElementById('fpsPreset');
   const bitratePresetEl = document.getElementById('bitratePreset');
-  const photoFormatEl = document.getElementById('photoFormat');
-  const uploadUrlInputEl = document.getElementById('uploadUrl');
+  const photoFormatEl   = document.getElementById('photoFormat');
+  const uploadUrlInput  = document.getElementById('uploadUrl');
 
-  // === STATE ===
+  const downloadBoxEl   = document.getElementById('download');
+  const downloadLinkEl  = document.getElementById('downloadLink');
+
+  const MAX_ITEMS = 10;
+
   const state = {
-    items: [],          // { id, file, type: 'image' | 'video', status, progress, downloadUrl }
+    items: [],            // { id, file, status, progress, downloadUrl }
     selectedId: null,
     currentPreviewId: null,
     busy: false,
     pro: false
   };
 
-  const MAX_ITEMS = 10;
-
-  // === BASIC HELPERS ===
+  // === UTIL ===
 
   function setStatus(msg) {
     if (statusEl) statusEl.textContent = msg;
     console.log('[status]', msg);
   }
 
-  function triggerFileDownload(url, suggestedName) {
-    try {
-      const a = document.createElement('a');
-      a.href = url;
-      if (suggestedName) a.download = suggestedName;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } catch (e) {
-      console.error('auto download failed', e);
-    }
+  function makeId() {
+    return 'item-' + Date.now() + '-' + Math.random().toString(16).slice(2);
   }
 
-  // --- Pro gating: only 2.0x free unless ?pro=1 / stored in localStorage ---
+  function isImageFile(file) {
+    if (!file) return false;
+    if (file.type && file.type.startsWith('image/')) return true;
+    const name = (file.name || '').toLowerCase();
+    return /\.(png|jpe?g|jpg|webp|heic|heif|bmp|tiff?)$/.test(name);
+  }
+
+  function isVideoFile(file) {
+    if (!file) return false;
+    if (file.type && file.type.startsWith('video/')) return true;
+    const name = (file.name || '').toLowerCase();
+    return /\.(mp4|mov|m4v|avi|mts|m2ts|wmv|mkv)$/.test(name);
+  }
+
+  function getUploadUrl() {
+    return (uploadUrlInput && uploadUrlInput.value) ||
+           'https://api.anamorphic-desqueeze.com/upload';
+  }
+
+  // === PRO GATING (only 1x & 2x free) ===
+
   function initProState() {
     try {
       const params = new URLSearchParams(window.location.search);
@@ -69,41 +81,27 @@
 
   function applyProGate() {
     if (!desqPresetEl) return;
-
     if (state.pro) {
-      // Pro: everything enabled
-      Array.from(desqPresetEl.options).forEach(opt => {
-        opt.disabled = false;
-      });
+      Array.from(desqPresetEl.options).forEach(opt => opt.disabled = false);
       return;
     }
-
-    // Free: allow only 1.0x and 2.0x
-    const allowedValues = new Set(['1', '2']);
+    const allowed = new Set(['1', '2']); // free: none & 2.0x
     Array.from(desqPresetEl.options).forEach(opt => {
-      if (allowedValues.has(opt.value)) opt.disabled = false;
-      else opt.disabled = true;
+      opt.disabled = !allowed.has(opt.value);
     });
-
-    if (!allowedValues.has(desqPresetEl.value)) {
+    if (!allowed.has(desqPresetEl.value)) {
       desqPresetEl.value = '2';
     }
-
-    if (desqCustomEl) {
-      desqCustomEl.classList.add('hidden');
-    }
+    if (desqCustomEl) desqCustomEl.classList.add('hidden');
   }
 
   function readDesqFactor() {
     if (!desqPresetEl) return 1;
-    const selVal = desqPresetEl.value;
-
-    if (selVal === 'custom' && desqCustomEl && state.pro) {
+    if (desqPresetEl.value === 'custom' && desqCustomEl && state.pro) {
       const v = parseFloat(desqCustomEl.value || '1');
       return Number.isFinite(v) && v >= 1 ? v : 1;
     }
-
-    const v = parseFloat(selVal || '1');
+    const v = parseFloat(desqPresetEl.value || '1');
     return Number.isFinite(v) && v >= 1 ? v : 1;
   }
 
@@ -125,33 +123,12 @@
     return (photoFormatEl && photoFormatEl.value) || 'image/jpeg';
   }
 
-  function getUploadUrl() {
-    return (
-      (uploadUrlInputEl && uploadUrlInputEl.value) ||
-      'https://api.anamorphic-desqueeze.com/upload'
-    );
-  }
-
-  function updateButtonsEnabled() {
-    const hasItems = state.items.length > 0;
-    if (fileInputEl) fileInputEl.disabled = state.busy;
-    if (exportSelectedBtn) {
-      exportSelectedBtn.disabled = state.busy || !hasItems;
-    }
-    if (exportBatchBtn) {
-      exportBatchBtn.disabled = state.busy || !hasItems;
-    }
-  }
-
   function disableUiWhileBusy(busy) {
     state.busy = busy;
-    updateButtonsEnabled();
-  }
-
-  function ensureQueueVisible() {
-    if (!queueEl) return;
-    if (state.items.length) queueEl.classList.remove('hidden');
-    else queueEl.classList.add('hidden');
+    if (fileInputEl) fileInputEl.disabled = busy;
+    const hasItems = state.items.length > 0;
+    if (exportSelectedEl) exportSelectedEl.disabled = busy || !hasItems;
+    if (exportBatchEl)    exportBatchEl.disabled    = busy || !hasItems;
   }
 
   function updateGlobalProgress() {
@@ -161,11 +138,9 @@
       progressBarEl.value = 0;
       return;
     }
-
     const total = state.items.length;
-    const sum = state.items.reduce((acc, it) => acc + (it.progress || 0), 0);
-    const pct = Math.round(sum / total);
-
+    const sum   = state.items.reduce((acc, it) => acc + (it.progress || 0), 0);
+    const pct   = Math.round(sum / total);
     if (pct <= 0 || pct >= 100) {
       progressBarEl.classList.add('hidden');
       progressBarEl.value = 0;
@@ -175,19 +150,90 @@
     }
   }
 
-  function makeId() {
-    return 'item-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+  function ensureQueueVisible() {
+    if (!queueEl) return;
+    if (state.items.length) queueEl.classList.remove('hidden');
+    else queueEl.classList.add('hidden');
   }
 
-  function guessType(file) {
-    if (!file || !file.type) return 'video';
-    if (file.type.startsWith('image/')) return 'image';
-    if (file.type.startsWith('video/')) return 'video';
+  // === DOWNLOAD HELPERS ===
 
-    const name = file.name.toLowerCase();
-    if (/\.(png|jpe?g|webp|heic|heif)$/.test(name)) return 'image';
-    return 'video';
+  async function triggerDownloadFromBlob(blob, filename) {
+    try {
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1500);
+    } catch (e) {
+      console.error('triggerDownloadFromBlob failed', e);
+    }
   }
+
+  async function downloadCrossOriginAsBlob(url, filename) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const blob = await res.blob();
+      await triggerDownloadFromBlob(blob, filename);
+    } catch (err) {
+      console.error('downloadCrossOriginAsBlob', err);
+      // Fallback: open URL with download hint
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  }
+
+  function makeOutName(file, isImage) {
+    const base = (file.name || 'export').replace(/\.[^.]+$/, '');
+    return base + '_desqueezed' + (isImage ? '.jpg' : '.mp4');
+  }
+
+  // === DOWNLOAD URL RESOLVER (/downloads/...) ===
+
+  function resolveDownloadHref(raw, uploadUrl) {
+    if (!raw) return null;
+    let val = String(raw).trim();
+
+    // already absolute?
+    try {
+      const u = new URL(val);
+      return u.href;
+    } catch {
+      // not absolute
+    }
+
+    let origin;
+    try {
+      origin = new URL(uploadUrl).origin;
+    } catch (e) {
+      console.error('resolveDownloadHref origin error', e);
+      return null;
+    }
+
+    // "/downloads/xxx"
+    if (val.startsWith('/')) {
+      return origin + val;
+    }
+    // "downloads/xxx"
+    if (val.startsWith('downloads/')) {
+      return origin + '/' + val;
+    }
+
+    // anything else -> /downloads/<encoded>
+    return origin + '/downloads/' + encodeURIComponent(val);
+  }
+
+  // === QUEUE RENDERING ===
 
   function clearQueueDom() {
     if (!queueEl) return;
@@ -233,6 +279,8 @@
 
       if (item.downloadUrl) {
         dl.href = item.downloadUrl;
+        const isImg = isImageFile(item.file);
+        dl.download = makeOutName(item.file, isImg);
         dl.classList.remove('hidden');
       }
 
@@ -254,7 +302,7 @@
     highlightSelectedRow();
     ensureQueueVisible();
     updateGlobalProgress();
-    updateButtonsEnabled();
+    disableUiWhileBusy(state.busy);
   }
 
   function highlightSelectedRow() {
@@ -269,12 +317,8 @@
     });
   }
 
-  function findItem(id) {
-    return state.items.find(it => it.id === id) || null;
-  }
-
   function updateItem(id, patch) {
-    const item = findItem(id);
+    const item = state.items.find(it => it.id === id);
     if (!item) return;
     Object.assign(item, patch);
 
@@ -283,24 +327,22 @@
     if (!row) return;
 
     const statusNode = row.querySelector('.queue-status');
-    const progNode = row.querySelector('.queue-progress');
-    const dlNode = row.querySelector('.queue-download');
+    const progNode   = row.querySelector('.queue-progress');
+    const dlNode     = row.querySelector('.queue-download');
 
-    if (patch.status != null && statusNode) {
-      statusNode.textContent = patch.status;
-    }
-    if (patch.progress != null && progNode) {
-      progNode.value = patch.progress;
-    }
+    if (patch.status != null && statusNode) statusNode.textContent = patch.status;
+    if (patch.progress != null && progNode) progNode.value = patch.progress;
     if (patch.downloadUrl && dlNode) {
       dlNode.href = patch.downloadUrl;
+      const isImg = isImageFile(item.file);
+      dlNode.download = makeOutName(item.file, isImg);
       dlNode.classList.remove('hidden');
     }
 
     updateGlobalProgress();
   }
 
-  // === PREVIEW LOGIC ===
+  // === PREVIEW ===
 
   function showVideoPreview() {
     if (!videoEl || !canvasEl) return;
@@ -314,18 +356,23 @@
     canvasEl.classList.remove('hidden');
   }
 
+  function updatePreviewScale() {
+    const d = readDesqFactor();
+    const previewBox = document.getElementById('previewBox');
+    if (!previewBox) return;
+    previewBox.style.setProperty('--d', d); // CSS var used to avoid cropping
+  }
+
   function previewItemById(id) {
-    const item = findItem(id);
-    if (!item) return;
+    const it = state.items.find(x => x.id === id);
+    if (!it) return;
     state.currentPreviewId = id;
-    previewItem(item);
+    previewItem(it);
   }
 
   function previewItem(item) {
-    if (!item) return;
-    const { type, file } = item;
-    if (type === 'image') previewImage(file);
-    else previewVideo(file);
+    if (isImageFile(item.file)) previewImage(item.file);
+    else previewVideo(item.file);
   }
 
   function previewImage(file) {
@@ -338,7 +385,6 @@
       const desq = readDesqFactor();
       const inW = img.width;
       const inH = img.height;
-
       const outW = Math.round(inW * desq);
       const outH = inH;
 
@@ -355,9 +401,7 @@
       showCanvasPreview();
       setStatus('Previewing photo with de-squeeze');
     };
-    img.onerror = () => {
-      setStatus('❌ Could not preview this image');
-    };
+    img.onerror = () => setStatus('❌ Could not preview this image');
     img.src = URL.createObjectURL(file);
   }
 
@@ -366,161 +410,123 @@
     const url = URL.createObjectURL(file);
     videoEl.srcObject = null;
     videoEl.src = url;
-
     videoEl.onloadedmetadata = () => {
       updatePreviewScale();
       setStatus('Previewing video; press play to view.');
     };
-
     showVideoPreview();
   }
 
-  // === DOWNLOAD URL HANDLING ===
+  // === PHOTO EXPORT (LOCAL, NO SERVER) ===
 
-  function resolveDownloadHref(raw, uploadUrl) {
-    if (!raw) return null;
-    let val = String(raw).trim();
+  function exportPhotoBlob(file) {
+    return new Promise((resolve, reject) => {
+      if (!canvasEl) {
+        reject(new Error('No photo canvas'));
+        return;
+      }
+      const ctx = canvasEl.getContext('2d');
+      if (!ctx) {
+        reject(new Error('No canvas context'));
+        return;
+      }
 
-    // Already a full URL?
-    try {
-      const u = new URL(val);
-      return u.href;
-    } catch {
-      // not absolute
-    }
+      const fac   = readDesqFactor();
+      const img   = new Image();
+      const tmpUrl = URL.createObjectURL(file);
 
-    let origin;
-    try {
-      origin = new URL(uploadUrl).origin;
-    } catch (e) {
-      console.error('resolveDownloadHref origin error', e);
-      return null;
-    }
+      img.onload = () => {
+        const W = Math.round(img.width * fac);
+        const H = img.height;
 
-    // "/downloads/xxx"
-    if (val.startsWith('/')) {
-      return origin + val;
-    }
+        canvasEl.width = W;
+        canvasEl.height = H;
 
-    // "downloads/xxx"
-    if (val.startsWith('downloads/')) {
-      return origin + '/' + val;
-    }
+        ctx.setTransform(fac, 0, 0, 1, 0, 0);
+        ctx.drawImage(img, 0, 0);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        URL.revokeObjectURL(tmpUrl);
 
-    // bare filename -> /downloads/<name>
-    return origin + '/downloads/' + encodeURIComponent(val);
+        const mime = readPhotoFormat() || 'image/jpeg';
+        canvasEl.toBlob(
+          b => (b ? resolve(b) : reject(new Error('Canvas export failed'))),
+          mime,
+          mime.includes('jpeg') ? 0.95 : undefined
+        );
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(tmpUrl);
+        reject(new Error('Image decode failed'));
+      };
+
+      img.src = tmpUrl;
+    });
   }
 
-  // === BATCH ZIP CREATION ===
-
-  async function createBatchZip(downloads) {
-    if (typeof JSZip === 'undefined') {
-      console.error('JSZip is not available – cannot create batch ZIP');
-      return;
-    }
-
-    const zip = new JSZip();
-
-    for (const entry of downloads) {
-      const { url, item } = entry;
-      try {
-        const res = await fetch(url);
-        if (!res.ok) {
-          console.error('Failed to fetch for ZIP:', url, res.status);
-          continue;
-        }
-        const blob = await res.blob();
-        const baseName = item.file.name.replace(/\.[^.]+$/, '');
-        const ext = item.type === 'image' ? '.jpg' : '.mp4';
-        const fileName = baseName + '_desqueezed' + ext;
-
-        zip.file(fileName, blob);
-      } catch (e) {
-        console.error('Error fetching file for ZIP:', url, e);
-      }
-    }
-
-    const zipBlob = await zip.generateAsync({ type: 'blob' });
-    const zipUrl = URL.createObjectURL(zipBlob);
-    triggerFileDownload(zipUrl, 'desqueezed_batch.zip');
-  }
-
-  // === EXPORT / UPLOAD LOGIC ===
-
-  async function exportItems(items) {
-    if (!items || !items.length) return;
-
-    const isBatch = items.length > 1;
-    const batchDownloads = [];
-
-    disableUiWhileBusy(true);
-    setStatus(`Exporting ${items.length} file${items.length > 1 ? 's' : ''}…`);
-
-    const desqFactor = readDesqFactor();
-    const fps = readFps();
-    const bitrate = readBitrate();
-    const photoFormat = readPhotoFormat();
-
-    const cfg = { desqFactor, fps, bitrate, photoFormat };
-
-    items.forEach(it => updateItem(it.id, { progress: 0, status: 'Queued…' }));
-    updateGlobalProgress();
+  async function exportPhotoItem(item, options = {}) {
+    const { autoDownload = true } = options;
+    updateItem(item.id, { status: 'Exporting photo…', progress: 0 });
 
     try {
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        const result = await uploadToBackend(item, cfg, { autoDownload: !isBatch });
-        if (isBatch && result && result.downloadUrl) {
-          batchDownloads.push({ url: result.downloadUrl, item });
-        }
+      const blob = await exportPhotoBlob(item.file);
+      const url  = URL.createObjectURL(blob);
+      const filename = makeOutName(item.file, true);
+
+      updateItem(item.id, {
+        status: '✅ Photo exported',
+        progress: 100,
+        downloadUrl: url
+      });
+
+      if (downloadBoxEl && downloadLinkEl) {
+        downloadBoxEl.classList.remove('hidden');
+        downloadLinkEl.href = url;
+        downloadLinkEl.download = filename;
       }
 
-      if (isBatch && batchDownloads.length) {
-        setStatus('Creating ZIP…');
-        await createBatchZip(batchDownloads);
-        setStatus('✅ Batch ZIP downloaded.');
-      } else {
-        setStatus('✅ Export finished.');
+      if (autoDownload) {
+        await triggerDownloadFromBlob(blob, filename);
       }
+
+      return { downloadUrl: url };
     } catch (err) {
-      console.error('Batch export error', err);
-      setStatus('❌ Export failed for one or more items.');
-    } finally {
-      disableUiWhileBusy(false);
-      updateGlobalProgress();
+      console.error('Photo export failed', err);
+      updateItem(item.id, { status: '❌ Photo export failed', progress: 0 });
+      throw err;
     }
   }
 
-  async function uploadToBackend(item, cfg, options = {}) {
+  // === VIDEO EXPORT (SERVER) ===
+
+  async function uploadVideoToBackend(item, cfg, options = {}) {
     const { autoDownload = true } = options;
     const uploadUrl = getUploadUrl();
-    const file = item.file;
 
-    updateItem(item.id, {
-      status: 'Uploading… 0%',
-      progress: 0
-    });
+    updateItem(item.id, { status: 'Uploading… 0%', progress: 0 });
+    if (downloadBoxEl) downloadBoxEl.classList.add('hidden');
+    if (downloadLinkEl) {
+      downloadLinkEl.removeAttribute('href');
+      downloadLinkEl.removeAttribute('download');
+    }
 
     const formData = new FormData();
-
     const sessionId =
       'sess-' + Date.now() + '-' + Math.random().toString(16).slice(2);
-    formData.append('file', file, file.name);
-    formData.append('sessionId', sessionId);
-    formData.append('kind', item.type); // "image" or "video"
 
+    formData.append('file', item.file, item.file.name);
+    formData.append('sessionId', sessionId);
+    formData.append('kind', 'video');
     formData.append('desqFactor', String(cfg.desqFactor || 1));
     formData.append('fps', cfg.fps == null ? 'copy' : String(cfg.fps));
     formData.append('bitrate', String(cfg.bitrate || 0));
     formData.append('photoFormat', cfg.photoFormat || 'image/jpeg');
-
     formData.append('managedS3', 'false');
 
     let finalHref = null;
 
     try {
       const res = await fetch(uploadUrl, { method: 'POST', body: formData });
-
       if (!res.ok) {
         const msg = `HTTP ${res.status} ${res.statusText}`;
         updateItem(item.id, { status: '❌ Server error: ' + msg, progress: 0 });
@@ -531,6 +537,7 @@
         ? res.body.getReader()
         : null;
 
+      // Non-streaming fallback
       if (!reader) {
         const txt = await res.text();
         try {
@@ -546,64 +553,8 @@
               });
 
               if (autoDownload) {
-                const baseName = item.file.name.replace(/\.[^.]+$/, '');
-                const ext = item.type === 'image' ? '.jpg' : '.mp4';
-                triggerFileDownload(href, baseName + '_desqueezed' + ext);
-              }
-              return { downloadUrl: href };
-            }
-          }
-          updateItem(item.id, {
-            status: '✅ Processed (no direct download link)',
-            progress: 100
-          });
-        } catch {
-          updateItem(item.id, {
-            status: '✅ Processed (non-JSON response)',
-            progress: 100
-          });
-        }
-        return { downloadUrl: finalHref };
-      }
-
-      const decoder = new TextDecoder('utf-8');
-      let buffer = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split(/\r?\n/);
-
-        for (let k = 0; k < lines.length - 1; k++) {
-          const line = lines[k].trim();
-          if (!line) continue;
-
-          if (line.startsWith('progress:')) {
-            const pct = parseFloat(line.slice(9) || '0');
-            const p = Number.isFinite(pct)
-              ? Math.max(0, Math.min(100, pct))
-              : 0;
-            updateItem(item.id, {
-              status: `Uploading/processing… ${p}%`,
-              progress: p
-            });
-          } else if (line.startsWith('download:')) {
-            const raw = line.slice(9);
-            const href = resolveDownloadHref(raw, uploadUrl);
-            if (href) {
-              finalHref = href;
-              updateItem(item.id, {
-                status: '✅ Done (download ready)',
-                progress: 100,
-                downloadUrl: href
-              });
-
-              if (autoDownload) {
-                const baseName = item.file.name.replace(/\.[^.]+$/, '');
-                const ext = item.type === 'image' ? '.jpg' : '.mp4';
-                triggerFileDownload(href, baseName + '_desqueezed' + ext);
+                const filename = makeOutName(item.file, false);
+                await downloadCrossOriginAsBlob(href, filename);
               }
             } else {
               updateItem(item.id, {
@@ -611,763 +562,12 @@
                 progress: 100
               });
             }
-          } else if (line.startsWith('status:done')) {
-            if (!finalHref) {
-              updateItem(item.id, {
-                status: '✅ Server processing complete',
-                progress: 100
-              });
-            }
-          } else if (line.startsWith('status:error')) {
+          } else {
             updateItem(item.id, {
-              status: '❌ Server reported an error',
-              progress: 0
+              status: '✅ Processed (no direct download link)',
+              progress: 100
             });
           }
-        }
-
-        buffer = lines[lines.length - 1];
-      }
-
-      return { downloadUrl: finalHref };
-    } catch (err) {
-      console.error('Upload failed', err);
-      const msg = (err && err.message) || '';
-      let uiMsg;
-      if (/^HTTP \d+/.test(msg)) {
-        uiMsg = '❌ Server error: ' + msg;
-      } else if (/Failed to fetch|NetworkError|TypeError: Failed to fetch/i.test(msg)) {
-        uiMsg = '❌ Network/CORS error – could not reach backend';
-      } else {
-        uiMsg = '❌ Upload failed: ' + (msg || 'unknown error');
-      }
-      updateItem(item.id, { status: uiMsg, progress: 0 });
-      throw err;
-    }
-  }
-
-  // === FILE INPUT HANDLING ===
-
-  function handleFilesSelected(fileList) {
-    if (!fileList || !fileList.length) return;
-
-    const incoming = Array.from(fileList);
-    const remainingSlots = MAX_ITEMS - state.items.length;
-    const used = remainingSlots <= 0
-      ? []
-      : incoming.slice(0, remainingSlots);
-
-    if (!used.length) {
-      setStatus(`Queue is full (max ${MAX_ITEMS} items). Remove some before adding more.`);
-      return;
-    }
-
-    used.forEach(file => {
-      const item = {
-        id: makeId(),
-        file,
-        type: guessType(file),
-        status: 'Ready',
-        progress: 0,
-        downloadUrl: null
-      };
-      state.items.push(item);
-      if (!state.selectedId) state.selectedId = item.id;
-    });
-
-    renderQueue();
-
-    if (!state.currentPreviewId && state.items.length) {
-      state.currentPreviewId = state.items[0].id;
-      previewItemById(state.currentPreviewId);
-    } else if (state.currentPreviewId) {
-      previewItemById(state.currentPreviewId);
-    }
-
-    setStatus(`Added ${used.length} file${used.length > 1 ? 's' : ''} to queue.`);
-  }
-
-  // === BUTTON HANDLERS ===
-
-  function onExportSelected() {
-    if (!state.items.length) return;
-    const id = state.selectedId || state.items[0].id;
-    const item = findItem(id);
-    if (!item) return;
-    exportItems([item]);
-  }
-
-  function onExportBatch() {
-    if (!state.items.length) return;
-    exportItems([...state.items]);
-  }
-
-  // === LIVE DESQUEEZE PREVIEW (VIDEO) ===
-
-  function updatePreviewScale() {
-    const d = readDesqFactor();
-    if (!videoEl) return;
-    videoEl.style.transform = `scaleX(${d})`;
-    videoEl.style.transformOrigin = 'center center';
-  }
-
-  function toggleDesqCustomVisibility() {
-    if (!desqPresetEl || !desqCustomEl) {
-      updatePreviewScale();
-      return;
-    }
-
-    if (desqPresetEl.value === 'custom' && state.pro) {
-      desqCustomEl.classList.remove('hidden');
-    } else {
-      desqCustomEl.classList.add('hidden');
-    }
-
-    updatePreviewScale();
-
-    if (state.currentPreviewId) {
-      const current = findItem(state.currentPreviewId);
-      if (current && current.type === 'image') {
-        previewImage(current.file);
-      }
-    }
-  }
-
-  // === INIT ===
-
-  function init() {
-    setStatus('Idle');
-
-    initProState();
-    applyProGate();
-
-    if (fileInputEl) {
-      fileInputEl.addEventListener('change', e => {
-        const files = e.target.files;
-        handleFilesSelected(files);
-      });
-    }
-
-    if (exportSelectedBtn) {
-      exportSelectedBtn.addEventListener('click', onExportSelected);
-    }
-
-    if (exportBatchBtn) {
-      exportBatchBtn.addEventListener('click', onExportBatch);
-    }
-
-    if (playBtn) {
-      playBtn.addEventListener('click', () => {
-        if (!videoEl) return;
-        videoEl.play().catch(() => {});
-      });
-    }
-
-    if (pauseBtn) {
-      pauseBtn.addEventListener('click', () => {
-        if (!videoEl) return;
-        videoEl.pause();
-      });
-    }
-
-    if (desqPresetEl) {
-      desqPresetEl.addEventListener('change', () => {
-        applyProGate();
-        toggleDesqCustomVisibility();
-      });
-    }
-
-    if (desqCustomEl) {
-      desqCustomEl.addEventListener('input', () => {
-        if (!state.pro) return;
-        updatePreviewScale();
-        if (state.currentPreviewId) {
-          const current = findItem(state.currentPreviewId);
-          if (current && current.type === 'image') {
-            previewImage(current.file);
-          }
-        }
-      });
-    }
-
-    toggleDesqCustomVisibility();
-    updatePreviewScale();
-    ensureQueueVisible();
-    disableUiWhileBusy(false);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
-(() => {
-  'use strict';
-
-  // === DOM LOOKUPS ===
-  const videoEl = document.getElementById('video');
-  const canvasEl = document.getElementById('photoCanvas');
-  const statusEl = document.getElementById('status');
-  const progressBarEl = document.getElementById('progressBar');
-
-  const fileInputEl = document.getElementById('fileInput');
-  const exportSelectedBtn = document.getElementById('exportSelected');
-  const exportBatchBtn = document.getElementById('exportBatch');
-  const queueEl = document.getElementById('queue');
-
-  const playBtn = document.getElementById('play');
-  const pauseBtn = document.getElementById('pause');
-
-  const desqPresetEl = document.getElementById('desqPreset');
-  const desqCustomEl = document.getElementById('desqCustom');
-  const fpsPresetEl = document.getElementById('fpsPreset');
-  const bitratePresetEl = document.getElementById('bitratePreset');
-  const photoFormatEl = document.getElementById('photoFormat');
-  const uploadUrlInputEl = document.getElementById('uploadUrl');
-
-  // === STATE ===
-  const state = {
-    items: [],          // { id, file, type: 'image' | 'video', status, progress, downloadUrl }
-    selectedId: null,
-    currentPreviewId: null,
-    busy: false,
-    pro: false
-  };
-
-  const MAX_ITEMS = 10;
-
-  // === BASIC HELPERS ===
-
-  function setStatus(msg) {
-    if (statusEl) statusEl.textContent = msg;
-    console.log('[status]', msg);
-  }
-
-  function triggerFileDownload(url, suggestedName) {
-    try {
-      const a = document.createElement('a');
-      a.href = url;
-      if (suggestedName) a.download = suggestedName;
-      a.target = '_blank';
-      a.rel = 'noopener';
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } catch (e) {
-      console.error('auto download failed', e);
-    }
-  }
-
-  // --- Pro gating: only 2.0x free unless ?pro=1 / localStorage ---
-  function initProState() {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('pro') === '1') {
-        localStorage.setItem('desq_pro', '1');
-      }
-      state.pro = localStorage.getItem('desq_pro') === '1';
-    } catch {
-      state.pro = false;
-    }
-  }
-
-  function applyProGate() {
-    if (!desqPresetEl) return;
-
-    if (state.pro) {
-      Array.from(desqPresetEl.options).forEach(opt => {
-        opt.disabled = false;
-      });
-      return;
-    }
-
-    // Free: allow only 1.0x and 2.0x
-    const allowedValues = new Set(['1', '2']);
-    Array.from(desqPresetEl.options).forEach(opt => {
-      if (allowedValues.has(opt.value)) opt.disabled = false;
-      else opt.disabled = true;
-    });
-
-    if (!allowedValues.has(desqPresetEl.value)) {
-      desqPresetEl.value = '2';
-    }
-
-    if (desqCustomEl) {
-      desqCustomEl.classList.add('hidden');
-    }
-  }
-
-  function readDesqFactor() {
-    if (!desqPresetEl) return 1;
-    const selVal = desqPresetEl.value;
-
-    if (selVal === 'custom' && desqCustomEl && state.pro) {
-      const v = parseFloat(desqCustomEl.value || '1');
-      return Number.isFinite(v) && v >= 1 ? v : 1;
-    }
-
-    const v = parseFloat(selVal || '1');
-    return Number.isFinite(v) && v >= 1 ? v : 1;
-  }
-
-  function readFps() {
-    if (!fpsPresetEl) return null;
-    const val = fpsPresetEl.value;
-    if (val === 'copy') return null;
-    const n = parseFloat(val);
-    return Number.isFinite(n) && n > 0 ? n : null;
-  }
-
-  function readBitrate() {
-    if (!bitratePresetEl) return null;
-    const n = parseInt(bitratePresetEl.value, 10);
-    return Number.isFinite(n) && n > 0 ? n : null;
-  }
-
-  function readPhotoFormat() {
-    return (photoFormatEl && photoFormatEl.value) || 'image/jpeg';
-  }
-
-  function getUploadUrl() {
-    return (
-      (uploadUrlInputEl && uploadUrlInputEl.value) ||
-      'https://api.anamorphic-desqueeze.com/upload'
-    );
-  }
-
-  function updateButtonsEnabled() {
-    const hasItems = state.items.length > 0;
-    if (fileInputEl) fileInputEl.disabled = state.busy;
-    if (exportSelectedBtn) {
-      exportSelectedBtn.disabled = state.busy || !hasItems;
-    }
-    if (exportBatchBtn) {
-      exportBatchBtn.disabled = state.busy || !hasItems;
-    }
-  }
-
-  function disableUiWhileBusy(busy) {
-    state.busy = busy;
-    updateButtonsEnabled();
-  }
-
-  function ensureQueueVisible() {
-    if (!queueEl) return;
-    if (state.items.length) queueEl.classList.remove('hidden');
-    else queueEl.classList.add('hidden');
-  }
-
-  function updateGlobalProgress() {
-    if (!progressBarEl) return;
-    if (!state.items.length) {
-      progressBarEl.classList.add('hidden');
-      progressBarEl.value = 0;
-      return;
-    }
-
-    const total = state.items.length;
-    const sum = state.items.reduce((acc, it) => acc + (it.progress || 0), 0);
-    const pct = Math.round(sum / total);
-
-    if (pct <= 0 || pct >= 100) {
-      progressBarEl.classList.add('hidden');
-      progressBarEl.value = 0;
-    } else {
-      progressBarEl.classList.remove('hidden');
-      progressBarEl.value = pct;
-    }
-  }
-
-  function makeId() {
-    return 'item-' + Date.now() + '-' + Math.random().toString(16).slice(2);
-  }
-
-  function guessType(file) {
-    if (!file || !file.type) return 'video';
-    if (file.type.startsWith('image/')) return 'image';
-    if (file.type.startsWith('video/')) return 'video';
-
-    const name = file.name.toLowerCase();
-    if (/\.(png|jpe?g|webp|heic|heif)$/.test(name)) return 'image';
-    return 'video';
-  }
-
-  function clearQueueDom() {
-    if (!queueEl) return;
-    queueEl.innerHTML = '';
-  }
-
-  function renderQueue() {
-    if (!queueEl) return;
-    clearQueueDom();
-
-    state.items.forEach(item => {
-      const row = document.createElement('div');
-      row.className = 'queue-item';
-      row.dataset.id = item.id;
-
-      const left = document.createElement('div');
-      const nameEl = document.createElement('div');
-      nameEl.className = 'queue-name';
-      nameEl.textContent = item.file.name;
-
-      const statusNode = document.createElement('div');
-      statusNode.className = 'queue-status';
-      statusNode.textContent = item.status || 'Ready';
-
-      left.appendChild(nameEl);
-      left.appendChild(statusNode);
-
-      const right = document.createElement('div');
-      right.style.display = 'flex';
-      right.style.alignItems = 'center';
-      right.style.gap = '6px';
-
-      const prog = document.createElement('progress');
-      prog.className = 'queue-progress';
-      prog.max = 100;
-      prog.value = item.progress || 0;
-
-      const dl = document.createElement('a');
-      dl.className = 'queue-download hidden';
-      dl.textContent = 'Download';
-      dl.target = '_blank';
-      dl.rel = 'noopener';
-
-      if (item.downloadUrl) {
-        dl.href = item.downloadUrl;
-        const baseName = item.file.name.replace(/\.[^.]+$/, '');
-        const ext = item.type === 'image' ? '.jpg' : '.mp4';
-        dl.download = baseName + '_desqueezed' + ext;
-        dl.classList.remove('hidden');
-      }
-
-      right.appendChild(prog);
-      right.appendChild(dl);
-
-      row.appendChild(left);
-      row.appendChild(right);
-
-      row.addEventListener('click', () => {
-        state.selectedId = item.id;
-        highlightSelectedRow();
-        previewItemById(item.id);
-      });
-
-      queueEl.appendChild(row);
-    });
-
-    highlightSelectedRow();
-    ensureQueueVisible();
-    updateGlobalProgress();
-    updateButtonsEnabled();
-  }
-
-  function highlightSelectedRow() {
-    if (!queueEl) return;
-    const rows = Array.from(queueEl.querySelectorAll('.queue-item'));
-    rows.forEach(row => {
-      if (row.dataset.id === state.selectedId) {
-        row.style.border = '1px solid rgba(100, 135, 255, 0.9)';
-      } else {
-        row.style.border = '1px solid transparent';
-      }
-    });
-  }
-
-  function findItem(id) {
-    return state.items.find(it => it.id === id) || null;
-  }
-
-  function updateItem(id, patch) {
-    const item = findItem(id);
-    if (!item) return;
-    Object.assign(item, patch);
-
-    if (!queueEl) return;
-    const row = queueEl.querySelector(`.queue-item[data-id="${id}"]`);
-    if (!row) return;
-
-    const statusNode = row.querySelector('.queue-status');
-    const progNode = row.querySelector('.queue-progress');
-    const dlNode = row.querySelector('.queue-download');
-
-    if (patch.status != null && statusNode) {
-      statusNode.textContent = patch.status;
-    }
-    if (patch.progress != null && progNode) {
-      progNode.value = patch.progress;
-    }
-    if (patch.downloadUrl && dlNode) {
-      dlNode.href = patch.downloadUrl;
-      const baseName = item.file.name.replace(/\.[^.]+$/, '');
-      const ext = item.type === 'image' ? '.jpg' : '.mp4';
-      dlNode.download = baseName + '_desqueezed' + ext;
-      dlNode.classList.remove('hidden');
-    }
-
-    updateGlobalProgress();
-  }
-
-  // === PREVIEW LOGIC ===
-
-  function showVideoPreview() {
-    if (!videoEl || !canvasEl) return;
-    videoEl.classList.remove('hidden');
-    canvasEl.classList.add('hidden');
-  }
-
-  function showCanvasPreview() {
-    if (!videoEl || !canvasEl) return;
-    videoEl.classList.add('hidden');
-    canvasEl.classList.remove('hidden');
-  }
-
-  function previewItemById(id) {
-    const item = findItem(id);
-    if (!item) return;
-    state.currentPreviewId = id;
-    previewItem(item);
-  }
-
-  function previewItem(item) {
-    if (!item) return;
-    const { type, file } = item;
-    if (type === 'image') previewImage(file);
-    else previewVideo(file);
-  }
-
-  function previewImage(file) {
-    if (!canvasEl) return;
-    const ctx = canvasEl.getContext('2d');
-    if (!ctx) return;
-
-    const img = new Image();
-    img.onload = () => {
-      const desq = readDesqFactor();
-      const inW = img.width;
-      const inH = img.height;
-
-      const outW = Math.round(inW * desq);
-      const outH = inH;
-
-      canvasEl.width = outW;
-      canvasEl.height = outH;
-
-      ctx.save();
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, outW, outH);
-      ctx.scale(desq, 1);
-      ctx.drawImage(img, 0, 0, inW, inH);
-      ctx.restore();
-
-      showCanvasPreview();
-      setStatus('Previewing photo with de-squeeze');
-    };
-    img.onerror = () => {
-      setStatus('❌ Could not preview this image');
-    };
-    img.src = URL.createObjectURL(file);
-  }
-
-  function previewVideo(file) {
-    if (!videoEl) return;
-    const url = URL.createObjectURL(file);
-    videoEl.srcObject = null;
-    videoEl.src = url;
-
-    videoEl.onloadedmetadata = () => {
-      updatePreviewScale();
-      setStatus('Previewing video; press play to view.');
-    };
-
-    showVideoPreview();
-  }
-
-  // === DOWNLOAD URL HANDLING ===
-
-  function resolveDownloadHref(raw, uploadUrl) {
-    if (!raw) return null;
-    let val = String(raw).trim();
-
-    // Already a full URL?
-    try {
-      const u = new URL(val);
-      return u.href;
-    } catch {
-      // not absolute
-    }
-
-    let origin;
-    try {
-      origin = new URL(uploadUrl).origin;
-    } catch (e) {
-      console.error('resolveDownloadHref origin error', e);
-      return null;
-    }
-
-    // "/downloads/xxx"
-    if (val.startsWith('/')) {
-      return origin + val;
-    }
-
-    // "downloads/xxx"
-    if (val.startsWith('downloads/')) {
-      return origin + '/' + val;
-    }
-
-    // bare filename -> /downloads/<name>
-    return origin + '/downloads/' + encodeURIComponent(val);
-  }
-
-  // === BATCH ZIP CREATION ===
-
-  async function createBatchZip(downloads) {
-    if (typeof JSZip === 'undefined') {
-      console.error('JSZip is not available – cannot create batch ZIP');
-      return;
-    }
-
-    const zip = new JSZip();
-
-    for (const entry of downloads) {
-      const { url, item } = entry;
-      try {
-        const res = await fetch(url);
-        if (!res.ok) {
-          console.error('Failed to fetch for ZIP:', url, res.status);
-          continue;
-        }
-        const blob = await res.blob();
-        const baseName = item.file.name.replace(/\.[^.]+$/, '');
-        const ext = item.type === 'image' ? '.jpg' : '.mp4';
-        const fileName = baseName + '_desqueezed' + ext;
-
-        zip.file(fileName, blob);
-      } catch (e) {
-        console.error('Error fetching file for ZIP:', url, e);
-      }
-    }
-
-    const zipBlob = await zip.generateAsync({ type: 'blob' });
-    const zipUrl = URL.createObjectURL(zipBlob);
-    triggerFileDownload(zipUrl, 'desqueezed_batch.zip');
-  }
-
-  // === EXPORT / UPLOAD LOGIC ===
-
-  async function exportItems(items) {
-    if (!items || !items.length) return;
-
-    const isBatch = items.length > 1;
-    const batchDownloads = [];
-
-    disableUiWhileBusy(true);
-    setStatus(`Exporting ${items.length} file${items.length > 1 ? 's' : ''}…`);
-
-    const desqFactor = readDesqFactor();
-    const fps = readFps();
-    const bitrate = readBitrate();
-    const photoFormat = readPhotoFormat();
-
-    const cfg = { desqFactor, fps, bitrate, photoFormat };
-
-    items.forEach(it => updateItem(it.id, { progress: 0, status: 'Queued…' }));
-    updateGlobalProgress();
-
-    try {
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        const result = await uploadToBackend(item, cfg, { autoDownload: !isBatch });
-        if (isBatch && result && result.downloadUrl) {
-          batchDownloads.push({ url: result.downloadUrl, item });
-        }
-      }
-
-      if (isBatch && batchDownloads.length) {
-        setStatus('Creating ZIP…');
-        await createBatchZip(batchDownloads);
-        setStatus('✅ Batch ZIP downloaded.');
-      } else {
-        setStatus('✅ Export finished.');
-      }
-    } catch (err) {
-      console.error('Batch export error', err);
-      setStatus('❌ Export failed for one or more items.');
-    } finally {
-      disableUiWhileBusy(false);
-      updateGlobalProgress();
-    }
-  }
-
-  async function uploadToBackend(item, cfg, options = {}) {
-    const { autoDownload = true } = options;
-    const uploadUrl = getUploadUrl();
-    const file = item.file;
-
-    updateItem(item.id, {
-      status: 'Uploading… 0%',
-      progress: 0
-    });
-
-    const formData = new FormData();
-
-    const sessionId =
-      'sess-' + Date.now() + '-' + Math.random().toString(16).slice(2);
-    formData.append('file', file, file.name);
-    formData.append('sessionId', sessionId);
-    formData.append('kind', item.type);
-
-    formData.append('desqFactor', String(cfg.desqFactor || 1));
-    formData.append('fps', cfg.fps == null ? 'copy' : String(cfg.fps));
-    formData.append('bitrate', String(cfg.bitrate || 0));
-    formData.append('photoFormat', cfg.photoFormat || 'image/jpeg');
-    formData.append('managedS3', 'false');
-
-    let finalHref = null;
-
-    try {
-      const res = await fetch(uploadUrl, { method: 'POST', body: formData });
-
-      if (!res.ok) {
-        const msg = `HTTP ${res.status} ${res.statusText}`;
-        updateItem(item.id, { status: '❌ Server error: ' + msg, progress: 0 });
-        throw new Error(msg);
-      }
-
-      const reader = res.body && res.body.getReader
-        ? res.body.getReader()
-        : null;
-
-      // Non-streaming
-      if (!reader) {
-        const txt = await res.text();
-        try {
-          const data = JSON.parse(txt);
-          if (data && data.download) {
-            const href = resolveDownloadHref(data.download, uploadUrl);
-            if (href) {
-              finalHref = href;
-              updateItem(item.id, {
-                status: '✅ Done (download ready)',
-                progress: 100,
-                downloadUrl: href
-              });
-
-              if (autoDownload) {
-                const baseName = item.file.name.replace(/\.[^.]+$/, '');
-                const ext = item.type === 'image' ? '.jpg' : '.mp4';
-                triggerFileDownload(href, baseName + '_desqueezed' + ext);
-              }
-              return { downloadUrl: href };
-            }
-          }
-          updateItem(item.id, {
-            status: '✅ Processed (no direct download link)',
-            progress: 100
-          });
         } catch {
           updateItem(item.id, {
             status: '✅ Processed (non-JSON response)',
@@ -1413,9 +613,8 @@
               });
 
               if (autoDownload) {
-                const baseName = item.file.name.replace(/\.[^.]+$/, '');
-                const ext = item.type === 'image' ? '.jpg' : '.mp4';
-                triggerFileDownload(href, baseName + '_desqueezed' + ext);
+                const filename = makeOutName(item.file, false);
+                await downloadCrossOriginAsBlob(href, filename);
               }
             } else {
               updateItem(item.id, {
@@ -1458,6 +657,83 @@
     }
   }
 
+  // === BATCH ZIP (photos + videos) ===
+
+  async function createBatchZip(downloads) {
+    if (typeof JSZip === 'undefined') {
+      console.error('JSZip is not available – cannot create batch ZIP');
+      return;
+    }
+    const zip = new JSZip();
+
+    for (const entry of downloads) {
+      const { url, item } = entry;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) {
+          console.error('Failed to fetch for ZIP:', url, res.status);
+          continue;
+        }
+        const blob = await res.blob();
+        const filename = makeOutName(item.file, isImageFile(item.file));
+        zip.file(filename, blob);
+      } catch (e) {
+        console.error('Error fetching file for ZIP:', url, e);
+      }
+    }
+
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    await triggerDownloadFromBlob(zipBlob, 'desqueezed_batch.zip');
+  }
+
+  async function exportItems(items) {
+    if (!items || !items.length) return;
+
+    const isBatch = items.length > 1;
+    const batchDownloads = [];
+
+    disableUiWhileBusy(true);
+    setStatus(`Exporting ${items.length} file${items.length > 1 ? 's' : ''}…`);
+
+    const cfg = {
+      desqFactor: readDesqFactor(),
+      fps:        readFps(),
+      bitrate:    readBitrate(),
+      photoFormat:readPhotoFormat()
+    };
+
+    items.forEach(it => updateItem(it.id, { status: 'Queued…', progress: 0 }));
+    updateGlobalProgress();
+
+    try {
+      for (const item of items) {
+        let result;
+        if (isImageFile(item.file)) {
+          result = await exportPhotoItem(item, { autoDownload: !isBatch });
+        } else {
+          result = await uploadVideoToBackend(item, cfg, { autoDownload: !isBatch });
+        }
+        if (isBatch && result && result.downloadUrl) {
+          batchDownloads.push({ url: result.downloadUrl, item });
+        }
+      }
+
+      if (isBatch && batchDownloads.length) {
+        setStatus('Creating ZIP…');
+        await createBatchZip(batchDownloads);
+        setStatus('✅ Batch ZIP downloaded.');
+      } else {
+        setStatus('✅ Export finished.');
+      }
+    } catch (err) {
+      console.error('Batch export error', err);
+      setStatus('❌ Export failed for one or more items.');
+    } finally {
+      disableUiWhileBusy(false);
+      updateGlobalProgress();
+    }
+  }
+
   // === FILE INPUT HANDLING ===
 
   function handleFilesSelected(fileList) {
@@ -1465,9 +741,7 @@
 
     const incoming = Array.from(fileList);
     const remainingSlots = MAX_ITEMS - state.items.length;
-    const used = remainingSlots <= 0
-      ? []
-      : incoming.slice(0, remainingSlots);
+    const used = remainingSlots <= 0 ? [] : incoming.slice(0, remainingSlots);
 
     if (!used.length) {
       setStatus(`Queue is full (max ${MAX_ITEMS} items). Remove some before adding more.`);
@@ -1478,7 +752,6 @@
       const item = {
         id: makeId(),
         file,
-        type: guessType(file),
         status: 'Ready',
         progress: 0,
         downloadUrl: null
@@ -1504,7 +777,7 @@
   function onExportSelected() {
     if (!state.items.length) return;
     const id = state.selectedId || state.items[0].id;
-    const item = findItem(id);
+    const item = state.items.find(it => it.id === id);
     if (!item) return;
     exportItems([item]);
   }
@@ -1514,33 +787,23 @@
     exportItems([...state.items]);
   }
 
-  // === LIVE DESQUEEZE PREVIEW (VIDEO) ===
-  // Uses CSS var --d so 2.0× is NOT cropped.
-
-  function updatePreviewScale() {
-    const d = readDesqFactor();
-    const previewBox = document.getElementById('previewBox');
-    if (!previewBox) return;
-    previewBox.style.setProperty('--d', d);
-  }
+  // === DESQ CUSTOM TOGGLE ===
 
   function toggleDesqCustomVisibility() {
     if (!desqPresetEl || !desqCustomEl) {
       updatePreviewScale();
       return;
     }
-
     if (desqPresetEl.value === 'custom' && state.pro) {
       desqCustomEl.classList.remove('hidden');
     } else {
       desqCustomEl.classList.add('hidden');
     }
-
     updatePreviewScale();
 
     if (state.currentPreviewId) {
-      const current = findItem(state.currentPreviewId);
-      if (current && current.type === 'image') {
+      const current = state.items.find(x => x.id === state.currentPreviewId);
+      if (current && isImageFile(current.file)) {
         previewImage(current.file);
       }
     }
@@ -1556,18 +819,12 @@
 
     if (fileInputEl) {
       fileInputEl.addEventListener('change', e => {
-        const files = e.target.files;
-        handleFilesSelected(files);
+        handleFilesSelected(e.target.files);
       });
     }
 
-    if (exportSelectedBtn) {
-      exportSelectedBtn.addEventListener('click', onExportSelected);
-    }
-
-    if (exportBatchBtn) {
-      exportBatchBtn.addEventListener('click', onExportBatch);
-    }
+    if (exportSelectedEl) exportSelectedEl.addEventListener('click', onExportSelected);
+    if (exportBatchEl)    exportBatchEl.addEventListener('click', onExportBatch);
 
     if (playBtn) {
       playBtn.addEventListener('click', () => {
@@ -1593,12 +850,35 @@
     if (desqCustomEl) {
       desqCustomEl.addEventListener('input', () => {
         if (!state.pro) return;
-        updatePreviewScale();
-        if (state.currentPreviewId) {
-          const current = findItem(state.currentPreviewId);
-          if (current && current.type === 'image') {
-            previewImage(current.file);
-          }
+        toggleDesqCustomVisibility();
+      });
+    }
+
+    // queue "Download" clicks -> blob download
+    if (queueEl) {
+      queueEl.addEventListener('click', e => {
+        const link = e.target.closest('.queue-download');
+        if (!link) return;
+        e.preventDefault();
+        const row = link.closest('.queue-item');
+        if (!row) return;
+        const id = row.dataset.id;
+        const item = state.items.find(it => it.id === id);
+        if (!item || !item.downloadUrl) return;
+
+        const isImg = isImageFile(item.file);
+        const filename = makeOutName(item.file, isImg);
+
+        if (item.downloadUrl.startsWith('blob:') && isImg) {
+          const a = document.createElement('a');
+          a.href = item.downloadUrl;
+          a.download = filename;
+          a.style.display = 'none';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } else {
+          downloadCrossOriginAsBlob(item.downloadUrl, filename);
         }
       });
     }
