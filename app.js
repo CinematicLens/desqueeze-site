@@ -1,8 +1,8 @@
 (() => {
   const video = document.getElementById('video');
-  const canvas = document.getElementById('canvas');
-  const startBtn = document.getElementById('start');
-  const stopBtn = document.getElementById('stop');
+  const canvas = document.getElementById('photoCanvas');
+  const startBtn = document.getElementById('play');
+  const stopBtn = document.getElementById('pause');
   const statusEl = document.getElementById('status');
   const download = document.getElementById('download');
   const downloadLink = document.getElementById('downloadLink');
@@ -18,10 +18,7 @@
   const uploadUrlInput = document.getElementById('uploadUrl');
   const pickCameraBtn = document.getElementById('pickCamera');
   const fileInput = document.getElementById('fileInput');
-  const modeButtons = Array.from(document.querySelectorAll('.mode-btn'));
 
-  let mode = 'disk'; // disk | live | both
-  let managedS3 = false;
   let mediaRecorder = null;
   let chunks = [];
   let drawLoop = null;
@@ -54,54 +51,170 @@
       video.srcObject = stream;
       await video.play();
       streamRef = stream;
-    } catch (e) {
-      console.error(e);
-      setStatus('Camera permission denied or unavailable');
+      setStatus('Camera selected');
+    } catch (err) {
+      console.error('getUserMedia failed', err);
+      setStatus('❌ Could not access camera/mic: ' + (err.message || err.name || 'unknown error'));
     }
   }
 
-  async function handleFile(file){
-    const url = URL.createObjectURL(file);
-    video.src = url;
-    await video.play();
+  function readConfig(){
+    const desqFactor = valOrCustom(desqPreset, desqCustom, parseFloat);
+    const fps = valOrCustom(fpsPreset, fpsCustom, parseFloat);
+    const bitrate = valOrCustom(bitratePreset, bitrateCustom, parseInt);
+
+    return { desqFactor, fps, bitrate };
   }
 
-  // ---- NEW: Upload final recording to your /upload backend ----
-  async function uploadRecordingToBackend(cfg, blob){
-    const uploadUrl = (cfg && cfg.uploadUrl || '').trim();
-    if (!uploadUrl){
-      setStatus('❌ No upload URL configured');
-      return;
-    }
+  function startDrawing(desqFactor){
+    if (!canvas || !video) return;
 
-    setStatus('Uploading to server…');
-    console.log('POST ->', uploadUrl);
+    const inW = video.videoWidth || 1280;
+    const inH = video.videoHeight || 720;
+    // For simplicity, keep height same, stretch width by desqFactor
+    const outH = inH;
+    const outW = Math.round(inW * desqFactor);
 
-    try {
-      const form = new FormData();
-      // Wrap blob in a File so multer sees a name + type
-      const file = new File(
-        [blob],
-        'recording.webm',
-        { type: blob.type || 'video/webm' }
+    canvas.width = outW;
+    canvas.height = outH;
+
+    const ctx = canvas.getContext('2d');
+
+    function drawFrame(){
+      if (!video || video.readyState < 2){
+        drawLoop = requestAnimationFrame(drawFrame);
+        return;
+      }
+
+      ctx.save();
+
+      // Fill black
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, outW, outH);
+
+      // Basic anamorphic "desqueeze" effect: scale X
+      ctx.translate(outW / 2, outH / 2);
+      ctx.scale(desqFactor, 1);
+      ctx.drawImage(
+        video,
+        -inW / 2,
+        -inH / 2,
+        inW,
+        inH
       );
 
-      form.append('file', file);
-      form.append('factor', String(cfg.desq));
-      // if you want "copy" behaviour, you can skip fps when cfg.fps is 0/null
-      if (cfg.fps && Number.isFinite(cfg.fps)) {
-        form.append('fps', String(cfg.fps));
-      }
-      form.append('bitrate', String(cfg.bps));
+      ctx.restore();
 
-      const res = await fetch(uploadUrl, { method: 'POST', body: form });
-      if (!res.ok || !res.body) {
-        throw new Error(`HTTP ${res.status}`);
+      drawLoop = requestAnimationFrame(drawFrame);
+    }
+
+    if (drawLoop) cancelAnimationFrame(drawLoop);
+    drawLoop = requestAnimationFrame(drawFrame);
+  }
+
+  function stopDrawing(){
+    if (drawLoop) cancelAnimationFrame(drawLoop);
+    drawLoop = null;
+  }
+
+  function startRecording(stream, config){
+    const { fps, bitrate } = config;
+    const mimeType = pickMime();
+
+    const recorder = new MediaRecorder(stream, {
+      mimeType,
+      videoBitsPerSecond: bitrate || 3_000_000,
+    });
+
+    chunks = [];
+
+    recorder.ondataavailable = (e) => {
+      if (e.data && e.data.size > 0) {
+        chunks.push(e.data);
+      }
+    };
+
+    recorder.onstop = () => {
+      stopDrawing();
+      stream.getTracks().forEach(t => t.stop());
+      streamRef = null;
+      setStatus('Stopped recording; ready to upload.');
+
+      if (!chunks.length) {
+        setStatus('No data recorded.');
+        return;
       }
 
-      // parse streaming text: progress, download, status
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
+      const blob = new Blob(chunks, { type: mimeType });
+      uploadToBackend(blob, config).catch(err => {
+        console.error('upload error', err);
+      });
+    };
+
+    const intervalMs = fps && fps > 0 ? 1000 / fps : 1000 / 30;
+    recorder.start(intervalMs);
+    mediaRecorder = recorder;
+  }
+
+  async function uploadToBackend(blob, config){
+    const uploadUrl = (uploadUrlInput && uploadUrlInput.value) || 'https://api.anamorphic-desqueeze.com/upload';
+
+    setStatus('Uploading/processing… 0%');
+    download.classList.add('hidden');
+    downloadLink.removeAttribute('href');
+
+    const formData = new FormData();
+
+    const newId = 'sess-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+    sessionId = newId;
+
+    formData.append('file', blob, 'recorded.webm');
+    formData.append('sessionId', newId);
+
+    formData.append('desqFactor', String(config.desqFactor || 1));
+    formData.append('fps', String(config.fps || 0));
+    formData.append('bitrate', String(config.bitrate || 0));
+
+    // new toggles for managed vs direct S3 or any other flags can be appended here later
+    formData.append('managedS3', String(!!config.managedS3));
+
+    try {
+      const res = await fetch(uploadUrl, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} ${res.statusText}`);
+      }
+
+      // We now assume the server may stream back lines "progress:xx", "download:URL", etc.
+      const reader = res.body?.getReader();
+      if (!reader) {
+        // fallback: treat as simple JSON or text if there's no streaming body
+        const txt = await res.text();
+        try {
+          const data = JSON.parse(txt);
+          if (data && data.download){
+            const href = resolveDownloadHref(data.download, uploadUrl);
+            if (href){
+              downloadLink.href = href;
+              downloadLink.download = 'desqueezed_from_server.mp4';
+              download.classList.remove('hidden');
+              setStatus('✅ Server export ready');
+            } else {
+              setStatus('❌ Server returned invalid download link');
+            }
+          } else {
+            setStatus('✅ Server processed (no direct download link given)');
+          }
+        } catch {
+          setStatus('✅ Upload finished (server returned non-JSON text)');
+        }
+        return;
+      }
+
+      const decoder = new TextDecoder('utf-8');
       let buffer = '';
 
       while (true) {
@@ -150,10 +263,11 @@
     }
   }
 
-  // resolve "download:" line to an absolute URL
   function resolveDownloadHref(raw, uploadUrl){
     if (!raw) return null;
-    // 1) if it's already absolute
+    raw = String(raw).trim();
+
+    // If it's a full URL, return as-is (or check if it's same origin).
     try {
       const u = new URL(raw);
       return u.href;
@@ -169,173 +283,106 @@
       // if it's just a filename, assume legacy /download/ route
       return backendOrigin + '/download/' + encodeURIComponent(raw);
     } catch (e) {
-      console.error('resolveDownloadHref failed:', e, raw);
+      console.error('resolveDownloadHref failed:', e);
       return null;
     }
   }
 
-  // ---- (old) chunk uploader: keep for future streaming if needed, but note:
-  // your current /upload endpoint expects full file, not chunks. ----
-  function uploadChunk(url, blob){
-    console.warn('uploadChunk() called – note: /upload does not support chunked ingestion yet');
-    return fetch(url + '?session=' + encodeURIComponent(sessionId), {
-      method: 'POST',
-      headers: { 'Content-Type': blob.type || 'application/octet-stream' },
-      body: blob
-    }).catch(err => console.error('Chunk upload failed', err));
-  }
+  let managedS3 = false;
 
-  async function uploadFinalBlobToManagedS3(blob){
+  async function start(){
+    if (!video) {
+      setStatus('❌ No video element found.');
+      return;
+    }
+
+    const cfg = readConfig();
+    currentConfig = { ...cfg, managedS3 };
+    setStatus('Requesting camera/mic…');
+
     try {
-      const res = await fetch('http://localhost:3000/presign', { method: 'POST' });
-      const { url, key } = await res.json();
-      if (!url) throw new Error('No presigned URL');
-      const put = await fetch(url, {
-        method: 'PUT',
-        headers: { 'Content-Type': blob.type || 'application/octet-stream' },
-        body: blob
-      });
-      if (!put.ok) throw new Error('PUT to S3 failed');
-      setStatus('Uploaded to S3 (' + key + ')');
-    } catch (e) {
-      console.error(e);
-      setStatus('Managed S3 upload failed');
+      const stream = streamRef || await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      video.srcObject = stream;
+      await video.play();
+      streamRef = stream;
+
+      startDrawing(cfg.desqFactor);
+      startRecording(makeCanvasStream(stream, cfg), cfg);
+      setStatus('Recording…');
+    } catch (err) {
+      console.error(err);
+      setStatus('❌ Failed to start recording: ' + (err.message || err.name || 'unknown error'));
     }
   }
 
-  function start(){
-    const desq = Math.max(1, parseFloat(valOrCustom(desqPreset, desqCustom, parseFloat)) || 1.33);
-    const fps  = Math.max(1, Math.min(60, parseInt(valOrCustom(fpsPreset, fpsCustom, parseInt) || '30', 10)));
-    const bps  = Math.max(1_000_000, parseInt(valOrCustom(bitratePreset, bitrateCustom, parseInt) || '8000000', 10));
-    const uploadUrl = uploadUrlInput.value.trim();
-    sessionId = 'sess_' + Date.now();
+  function makeCanvasStream(inStream, cfg){
+    const { fps } = cfg;
 
-    // keep config so onstop can use it for upload
-    currentConfig = { desq, fps, bps, uploadUrl };
-
-    chunks = [];
-    download.classList.add('hidden');
-    setStatus('Initializing…');
-
+    if (!canvas) throw new Error('No canvas element');
     const ctx = canvas.getContext('2d');
-    const vw = video.videoWidth || 1280;
-    const vh = video.videoHeight || 720;
 
-    const outW = Math.round(vw * desq);
-    const outH = vh;
+    const inW = video.videoWidth || 1280;
+    const inH = video.videoHeight || 720;
+    const outH = inH;
+    const outW = Math.round(inW * cfg.desqFactor);
+
     canvas.width = outW;
     canvas.height = outH;
 
-    const draw = () => {
-      ctx.save();
-      ctx.clearRect(0, 0, outW, outH);
-      ctx.scale(desq, 1);
-      ctx.drawImage(video, 0, 0, vw, vh);
-      ctx.restore();
-      drawLoop = requestAnimationFrame(draw);
-    };
-    drawLoop = requestAnimationFrame(draw);
+    function drawFrame(){
+      if (video.readyState >= 2) {
+        ctx.save();
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, outW, outH);
+
+        ctx.translate(outW / 2, outH / 2);
+        ctx.scale(cfg.desqFactor, 1);
+        ctx.drawImage(video, -inW / 2, -inH / 2, inW, inH);
+        ctx.restore();
+      }
+      requestAnimationFrame(drawFrame);
+    }
+    requestAnimationFrame(drawFrame);
 
     const canvasStream = canvas.captureStream(fps);
-    const inStream = streamRef || (video.srcObject instanceof MediaStream ? video.srcObject : null);
     if (inStream) inStream.getAudioTracks().forEach(t => canvasStream.addTrack(t));
 
     const rec = new MediaRecorder(canvasStream, {
       mimeType: pickMime(),
-      bitsPerSecond: bps
+      videoBitsPerSecond: cfg.bitrate || 3_000_000,
     });
-    mediaRecorder = rec;
+
+    chunks = [];
 
     rec.ondataavailable = (e) => {
-      if (!e.data || e.data.size === 0) return;
-      if (mode === 'disk' || mode === 'both') chunks.push(e.data);
-      // NOTE: we *could* stream chunks to backend here, but your /upload API
-      // expects a single file; so streaming is disabled for now.
-      if (mode === 'live' || mode === 'both') {
-        // uploadChunk(uploadUrl, e.data);
+      if (e.data && e.data.size > 0) {
+        chunks.push(e.data);
       }
     };
 
-    rec.onstart = () => {
-      setStatus(`Recording… (${mode}) • ${desq.toFixed(2)}× • ${fps}fps • ${(bps/1e6).toFixed(1)}Mbps`);
+    rec.onstop = () => {
+      canvasStream.getTracks().forEach(t => t.stop());
     };
 
-    rec.onerror = (e) => {
-      setStatus('Recorder error');
-      console.error(e);
-    };
+    mediaRecorder = rec;
+    const intervalMs = fps && fps > 0 ? 1000 / fps : 1000 / 30;
+    rec.start(intervalMs);
 
-    rec.onstop = async () => {
-      if (drawLoop) {
-        cancelAnimationFrame(drawLoop);
-        drawLoop = null;
-      }
-
-      // final local blob
-      const blob = new Blob(chunks, { type: rec.mimeType || 'video/webm' });
-
-      if (mode === 'disk' || mode === 'both') {
-        const url = URL.createObjectURL(blob);
-        downloadLink.href = url;
-        downloadLink.download = 'desqueezed_' + Date.now() + '.webm';
-        download.classList.remove('hidden');
-        setStatus('Saved (disk)');
-      } else {
-        setStatus('Stopped (live)');
-      }
-
-      // Send final recording to backend in live/both modes
-      if (mode === 'live' || mode === 'both') {
-        await uploadRecordingToBackend(currentConfig, blob);
-      }
-
-      if (managedS3) {
-        await uploadFinalBlobToManagedS3(blob);
-      }
-    };
-
-    rec.start(1000); // 1s slices
+    return canvasStream;
   }
 
   function stop(){
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
       mediaRecorder.stop();
-    }
-    if (drawLoop) {
-      cancelAnimationFrame(drawLoop);
-      drawLoop = null;
+    } else {
+      setStatus('Not recording.');
     }
   }
 
-  // UI wiring
-  modeButtons.forEach(btn => {
-    const m = btn.dataset.mode;
-    if (!m) return;
-    btn.addEventListener('click', () => {
-      modeButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      mode = btn.dataset.mode;
-    });
-  });
-
-  toggleManagedBtn?.addEventListener('click', () => {
-    managedS3 = !managedS3;
-    toggleManagedBtn.textContent = 'Managed S3: ' + (managedS3 ? 'On' : 'Off');
-  });
-
-  startBtn.addEventListener('click', start);
-  stopBtn.addEventListener('click', stop);
-  pickCameraBtn?.addEventListener('click', pickCamera);
-  fileInput?.addEventListener('change', e => {
-    const f = e.target.files?.[0];
-    if (f) handleFile(f);
-  });
-
-  // Ensure correct visibility of custom fields on load and change
   const map = [
     [desqPreset, desqCustom],
     [fpsPreset, fpsCustom],
-    [bitratePreset, bitrateCustom]
+    [bitratePreset, bitrateCustom],
   ];
 
   function refreshCustomVisibility(){
@@ -349,6 +396,26 @@
   refreshCustomVisibility();
 
   setStatus('Idle');
+
+  toggleManagedBtn?.addEventListener('click', () => {
+    managedS3 = !managedS3;
+    toggleManagedBtn.textContent = 'Managed S3: ' + (managedS3 ? 'On' : 'Off');
+  });
+
+  startBtn?.addEventListener('click', start);
+  stopBtn?.addEventListener('click', stop);
+  pickCameraBtn?.addEventListener('click', pickCamera);
+  fileInput?.addEventListener('change', e => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    // If you want to handle file uploads instead of live camera, you can:
+    //   - create a blob URL, set it as video.src, then call startDrawing, etc.
+    const url = URL.createObjectURL(f);
+    video.src = url;
+    video.play().then(() => {
+      setStatus('Playing selected file');
+    });
+  });
 })();
 
 
@@ -385,5 +452,3 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleDesqCustomVisibility();
   updatePreviewScale();
 });
-
-
