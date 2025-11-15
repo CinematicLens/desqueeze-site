@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Anamorphic De-Squeeze Tool — Web Desqueeze Studio - By Cinematics</title>
+  <title>Anamorphic De-Squeeze Tool — Web Desqueeze Studio</title>
   <meta name="description"
         content="Free online anamorphic de-squeeze tool. Upload anamorphic photos or videos, choose your lens factor (1.33x, 1.5x, 1.8x, 2.0x) and export fully corrected MP4/JPG/PNG with batch support." />
 
@@ -372,39 +372,43 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
     <!-- Feedback helper -->
-  <script>
-    (function(){
-      document.getElementById('y').textContent = new Date().getFullYear();
+ <script>
+  (function(){
+    document.getElementById('y').textContent = new Date().getFullYear();
 
-      const btn = document.getElementById('sendFeedback');
-      const msgEl = document.getElementById('feedbackMessage');
-      const emailEl = document.getElementById('feedbackEmail');
-      const hint = document.getElementById('feedbackHint');
-      if (!btn) return;
+    const btn = document.getElementById('sendFeedback');
+    const msgEl = document.getElementById('feedbackMessage');
+    const emailEl = document.getElementById('feedbackEmail');
+    const hint = document.getElementById('feedbackHint');
+    if (!btn) return;
 
-      btn.addEventListener('click', function(){
-        const msg = (msgEl.value || '').trim();
-        if (!msg) {
-          hint.textContent = 'Please enter your message before sending.';
-          return;
-        }
-        const email = (emailEl.value || '').trim();
-        const prefill = `Message: ${msg}${email ? `\n\nEmail: ${email}` : ''}`;
-        try {
-          navigator.clipboard &&
-            navigator.clipboard.writeText(prefill).catch(function(){});
-        } catch(e) {}
+    btn.addEventListener('click', function(){
+      const msg = (msgEl.value || '').trim();
+      if (!msg) {
+        hint.textContent = 'Please enter your message before sending.';
+        return;
+      }
 
-        const target = new URL('https://forms.gle/feedback'); // replace with real form
-        target.searchParams.set('q', prefill);
-        window.open(target.toString(), '_blank', 'noopener');
+      const email = (emailEl.value || '').trim();
+      const prefill = `Message: ${msg}${email ? `\n\nEmail: ${email}` : ''}`;
 
-        hint.textContent = 'Opening feedback page in a new tab. Your message was copied to clipboard.';
-        msgEl.value = '';
-        emailEl.value = '';
-      });
-    })();
-  </script>
+      // copy text to clipboard (optional helper)
+      try {
+        navigator.clipboard &&
+          navigator.clipboard.writeText(prefill).catch(function(){});
+      } catch(e) {}
+
+      // 🔴 HERE is your real form link:
+      const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeZEIzfe-UMKQntHC97awMG_uO74tx3XR9CboLh-wByuPzT6A/viewform?usp=preview';
+
+      window.open(formUrl, '_blank', 'noopener');
+
+      hint.textContent = 'Opening feedback form in a new tab. Your message was copied to the clipboard.';
+      msgEl.value = '';
+      emailEl.value = '';
+    });
+  })();
+</script>
 
   
   
