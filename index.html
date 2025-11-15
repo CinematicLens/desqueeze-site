@@ -21,6 +21,53 @@
     gtag('js', new Date());
     gtag('config', 'G-6BFDRLKVZK');
   </script>
+  
+  
+  <script>
+(async function () {
+  const INR_PRICE = 5000;
+
+  const btnHeader = document.getElementById("proButtonHeader");
+  const btnMain = document.getElementById("proButtonMain");
+
+  // Set fallback text
+  if (btnHeader) btnHeader.textContent = "Unlock Pro in Just ₹5000";
+  if (btnMain) btnMain.textContent = "Unlock Pro in Just ₹5000";
+
+  try {
+    // Detect user currency
+    const geoRes = await fetch("https://ipwho.is/");
+    const geo = await geoRes.json();
+    const code = geo?.currency?.code || "INR";
+
+    // Fetch INR → local FX rate
+    const fxRes = await fetch("https://api.exchangerate.host/latest?base=INR");
+    const fx = await fxRes.json();
+    const rate = fx?.rates?.[code] || 1;
+
+    const localValue = INR_PRICE * rate;
+
+    // Format number in user's locale
+    const formatted = new Intl.NumberFormat(
+      navigator.language || "en-US",
+      {
+        style: "currency",
+        currency: code
+      }
+    ).format(localValue);
+
+    const finalText = `Unlock Pro in Just ${formatted}`;
+
+    // Update BOTH buttons
+    if (btnHeader) btnHeader.textContent = finalText;
+    if (btnMain) btnMain.textContent = finalText;
+
+  } catch (err) {
+    console.error("FX Error:", err);
+    // fallback remains INR
+  }
+})();
+</script>
 
   <link rel="stylesheet" href="./style.css?v=3" />
 
@@ -121,15 +168,15 @@
         <a href="#settings">Settings</a>
         <a href="#how-it-works">Guide</a>
         <a href="#support">Support</a>
-        <!-- TODO: replace href with your live Razorpay payment link -->
-        <a
-          class="btn btn--primary"
-          href="https://rzp.io/l/your-razorpay-link"
-          target="_blank"
-          rel="noopener"
-        >
-          Unlock Pro In Just Rs 4433
-        </a>
+			<!-- TODO: replace href with your live Razorpay payment link -->
+		<a
+	  class="btn btn--primary"
+	  href="https://razorpay.me/@cinematics"
+	  target="_blank"
+	  rel="noopener"
+	>
+	  UnlockPro Just Rs5000
+	</a>
       </nav>
     </div>
   </header>
@@ -253,19 +300,18 @@
 
       <!-- Pro -->
       <section class="panel" id="pro">
-        <h2>Go Pro</h2>
+        <h2>GoPro</h2>
         <div class="row">
-          <label>Unlock Pro</label>
-          <div>
-            <!-- Same Razorpay link as header -->
-            <a
-              class="btn btn--primary"
-              href="https://rzp.io/l/your-razorpay-link"
-              target="_blank"
-              rel="noopener"
-            >
-              Unlock Pro In Just Rs 4433
-            </a>
+          <label>UnlockPro</label>
+				  <div>
+				<a
+		  class="btn btn--primary"
+		  href="https://razorpay.me/@cinematics"
+		  target="_blank"
+		  rel="noopener"
+		>
+		  UnlockPro Just Rs5000
+		</a>
 
             <div id="localPrice" class="note" style="margin-top:6px;">
               Approx in your currency: <span id="inrValue">loading…</span>
@@ -325,7 +371,7 @@
   <!-- JSZip for batch ZIP -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
-  <!-- Feedback helper -->
+    <!-- Feedback helper -->
   <script>
     (function(){
       document.getElementById('y').textContent = new Date().getFullYear();
@@ -335,15 +381,24 @@
       const emailEl = document.getElementById('feedbackEmail');
       const hint = document.getElementById('feedbackHint');
       if (!btn) return;
+
       btn.addEventListener('click', function(){
         const msg = (msgEl.value || '').trim();
-        if (!msg) { hint.textContent = 'Please enter your message before sending.'; return; }
+        if (!msg) {
+          hint.textContent = 'Please enter your message before sending.';
+          return;
+        }
         const email = (emailEl.value || '').trim();
         const prefill = `Message: ${msg}${email ? `\n\nEmail: ${email}` : ''}`;
-        try { navigator.clipboard && navigator.clipboard.writeText(prefill).catch(function(){}); } catch(e) {}
+        try {
+          navigator.clipboard &&
+            navigator.clipboard.writeText(prefill).catch(function(){});
+        } catch(e) {}
+
         const target = new URL('https://forms.gle/feedback'); // replace with real form
         target.searchParams.set('q', prefill);
         window.open(target.toString(), '_blank', 'noopener');
+
         hint.textContent = 'Opening feedback page in a new tab. Your message was copied to clipboard.';
         msgEl.value = '';
         emailEl.value = '';
@@ -351,42 +406,7 @@
     })();
   </script>
 
-  <!-- Generic currency based on IP + Intl.NumberFormat -->
-  <script>
-    (function () {
-      const USD_PRICE = 49;
-      const span = document.getElementById('inrValue');
-      if (!span) return;
-
-      async function updatePrice() {
-        try {
-          const resp = await fetch('https://ipwho.is/');
-          if (!resp.ok) throw new Error('HTTP ' + resp.status);
-          const data = await resp.json();
-          if (!data || data.success === false || !data.currency) {
-            throw new Error('No currency info');
-          }
-
-          const code = data.currency.code || 'USD';
-          const rate = Number(data.currency.exchange_rate) || 1;
-          const localValue = USD_PRICE * rate;
-
-          const locale = navigator.language || 'en-US';
-          const formatter = new Intl.NumberFormat(locale, {
-            style: 'currency',
-            currency: code
-          });
-
-          span.textContent = formatter.format(localValue) + ' (approx)';
-        } catch (e) {
-          console.error('FX / geo lookup failed', e);
-          span.textContent = '$30 (USD, approx)';
-        }
-      }
-
-      updatePrice();
-    })();
-  </script>
+  
   
   <div id="app"></div>
 
