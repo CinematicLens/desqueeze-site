@@ -68,17 +68,9 @@
 
   // === PRO GATING (only 1x & 2x free) ===
 
-  function initProState() {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('pro') === '1') {
-        localStorage.setItem('desq_pro', '1');
-      }
-      state.pro = localStorage.getItem('desq_pro') === '1';
-    } catch {
-      state.pro = false;
-    }
-  }
+ function initProState() {
+  state.pro = true; // 🔓 Everything is free now
+}
 
   function applyProGate() {
     if (!desqPresetEl) return;

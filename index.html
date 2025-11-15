@@ -4,16 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Anamorphic De-Squeeze Tool — Web Desqueeze Studio</title>
+  <title>Anamorphic De-Squeeze Tool — Web Desqueeze Studio-Early Free Access</title>
   <meta name="description"
         content="Free online anamorphic de-squeeze tool. Upload anamorphic photos or videos, choose your lens factor (1.33x, 1.5x, 1.8x, 2.0x) and export fully corrected MP4/JPG/PNG with batch support." />
 
   <link rel="canonical" href="https://anamorphic-desqueeze.com/" />
   <meta name="robots" content="index,follow" />
 
-  <!-- OG / Twitter omitted for brevity, keep if you already had them -->
-
-  <!-- GA4 (keep your existing ID) -->
+  <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BFDRLKVZK"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -21,53 +19,6 @@
     gtag('js', new Date());
     gtag('config', 'G-6BFDRLKVZK');
   </script>
-  
-  
-  <script>
-(async function () {
-  const INR_PRICE = 2000;
-
-  const btnHeader = document.getElementById("proButtonHeader");
-  const btnMain = document.getElementById("proButtonMain");
-
-  // Set fallback text
-  if (btnHeader) btnHeader.textContent = "Unlock Pro in Just ₹2000";
-  if (btnMain) btnMain.textContent = "Unlock Pro in Just ₹2000";
-
-  try {
-    // Detect user currency
-    const geoRes = await fetch("https://ipwho.is/");
-    const geo = await geoRes.json();
-    const code = geo?.currency?.code || "INR";
-
-    // Fetch INR → local FX rate
-    const fxRes = await fetch("https://api.exchangerate.host/latest?base=INR");
-    const fx = await fxRes.json();
-    const rate = fx?.rates?.[code] || 1;
-
-    const localValue = INR_PRICE * rate;
-
-    // Format number in user's locale
-    const formatted = new Intl.NumberFormat(
-      navigator.language || "en-US",
-      {
-        style: "currency",
-        currency: code
-      }
-    ).format(localValue);
-
-    const finalText = `Unlock Pro in Just ${formatted}`;
-
-    // Update BOTH buttons
-    if (btnHeader) btnHeader.textContent = finalText;
-    if (btnMain) btnMain.textContent = finalText;
-
-  } catch (err) {
-    console.error("FX Error:", err);
-    // fallback remains INR
-  }
-})();
-</script>
 
   <link rel="stylesheet" href="./style.css?v=3" />
 
@@ -135,48 +86,21 @@
       font-size:.95rem; padding:0 16px 32px;
     }
     main.seo-copy h2 { color:#fff; font-size:1.2rem; margin-top:1.8rem; }
-    .app-link {
-      font-weight:500; font-size:.85rem;
-      padding:4px 10px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      color:var(--accent); text-decoration:none;
-      margin-left:8px; white-space:nowrap;
-    }
-    .app-link:hover {
-      border-color:var(--accent); color:#fff;
-    }
   </style>
 </head>
 <body>
-  <!-- Header with Android + Razorpay -->
+
+  <!-- Header -->
   <header class="site-header">
     <div class="site-header__inner">
       <div class="brand">
         <span class="brand__dot"></span>
         <span>Web Desqueeze Studio</span>
-        <a
-          class="app-link"
-          href="https://play.google.com/store/apps/details?id=com.squeezer.app"
-          target="_blank"
-          rel="noopener"
-        >
-          Android App
-        </a>
       </div>
       <nav class="nav">
         <a href="#settings">Settings</a>
         <a href="#how-it-works">Guide</a>
         <a href="#support">Support</a>
-			<!-- TODO: replace href with your live Razorpay payment link -->
-		<a
-	  class="btn btn--primary"
-	  href="https://rzp.io/rzp/d8ILFlw"
-	  target="_blank"
-	  rel="noopener"
-	>
-	  UnlockPro Just Rs2000
-	</a>
       </nav>
     </div>
   </header>
@@ -184,7 +108,7 @@
   <div class="wrapper">
     <header class="hero">
       <div class="card">
-        <h1>Anamorphic De-Squeeze Tool — Web Desqueeze Studio</h1>
+        <h1>Anamorphic De-Squeeze Tool — Web Desqueeze Studio-Early Free Access</h1>
         <p class="sub">
           Preview horizontal de-squeeze; export fully corrected MP4/JPG/PNG — batch up to 10 files at once.
         </p>
@@ -217,26 +141,24 @@
           <div id="queue" class="queue hidden"></div>
         </div>
       </section>
-	  
-	  
 
       <!-- Settings -->
       <section class="panel" id="settings">
         <h2>Settings</h2>
 
-		 <div class="row">
-		  <label>Files</label>
-		  <div>
-			<div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-			  <button id="clearAll" type="button" class="btn">Clear</button>
+        <div class="row">
+          <label>Files</label>
+          <div>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <button id="clearAll" type="button" class="btn">Clear</button>
 
-			  <input id="fileInput" type="file"
-					 accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg"
-					 multiple />
-			</div>
-			<small>Select up to 10 files. The first item previews above.(Per File Size limit 50–120 MB file)</small>
-		  </div>
-		</div>
+              <input id="fileInput" type="file"
+                     accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg"
+                     multiple />
+            </div>
+            <small>Select up to 10 files. The first item previews above. (Per File Size limit 50–120 MB file)</small>
+          </div>
+        </div>
 
         <div class="row">
           <label>De-squeeze</label>
@@ -298,30 +220,17 @@
         </div>
       </section>
 
-      <!-- Pro -->
+      <!-- Pro (now just "Advanced features" text, all free) -->
       <section class="panel" id="pro">
-        <h2>GoPro</h2>
+        <h2>Advanced Features (Currently Free)</h2>
         <div class="row">
-          <label>UnlockPro</label>
-				  <div>
-				<a
-		  class="btn btn--primary"
-		  href="https://rzp.io/rzp/d8ILFlw"
-		  target="_blank"
-		  rel="noopener"
-		>
-		  UnlockPro Just Rs2000
-		</a>
-
-            <div id="localPrice" class="note" style="margin-top:6px;">
-              Approx in your currency: <span id="inrValue">loading…</span>
-            </div>
-
+          <label>What you get</label>
+          <div>
             <ul class="feature-list">
-              <li>2.0× de-squeeze is free for everyone</li>
-              <li>Other ratios & advanced controls unlock with Pro</li>
+              <li>2.0× de-squeeze is available for everyone</li>
+              <li>Other ratios & advanced controls available in this web tool</li>
               <li>Batch up to 10 videos/photos at once</li>
-              <li>Faster exports & premium updates</li>
+              <li>Faster exports & ongoing updates</li>
             </ul>
           </div>
         </div>
@@ -347,7 +256,6 @@
     </main>
   </div>
 
-  <!-- Optional SEO copy -->
   <!-- SEO-Optimized Content Block for Anamorphic De-Squeeze Studio -->
   <main class="seo-copy" id="how-it-works">
 
@@ -379,11 +287,10 @@
       <li>Preview horizontal de-squeeze in real-time.</li>
       <li>Export fully corrected MP4, JPG, and PNG files.</li>
       <li>Batch process up to 10 files simultaneously.</li>
-      <li>Manual input for various squeeze factors (1.33x, 1.55x, 2.0x). Use this to ensure your `1.33x anamorphic de-squeeze` is perfect.</li>
+      <li>Manual input for various squeeze factors (1.33x, 1.55x, 2.0x). Use this to ensure your 1.33x anamorphic de-squeeze is perfect.</li>
     </ul>
 
   </main>
-
 
   <footer class="site-footer">
     <div class="site-footer__inner">
@@ -399,53 +306,48 @@
   <!-- JSZip for batch ZIP -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
-    <!-- Feedback helper -->
- <script>
-  (function(){
-    document.getElementById('y').textContent = new Date().getFullYear();
+  <!-- Feedback helper -->
+  <script>
+    (function(){
+      document.getElementById('y').textContent = new Date().getFullYear();
 
-    const btn = document.getElementById('sendFeedback');
-    const msgEl = document.getElementById('feedbackMessage');
-    const emailEl = document.getElementById('feedbackEmail');
-    const hint = document.getElementById('feedbackHint');
-    if (!btn) return;
+      const btn = document.getElementById('sendFeedback');
+      const msgEl = document.getElementById('feedbackMessage');
+      const emailEl = document.getElementById('feedbackEmail');
+      const hint = document.getElementById('feedbackHint');
+      if (!btn) return;
 
-    btn.addEventListener('click', function(){
-      const msg = (msgEl.value || '').trim();
-      if (!msg) {
-        hint.textContent = 'Please enter your message before sending.';
-        return;
-      }
+      btn.addEventListener('click', function(){
+        const msg = (msgEl.value || '').trim();
+        if (!msg) {
+          hint.textContent = 'Please enter your message before sending.';
+          return;
+        }
 
-      const email = (emailEl.value || '').trim();
-      const prefill = `Message: ${msg}${email ? `\n\nEmail: ${email}` : ''}`;
+        const email = (emailEl.value || '').trim();
+        const prefill = `Message: ${msg}${email ? `\n\nEmail: ${email}` : ''}`;
 
-      // copy text to clipboard (optional helper)
-      try {
-        navigator.clipboard &&
-          navigator.clipboard.writeText(prefill).catch(function(){});
-      } catch(e) {}
+        try {
+          navigator.clipboard &&
+            navigator.clipboard.writeText(prefill).catch(function(){});
+        } catch(e) {}
 
-      // 🔴 HERE is your real form link:
-      const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeZEIzfe-UMKQntHC97awMG_uO74tx3XR9CboLh-wByuPzT6A/viewform?usp=preview';
+        const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeZEIzfe-UMKQntHC97awMG_uO74tx3XR9CboLh-wByuPzT6A/viewform?usp=preview';
 
-      window.open(formUrl, '_blank', 'noopener');
+        window.open(formUrl, '_blank', 'noopener');
 
-      hint.textContent = 'Opening feedback form in a new tab. Your message was copied to the clipboard.';
-      msgEl.value = '';
-      emailEl.value = '';
-    });
-  })();
-</script>
+        hint.textContent = 'Opening feedback form in a new tab. Your message was copied to the clipboard.';
+        msgEl.value = '';
+        emailEl.value = '';
+      });
+    })();
+  </script>
 
-  
-  
   <div id="app"></div>
 
-	<footer id="privacy-footer" style="text-align: center; font-size: 0.8rem; color: #9ca3af; margin-top: 2rem;">
-	  We do not store your videos. All uploaded files are automatically deleted from our server after processing.
-	</footer>
-
+  <footer id="privacy-footer" style="text-align: center; font-size: 0.8rem; color: #9ca3af; margin-top: 2rem;">
+    We do not store your videos. All uploaded files are automatically deleted from our server after processing.
+  </footer>
 
   <!-- App logic -->
   <script src="./app.js?v=3"></script>
