@@ -68,9 +68,9 @@
 
   // === PRO GATING (only 1x & 2x free) ===
 
- function initProState() {
-  state.pro = true; // 🔓 Everything is free now
-}
+  function initProState() {
+    state.pro = true; // 🔓 Everything is free now
+  }
 
   function applyProGate() {
     if (!desqPresetEl) return;
@@ -225,55 +225,57 @@
     // anything else -> /downloads/<encoded>
     return origin + '/downloads/' + encodeURIComponent(val);
   }
-  
+
   function clearAll() {
-  // reset state
-  state.items = [];
-  state.selectedId = null;
-  state.currentPreviewId = null;
+    // reset state
+    state.items = [];
+    state.selectedId = null;
+    state.currentPreviewId = null;
 
-  // clear queue UI
-  if (queueEl) {
-    queueEl.innerHTML = '';
-    queueEl.classList.add('hidden');
+    // clear queue UI
+    if (queueEl) {
+      queueEl.innerHTML = '';
+      queueEl.classList.add('hidden');
+    }
+
+    // reset progress bar
+    if (progressBarEl) {
+      progressBarEl.value = 0;
+      progressBarEl.classList.add('hidden');
+    }
+
+    // stop and clear video
+    if (videoEl) {
+      try { videoEl.pause(); } catch {}
+      videoEl.removeAttribute('src');
+      videoEl.load();
+      // 🔹 Restore default poster after clearing
+      videoEl.setAttribute('poster', 'preview.jpg');
+    }
+
+    // clear canvas
+    if (canvasEl) {
+      const ctx = canvasEl.getContext('2d');
+      if (ctx) ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+      canvasEl.classList.add('hidden');
+    }
+
+    // hide download box
+    if (downloadBoxEl) downloadBoxEl.classList.add('hidden');
+    if (downloadLinkEl) {
+      downloadLinkEl.removeAttribute('href');
+      downloadLinkEl.removeAttribute('download');
+    }
+
+    // reset file input
+    if (fileInputEl) fileInputEl.value = '';
+
+    // buttons & status
+    disableUiWhileBusy(false);
+    updateGlobalProgress();
+    ensureQueueVisible();
+    setStatus('Idle');
   }
-
-  // reset progress bar
-  if (progressBarEl) {
-    progressBarEl.value = 0;
-    progressBarEl.classList.add('hidden');
-  }
-
-  // stop and clear video
-  if (videoEl) {
-    try { videoEl.pause(); } catch {}
-    videoEl.removeAttribute('src');
-    videoEl.load();
-  }
-
-  // clear canvas
-  if (canvasEl) {
-    const ctx = canvasEl.getContext('2d');
-    if (ctx) ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
-    canvasEl.classList.add('hidden');
-  }
-
-  // hide download box
-  if (downloadBoxEl) downloadBoxEl.classList.add('hidden');
-  if (downloadLinkEl) {
-    downloadLinkEl.removeAttribute('href');
-    downloadLinkEl.removeAttribute('download');
-  }
-
-  // reset file input
-  if (fileInputEl) fileInputEl.value = '';
-
-  // buttons & status
-  disableUiWhileBusy(false);
-  updateGlobalProgress();
-  ensureQueueVisible();
-  setStatus('Idle');
-}
 
   // === QUEUE RENDERING ===
 
@@ -781,6 +783,11 @@
   function handleFilesSelected(fileList) {
     if (!fileList || !fileList.length) return;
 
+    // 🔹 Remove default poster once a file is selected
+    if (videoEl) {
+      videoEl.removeAttribute('poster');
+    }
+
     const incoming = Array.from(fileList);
     const remainingSlots = MAX_ITEMS - state.items.length;
     const used = remainingSlots <= 0 ? [] : incoming.slice(0, remainingSlots);
@@ -858,10 +865,10 @@
 
     initProState();
     applyProGate();
-	
-	 if (clearAllBtn) {
-    clearAllBtn.addEventListener('click', clearAll); // ← add this
-  }
+
+    if (clearAllBtn) {
+      clearAllBtn.addEventListener('click', clearAll);
+    }
 
     if (fileInputEl) {
       fileInputEl.addEventListener('change', e => {
