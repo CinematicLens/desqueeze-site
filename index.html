@@ -149,29 +149,38 @@
       </section>
 
       <!-- Settings -->
-      <section class="panel" id="settings">
-	  
-	     <div class="row">
-          <label>Files</label>
-          <div>
-            <small>On demand upload files to Amazon S3</small>
-          </div>
-        </div>
-        <h2>Settings</h2>
+    <section class="panel" id="settings">
 
-        <div class="row">
-          <label>Files</label>
-          <div>
-            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-              <button id="clearAll" type="button" class="btn">Clear</button>
+  <div class="row">
+    <label>Files</label>
+    <div>
+      <small>Coming soon — seamless and secure file uploads to Amazon S3.</small>
+    </div>
+  </div>
 
-              <input id="fileInput" type="file"
-                     accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg"
-                     multiple />
-            </div>
-            <small>Select up to 10 files.(Per File Size limit 1mb to 5mb MB for Testing) if bigger size need to be porcessed reach to us teamcentersap@gmail.com or feedback</small>
-          </div>
-        </div>
+  <h2>Settings</h2>
+
+  <div class="row">
+    <label>Select Files</label>
+    <div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <button id="clearAll" type="button" class="btn">Clear</button>
+
+        <input
+          id="fileInput"
+          type="file"
+          accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg"
+          multiple
+        />
+      </div>
+
+      <small>
+        You may select up to 10 files. (Per-file size limit: 1 MB to 5 MB for testing.)  
+        For larger file processing, please contact us at
+        <a href="mailto:teamcentersap@gmail.com">teamcentersap@gmail.com</a>.
+      </small>
+    </div>
+  </div>
 
         <div class="row">
           <label>De-squeeze</label>
