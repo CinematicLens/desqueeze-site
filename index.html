@@ -19,7 +19,9 @@
     gtag('js', new Date());
     gtag('config', 'G-6BFDRLKVZK');
   </script>
-    <script async
+
+  <!-- Google AdSense (loader - keep only once) -->
+  <script async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6348292037303976"
     crossorigin="anonymous">
   </script>
@@ -157,6 +159,24 @@
         z-index: 20;
       }
     }
+
+    /* ===================== AdSense slots (safe, non-invasive) ===================== */
+    .adsense-wrap{
+      max-width:1200px;
+      margin:14px auto 0;
+      padding:0 1.5rem;
+    }
+    .adsense-card{
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 10px 12px;
+    }
+    .adsense-label{
+      color: rgba(255,255,255,0.55);
+      font-size: 0.8rem;
+      margin: 0 0 6px 4px;
+    }
     /* ===================================================================== */
   </style>
 </head>
@@ -240,6 +260,20 @@
       <p style="margin:10px 0 0;">
         DeSqueeze Studio is available with free early access and is continuously evolving to meet the demands of professional cinematic production.
       </p>
+    </div>
+  </section>
+
+  <!-- ===================== AdSense Slot #1 (safe placement) ===================== -->
+  <section class="adsense-wrap" aria-label="Advertisement">
+    <div class="adsense-card">
+      <div class="adsense-label">Advertisement</div>
+      <!-- Responsive Ad Unit -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6348292037303976"
+           data-ad-slot="1234567890"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
     </div>
   </section>
 
@@ -491,6 +525,19 @@
 
   </main>
 
+  <!-- ===================== AdSense Slot #2 (safe placement) ===================== -->
+  <section class="adsense-wrap" aria-label="Advertisement">
+    <div class="adsense-card">
+      <div class="adsense-label">Advertisement</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6348292037303976"
+           data-ad-slot="9876543210"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+  </section>
+
   <footer class="site-footer">
     <div class="site-footer__inner">
       <div>© <span id="y"></span> Web Desqueeze Studio</div>
@@ -539,6 +586,18 @@
         msgEl.value = '';
         emailEl.value = '';
       });
+    })();
+  </script>
+
+  <!-- AdSense init (safe; won't break if not approved yet) -->
+  <script>
+    (function(){
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch(e) {
+        // silently ignore (AdSense not ready / blocked / not approved yet)
+      }
     })();
   </script>
 
