@@ -150,17 +150,22 @@
     }
 
     /* ===================== AdSense containers (safe, no break) ===================== */
-    .adsense-wrap{
-      max-width:1200px;
-      margin:14px auto 0;
-      padding:0 1.5rem;
-    }
-    .adsense-card{
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 16px;
-      padding: 10px 12px;
-    }
+adsense-wrap{
+  max-width:1200px;
+  margin:14px auto 0;
+  padding:0 1.5rem;
+}
+
+.adsense-card{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  padding: 6px 8px;
+
+  /* 🔽 TEMP FIX */
+  min-height: 90px;   /* was auto / too large */
+}
+
     .adsense-label{
       color: rgba(255,255,255,0.55);
       font-size: 0.8rem;
