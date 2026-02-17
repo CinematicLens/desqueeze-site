@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -197,49 +196,6 @@
 
     /* CTA row helper */
     .cta-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
-
-    /* ===================== NEW: LARGE FILE NOTICE ===================== */
-    .large-file-notice{
-      margin-top:10px;
-      padding:14px;
-      border-radius:14px;
-      background: rgba(125, 211, 252, 0.08);
-      border: 1px solid rgba(125, 211, 252, 0.35);
-    }
-    .large-file-notice .notice-title{
-      font-weight:800;
-      color:#fff;
-      margin-bottom:6px;
-      font-size:0.95rem;
-    }
-    .large-file-notice .notice-text{
-      font-size:0.9rem;
-      color: var(--muted);
-      line-height:1.5;
-      margin-bottom:10px;
-    }
-    .large-file-notice .notice-links{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-    .large-file-notice .notice-links a{
-      padding:8px 12px;
-      border-radius:10px;
-      background:#111;
-      border:1px solid var(--border);
-      color:#fff;
-      text-decoration:none;
-      font-size:0.85rem;
-      font-weight:600;
-      transition: all .2s ease;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-    .large-file-notice .notice-links a:hover{
-      border-color: var(--accent);
-    }
   </style>
 </head>
 
@@ -434,7 +390,7 @@
             <a id="downloadLink" href="#" download>Download</a>
           </div>
 
-          <div id="queue" class="queue hidden></div>
+          <div id="queue" class="queue hidden"></div>
         </div>
       </section>
 
@@ -456,25 +412,15 @@
                 accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg" multiple />
             </div>
 
-            <!-- ✅ UPDATED: Bigger files -> desktop/iOS/Android apps -->
-            <div id="largeFileNotice" class="large-file-notice">
-              <div class="notice-title">Processing Bigger Files?</div>
-              <div class="notice-text">
-                The web tool is optimized for small test files (1–5 MB) to keep exports fast in the browser.
-                For larger videos or high-resolution footage, use our Desktop or Mobile apps for faster and more reliable processing.
-              </div>
-              <div class="notice-links">
-                <a id="winLink" href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener">
-                  🪟 Windows (Microsoft Store)
-                </a>
-                <a id="iosLink" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">
-                  🍎 iOS (App Store)
-                </a>
-                <a id="androidLink" href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener">
-                  🤖 Android (Play Store)
-                </a>
-              </div>
-            </div>
+            <!-- ✅ UPDATED COPY (BIGGER FILES -> DOWNLOAD APPS) -->
+            <small>
+              You may select up to 10 files. (Per-file size limit: 1 MB to 5 MB for testing.)
+              For bigger files, please use our dedicated apps for faster and more reliable processing:
+              <a href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener">Windows (Microsoft Store)</a>,
+              <a href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">iOS (App Store)</a>,
+              or
+              <a href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener">Android (Play Store)</a>.
+            </small>
           </div>
         </div>
 
@@ -696,32 +642,6 @@
 
   <!-- App logic (keep EXACTLY as-is) -->
   <script src="./app.js?v=3"></script>
-
-  <!-- ✅ NEW: Smart OS detection for store links -->
-  <script>
-    (function(){
-      try {
-        const ua = (navigator.userAgent || '').toLowerCase();
-
-        const winLink = document.getElementById('winLink');
-        const iosLink = document.getElementById('iosLink');
-        const androidLink = document.getElementById('androidLink');
-
-        if (!winLink || !iosLink || !androidLink) return;
-
-        if (ua.includes('windows')) {
-          iosLink.style.display = 'none';
-          androidLink.style.display = 'none';
-        } else if (ua.includes('iphone') || ua.includes('ipad') || ua.includes('ipod')) {
-          winLink.style.display = 'none';
-          androidLink.style.display = 'none';
-        } else if (ua.includes('android')) {
-          winLink.style.display = 'none';
-          iosLink.style.display = 'none';
-        }
-      } catch(e) {}
-    })();
-  </script>
 
   <!-- ✅ AdSense init (safe: won't throw even when in review) -->
   <script>
