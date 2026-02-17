@@ -1,75 +1,243 @@
+
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <!-- ===================== SEO CORE (NO PRICE) ===================== -->
   <title>Anamorphic De-Squeeze Tool (Web + iOS + Windows) — DeSqueeze Studio</title>
   <meta name="description"
         content="Anamorphic de-squeeze tool for photos & videos. Use Web Desqueeze Studio online (batch up to 10), or install the iOS app and Windows app from Microsoft Store. Choose 1.33x, 1.5x, 1.8x, 2.0x or custom; preview instantly; export corrected MP4/JPG/PNG." />
-
+  <meta name="keywords"
+        content="anamorphic desqueeze, anamorphic de-squeeze, desqueeze tool, 1.33x desqueeze, 1.5x desqueeze, 1.8x desqueeze, 2.0x desqueeze, cinemascope, 2.39:1, anamorphic converter, anamorphic aspect ratio converter, desqueeze mp4, desqueeze jpg, desqueeze png, batch desqueeze, windows anamorphic desqueeze, ios anamorphic desqueeze" />
   <link rel="canonical" href="https://anamorphic-desqueeze.com/" />
   <meta name="robots" content="index,follow" />
 
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Anamorphic De-Squeeze Tool — Web + iOS + Windows" />
+  <meta property="og:description" content="De-squeeze anamorphic photos & videos (1.33×/1.5×/1.8×/2.0×/custom). Preview instantly, export MP4/JPG/PNG, batch up to 10. Get the Windows app on Microsoft Store." />
+  <meta property="og:url" content="https://anamorphic-desqueeze.com/" />
+  <meta property="og:image" content="https://anamorphic-desqueeze.com/preview.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- ✅ AdSense account verification -->
+  <meta name="google-adsense-account" content="ca-pub-6348292037303976" />
+
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BFDRLKVZK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-6BFDRLKVZK');
+  </script>
+
+  <!-- ✅ Google AdSense loader (keep only once in entire site) -->
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6348292037303976"
+    crossorigin="anonymous"></script>
+
   <link rel="stylesheet" href="./style.css?v=3" />
+
+  <!-- ✅ Structured Data (NO PRICE / NO TRIAL) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Anamorphic De-Squeeze Tool / Web Desqueeze Studio",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web, iOS, Windows",
+    "description": "Anamorphic de-squeeze for photos and videos with live preview, batch export and custom squeeze factors.",
+    "url": "https://anamorphic-desqueeze.com/",
+    "image": "https://anamorphic-desqueeze.com/preview.jpg"
+  }
+  </script>
 
   <style>
     :root {
-      --bg: #000;
-      --fg: #fff;
-      --muted: rgba(255,255,255,.65);
+      --bg: #000; --fg: #fff; --muted: rgba(255,255,255,.65);
       --accent: #7dd3fc;
       --border: rgba(255,255,255,.12);
     }
-
     body {
-      background:#000;
-      color:#fff;
-      margin:0;
+      background:#000; color:#fff; margin:0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     }
+    .site-header {
+      position:sticky; top:0; z-index:50;
+      background:rgba(0,0,0,.8);
+      backdrop-filter: blur(8px);
+      border-bottom:1px solid var(--border);
+    }
+    .site-header__inner {
+      max-width:1100px; margin:0 auto;
+      display:flex; gap:16px; align-items:center; justify-content:space-between;
+      padding:12px 16px;
+    }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px; }
+    .brand__dot { width:10px; height:10px; border-radius:999px; background:var(--accent); display:inline-block; }
+    .nav { display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
+    .nav a { color:var(--muted); text-decoration:none; font-size:.95rem; }
+    .nav a:hover { color:#fff; }
 
-    .large-file-notice {
-      margin-top: 10px;
+    .btn {
+      display:inline-block; background:#000;
+      border:1px solid var(--border);
+      color:#fff; border-radius:12px;
+      padding:8px 14px;
+      text-decoration:none; cursor:pointer;
+      transition:all .15s;
+    }
+    .btn:hover { border-color:#555; }
+    .btn--primary { border-color:var(--accent); }
+
+    .hero .card h1 { margin-bottom:.25rem; }
+    .hero .card .sub { color:var(--muted); }
+
+    .feature-list { margin:.4rem 0 0 1.2rem; }
+    .feature-list li { color: var(--muted); font-size:.95rem; margin:.25rem 0; }
+
+    .site-footer { border-top:1px solid var(--border); margin-top:24px; }
+    .site-footer__inner {
+      max-width:1100px; margin:0 auto;
+      padding:16px;
+      display:flex; gap:12px; justify-content:space-between; align-items:center;
+      flex-wrap:wrap; color:var(--muted);
+    }
+    .site-footer__links { display:flex; gap:14px; flex-wrap:wrap; }
+    .site-footer__links a { color: var(--muted); text-decoration:none; }
+    .site-footer__links a:hover { color:#fff; }
+
+    .note { color: var(--muted); font-size:.9rem; }
+    main.seo-copy {
+      max-width:800px; margin:32px auto 0;
+      line-height:1.6; color:var(--muted);
+      font-size:.95rem; padding:0 16px 32px;
+    }
+    main.seo-copy h2 { color:#fff; font-size:1.2rem; margin-top:1.8rem; }
+    main.seo-copy h3 { color:#fff; font-size:1.05rem; margin-top:1.2rem; }
+
+    /* ===================== HOUSE ADS (NO OVERLAP) ===================== */
+    #house-ads {
+      max-width:1200px;
+      margin:14px auto 0;
+      padding:0 1.5rem;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:space-between;
+    }
+    .house-ad {
+      flex: 1 1 320px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
       padding: 14px;
-      border-radius: 14px;
+      color: #fff;
+    }
+    .house-ad p {
+      color: rgba(255,255,255,.75);
+      font-size: .9rem;
+      margin: 8px 0;
+      line-height: 1.45;
+    }
+    .house-ad a.cta {
+      display:block;
+      text-align:center;
+      margin-top:10px;
+      padding:10px;
+      border-radius:12px;
+      background:#6487ff;
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+    }
+    .house-ad a.btnlink {
+      display:block;
+      text-align:center;
+      margin-top:8px;
+      padding:9px;
+      border-radius:12px;
+      background:#111;
+      border:1px solid #444;
+      color:#fff;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    @media (min-width: 1500px) {
+      #house-ads { height: 0; padding: 0; margin: 0; }
+      .house-ad { width: 280px; flex: 0 0 auto; }
+      #house-ad-left { position: fixed; top: 110px; left: 14px; z-index: 20; }
+      #house-ad-right { position: fixed; top: 110px; right: 14px; z-index: 20; }
+    }
+
+    /* ===================== AdSense containers (safe, no break) ===================== */
+    adsense-wrap{
+      max-width:1200px;
+      margin:14px auto 0;
+      padding:0 1.5rem;
+    }
+
+    .adsense-card{
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 6px 8px;
+      min-height: 90px;
+    }
+
+    .adsense-label{
+      color: rgba(255,255,255,0.55);
+      font-size: 0.8rem;
+      margin: 0 0 6px 4px;
+    }
+
+    /* CTA row helper */
+    .cta-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+
+    /* ===================== NEW: LARGE FILE NOTICE ===================== */
+    .large-file-notice{
+      margin-top:10px;
+      padding:14px;
+      border-radius:14px;
       background: rgba(125, 211, 252, 0.08);
       border: 1px solid rgba(125, 211, 252, 0.35);
     }
-
-    .large-file-notice .notice-title {
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 6px;
-      font-size: 0.95rem;
+    .large-file-notice .notice-title{
+      font-weight:800;
+      color:#fff;
+      margin-bottom:6px;
+      font-size:0.95rem;
     }
-
-    .large-file-notice .notice-text {
-      font-size: 0.9rem;
+    .large-file-notice .notice-text{
+      font-size:0.9rem;
       color: var(--muted);
-      line-height: 1.5;
-      margin-bottom: 10px;
+      line-height:1.5;
+      margin-bottom:10px;
     }
-
-    .large-file-notice .notice-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .large-file-notice .notice-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
     }
-
-    .large-file-notice .notice-links a {
-      padding: 8px 12px;
-      border-radius: 10px;
-      background: #111;
-      border: 1px solid var(--border);
-      color: #fff;
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 600;
-      transition: all 0.2s ease;
+    .large-file-notice .notice-links a{
+      padding:8px 12px;
+      border-radius:10px;
+      background:#111;
+      border:1px solid var(--border);
+      color:#fff;
+      text-decoration:none;
+      font-size:0.85rem;
+      font-weight:600;
+      transition: all .2s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
     }
-
-    .large-file-notice .notice-links a:hover {
+    .large-file-notice .notice-links a:hover{
       border-color: var(--accent);
     }
   </style>
@@ -77,87 +245,491 @@
 
 <body>
 
-<div class="wrapper">
-  <main class="grid">
-
-    <!-- SETTINGS -->
-    <section class="panel" id="settings">
-
-      <div class="row">
-        <label>Select Files</label>
-        <div>
-          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-            <button id="clearAll" type="button" class="btn">Clear</button>
-            <input id="fileInput" type="file"
-              accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg"
-              multiple />
-          </div>
-
-          <!-- NEW PROFESSIONAL NOTICE -->
-          <div id="largeFileNotice" class="large-file-notice">
-            <div class="notice-title">Processing Large Files?</div>
-            <div class="notice-text">
-              The web version is optimized for small test files (1–5 MB).
-              For larger videos or high-resolution footage, use our dedicated apps
-              for faster and more reliable processing.
-            </div>
-
-            <div class="notice-links">
-              <a id="winLink"
-                 href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN"
-                 target="_blank" rel="noopener">
-                🪟 Windows (Microsoft Store)
-              </a>
-
-              <a id="iosLink"
-                 href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068"
-                 target="_blank" rel="noopener">
-                🍎 iOS (App Store)
-              </a>
-
-              <a id="androidLink"
-                 href="https://play.google.com/store/apps/details?id=com.squeezer.app"
-                 target="_blank" rel="noopener">
-                🤖 Android (Play Store)
-              </a>
-            </div>
-          </div>
-
-        </div>
+  <!-- ===================== TOP ASO TEXT ===================== -->
+  <section id="top-aso" style="max-width:1200px;margin:18px auto 0;padding:0 1.5rem;color:var(--muted);line-height:1.6;">
+    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:16px;padding:14px 16px;">
+      <div style="color:#fff;font-weight:800;font-size:1.15rem;margin:0 0 6px 0;">
+        Anamorphic De-Squeeze Tool Online — Web Desqueeze Studio
       </div>
 
+      <div style="color:#fff;font-weight:700;margin-top:10px;">What is anamorphic de-squeeze and why fix distortion?</div>
+      <div>
+        <strong>Anamorphic lenses</strong> squeeze the image horizontally to capture a wider field of view on a normal sensor.
+        This look is popular with professional filmmakers and mobile anamorphic lenses (Moment, Sirui, Moondog Labs).
+        Without de-squeezing, footage looks tall and skinny. This online anamorphic de-squeeze tool fixes the distortion,
+        stretching footage back to the intended cinematic aspect ratio (e.g., 2.39:1).
+      </div>
+
+      <div style="color:#fff;font-weight:700;margin-top:10px;">How to De-Squeeze Photos and Videos Online (Batch Processing)</div>
+      <div>
+        Use the browser-based studio (no download). Batch process up to 10 files for faster work.
+      </div>
+
+      <div style="color:#fff;font-weight:700;margin-top:10px;">Supported Formats &amp; Key Features:</div>
+      <ul style="margin:6px 0 0 18px;">
+        <li>Preview horizontal de-squeeze in real-time.</li>
+        <li>Export fully corrected MP4, JPG, and PNG files.</li>
+        <li>Batch process up to 10 files simultaneously.</li>
+        <li>Manual input for squeeze factors (1.33x, 1.55x, 2.0x, custom).</li>
+      </ul>
+
+      <div style="color:#fff;font-weight:700;margin-top:12px;">Get the app</div>
+      <div class="cta-row">
+        <a class="btn btn--primary"
+           href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN"
+           target="_blank" rel="noopener">
+          Get Windows App (Microsoft Store)
+        </a>
+
+        <a class="btn"
+           href="ms-windows-store://pdp/?productid=9PH01D6PQ8X3">
+          Open in Microsoft Store (Windows)
+        </a>
+
+        <a class="btn"
+           href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068"
+           target="_blank" rel="noopener">
+          Get iOS App
+        </a>
+      </div>
+
+      <div class="note" style="margin-top:8px;">
+        Windows app is available via Microsoft Store (recommended).
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TOOLS SECTION AT TOP ===================== -->
+  <section id="tools" style="max-width:1200px;margin:14px auto 0;padding:0 1.5rem;color:var(--muted);line-height:1.6;">
+    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:16px;padding:14px 16px;">
+      <h2 style="margin:0;color:#fff;font-size:1.2rem;">Our Tools</h2>
+
+      <p style="margin:10px 0 0;">
+        DeSqueeze Studio delivers accurate anamorphic correction across Web, iOS, Android, and Windows Desktop for consistent results everywhere.
+      </p>
+
+      <ul style="margin:10px 0 0 18px;">
+        <li>
+          <strong style="color:#fff;">Web Studio:</strong>
+          Browser-based de-squeeze with batch processing.
+          <a href="https://anamorphic-desqueeze.com/" target="_blank" rel="noopener" style="color:#93c5fd;">Launch Web Studio</a>
+        </li>
+
+        <li style="margin-top:6px;">
+          <strong style="color:#fff;">iOS App:</strong>
+          CinemaScope options + ratio slider control + batch workflows.
+          <a href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener" style="color:#93c5fd;">Download on the App Store</a>
+        </li>
+
+        <li style="margin-top:6px;">
+          <strong style="color:#fff;">Android Apps:</strong>
+          <a href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener" style="color:#93c5fd;">DeSqueeze Studio</a>
+          |
+          <a href="https://play.google.com/store/apps/details?id=com.cinematiclens.desqueeze.live" target="_blank" rel="noopener" style="color:#93c5fd;">Cinematic Lens DeSqueeze</a>
+        </li>
+
+        <li style="margin-top:6px;">
+          <strong style="color:#fff;">Windows (Microsoft Store):</strong>
+          Trusted install + easy updates.
+          <a href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener" style="color:#93c5fd;">Get it on Microsoft Store</a>
+          <span style="color:rgba(255,255,255,.35);"> | </span>
+          <a href="ms-windows-store://pdp/?productid=9PH01D6PQ8X3" style="color:#93c5fd;">Open in Store app</a>
+          <span style="color:rgba(255,255,255,.35);"> | </span>
+          <a href="#windows-desktop-tool" style="color:#93c5fd;">Windows info</a>
+        </li>
+
+        <li style="margin-top:6px;">
+          <strong style="color:#fff;">Community & Updates:</strong>
+          <a href="https://www.facebook.com/profile.php?id=61582013559827" target="_blank" rel="noopener" style="color:#93c5fd;">Facebook Page</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== HOUSE ADS (ALWAYS VISIBLE) ===================== -->
+  <div id="house-ads" aria-label="Promotions">
+    <div id="house-ad-left" class="house-ad">
+      <div style="font-weight:800;font-size:1.05rem;">Web Desqueeze Studio</div>
+      <p>
+        Online anamorphic de-squeeze tool for photos &amp; videos.<br>
+        Supports 1.33× · 1.5× · 1.8× · 2.0× + Custom
+      </p>
+      <a class="cta" href="https://anamorphic-desqueeze.com/" target="_blank" rel="noopener">Use Online Tool</a>
+    </div>
+
+    <div id="house-ad-right" class="house-ad">
+      <div style="font-weight:800;font-size:1.05rem;">Apps + Desktop</div>
+      <p>
+        iOS + Android apps for mobile filmmaking.<br>
+        Windows app on Microsoft Store.
+      </p>
+      <a class="btnlink" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">Download on iOS</a>
+      <a class="btnlink" href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener">Get on Windows (Microsoft Store)</a>
+      <a class="btnlink" href="ms-windows-store://pdp/?productid=9PH01D6PQ8X3">Open in Store App (Windows)</a>
+      <a class="btnlink" href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener">Get on Android</a>
+      <a class="btnlink" href="https://play.google.com/store/apps/details?id=com.cinematiclens.desqueeze.live" target="_blank" rel="noopener">Cinematic Lens DeSqueeze</a>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="site-header__inner">
+      <div class="brand">
+        <span class="brand__dot"></span>
+        <span>Web Desqueeze Studio</span>
+      </div>
+      <nav class="nav">
+        <a href="#settings">Settings</a>
+        <a href="#how-it-works">Guide</a>
+        <a href="#ios-app">iOS App</a>
+        <a href="#windows-desktop-tool">Windows</a>
+        <a href="#support">Support</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrapper">
+    <header class="hero">
+      <div class="card">
+        <h1>Anamorphic De-Squeeze Tool — Web + iOS + Windows</h1>
+        <p class="sub">
+          Preview horizontal de-squeeze; export corrected MP4/JPG/PNG — batch up to 10 files.
+        </p>
+        <div class="cta-row" style="margin-top:12px;">
+          <a class="btn btn--primary" href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener">
+            Install Windows App
+          </a>
+          <a class="btn" href="ms-windows-store://pdp/?productid=9PH01D6PQ8X3">
+            Open in Store (Windows)
+          </a>
+          <a class="btn" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">
+            iOS App
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="grid">
+      <!-- Monitor -->
+      <section class="panel monitor">
+        <div class="preview" id="previewBox">
+          <video id="video" playsinline controls preload="metadata" poster="preview.jpg"></video>
+          <canvas id="photoCanvas" class="hidden"></canvas>
+        </div>
+
+        <div class="controls">
+          <div class="actions">
+            <button id="play" class="start">Play</button>
+            <button id="pause" class="stop">Pause</button>
+            <button id="exportSelected" class="start" disabled>Export Selected</button>
+            <button id="exportBatch" class="start" disabled>Export Batch</button>
+            <span id="status" class="status" role="status" aria-live="polite">Idle</span>
+          </div>
+
+          <progress id="progressBar" value="0" max="100" class="hidden"></progress>
+
+          <div id="download" class="download hidden">
+            <a id="downloadLink" href="#" download>Download</a>
+          </div>
+
+          <div id="queue" class="queue hidden></div>
+        </div>
+      </section>
+
+      <!-- Settings (UNCHANGED HOOKS/IDS) -->
+      <section class="panel" id="settings">
+        <div class="row">
+          <label>Files</label>
+          <div><small>Coming soon — seamless and secure file uploads to Amazon S3.</small></div>
+        </div>
+
+        <h2>Settings</h2>
+
+        <div class="row">
+          <label>Select Files</label>
+          <div>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <button id="clearAll" type="button" class="btn">Clear</button>
+              <input id="fileInput" type="file"
+                accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg" multiple />
+            </div>
+
+            <!-- ✅ UPDATED: Bigger files -> desktop/iOS/Android apps -->
+            <div id="largeFileNotice" class="large-file-notice">
+              <div class="notice-title">Processing Bigger Files?</div>
+              <div class="notice-text">
+                The web tool is optimized for small test files (1–5 MB) to keep exports fast in the browser.
+                For larger videos or high-resolution footage, use our Desktop or Mobile apps for faster and more reliable processing.
+              </div>
+              <div class="notice-links">
+                <a id="winLink" href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener">
+                  🪟 Windows (Microsoft Store)
+                </a>
+                <a id="iosLink" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">
+                  🍎 iOS (App Store)
+                </a>
+                <a id="androidLink" href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener">
+                  🤖 Android (Play Store)
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>De-squeeze</label>
+          <div>
+            <select id="desqPreset">
+              <option value="1">None (1.00×)</option>
+              <option value="1.25">1.25×</option>
+              <option value="1.33">1.33× (Classic)</option>
+              <option value="1.5">1.50×</option>
+              <option value="1.8">1.80×</option>
+              <option value="2">2.00×</option>
+              <option value="custom">Custom…</option>
+            </select>
+            <input id="desqCustom" type="number" step="0.01" min="1" placeholder="Custom factor" class="hidden mt8" />
+            <small>Preview updates instantly; export uses the same factor.</small>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Video FPS</label>
+          <div>
+            <select id="fpsPreset">
+              <option value="copy" selected>Keep original</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+              <option value="30">30</option>
+              <option value="50">50</option>
+              <option value="60">60</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Video Bitrate</label>
+          <div>
+            <select id="bitratePreset">
+              <option value="8000000" selected>8 Mbps</option>
+              <option value="12000000">12 Mbps</option>
+              <option value="16000000">16 Mbps</option>
+              <option value="25000000">25 Mbps</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Photo Format</label>
+          <div>
+            <select id="photoFormat">
+              <option value="image/jpeg" selected>JPEG</option>
+              <option value="image/png">PNG</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row" style="display:none">
+          <label>Upload URL</label>
+          <input id="uploadUrl" type="text" value="https://desqueeze-server-render.onrender.com/upload" />
+        </div>
+      </section>
+
+      <!-- Pro -->
+      <section class="panel" id="pro">
+        <h2>Advanced Features (Currently Free)</h2>
+        <div class="row">
+          <label>What you get</label>
+          <div>
+            <ul class="feature-list">
+              <li>2.0× de-squeeze is available for everyone</li>
+              <li>Other ratios & advanced controls available in this web tool</li>
+              <li>Batch up to 10 videos/photos at once</li>
+              <li>Faster exports & ongoing updates</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Support -->
+      <section class="panel" id="support">
+        <h2>Support</h2>
+        <div class="row">
+          <label>Feedback</label>
+          <div>
+            <form id="feedbackForm" class="feedback-box" onsubmit="return false;">
+              <textarea id="feedbackMessage" class="feedback-input" rows="4" placeholder="Tell us what's confusing, what's broken, or what you'd love to see…"></textarea>
+              <div class="feedback-actions">
+                <input id="feedbackEmail" class="feedback-email" type="email" placeholder="Your email (optional)" />
+                <button id="sendFeedback" class="btn" type="button">Send Feedback</button>
+              </div>
+              <small id="feedbackHint" class="note">We’ll open the feedback page with your message pre-filled.</small>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===================== SEO COPY ===================== -->
+  <main class="seo-copy" id="how-it-works">
+    <h1>Anamorphic De-Squeeze Tool Online — Web Desqueeze Studio</h1>
+
+    <h2>What is anamorphic de-squeeze and why fix distortion?</h2>
+    <p>
+      <strong>Anamorphic lenses</strong> squeeze the image horizontally to capture a wider field of view on a normal sensor.
+      Without de-squeezing, footage looks tall and skinny. This <strong>anamorphic de-squeeze tool</strong> restores the intended
+      <strong>cinematic aspect ratio</strong> (like 2.39:1 CinemaScope) for professional-looking results.
+    </p>
+
+    <h2>How to de-squeeze photos and videos online</h2>
+    <p>
+      Upload your footage, select your lens factor (1.33× / 1.5× / 1.8× / 2.0× or custom), preview instantly, and export corrected files.
+      Batch up to 10 items for faster workflows.
+    </p>
+
+    <h3>Supported formats</h3>
+    <ul>
+      <li>Video export: MP4</li>
+      <li>Photo export: JPG or PNG</li>
+    </ul>
+
+    <section id="ios-app">
+      <h2>iOS Anamorphic De-Squeeze App (iPhone &amp; iPad)</h2>
+      <p>
+        Built for mobile filmmakers: ratio slider controls, CinemaScope options, live and post workflows, and batch processing.
+      </p>
+      <p>
+        <a href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068"
+           target="_blank" rel="noopener" style="color:#93c5fd;">
+          Download on the App Store
+        </a>
+      </p>
     </section>
 
+    <section id="windows-desktop-tool">
+      <h2>Windows Anamorphic De-Squeeze App (Microsoft Store)</h2>
+      <p>
+        Install the Windows version from Microsoft Store for trusted installation and updates.
+      </p>
+
+      <h3>Get it</h3>
+      <ul>
+        <li>
+          <a href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener" style="color:#93c5fd;">
+            Install from Microsoft Store
+          </a>
+        </li>
+        <li>
+          <a href="ms-windows-store://pdp/?productid=9PH01D6PQ8X3" style="color:#93c5fd;">
+            Open directly in Microsoft Store app (Windows)
+          </a>
+        </li>
+      </ul>
+    </section>
   </main>
-</div>
 
-<script src="./app.js?v=3"></script>
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div>© <span id="y"></span> Web Desqueeze Studio</div>
+      <div class="site-footer__links">
+        <a href="#settings">Settings</a>
+        <a href="#how-it-works">Guide</a>
+        <a href="#ios-app">iOS App</a>
+        <a href="#windows-desktop-tool">Windows</a>
+        <a href="#support">Support</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/how-to-desqueeze-1-33x.html">1.33× Guide</a>
+        <a href="/anamorphic-desqueeze-iphone.html">iPhone Guide</a>
+      </div>
+    </div>
+  </footer>
 
-<!-- SMART OS DETECTION -->
-<script>
-(function(){
-  const ua = navigator.userAgent.toLowerCase();
+  <!-- JSZip for batch ZIP (keep as you had) -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
-  const winLink = document.getElementById('winLink');
-  const iosLink = document.getElementById('iosLink');
-  const androidLink = document.getElementById('androidLink');
+  <!-- Feedback helper (unchanged behavior) -->
+  <script>
+    (function(){
+      document.getElementById('y').textContent = new Date().getFullYear();
 
-  if (!winLink || !iosLink || !androidLink) return;
+      const btn = document.getElementById('sendFeedback');
+      const msgEl = document.getElementById('feedbackMessage');
+      const emailEl = document.getElementById('feedbackEmail');
+      const hint = document.getElementById('feedbackHint');
+      if (!btn) return;
 
-  if (ua.includes('windows')) {
-    iosLink.style.display = 'none';
-    androidLink.style.display = 'none';
-  }
-  else if (ua.includes('iphone') || ua.includes('ipad') || ua.includes('ipod')) {
-    winLink.style.display = 'none';
-    androidLink.style.display = 'none';
-  }
-  else if (ua.includes('android')) {
-    winLink.style.display = 'none';
-    iosLink.style.display = 'none';
-  }
-})();
-</script>
+      btn.addEventListener('click', function(){
+        const msg = (msgEl.value || '').trim();
+        if (!msg) {
+          hint.textContent = 'Please enter your message before sending.';
+          return;
+        }
 
+        const email = (emailEl.value || '').trim();
+        const prefill = `Message: ${msg}${email ? `\n\nEmail: ${email}` : ''}`;
+
+        try {
+          navigator.clipboard &&
+            navigator.clipboard.writeText(prefill).catch(function(){});
+        } catch(e) {}
+
+        const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeZEIzfe-UMKQntHC97awMG_uO74tx3XR9CboLh-wByuPzT6A/viewform?usp=preview';
+
+        window.open(formUrl, '_blank', 'noopener');
+
+        hint.textContent = 'Opening feedback form in a new tab. Your message was copied to the clipboard.';
+        msgEl.value = '';
+        emailEl.value = '';
+      });
+    })();
+  </script>
+
+  <div id="app"></div>
+
+  <footer id="privacy-footer" style="text-align: center; font-size: 0.8rem; color: #9ca3af; margin-top: 2rem;">
+    We do not store your videos. All uploaded files are automatically deleted from our server after processing.
+  </footer>
+
+  <!-- App logic (keep EXACTLY as-is) -->
+  <script src="./app.js?v=3"></script>
+
+  <!-- ✅ NEW: Smart OS detection for store links -->
+  <script>
+    (function(){
+      try {
+        const ua = (navigator.userAgent || '').toLowerCase();
+
+        const winLink = document.getElementById('winLink');
+        const iosLink = document.getElementById('iosLink');
+        const androidLink = document.getElementById('androidLink');
+
+        if (!winLink || !iosLink || !androidLink) return;
+
+        if (ua.includes('windows')) {
+          iosLink.style.display = 'none';
+          androidLink.style.display = 'none';
+        } else if (ua.includes('iphone') || ua.includes('ipad') || ua.includes('ipod')) {
+          winLink.style.display = 'none';
+          androidLink.style.display = 'none';
+        } else if (ua.includes('android')) {
+          winLink.style.display = 'none';
+          iosLink.style.display = 'none';
+        }
+      } catch(e) {}
+    })();
+  </script>
+
+  <!-- ✅ AdSense init (safe: won't throw even when in review) -->
+  <script>
+    (function(){
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch(e) {}
+    })();
+  </script>
 </body>
 </html>
