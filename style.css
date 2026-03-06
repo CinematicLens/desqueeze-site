@@ -517,3 +517,54 @@ progress.hidden { display: none; }
   color: #ecfccb;
 }
 
+/* App UI screenshots section */
+.app-ui-section {
+  max-width: 1200px;
+  margin: 0 auto 2.5rem;
+  padding: 0 1.5rem;
+}
+
+.app-ui-section__title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 .3rem;
+  letter-spacing: -0.02em;
+}
+
+.app-ui-section__sub {
+  font-size: .95rem;
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+}
+
+.app-ui-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.app-ui-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.app-ui-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.app-ui-card__label {
+  display: block;
+  padding: .6rem 1rem;
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: rgba(0, 0, 0, 0.35);
+}
+
