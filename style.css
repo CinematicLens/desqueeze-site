@@ -222,6 +222,47 @@ progress.hidden { display: none; }
   background: #22c55e;
 }
 
+/* Platforms visual (Web + Mobile) */
+.platforms-visual {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  padding: 0 1.5rem;
+}
+.platforms-visual__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 640px) {
+  .platforms-visual__grid { grid-template-columns: 1fr; }
+}
+.platforms-visual__card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+}
+.platforms-visual__card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+.platforms-visual__label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 14px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+
 /* Product strip + cards */
 
 .product-strip {
