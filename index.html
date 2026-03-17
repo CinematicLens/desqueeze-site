@@ -140,7 +140,7 @@
       justify-content: space-between;
       padding: 16px 28px;
     }
-    .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; letter-spacing: -0.02em; font-size: 1.05rem; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; letter-spacing: -0.02em; font-size: 1.05rem; color: var(--fg); text-decoration: none; }
     .brand__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent-soft); }
     .nav { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
     .nav a { color: var(--muted); text-decoration: none; font-size: .9rem; font-weight: 500; transition: color .2s; }
@@ -287,19 +287,17 @@
 
 <body>
 
-  <!-- Header first: professional product site -->
+  <!-- Header: single nav, no repetitive guide links -->
   <header class="site-header">
     <div class="site-header__inner">
-      <div class="brand">
+      <a href="/" class="brand" aria-label="DeSqueeze Studio home">
         <span class="brand__dot"></span>
-        <span>Web Desqueeze Studio</span>
-      </div>
+        <span>DeSqueeze Studio</span>
+      </a>
       <nav class="nav">
         <a href="#product-lineup">Products</a>
         <a href="#settings">Web Studio</a>
-        <a href="#ios-app">iOS</a>
-        <a href="#windows-desktop-tool">Windows</a>
-        <a href="#how-it-works">Guides</a>
+        <a href="/guides.html">Guides</a>
         <a href="#support">Support</a>
         <a href="/privacy.html">Privacy</a>
         <a href="/terms.html">Terms</a>
@@ -379,7 +377,7 @@
             <img src="assets/product-ios.png" alt="Anamorphic de-squeeze controls on an iPhone screen">
           </div>
           <p class="product-card__body">
-            Ratio sliders, CinemaScope presets, batch. On-set monitoring and post for 1.33×–2× lenses.
+            Live monitor and post. 1.33×–2× + custom ratio, ProRes &amp; 10-bit, FCPXML. Zebras, waveform, false color, 2.39:1 export.
           </p>
           <a class="product-card__cta" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">
             App Store
@@ -389,12 +387,12 @@
 
         <article class="product-card">
           <div class="product-card__tag">Android</div>
-          <div class="product-card__title">DeSqueeze Studio</div>
+          <div class="product-card__title">Anamorphic Desqueezer — Batch &amp; LUT</div>
           <div class="product-card__media">
             <img src="assets/product-android.png" alt="DeSqueeze Studio anamorphic tool on an Android phone">
           </div>
           <p class="product-card__body">
-            Anamorphic de-squeeze with batch and export. Same quality as Web and iOS.
+            Batch desqueeze, LUT grading, CinemaScope 2.39:1, 4K export. LiveGrade with CDL and .cube LUTs.
           </p>
           <a class="product-card__cta" href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener">
             Google Play
@@ -405,8 +403,11 @@
         <article class="product-card">
           <div class="product-card__tag">Android</div>
           <div class="product-card__title">Cinematic Lens DeSqueeze</div>
+          <div class="product-card__media">
+            <img src="assets/product-android.png" alt="Live and post de-squeeze on Android">
+          </div>
           <p class="product-card__body">
-            Live and post de-squeeze on Android. Real-time preview and batch export.
+            Live and post de-squeeze. Real-time preview and batch export on Android.
           </p>
           <a class="product-card__cta" href="https://play.google.com/store/apps/details?id=com.cinematiclens.desqueeze.live" target="_blank" rel="noopener">
             Google Play
@@ -416,12 +417,12 @@
 
         <article class="product-card">
           <div class="product-card__tag">Windows</div>
-          <div class="product-card__title">Desktop app — Microsoft Store</div>
+          <div class="product-card__title">AnamorphicDesqueezePro</div>
           <div class="product-card__media">
-            <img src="assets/product-windows.png" alt="Desktop anamorphic de-squeeze timeline on Windows">
+            <img src="assets/product-windows.png" alt="Desktop anamorphic de-squeeze on Windows">
           </div>
           <p class="product-card__body">
-            Larger projects, higher bitrates, trusted install. Same 1.33×–2× correction.
+            Batch de-squeeze, CinemaScope 2.39:1–2.76:1, LUT &amp; CDL grading, live preview, EDL export. Runs locally.
           </p>
           <a class="product-card__cta" href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener">
             Microsoft Store
@@ -702,20 +703,12 @@
 
   <footer class="site-footer">
     <div class="site-footer__inner">
-      <div>© <span id="y"></span> Web Desqueeze Studio</div>
+      <div>© <span id="y"></span> DeSqueeze Studio</div>
       <div class="site-footer__links">
-        <a href="#settings">Settings</a>
-        <a href="#how-it-works">Guide</a>
-        <a href="#ios-app">iOS App</a>
-        <a href="#windows-desktop-tool">Windows</a>
-        <a href="#support">Support</a>
+        <a href="/guides.html">Guides</a>
         <a href="/privacy.html">Privacy</a>
         <a href="/terms.html">Terms</a>
-        <a href="/how-to-desqueeze-1-33x.html">1.33× Guide</a>
-        <a href="/anamorphic-desqueeze-iphone.html">iPhone Guide</a>
-        <a href="/moment-anamorphic-desqueeze.html">Moment</a>
-        <a href="/sirui-anamorphic-desqueeze.html">Sirui</a>
-        <a href="/cinemascope-export-online.html">2.39:1</a>
+        <a href="mailto:teamcentersap@gmail.com">Contact</a>
       </div>
     </div>
   </footer>

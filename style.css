@@ -268,7 +268,7 @@ progress.hidden { display: none; }
 .product-strip {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem 2.25rem;
+  padding: 0 1.5rem 2.5rem;
 }
 
 .product-strip__header {
@@ -329,6 +329,8 @@ progress.hidden { display: none; }
 .product-card__body {
   font-size: .85rem;
   color: var(--muted);
+  line-height: 1.45;
+  min-height: 2.9em;
 }
 
 .product-card__media {
