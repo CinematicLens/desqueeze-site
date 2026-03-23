@@ -40,17 +40,17 @@
 
   <style>
     :root {
-      --bg: #000; --fg: #fff; --muted: rgba(255,255,255,.65);
-      --accent: #7dd3fc;
-      --border: rgba(255,255,255,.12);
+      --bg: #f8f5ea; --fg: #0b0f14; --muted: rgba(11,15,20,.72);
+      --accent: #00bcd4;
+      --border: rgba(11,15,20,.14);
     }
     body {
-      background:#000; color:#fff; margin:0;
+      background:var(--bg); color:var(--fg); margin:0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     }
     .site-header {
       position:sticky; top:0; z-index:50;
-      background:rgba(0,0,0,.8);
+      background:rgba(248,245,234,.92);
       backdrop-filter: blur(8px);
       border-bottom:1px solid var(--border);
     }
@@ -63,17 +63,17 @@
     .brand__dot { width:10px; height:10px; border-radius:999px; background:var(--accent); display:inline-block; }
     .nav { display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
     .nav a { color:var(--muted); text-decoration:none; font-size:.95rem; }
-    .nav a:hover { color:#fff; }
+    .nav a:hover { color:var(--fg); }
 
     .btn {
-      display:inline-block; background:#000;
+      display:inline-block; background:#fff;
       border:1px solid var(--border);
-      color:#fff; border-radius:12px;
+      color:#0b0f14; border-radius:12px;
       padding:8px 14px;
       text-decoration:none; cursor:pointer;
       transition:all .15s;
     }
-    .btn:hover { border-color:#555; }
+    .btn:hover { border-color:rgba(0,188,212,.7); }
     .btn--primary { border-color:var(--accent); }
 
     .hero .card h1 { margin-bottom:.25rem; }
@@ -99,7 +99,15 @@
       line-height:1.6; color:var(--muted);
       font-size:.95rem; padding:0 16px 32px;
     }
-    main.seo-copy h2 { color:#fff; font-size:1.2rem; margin-top:1.8rem; }
+    main.seo-copy h2 { color:#0b0f14; font-size:1.2rem; margin-top:1.8rem; }
+    main.seo-copy h3,
+    main.seo-copy p,
+    main.seo-copy li,
+    main.seo-copy strong,
+    main.seo-copy span,
+    main.seo-copy a {
+      color: #0b0f14 !important;
+    }
 
     /* ===================== HOUSE ADS (NO OVERLAP) ===================== */
     #house-ads {
@@ -113,14 +121,14 @@
     }
     .house-ad {
       flex: 1 1 320px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(11,15,20,0.14);
       border-radius: 16px;
       padding: 14px;
-      color: #fff;
+      color: #0b0f14;
     }
     .house-ad p {
-      color: rgba(255,255,255,.75);
+      color: rgba(15,23,42,.82);
       font-size: .9rem;
       margin: 8px 0;
       line-height: 1.45;
@@ -132,7 +140,7 @@
       padding:10px;
       border-radius:12px;
       background:#6487ff;
-      color:#fff;
+      color:#0b0f14;
       text-decoration:none;
       font-weight:700;
     }
@@ -142,9 +150,9 @@
       margin-top:8px;
       padding:9px;
       border-radius:12px;
-      background:#111;
-      border:1px solid #444;
-      color:#fff;
+      background:#ffffff;
+      border:1px solid rgba(11,15,20,.24);
+      color:#0b0f14;
       text-decoration:none;
       font-weight:600;
     }
@@ -163,13 +171,13 @@
       padding:0 1.5rem;
     }
     .adsense-card{
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(11,15,20,0.14);
       border-radius: 16px;
       padding: 10px 12px;
     }
     .adsense-label{
-      color: rgba(255,255,255,0.55);
+      color: rgba(15,23,42,0.65);
       font-size: 0.8rem;
       margin: 0 0 6px 4px;
     }

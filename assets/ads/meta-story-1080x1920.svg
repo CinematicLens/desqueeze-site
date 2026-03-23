@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-labelledby="t d">
+  <title id="t">CineLutLiveGrade Meta Story Ad</title>
+  <desc id="d">Vertical high-end ad creative for stories and reels.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#04050a"/>
+      <stop offset="100%" stop-color="#111933"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+
+  <text x="78" y="130" fill="#93c5fd" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="600">DE SQUEEZE STUDIO</text>
+  <text x="78" y="270" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="98" font-weight="700">CineLut</text>
+  <text x="78" y="362" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="98" font-weight="700">LiveGrade</text>
+  <text x="78" y="432" fill="#cbd5e1" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="42">Live LUT and CDL grading for Mac</text>
+
+  <rect x="78" y="510" width="924" height="760" rx="28" fill="#0f172a" stroke="#334155"/>
+  <text x="126" y="620" fill="#e2e8f0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="44" font-weight="600">Designed for:</text>
+  <text x="126" y="688" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="40">Cinematographers</text>
+  <text x="126" y="748" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="40">DIT teams</text>
+  <text x="126" y="808" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="40">Colorists</text>
+  <rect x="126" y="850" width="828" height="4" rx="2" fill="url(#line)"/>
+
+  <text x="126" y="928" fill="#e2e8f0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="36">- Real-time scopes and look monitoring</text>
+  <text x="126" y="988" fill="#e2e8f0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="36">- SDI/HDMI input and graded ProRes recording</text>
+  <text x="126" y="1048" fill="#e2e8f0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="36">- LUT/CDL + dailies handoff pipeline</text>
+  <text x="126" y="1108" fill="#e2e8f0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="36">- Built for high-speed set workflows</text>
+
+  <rect x="78" y="1330" width="640" height="120" rx="20" fill="url(#line)"/>
+  <text x="124" y="1405" fill="#ffffff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="52" font-weight="700">Get on Mac App Store</text>
+
+  <text x="78" y="1530" fill="#93c5fd" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="38">anamorphic-desqueeze.com</text>
+  <text x="78" y="1600" fill="#cbd5e1" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="32">Live Grade -> Dailies -> Editorial</text>
+</svg>

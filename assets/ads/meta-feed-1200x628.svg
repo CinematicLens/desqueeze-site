@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="628" viewBox="0 0 1200 628" role="img" aria-labelledby="t d">
+  <title id="t">CineLutLiveGrade Meta Feed Ad</title>
+  <desc id="d">Premium cinematic ad creative for CineLutLiveGrade and DeSqueeze ecosystem.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#04050c"/>
+      <stop offset="100%" stop-color="#0c1020"/>
+    </linearGradient>
+    <linearGradient id="a" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <filter id="blur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="25"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="628" fill="url(#bg)"/>
+  <circle cx="1020" cy="90" r="180" fill="#1d4ed8" opacity=".22" filter="url(#blur)"/>
+  <circle cx="170" cy="560" r="210" fill="#0891b2" opacity=".16" filter="url(#blur)"/>
+
+  <text x="64" y="78" fill="#93c5fd" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22" font-weight="600">DE SQUEEZE STUDIO</text>
+  <text x="64" y="168" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="66" font-weight="700">CineLutLiveGrade</text>
+  <text x="64" y="214" fill="#cbd5e1" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28">Live LUT and CDL grading for cinematographers</text>
+
+  <rect x="64" y="256" width="530" height="136" rx="18" fill="#0f172a" stroke="#334155"/>
+  <text x="90" y="308" fill="#e2e8f0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24">SDI/HDMI Capture</text>
+  <text x="90" y="342" fill="#e2e8f0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24">Scopes + ProRes + Dailies</text>
+  <text x="90" y="376" fill="#e2e8f0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24">Built for real on-set workflows</text>
+
+  <rect x="64" y="442" width="300" height="72" rx="14" fill="url(#a)"/>
+  <text x="96" y="488" fill="#ffffff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Get on Mac App Store</text>
+
+  <rect x="642" y="106" width="494" height="420" rx="24" fill="#0b1220" stroke="#334155"/>
+  <text x="674" y="156" fill="#7dd3fc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="600">Ecosystem</text>
+  <text x="674" y="194" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">One pipeline from set to delivery</text>
+  <text x="674" y="246" fill="#cbd5e1" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22">Mac Live Grade</text>
+  <text x="674" y="284" fill="#cbd5e1" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22">Web Studio</text>
+  <text x="674" y="322" fill="#cbd5e1" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22">iOS + Android</text>
+  <text x="674" y="360" fill="#cbd5e1" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22">Windows Pro</text>
+  <rect x="674" y="398" width="420" height="6" rx="3" fill="url(#a)"/>
+  <text x="674" y="452" fill="#93c5fd" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20">anamorphic-desqueeze.com</text>
+</svg>
