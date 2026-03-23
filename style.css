@@ -353,6 +353,20 @@ progress.hidden { display: none; }
   height: auto;
 }
 
+.product-card__media--icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 130px;
+  background: #0b0f14;
+}
+
+.product-card__media--icon img {
+  width: 92px;
+  height: 92px;
+  object-fit: contain;
+}
+
 .product-card__cta {
   margin-top: .6rem;
   display: inline-flex;
