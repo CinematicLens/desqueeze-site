@@ -618,3 +618,32 @@ progress.hidden { display: none; }
   background: rgba(241, 245, 249, 0.92);
 }
 
+/* Ecosystem board section */
+.ecosystem-section {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  padding: 0 1.5rem;
+}
+.ecosystem-section__title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 .35rem;
+}
+.ecosystem-section__sub {
+  font-size: .82rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+}
+.ecosystem-section__card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+}
+.ecosystem-section__card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
