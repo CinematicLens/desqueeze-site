@@ -67,27 +67,70 @@
   }
   </script>
 
-  <link rel="stylesheet" href="./style.css?v=7" />
+  <link rel="stylesheet" href="./style.css?v=8" />
   <style>
-    .flagship-page { max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-    .flagship-page h1 { font-size: 1.85rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
-    .flagship-page .lead { color: var(--muted); font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.55; }
-    .flagship-page h2 { font-size: 1.2rem; margin-top: 2rem; margin-bottom: 0.5rem; color: #fafafa; }
-    .flagship-page p, .flagship-page li { color: rgba(250,250,250,0.8); line-height: 1.6; }
-    .flagship-page a { color: #93c5fd; text-decoration: none; }
+    :root {
+      --text: #0b0f14;
+      --muted: rgba(11,15,20,.72);
+      --accent: #00bcd4;
+      --border: rgba(11,15,20,.14);
+    }
+    body { background: #f8f5ea; color: #0b0f14; }
+    .flagship-page { max-width: 920px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    .hero-block {
+      background: #ffffff;
+      border: 1px solid rgba(11,15,20,.14);
+      border-radius: 16px;
+      padding: 1.25rem 1.25rem 1.4rem;
+      box-shadow: 0 14px 32px rgba(15,23,42,.08);
+      margin-bottom: 1rem;
+    }
+    .info-block {
+      background: #ffffff;
+      border: 1px solid rgba(11,15,20,.14);
+      border-radius: 16px;
+      padding: 1rem 1.1rem;
+      margin-top: 1rem;
+    }
+    .hero-image {
+      margin-top: 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(11,15,20,.14);
+      overflow: hidden;
+      background: #f8fafc;
+    }
+    .hero-image img {
+      width: 100%;
+      display: block;
+      height: auto;
+    }
+    .temp-block {
+      background: #fff7ed;
+      border: 1px dashed rgba(11,15,20,.3);
+    }
+    .flagship-page h1 { font-size: 2rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; color: #0b0f14 !important; }
+    .flagship-page .lead { color: #0b0f14 !important; font-size: 1rem; margin-bottom: 1rem; line-height: 1.6; }
+    .flagship-page h2 { font-size: 1.2rem; margin-top: 0; margin-bottom: 0.5rem; color: #0b0f14 !important; }
+    .flagship-page p, .flagship-page li, .flagship-page strong, .flagship-page span, .flagship-page h3 { color: #0b0f14 !important; line-height: 1.65; }
+    .flagship-page a { color: #0b0f14 !important; text-decoration: none; }
     .flagship-page a:hover { text-decoration: underline; }
-    .flagship-cta { display: inline-block; margin-top: 1rem; padding: 12px 24px; background: var(--accent); color: #fff; border-radius: 12px; font-weight: 600; text-decoration: none; }
+    .flagship-cta { display: inline-block; margin-top: 0.7rem; padding: 12px 24px; background: #00bcd4; color: #0b0f14 !important; border-radius: 12px; font-weight: 700; text-decoration: none; border: 1px solid rgba(11,15,20,.16); }
     .flagship-cta:hover { filter: brightness(1.1); }
     .app-list { list-style: none; padding: 0; margin: 1rem 0; }
-    .app-list li { margin: 0.75rem 0; padding: 0.85rem 1rem; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); }
-    .app-list strong { color: #fafafa; display: block; margin-bottom: 0.25rem; }
-    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(5,5,8,.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .site-header__inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .app-list li { margin: 0.75rem 0; padding: 0.85rem 1rem; background: rgba(255,255,255,0.92); border-radius: 12px; border: 1px solid rgba(11,15,20,.14); }
+    .app-list strong { color: #0b0f14; display: block; margin-bottom: 0.25rem; }
+    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(11,15,20,.14); }
+    .site-header__inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
     .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1rem; text-decoration: none; color: var(--text); }
     .brand__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-    .nav { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-    .nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
-    .nav a:hover { color: var(--text); }
+    .nav { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .nav a { color: #0b0f14 !important; text-decoration: none; font-size: 0.88rem; font-weight: 700; padding: 4px 8px; border-radius: 8px; }
+    .nav a:hover { color: #0b0f14 !important; }
+    @media (max-width: 900px) {
+      .site-header__inner { padding: 10px 14px; align-items: flex-start; }
+      .nav { gap: .75rem; }
+      .nav a { font-size: .82rem; }
+    }
   </style>
 </head>
 <body>
@@ -110,14 +153,22 @@
   </header>
 
   <main class="flagship-page">
+    <section class="hero-block">
     <h1>CineLutLiveGrade</h1>
     <p class="lead">Live LUT &amp; CDL video grading on Mac — for cinematographers, DITs, and colorists. On-set grading and recording with scopes, ProRes output, and dailies export.</p>
 
     <a href="https://apps.apple.com/app/cinelutlivegrade/id6760215504" class="flagship-cta" target="_blank" rel="noopener">Get on Mac App Store</a>
+    <div class="hero-image">
+      <img src="/assets/cinelutlivegrade-promo-collage.png" alt="CineLutLiveGrade promotional collage showing live LUT and CDL grading workflow">
+    </div>
+    </section>
 
+    <section class="info-block">
     <h2>Who it’s for</h2>
     <p>Cinematographers, DOPs, DITs, colorists, and film crews who need to see the final look while the camera is rolling. Built for professional productions and independent filmmakers everywhere. Connect your SDI or HDMI camera through a capture card, grade in real time with LUTs and CDL-style controls, and record graded ProRes clips ready for editorial and dailies.</p>
+    </section>
 
+    <section class="info-block">
     <h2>What you get</h2>
     <ul>
       <li><strong>Live grading</strong> — 3D LUTs and ASC-CDL-style primaries (slope, offset, power, saturation). Waveform, parade, histogram, vectorscope on every frame.</li>
@@ -125,9 +176,19 @@
       <li><strong>Dailies &amp; handoff</strong> — Export graded ProRes, CDL, AMF, LUT files. EDL + CDL packages for Silverstack, DaVinci Resolve, and other post tools.</li>
       <li><strong>Shot library</strong> — Save stills and looks per scene. Import/export CDL and LUT. Presets and consistent looks across takes.</li>
     </ul>
+    </section>
 
+    <section class="info-block">
     <h2>Why on-set matters</h2>
     <p>Unlike offline grading, CineLutLiveGrade is built for live work. You see what the camera sees, with your look applied. What you record is what the editor sees. Looks stay consistent across takes and the pipeline from set to dailies stays predictable.</p>
+    </section>
+
+    <section class="info-block temp-block">
+      <h2>Temporary Promo (remove in 10-15 days)</h2>
+      <div class="hero-image">
+        <img src="/assets/temporary-promo-shot.png" alt="Temporary promo still for upcoming campaign">
+      </div>
+    </section>
 
     <p><a href="https://apps.apple.com/app/cinelutlivegrade/id6760215504" class="flagship-cta" target="_blank" rel="noopener">Download for Mac</a></p>
 
