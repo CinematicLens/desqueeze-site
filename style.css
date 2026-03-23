@@ -1,13 +1,13 @@
 :root {
-  --bg: #050508;
-  --bg-elevated: #0c0c0f;
-  --panel: rgba(18, 18, 22, 0.98);
-  --card: rgba(14, 14, 18, 0.95);
-  --text: #fafafa;
-  --muted: rgba(250, 250, 250, 0.6);
+  --bg: #0b1020;
+  --bg-elevated: #141b2f;
+  --panel: rgba(30, 41, 59, 0.78);
+  --card: rgba(22, 31, 49, 0.9);
+  --text: #f8fafc;
+  --muted: rgba(226, 232, 240, 0.82);
   --accent: #60a5fa;
-  --accent-soft: rgba(96, 165, 250, 0.12);
-  --border: rgba(255, 255, 255, 0.08);
+  --accent-soft: rgba(96, 165, 250, 0.18);
+  --border: rgba(148, 163, 184, 0.3);
   --danger: #f87171;
 }
 
@@ -41,14 +41,14 @@ h1 { margin: 0; font-size: clamp(24px, 4vw, 40px); font-weight: 700; letter-spac
   border-radius: 16px;
   padding: 1.25rem;
   border: 1px solid var(--border);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 28px rgba(2, 6, 23, 0.28);
 }
 
 /* Preview area */
 .preview {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: #000;
+  background: #0b1220;
   border-radius: 12px;
   overflow: hidden;
   display: grid;
@@ -74,15 +74,15 @@ h1 { margin: 0; font-size: clamp(24px, 4vw, 40px); font-weight: 700; letter-spac
 .status { margin-left: auto; color: var(--muted); font-size: .95rem; }
 
 button, .file span {
-  background: #000;
-  border: 1px solid #333;
-  color: #fff;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  color: #e2e8f0;
   border-radius: 12px;
   padding: 8px 14px;
   cursor: pointer;
   transition: all .15s ease-in-out;
 }
-button:hover, .file span:hover { background: #111; border-color: #555; }
+button:hover, .file span:hover { background: rgba(30, 41, 59, 0.86); border-color: rgba(148, 163, 184, 0.7); }
 .start { border-color: var(--accent); }
 .stop  { border-color: var(--danger); }
 
@@ -98,9 +98,9 @@ button:hover, .file span:hover { background: #111; border-color: #555; }
 }
 
 select, input[type="number"], input[type="text"], input[type="file"] {
-  background: #000;
+  background: rgba(15, 23, 42, 0.75);
   color: var(--text);
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(148, 163, 184, 0.45);
   border-radius: 12px;
   padding: .5rem .6rem;
   width: 100%;
@@ -112,10 +112,10 @@ progress {
   width: 100%;
   height: 10px;
   border-radius: 10px;
-  background: #222;
+  background: rgba(51, 65, 85, 0.8);
   appearance: none;
 }
-progress::-webkit-progress-bar { background: #222; border-radius: 10px; }
+progress::-webkit-progress-bar { background: rgba(51, 65, 85, 0.8); border-radius: 10px; }
 progress::-webkit-progress-value { background: var(--accent); border-radius: 10px; }
 progress.hidden { display: none; }
 
