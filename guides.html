@@ -9,27 +9,39 @@
   <meta name="robots" content="index,follow" />
   <meta property="og:title" content="Guides — DeSqueeze Studio" />
   <meta property="og:url" content="https://anamorphic-desqueeze.com/guides.html" />
-  <link rel="stylesheet" href="./style.css?v=7" />
+  <link rel="stylesheet" href="./style.css?v=8" />
   <style>
+    :root {
+      --text: #0b0f14;
+      --muted: rgba(11,15,20,.72);
+      --accent: #00bcd4;
+      --border: rgba(11,15,20,.14);
+    }
+    body { background: #f8f5ea; color: #0b0f14; }
     .guides-page { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
     .guides-page h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
     .guides-page .lead { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.5; }
     .guides-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
     .guides-list a {
-      display: block; padding: 1rem 1.25rem; background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border); border-radius: 12px;
-      color: var(--text); text-decoration: none; font-weight: 500;
+      display: block; padding: 1rem 1.25rem; background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(11,15,20,.14); border-radius: 12px;
+      color: #0b0f14; text-decoration: none; font-weight: 500;
       transition: background 0.2s, border-color 0.2s;
     }
-    .guides-list a:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
-    .guides-list .guide-desc { font-size: 0.875rem; color: var(--muted); font-weight: 400; margin-top: 0.25rem; }
-    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(5,5,8,.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .site-header__inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1rem; text-decoration: none; color: var(--text); }
+    .guides-list a:hover { background: #ffffff; border-color: rgba(11,15,20,.2); }
+    .guides-list .guide-desc { display: block; font-size: 0.875rem; color: rgba(15,23,42,.8); font-weight: 400; margin-top: 0.25rem; }
+    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(248,245,234,.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .site-header__inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1rem; text-decoration: none; color: #0b0f14 !important; }
     .brand__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
     .nav { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-    .nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
-    .nav a:hover { color: var(--text); }
+    .nav a { color: #0b0f14 !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+    .nav a:hover { color: #0b0f14 !important; }
+    @media (max-width: 900px) {
+      .site-header__inner { padding: 10px 14px; align-items: flex-start; }
+      .nav { gap: .75rem; }
+      .nav a { font-size: .82rem; }
+    }
   </style>
 </head>
 <body>
@@ -41,6 +53,7 @@
       </a>
       <nav class="nav">
         <a href="/#product-lineup">Products</a>
+        <a href="/cinelutlivegrade.html">CineLut Live Grade</a>
         <a href="/#settings">Web Studio</a>
         <a href="/guides.html">Guides</a>
         <a href="/#support">Support</a>
@@ -55,6 +68,7 @@
     <p class="lead">Step-by-step help for anamorphic de-squeeze and live grading.</p>
     <ul class="guides-list">
       <li><a href="/cinelutlivegrade.html">CineLutLiveGrade — Live LUT &amp; CDL for Mac<span class="guide-desc">On-set grading for cinematographers, DITs, and colorists.</span></a></li>
+      <li><a href="https://apps.apple.com/us/app/mediautility/id6760351903?platform=mac" target="_blank" rel="noopener">MediaUtility — Compress, Resize &amp; Convert Media<span class="guide-desc">Compress videos, resize media, and convert JPG/PNG on iPhone, iPad, and Mac (M1+).</span></a></li>
       <li><a href="/how-to-desqueeze-1-33x.html">How to de-squeeze 1.33× anamorphic footage<span class="guide-desc">Presets, batch, and export. Web, iOS, Android, Windows.</span></a></li>
       <li><a href="/anamorphic-desqueeze-iphone.html">Anamorphic de-squeeze on iPhone & iPad<span class="guide-desc">Ratio sliders, CinemaScope, ProRes & 10-bit, FCPXML. App Store.</span></a></li>
       <li><a href="/moment-anamorphic-desqueeze.html">Moment anamorphic desqueeze<span class="guide-desc">1.33× preset and quick export for Moment lenses.</span></a></li>

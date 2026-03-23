@@ -104,10 +104,6 @@
       display: block;
       height: auto;
     }
-    .temp-block {
-      background: #fff7ed;
-      border: 1px dashed rgba(11,15,20,.3);
-    }
     .flagship-page h1 { font-size: 2rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; color: #0b0f14 !important; }
     .flagship-page .lead { color: #0b0f14 !important; font-size: 1rem; margin-bottom: 1rem; line-height: 1.6; }
     .flagship-page h2 { font-size: 1.2rem; margin-top: 0; margin-bottom: 0.5rem; color: #0b0f14 !important; }
@@ -119,12 +115,12 @@
     .app-list { list-style: none; padding: 0; margin: 1rem 0; }
     .app-list li { margin: 0.75rem 0; padding: 0.85rem 1rem; background: rgba(255,255,255,0.92); border-radius: 12px; border: 1px solid rgba(11,15,20,.14); }
     .app-list strong { color: #0b0f14; display: block; margin-bottom: 0.25rem; }
-    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(11,15,20,.14); }
-    .site-header__inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1rem; text-decoration: none; color: var(--text); }
+    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(248,245,234,.92); backdrop-filter: blur(20px) saturate(1.2); border-bottom: 1px solid rgba(11,15,20,.14); }
+    .site-header__inner { max-width: 1200px; margin: 0 auto; padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 1.05rem; text-decoration: none; color: var(--text); letter-spacing: -0.02em; }
     .brand__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-    .nav { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
-    .nav a { color: #0b0f14 !important; text-decoration: none; font-size: 0.88rem; font-weight: 700; padding: 4px 8px; border-radius: 8px; }
+    .nav { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+    .nav a { color: #0b0f14 !important; text-decoration: none; font-size: .9rem; font-weight: 600; }
     .nav a:hover { color: #0b0f14 !important; }
     @media (max-width: 900px) {
       .site-header__inner { padding: 10px 14px; align-items: flex-start; }
@@ -181,12 +177,6 @@
     <section class="info-block">
     <h2>Why on-set matters</h2>
     <p>Unlike offline grading, CineLutLiveGrade is built for live work. You see what the camera sees, with your look applied. What you record is what the editor sees. Looks stay consistent across takes and the pipeline from set to dailies stays predictable.</p>
-    </section>
-
-    <section class="info-block temp-block">
-      <div class="hero-image">
-        <img src="/assets/temporary-promo-shot.png" alt="Temporary promo still for upcoming campaign">
-      </div>
     </section>
 
     <p><a href="https://apps.apple.com/app/cinelutlivegrade/id6760215504" class="flagship-cta" target="_blank" rel="noopener">Download for Mac</a></p>
