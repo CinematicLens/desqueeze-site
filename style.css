@@ -233,6 +233,9 @@ progress.hidden { display: none; }
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
+@media (min-width: 900px) {
+  .platforms-visual__grid { grid-template-columns: repeat(3, 1fr); }
+}
 @media (max-width: 640px) {
   .platforms-visual__grid { grid-template-columns: 1fr; }
 }
