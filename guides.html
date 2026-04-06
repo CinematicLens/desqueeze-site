@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Guides — DeSqueeze Studio</title>
-  <meta name="description" content="How-to guides for anamorphic de-squeeze: 1.33×, iPhone & iPad, Moment, Sirui, CinemaScope 2.39:1. Web, iOS, Android, Windows." />
+  <meta name="description" content="Start here: choose the right DeSqueeze Studio app for iOS, Mac, Android, Windows, or Web. Compare FilmStudio, Anamorphic Desqueezer, CineLut Live Grade, and MediaUtility with practical guides." />
   <link rel="canonical" href="https://anamorphic-desqueeze.com/guides.html" />
   <meta name="robots" content="index,follow" />
   <meta property="og:title" content="Guides — DeSqueeze Studio" />
@@ -21,6 +21,55 @@
     .guides-page { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
     .guides-page h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
     .guides-page .lead { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.5; }
+    .quick-start {
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(11,15,20,.14);
+      border-radius: 14px;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .quick-start__title {
+      margin: 0 0 .4rem;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .quick-start__desc {
+      margin: 0;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.45;
+    }
+    .chooser {
+      list-style: none;
+      margin: 0 0 1.75rem;
+      padding: 0;
+      display: grid;
+      gap: .65rem;
+    }
+    .chooser li {
+      background: rgba(255,255,255,.94);
+      border: 1px solid rgba(11,15,20,.14);
+      border-radius: 12px;
+      padding: .8rem .95rem;
+    }
+    .chooser strong { display: block; font-size: .93rem; }
+    .chooser span { display: block; margin-top: .2rem; color: var(--muted); font-size: .86rem; }
+    .chooser a {
+      color: #0b0f14;
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1px dotted rgba(11,15,20,.35);
+    }
+    .chooser a:hover { border-bottom-color: rgba(0,188,212,.8); }
+    .section-label {
+      margin: 0 0 .8rem;
+      font-size: .82rem;
+      font-weight: 700;
+      color: rgba(15,23,42,.62);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
     .guides-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
     .guides-list a {
       display: block; padding: 1rem 1.25rem; background: rgba(255,255,255,0.92);
@@ -65,10 +114,41 @@
 
   <main class="guides-page">
     <h1>Guides</h1>
-    <p class="lead">Step-by-step help for anamorphic de-squeeze and live grading.</p>
+    <p class="lead">Choose the right app in under a minute, then follow step-by-step guides for setup, shooting, de-squeeze, grading, and export.</p>
+
+    <section class="quick-start" aria-label="Start here">
+      <h2 class="quick-start__title">Start here: pick your workflow</h2>
+      <p class="quick-start__desc">Most users start with iOS + Mac. If you are testing first, use Web Studio. If you already know your device, jump directly to the best-fit app below.</p>
+    </section>
+
+    <ul class="chooser">
+      <li>
+        <strong>iPhone / iPad capture workflow → <a href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">FilmStudio (App Store)</a></strong>
+        <span>Manual ISO/shutter/focus, focus pull A/B, overlays, and fast on-set capture.</span>
+      </li>
+      <li>
+        <strong>Anamorphic correction on Apple devices → <a href="/anamorphic-desqueeze-iphone.html">Anamorphic Desqueezer guide</a></strong>
+        <span>Fix 1.33×–2× footage, preview framing, and export CinemaScope-ready output.</span>
+      </li>
+      <li>
+        <strong>Live grading on MacBook → <a href="/cinelutlivegrade.html">CineLut Live Grade</a></strong>
+        <span>LUT + CDL grading, scopes, capture options, and dailies-ready workflow.</span>
+      </li>
+      <li>
+        <strong>Compress and convert before delivery → <a href="https://apps.apple.com/us/app/mediautility/id6760351903" target="_blank" rel="noopener">MediaUtility (App Store)</a></strong>
+        <span>Resize 4K/1080p/720p, compress video, convert JPG/PNG on-device.</span>
+      </li>
+      <li>
+        <strong>Need quick browser testing first? → <a href="/#settings">Web Studio</a></strong>
+        <span>No install. Upload, de-squeeze, preview, and export in minutes.</span>
+      </li>
+    </ul>
+
+    <p class="section-label">All guides</p>
     <ul class="guides-list">
+      <li><a href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">FilmStudio — Pro camera capture on iPhone, iPad, and Mac (M1+)<span class="guide-desc">Manual controls, focus pull, film presets, overlays, and fast on-set workflow.</span></a></li>
       <li><a href="/cinelutlivegrade.html">CineLutLiveGrade — Live LUT &amp; CDL for Mac<span class="guide-desc">On-set grading for cinematographers, DITs, and colorists.</span></a></li>
-      <li><a href="https://apps.apple.com/us/app/mediautility/id6760351903?platform=mac" target="_blank" rel="noopener">MediaUtility — Compress, Resize &amp; Convert Media<span class="guide-desc">Compress videos, resize media, and convert JPG/PNG on iPhone, iPad, and Mac (M1+).</span></a></li>
+      <li><a href="https://apps.apple.com/us/app/mediautility/id6760351903" target="_blank" rel="noopener">MediaUtility — Compress, Resize &amp; Convert Media<span class="guide-desc">Compress videos, resize media, and convert JPG/PNG on iPhone, iPad, and Mac (M1+).</span></a></li>
       <li><a href="/how-to-desqueeze-1-33x.html">How to de-squeeze 1.33× anamorphic footage<span class="guide-desc">Presets, batch, and export. Web, iOS, Android, Windows.</span></a></li>
       <li><a href="/anamorphic-desqueeze-iphone.html">Anamorphic de-squeeze on iPhone & iPad<span class="guide-desc">Ratio sliders, CinemaScope, ProRes & 10-bit, FCPXML. App Store.</span></a></li>
       <li><a href="/moment-anamorphic-desqueeze.html">Moment anamorphic desqueeze<span class="guide-desc">1.33× preset and quick export for Moment lenses.</span></a></li>
