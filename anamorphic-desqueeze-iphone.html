@@ -20,24 +20,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Anamorphic De-Squeeze for iPhone & iPad" />
 
-  <link rel="stylesheet" href="./style.css?v=7" />
-  <style>
-    .page { max-width: 820px; margin: 2rem auto; padding: 0 1.5rem 3rem; }
-    .page h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
-    .page h2 { font-size: 1.2rem; margin-top: 1.75rem; margin-bottom: 0.5rem; color: #0b0f14; }
-    .page p, .page li { color: rgba(15,23,42,0.82); line-height: 1.6; }
-    .page a { color: #0e7490; text-decoration: none; }
-    .page a:hover { text-decoration: underline; }
-    .app-list { list-style: none; padding: 0; margin: 1rem 0; }
-    .app-list li { margin: 0.75rem 0; padding: 0.85rem 1rem; background: rgba(255,255,255,0.92); border-radius: 12px; border: 1px solid rgba(11,15,20,0.14); }
-    .app-list strong { color: #0b0f14; display: block; margin-bottom: 0.25rem; }
-    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(248,245,234,.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(11,15,20,.14); }
-    .site-header__inner { max-width: 1200px; margin: 0 auto; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-    .brand__dot { width: 8px; height: 8px; border-radius: 50%; background: #00bcd4; }
-    .nav a { color: rgba(11,15,20,.72); text-decoration: none; margin-left: 1rem; font-size: .95rem; }
-    .nav a:hover { color: #0b0f14; }
-  </style>
+  <link rel="stylesheet" href="./style.css?v=9" />
 </head>
 <body>
 
@@ -49,6 +32,8 @@
       </a>
       <nav class="nav">
         <a href="/#ios-ecosystem">iOS &amp; Mac apps</a>
+        <a href="/cinelutlivegrade.html">CineLut Live Grade</a>
+        <a href="/#other-platforms">Android &amp; Windows</a>
         <a href="/#settings">Web Studio</a>
         <a href="/guides.html">Guides</a>
         <a href="/#support">Support</a>
@@ -58,7 +43,7 @@
     </div>
   </header>
 
-  <main class="page">
+  <main class="subpage-main">
     <h1>Anamorphic De-Squeeze for iPhone &amp; iPad</h1>
     <p>Our <strong>iOS app</strong> (Anamorphic Desqueezer) is built for filmmakers: live anamorphic monitor and post desqueeze in one app. Supports 1.33×, 1.55×, 1.8×, and 2× (plus custom ratio). Export ProRes, HEVC 10-bit, or FCPXML for Final Cut Pro. Zebras, waveform, false color, focus peaking, and true 2.39:1 CinemaScope export. Works with Moment, Sirui, Moondog Labs, and cinema glass.</p>
 
@@ -91,5 +76,17 @@
     <p><a href="/">← Back to DeSqueeze Studio</a></p>
   </main>
 
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div>© <span id="y"></span> DeSqueeze Studio</div>
+      <div class="site-footer__links">
+        <a href="/guides.html">Guides</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="mailto:teamcentersap@gmail.com">Contact</a>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
 </body>
 </html>

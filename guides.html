@@ -9,89 +9,7 @@
   <meta name="robots" content="index,follow" />
   <meta property="og:title" content="Guides — DeSqueeze Studio" />
   <meta property="og:url" content="https://anamorphic-desqueeze.com/guides.html" />
-  <link rel="stylesheet" href="./style.css?v=8" />
-  <style>
-    :root {
-      --text: #0b0f14;
-      --muted: rgba(11,15,20,.72);
-      --accent: #00bcd4;
-      --border: rgba(11,15,20,.14);
-    }
-    body { background: #f8f5ea; color: #0b0f14; }
-    .guides-page { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-    .guides-page h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
-    .guides-page .lead { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.5; }
-    .quick-start {
-      background: rgba(255,255,255,.95);
-      border: 1px solid rgba(11,15,20,.14);
-      border-radius: 14px;
-      padding: 1rem;
-      margin-bottom: 1.25rem;
-    }
-    .quick-start__title {
-      margin: 0 0 .4rem;
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-    .quick-start__desc {
-      margin: 0;
-      color: var(--muted);
-      font-size: .9rem;
-      line-height: 1.45;
-    }
-    .chooser {
-      list-style: none;
-      margin: 0 0 1.75rem;
-      padding: 0;
-      display: grid;
-      gap: .65rem;
-    }
-    .chooser li {
-      background: rgba(255,255,255,.94);
-      border: 1px solid rgba(11,15,20,.14);
-      border-radius: 12px;
-      padding: .8rem .95rem;
-    }
-    .chooser strong { display: block; font-size: .93rem; }
-    .chooser span { display: block; margin-top: .2rem; color: var(--muted); font-size: .86rem; }
-    .chooser a {
-      color: #0b0f14;
-      font-weight: 700;
-      text-decoration: none;
-      border-bottom: 1px dotted rgba(11,15,20,.35);
-    }
-    .chooser a:hover { border-bottom-color: rgba(0,188,212,.8); }
-    .section-label {
-      margin: 0 0 .8rem;
-      font-size: .82rem;
-      font-weight: 700;
-      color: rgba(15,23,42,.62);
-      text-transform: uppercase;
-      letter-spacing: .06em;
-    }
-    .guides-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
-    .guides-list a {
-      display: block; padding: 1rem 1.25rem; background: rgba(255,255,255,0.92);
-      border: 1px solid rgba(11,15,20,.14); border-radius: 12px;
-      color: #0b0f14; text-decoration: none; font-weight: 500;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .guides-list a:hover { background: #ffffff; border-color: rgba(11,15,20,.2); }
-    .guides-list .guide-desc { display: block; font-size: 0.875rem; color: rgba(15,23,42,.8); font-weight: 400; margin-top: 0.25rem; }
-    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(248,245,234,.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .site-header__inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1rem; text-decoration: none; color: #0b0f14 !important; }
-    .brand__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-    .nav { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-    .nav a { color: #0b0f14 !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; }
-    .nav a:hover { color: #0b0f14 !important; }
-    @media (max-width: 900px) {
-      .site-header__inner { padding: 10px 14px; align-items: flex-start; }
-      .nav { gap: .75rem; }
-      .nav a { font-size: .82rem; }
-    }
-  </style>
+  <link rel="stylesheet" href="./style.css?v=9" />
 </head>
 <body>
   <header class="site-header">
@@ -103,6 +21,7 @@
       <nav class="nav">
         <a href="/#ios-ecosystem">iOS &amp; Mac apps</a>
         <a href="/cinelutlivegrade.html">CineLut Live Grade</a>
+        <a href="/#other-platforms">Android &amp; Windows</a>
         <a href="/#settings">Web Studio</a>
         <a href="/guides.html">Guides</a>
         <a href="/#support">Support</a>
@@ -160,7 +79,20 @@
       <li><a href="/sirui-anamorphic-desqueeze.html">Sirui anamorphic desqueeze<span class="guide-desc">1.33×, 1.5×, 1.8×, 2× presets for Sirui lenses.</span></a></li>
       <li><a href="/cinemascope-export-online.html">CinemaScope 2.39:1 export online<span class="guide-desc">Export anamorphic to 2.39:1 in the browser or apps.</span></a></li>
     </ul>
-    <p style="margin-top: 2rem;"><a href="/" style="color: var(--accent); text-decoration: none; font-size: 0.9rem;">← Back to home</a></p>
+    <p style="margin-top: 2rem;"><a href="/" style="color: #0e7490; text-decoration: none; font-size: 0.9rem; font-weight: 600;">← Back to home</a></p>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div>© <span id="y"></span> DeSqueeze Studio</div>
+      <div class="site-footer__links">
+        <a href="/guides.html">Guides</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="mailto:teamcentersap@gmail.com">Contact</a>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
 </body>
 </html>
