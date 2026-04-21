@@ -3,15 +3,941 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CineLutLiveGrade — Live LUT & CDL Grading for Mac</title>
-  <meta name="description" content="Redirecting to CineLutLiveGrade, the live LUT and CDL grading page for Mac." />
-  <link rel="canonical" href="https://anamorphic-desqueeze.com/cinelutlivegrade.html" />
-  <meta http-equiv="refresh" content="0; url=/cinelutlivegrade.html" />
+
+  <!-- ===================== SEO — USA, Hollywood, cinematographers, global ===================== -->
+  <title>FilmStudio, Anamorphic Desqueezer &amp; CineLut Live Grade — iOS &amp; Mac | DeSqueeze Studio</title>
+  <meta name="description"
+        content="Official landing page for our filmmaker apps: FilmStudio (pro iPhone camera), Anamorphic Desqueezer (iOS + Mac), CineLut Live Grade (MacBook), and MediaUtility. Free Web Studio for quick browser previews; Android and Windows apps also available." />
+  <meta name="keywords"
+        content="FilmStudio app, iPhone cinema camera, Anamorphic Desqueezer, CineLut Live Grade, live LUT grading, MacBook DIT, MediaUtility, anamorphic desqueeze iOS, 1.33x 2x desqueeze, cinemascope, filmmaking apps App Store" />
+  <link rel="canonical" href="https://anamorphic-desqueeze.com/" />
+  <meta name="robots" content="index,follow" />
+  <meta name="geo.region" content="IN" />
+  <meta name="geo.region" content="US" />
+  <meta name="geo.region" content="GB" />
+  <meta name="geo.region" content="JP" />
+  <meta name="geo.region" content="EU" />
+  <meta name="language" content="English" />
+  <meta name="distribution" content="global" />
+  <meta name="revisit-after" content="7 days" />
+
+  <!-- Hreflang: English + Japan (same URL; Japan filmmakers often search in English) -->
+  <link rel="alternate" hreflang="en-in" href="https://anamorphic-desqueeze.com/" />
+  <link rel="alternate" hreflang="en-us" href="https://anamorphic-desqueeze.com/" />
+  <link rel="alternate" hreflang="en-gb" href="https://anamorphic-desqueeze.com/" />
+  <link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/" />
+  <link rel="alternate" hreflang="ja" href="https://anamorphic-desqueeze.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/" />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="FilmStudio, Anamorphic Desqueezer &amp; CineLut Live Grade — iOS &amp; Mac" />
+  <meta property="og:description" content="Our main hub: FilmStudio, Anamorphic Desqueezer, CineLut Live Grade, and MediaUtility on the App Store. Plus free Web Studio and Android &amp; Windows tools." />
+  <meta property="og:url" content="https://anamorphic-desqueeze.com/" />
+  <meta property="og:image" content="https://anamorphic-desqueeze.com/preview.jpg" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="en_GB" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FilmStudio, Anamorphic Desqueezer &amp; CineLut Live Grade — iOS &amp; Mac" />
+  <meta name="twitter:description" content="Download FilmStudio, Anamorphic Desqueezer, CineLut Live Grade, and MediaUtility. Free Web Studio + Android &amp; Windows listed on the same page." />
+
+  <!-- ✅ AdSense account verification -->
+  <meta name="google-adsense-account" content="ca-pub-6348292037303976" />
+
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BFDRLKVZK"></script>
   <script>
-    window.location.replace("/cinelutlivegrade.html");
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-6BFDRLKVZK');
   </script>
+
+  <!-- ✅ Google AdSense loader (keep only once in entire site) -->
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6348292037303976"
+    crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="./style.css?v=9" />
+
+  <!-- Structured Data: SoftwareApplication + WebApplication for USA/UK/EU/MENA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "DeSqueeze Studio — Filmmaker Apps (iOS, Mac, Web)",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "iOS, iPadOS, macOS, Web Browser, Android, Windows",
+    "description": "Primary landing page for FilmStudio, Anamorphic Desqueezer, CineLut Live Grade, and MediaUtility on iPhone, iPad, and Mac. Includes a free in-browser Web Studio for quick anamorphic previews (1.33×–2×), MP4/JPG/PNG export, and batch up to 10 files. Android and Windows native apps also available.",
+    "url": "https://anamorphic-desqueeze.com/",
+    "image": "https://anamorphic-desqueeze.com/preview.jpg",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Organization", "name": "Web Desqueeze Studio" },
+    "inLanguage": ["en", "ja"],
+    "areaServed": ["US", "GB", "JP", "KR", "AU", "CA", "IN", "MX", "BR", "EU", "AE", "SA", "QA", "BH", "KW", "OM", "EG", "JO", "LB", "TR", "DE", "FR", "ES", "IT", "NL", "PL", "RU", "SG", "MY", "TH", "ID", "PH"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is the anamorphic de-squeeze tool available in USA, UK, Europe, Japan, Middle East and other countries?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. DeSqueeze Studio works worldwide. Filmmakers in the USA, UK, Europe, Japan, South Korea, Australia, Canada, Middle East (UAE, Saudi Arabia, Qatar, Egypt, Jordan, Turkey), and other countries can use the free web tool or the iOS, Android, or Windows app. No region lock. Popular with anamorphic shooters in Tokyo, London, Los Angeles, Dubai, Berlin, Sydney, and more."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I de-squeeze anamorphic video online for free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Upload your video or photo to the Web Studio, select your lens factor (1.33×, 1.5×, 1.8×, or 2×), preview the correction, and export MP4, JPG, or PNG. Batch up to 10 files. No signup. Works in USA, UK, Europe, Japan, Middle East, Australia, Canada and globally."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #f8f5ea;
+      --bg-elevated: #ffffff;
+      --fg: #0b0f14;
+      --muted: rgba(11,15,20,.72);
+      --accent: #00bcd4;
+      --accent-soft: rgba(0,188,212,.14);
+      --border: rgba(11,15,20,.14);
+      --premium-glow: rgba(0,188,212,.18);
+    }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-feature-settings: 'cv02','cv03','cv04','cv11';
+      -webkit-font-smoothing: antialiased;
+    }
+    .btn {
+      display: inline-block;
+      background: rgba(255,255,255,.8);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: .9rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color .2s, background .2s, color .2s;
+    }
+    .btn:hover { border-color: rgba(0,188,212,.55); background: rgba(0,188,212,.08); }
+    .btn--primary { border-color: var(--accent); color: #0e7490; background: rgba(0,188,212,.08); }
+    .btn--primary:hover { background: var(--accent-soft); border-color: var(--accent); color: #0b0f14; }
+
+    .hero .card {
+      background: linear-gradient(160deg, var(--bg-elevated) 0%, #f8fafc 100%);
+      border: 1px solid var(--border);
+      box-shadow: 0 22px 52px rgba(15,23,42,.12), 0 0 0 1px rgba(11,15,20,.03) inset;
+      padding: 2.5rem 2rem;
+    }
+    .hero .card h1 { margin-bottom: .6rem; font-size: clamp(32px, 5.5vw, 52px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; color: var(--fg); }
+    .hero .card .sub { color: var(--muted); font-size: .92rem; max-width: 34em; line-height: 1.5; }
+    .hero-works-with { font-size: .82rem; color: var(--muted); margin-top: .45rem; opacity: .92; }
+    .hero-ctas { margin-top: 1.5rem; gap: 12px; }
+    .tool-section__title { font-size: 1.2rem; font-weight: 600; margin: 0 0 .35rem; letter-spacing: -0.02em; }
+    .tool-section__sub { color: var(--muted); font-size: .84rem; margin: 0 0 1.1rem; }
+    .tool-section { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 0.75rem; }
+
+    /* Force readable product card contrast (cache-safe) */
+    .product-card { background: #ffffff !important; border-color: rgba(11,15,20,.16) !important; }
+    .product-card__title { color: #0b0f14 !important; }
+    .product-card__tag { color: #334155 !important; }
+    .product-card__body { color: #334155 !important; }
+    .product-card__cta { color: #0b0f14 !important; font-weight: 600; }
+    .product-card__cta:hover { color: #0b0f14 !important; }
+    .product-card__media { background: #e2e8f0; }
+
+    .feature-list { margin:.4rem 0 0 1.2rem; }
+    .feature-list li { color: var(--muted); font-size:.95rem; margin:.25rem 0; }
+
+    .note { color: var(--muted); font-size:.9rem; }
+    main.seo-copy {
+      max-width: 720px; margin: 2.5rem auto 1.5rem;
+      line-height: 1.55; color: rgba(15,23,42,0.82);
+      font-size: .875rem; padding: 0 24px 24px;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+    main.seo-copy h1 { font-size: 1.1rem; font-weight: 600; color: #0b0f14; margin-bottom: .5rem; }
+    main.seo-copy h2 { font-size: 1rem; font-weight: 600; color: #0f172a; margin-top: 1rem; margin-bottom: .2rem; }
+    main.seo-copy p { margin: 0 0 .5rem; }
+    main.seo-copy section { margin-bottom: .75rem; }
+    main.seo-copy a { color: #0b0f14 !important; font-weight: 600; }
+    main.seo-copy a:hover { color: #0b0f14 !important; }
+
+    /* ===================== HOUSE ADS (NO OVERLAP) ===================== */
+    #house-ads {
+      max-width:1200px;
+      margin:14px auto 0;
+      padding:0 1.5rem;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:space-between;
+    }
+    .house-ad {
+      flex: 1 1 320px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(148,163,184,0.35);
+      border-radius: 16px;
+      padding: 14px;
+      color: #0b0f14;
+    }
+    .house-ad p {
+      color: rgba(15,23,42,.78);
+      font-size: .9rem;
+      margin: 8px 0;
+      line-height: 1.45;
+    }
+    .house-ad a.cta {
+      display:block;
+      text-align:center;
+      margin-top:10px;
+      padding:10px;
+      border-radius:12px;
+      background:#6487ff;
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+    }
+    .house-ad a.btnlink {
+      display:block;
+      text-align:center;
+      margin-top:8px;
+      padding:9px;
+      border-radius:12px;
+      background:#ffffff;
+      border:1px solid rgba(148,163,184,.45);
+      color:#0b0f14;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    @media (min-width: 1500px) {
+      #house-ads { height: 0; padding: 0; margin: 0; }
+      .house-ad { width: 280px; flex: 0 0 auto; }
+      #house-ad-left { position: fixed; top: 110px; left: 14px; z-index: 20; }
+      #house-ad-right { position: fixed; top: 110px; right: 14px; z-index: 20; }
+    }
+
+    /* ===================== AdSense containers (safe, no break) ===================== */
+    adsense-wrap{
+      max-width:1200px;
+      margin:14px auto 0;
+      padding:0 1.5rem;
+    }
+
+    .adsense-card{
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(148,163,184,0.3);
+      border-radius: 16px;
+      padding: 6px 8px;
+      min-height: 90px;
+    }
+
+    .adsense-label{
+      color: rgba(15,23,42,0.62);
+      font-size: 0.8rem;
+      margin: 0 0 6px 4px;
+    }
+
+    /* CTA row helper */
+    .cta-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+
+    /* Primary funnel: App Store strip (homepage = main commercial hub) */
+    .landing-app-bar {
+      max-width: 1200px;
+      margin: 0 auto 1.25rem;
+      padding: 0 1.5rem;
+    }
+    .landing-app-bar__card {
+      background: linear-gradient(160deg, #ffffff 0%, rgba(0, 188, 212, 0.06) 100%);
+      border: 1px solid rgba(0, 188, 212, 0.28);
+      border-radius: 16px;
+      padding: 14px 16px 16px;
+      box-shadow: 0 10px 32px rgba(15, 23, 42, 0.08);
+    }
+    .landing-app-bar__title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: rgba(15, 23, 42, 0.55);
+      text-align: center;
+      margin: 0 0 10px;
+    }
+    .landing-app-bar__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+    }
+    .landing-app-bar__links a {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--fg);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .landing-app-bar__links a:hover {
+      border-color: rgba(0, 188, 212, 0.55);
+      background: rgba(0, 188, 212, 0.08);
+    }
+    .landing-secondary-platforms {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px dashed var(--border);
+    }
+    .landing-secondary-platforms__intro {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin: 0 0 1rem;
+      max-width: 42em;
+      line-height: 1.5;
+    }
+    .hero-cta-note {
+      margin-top: 0.65rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .hero-cta-note a {
+      color: #0e7490;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .hero-cta-note a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
+
 <body>
-  <p>Redirecting to <a href="/cinelutlivegrade.html">CineLutLiveGrade</a>...</p>
+
+  <!-- Header: single nav, no repetitive guide links -->
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="/" class="brand" aria-label="DeSqueeze Studio home">
+        <span class="brand__dot"></span>
+        <span>DeSqueeze Studio</span>
+      </a>
+      <nav class="nav">
+        <a href="#ios-ecosystem">iOS &amp; Mac apps</a>
+        <a href="/cinelutlivegrade.html">CineLut Live Grade</a>
+        <a href="#other-platforms">Android &amp; Windows</a>
+        <a href="#settings">Web Studio</a>
+        <a href="/guides.html">Guides</a>
+        <a href="#support">Support</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrapper">
+    <header class="hero">
+      <div class="card">
+        <div class="hero__layout">
+          <div class="hero__text">
+            <div class="pill-strip">
+              <span class="pill-strip__dot"></span>
+              iOS &amp; Mac filmmaking ecosystem
+            </div>
+            <h1>Capture, de-squeeze, grade, deliver — on Apple.</h1>
+            <p class="sub">This homepage is our <strong>main hub</strong> for paid filmmaker apps: <strong>FilmStudio</strong> for pro camera control on iPhone and iPad, <strong>Anamorphic Desqueezer</strong> for monitor and 1.33×–2× de-squeeze, <strong>CineLut Live Grade</strong> on MacBook for live LUT/CDL on set, and <strong>MediaUtility</strong> to compress and resize before you share or archive.</p>
+            <p class="sub hero-works-with">Android, Windows, and the free in-browser Web Studio are on this same page — scroll to <a href="#other-platforms" style="color: inherit; font-weight: 600;">Android &amp; Windows</a> or <a href="#settings" style="color: inherit; font-weight: 600;">Web Studio</a>.</p>
+            <div class="cta-row hero-ctas">
+              <a class="btn btn--primary" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">Anamorphic Desqueezer — App Store</a>
+              <a class="btn" href="#ios-ecosystem">All iOS &amp; Mac apps</a>
+              <a class="btn" href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">FilmStudio</a>
+              <a class="btn" href="/cinelutlivegrade.html">CineLut Live Grade</a>
+            </div>
+            <p class="hero-cta-note">Quick browser preview (no install): <a href="#settings">open Web Studio</a>.</p>
+          </div>
+          <div class="hero__media" aria-hidden="true">
+            <img src="assets/hero-desqueeze-studio.png" alt="Anamorphic footage being de-squeezed on screen">
+            <div class="hero__media-glow"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="landing-app-bar" aria-label="App Store downloads">
+      <div class="landing-app-bar__card">
+        <p class="landing-app-bar__title">Download on the App Store</p>
+        <div class="landing-app-bar__links">
+          <a href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">FilmStudio</a>
+          <a href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">Anamorphic Desqueezer</a>
+          <a href="https://apps.apple.com/app/cinelutlivegrade/id6760215504" target="_blank" rel="noopener">CineLut Live Grade</a>
+          <a href="https://apps.apple.com/us/app/document-management-system/id6761471161?mt=12" target="_blank" rel="noopener">Document Management System</a>
+          <a href="https://apps.apple.com/us/app/mediautility/id6760351903" target="_blank" rel="noopener">MediaUtility</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ecosystem workflow: capture → correct → finish (original mockups) -->
+    <section class="platforms-visual" aria-label="iOS and Mac workflow">
+      <div class="platforms-visual__grid">
+        <div class="platforms-visual__card">
+          <img src="assets/product-ios.png" alt="FilmStudio and camera workflow on iPhone" loading="lazy" />
+          <span class="platforms-visual__label">Capture — FilmStudio</span>
+        </div>
+        <div class="platforms-visual__card">
+          <img src="assets/cinema-scope-export.png" alt="Anamorphic desqueeze and CinemaScope export" loading="lazy" />
+          <span class="platforms-visual__label">Correct — Anamorphic Desqueezer</span>
+        </div>
+        <div class="platforms-visual__card">
+          <img src="assets/cinelutlivegrade-icon.png" alt="CineLut Live Grade on Mac" loading="lazy" />
+          <span class="platforms-visual__label">Grade — CineLut Live Grade</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product lineup strip: CineLutLiveGrade flagship, then anamorphic tools -->
+    <section class="product-strip" id="product-lineup" aria-label="Products">
+      <div class="product-strip__header">
+        <div>
+          <div class="product-strip__title">Apple ecosystem</div>
+          <div class="product-strip__subtitle">This is the page most customers use first: native iPhone and iPad apps for capture and post, MacBook for live grading, plus MediaUtility on iOS and Mac. Android and Windows are grouped below for mixed crews.</div>
+        </div>
+      </div>
+      <h3 class="tool-section__title" id="ios-ecosystem">iOS &amp; Mac apps</h3>
+      <p class="tool-section__sub" style="margin-top: -0.5rem; margin-bottom: 1rem;">FilmStudio, Anamorphic Desqueezer, CineLut Live Grade, Document Management System, and MediaUtility — built for the same on-set and editorial workflow.</p>
+      <div class="product-grid">
+        <article class="product-card" id="filmstudio">
+          <div class="product-card__tag">iPhone · iPad · Mac (M1+)</div>
+          <div class="product-card__title">FilmStudio</div>
+          <div class="product-card__media">
+            <img src="assets/product-ios.png" alt="FilmStudio pro cinema camera app on iPhone">
+          </div>
+          <p class="product-card__body">Turn your iPhone into a pro cinema camera: manual ISO, shutter, focus, and white balance; focus pull A/B; one-tap film presets; shot intent modes; and a preview-first interface built for real productions.</p>
+          <ul class="feature-list">
+            <li>Manual camera: ISO, shutter, focus, WB · AE/AF lock</li>
+            <li>Film presets, zebras, peaking, histogram / waveform</li>
+            <li>Guides, timecode, take counter, lens switch, stabilization</li>
+            <li>Reliable recording with safety guardrails; library &amp; export</li>
+          </ul>
+          <a class="product-card__cta" href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">
+            App Store — FilmStudio
+            <span class="product-card__cta-arrow">↗</span>
+          </a>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__tag">iOS + MacBook</div>
+          <div class="product-card__title">Anamorphic Desqueezer</div>
+          <div class="product-card__media">
+            <img src="assets/product-ios.png" alt="Anamorphic de-squeeze controls on an iPhone screen">
+          </div>
+          <p class="product-card__body">Live monitor and post for anamorphic footage on iPhone, iPad, and MacBook — correct 1.33×–2× squeeze and export CinemaScope-ready masters.</p>
+          <ul class="feature-list">
+            <li>Live monitor + post: 1.33×–2× and custom ratio</li>
+            <li>ProRes &amp; 10-bit, FCPXML, 2.39:1 export</li>
+            <li>Zebras, waveform, false color for exposure</li>
+            <li>Batch-friendly workflow for set and editorial handoff</li>
+          </ul>
+          <a class="product-card__cta" href="/anamorphic-desqueeze-iphone.html">
+            Product page
+            <span class="product-card__cta-arrow">→</span>
+          </a>
+          <a class="product-card__cta" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener" style="margin-top: 0.35rem;">
+            App Store
+            <span class="product-card__cta-arrow">↗</span>
+          </a>
+        </article>
+
+        <article class="product-card product-card--flagship">
+          <div class="product-card__tag">MacBook only</div>
+          <div class="product-card__title">CineLut Live Grade</div>
+          <div class="product-card__media product-card__media--icon">
+            <img src="assets/cinelutlivegrade-icon.png" alt="CineLutLiveGrade app icon">
+          </div>
+          <p class="product-card__body">The MacBook centerpiece for cinematographers and DITs: live LUT and CDL grading with professional scopes, capture, and dailies that match your pipeline.</p>
+          <ul class="feature-list">
+            <li>Live LUT &amp; CDL with waveform, vectorscope, parade</li>
+            <li>SDI/HDMI capture, ProRes recording</li>
+            <li>EDL + CDL dailies for set and post</li>
+            <li>Built for on-set speed and consistent looks</li>
+          </ul>
+          <a class="product-card__cta" href="/cinelutlivegrade.html">
+            Learn more
+            <span class="product-card__cta-arrow">→</span>
+          </a>
+          <a class="product-card__cta" href="https://apps.apple.com/app/cinelutlivegrade/id6760215504" target="_blank" rel="noopener" style="margin-top: 0.35rem;">
+            Mac App Store
+            <span class="product-card__cta-arrow">↗</span>
+          </a>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__tag">MacBook only</div>
+          <div class="product-card__title">Document Management System</div>
+          <div class="product-card__media">
+            <img src="assets/product-windows.png" alt="Document Management System app workspace on desktop">
+          </div>
+          <p class="product-card__body">Organize project documents, keep files searchable, and manage production paperwork in one streamlined desktop workflow.</p>
+          <ul class="feature-list">
+            <li>Centralized document organization and quick lookup</li>
+            <li>Built for production notes, delivery docs, and admin files</li>
+            <li>Simple workflow for teams managing many projects</li>
+          </ul>
+          <a class="product-card__cta" href="/document-management-system.html">
+            Product page
+            <span class="product-card__cta-arrow">→</span>
+          </a>
+          <a class="product-card__cta" href="https://apps.apple.com/us/app/document-management-system/id6761471161?mt=12" target="_blank" rel="noopener" style="margin-top: 0.35rem;">
+            Mac App Store
+            <span class="product-card__cta-arrow">↗</span>
+          </a>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__tag">iOS + MacBook</div>
+          <div class="product-card__title">MediaUtility</div>
+          <div class="product-card__media">
+            <img src="assets/product-ios.png" alt="MediaUtility app for compressing video and resizing images">
+          </div>
+          <p class="product-card__body">On-device compression and resizing on iPhone, iPad, and Mac — no uploads, no account. Ideal after grade or desqueeze when you need smaller files or format conversion.</p>
+          <ul class="feature-list">
+            <li>Compress video with quality controls</li>
+            <li>Resize to 4K, 1080p, or 720p</li>
+            <li>Convert images to JPG or PNG</li>
+            <li>Private: everything stays on your device</li>
+          </ul>
+          <a class="product-card__cta" href="https://apps.apple.com/us/app/mediautility/id6760351903" target="_blank" rel="noopener">
+            App Store
+            <span class="product-card__cta-arrow">↗</span>
+          </a>
+        </article>
+      </div>
+
+      <div class="landing-secondary-platforms" id="other-platforms">
+      <p class="landing-secondary-platforms__intro">Shooting or finishing on other platforms? These builds mirror parts of the Apple lineup. The free <a href="#settings">Web Studio</a> below is still here for fast browser previews.</p>
+      <h3 class="tool-section__title">Android Products</h3>
+      <div class="product-grid">
+        <article class="product-card">
+          <div class="product-card__tag">Android</div>
+          <div class="product-card__title">Anamorphic Desqueezer — Batch &amp; LUT</div>
+          <div class="product-card__media">
+            <img src="assets/product-android.png" alt="DeSqueeze Studio anamorphic tool on an Android phone">
+          </div>
+          <p class="product-card__body">
+            Batch desqueeze, LUT grading, CinemaScope 2.39:1, 4K export. LiveGrade with CDL and .cube LUTs.
+          </p>
+          <a class="product-card__cta" href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener">
+            Google Play
+            <span class="product-card__cta-arrow">↗</span>
+          </a>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__tag">Android</div>
+          <div class="product-card__title">Anamorphic Desqueeze Pro</div>
+          <div class="product-card__media">
+            <img src="assets/product-android.png" alt="Live and post de-squeeze on Android">
+          </div>
+          <p class="product-card__body">
+            Live de-squeeze, Post Studio (trim, 1080p/4K, H.264/H.265, batch). On-set tools: slate, FOV, DoF. Saves to DCIM/Desqueezed.
+          </p>
+          <a class="product-card__cta" href="https://play.google.com/store/apps/details?id=com.cinematiclens.desqueeze.live" target="_blank" rel="noopener">
+            Google Play
+            <span class="product-card__cta-arrow">↗</span>
+          </a>
+        </article>
+        <article class="product-card">
+          <div class="product-card__tag">Android</div>
+          <div class="product-card__title">4K Video Exporter</div>
+          <div class="product-card__media">
+            <img src="assets/product-android.png" alt="4K video export tool on Android">
+          </div>
+          <p class="product-card__body">
+            Export videos in true 4K Ultra HD while preserving detail and clarity with a simple workflow.
+          </p>
+          <a class="product-card__cta" href="https://play.google.com/store/apps/details?id=com.capshot.app" target="_blank" rel="noopener">
+            Google Play
+            <span class="product-card__cta-arrow">↗</span>
+          </a>
+        </article>
+      </div>
+
+      <h3 class="tool-section__title">Windows Products</h3>
+      <div class="product-grid">
+        <article class="product-card">
+          <div class="product-card__tag">Windows</div>
+          <div class="product-card__title">AnamorphicDesqueezePro</div>
+          <div class="product-card__media">
+            <img src="assets/product-windows.png" alt="Desktop anamorphic de-squeeze on Windows">
+          </div>
+          <p class="product-card__body">
+            Batch de-squeeze, CinemaScope 2.39:1–2.76:1, LUT &amp; CDL grading, live preview, EDL export. Runs locally.
+          </p>
+          <a class="product-card__cta" href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener">
+            Microsoft Store
+            <span class="product-card__cta-arrow">↗</span>
+          </a>
+        </article>
+      </div>
+      </div>
+    </section>
+
+    <!-- App UI: original mockup images (not screenshots) -->
+    <section class="app-ui-section" aria-label="App preview">
+      <h2 class="app-ui-section__title">See the app</h2>
+      <p class="app-ui-section__sub">Import, desqueeze ratio, and CinemaScope export — in one place.</p>
+      <div class="app-ui-grid">
+        <div class="app-ui-card">
+          <img src="assets/import-export-ui.png" alt="DeSqueeze Studio Import and Export screen: Add Images, Add Videos, Desqueeze Ratio, CinemaScope Export" loading="lazy" />
+          <span class="app-ui-card__label">Import &amp; Export</span>
+        </div>
+        <div class="app-ui-card">
+          <img src="assets/cinema-scope-export.png" alt="CinemaScope Export and Desqueeze Ratio settings" loading="lazy" />
+          <span class="app-ui-card__label">Desqueeze &amp; CinemaScope</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Specs matrix -->
+    <section class="specs" aria-label="Platform capabilities">
+      <h2 class="specs__title">Platforms</h2>
+      <p class="specs__subtitle">Pick the right tool for the job.</p>
+      <table class="specs-table">
+        <thead>
+          <tr>
+            <th>Platform</th>
+            <th>Best for</th>
+            <th>Batch</th>
+            <th>Export formats</th>
+            <th>Runs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Web Studio</td>
+            <td>Fast previews, light to medium clips</td>
+            <td>Up to 10 files</td>
+            <td>MP4, JPG, PNG</td>
+            <td><span class="specs-chip">In browser</span></td>
+          </tr>
+          <tr>
+            <td>iOS</td>
+            <td>On‑set monitoring & social cuts</td>
+            <td>Batch projects</td>
+            <td>Video & stills</td>
+            <td><span class="specs-chip specs-chip--native">Native app</span></td>
+          </tr>
+          <tr>
+            <td>Android</td>
+            <td>Mobile anamorphic workflows</td>
+            <td>Batch projects</td>
+            <td>Video & stills</td>
+            <td><span class="specs-chip specs-chip--native">Native app</span></td>
+          </tr>
+          <tr>
+            <td>Windows</td>
+            <td>Longer timelines & higher bitrates</td>
+            <td>Project folders</td>
+            <td>Desktop‑grade exports</td>
+            <td><span class="specs-chip specs-chip--native">Desktop app</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Use-case band -->
+    <section class="usecases" aria-label="Workflows">
+      <h2 class="usecases__title">Workflows</h2>
+      <p class="usecases__subtitle">On-set, client previews, or finishing.</p>
+      <div class="usecase-grid">
+        <article class="usecase-card">
+          <div class="usecase-card__label">On‑set</div>
+          <h3 class="usecase-card__title">Live monitoring</h3>
+          <p class="usecase-card__body">iOS & Android apps: de‑squeeze on the spot, check 2.39:1 framing, approve before wrap.</p>
+          <div class="usecase-card__links">
+            <a href="#ios-app">iOS</a>
+            <a href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener">Android ↗</a>
+          </div>
+        </article>
+
+        <article class="usecase-card">
+          <div class="usecase-card__label">Browser</div>
+          <h3 class="usecase-card__title">Client previews</h3>
+          <p class="usecase-card__body">Up to 10 clips, set ratio, export MP4/JPG/PNG — no NLE needed.</p>
+          <div class="usecase-card__links">
+            <a href="#settings">Web Studio</a>
+          </div>
+        </article>
+
+        <article class="usecase-card">
+          <div class="usecase-card__label">Desktop</div>
+          <h3 class="usecase-card__title">Finishing & archive</h3>
+          <p class="usecase-card__body">Windows app for longer timelines, higher bitrates, project folders.</p>
+          <div class="usecase-card__links">
+            <a href="#windows-desktop-tool">Windows</a>
+            <a href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener">Store ↗</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Trust strip -->
+    <section class="trust-strip" aria-label="Privacy">
+      <div class="trust-strip__pill"><span class="trust-strip__dot"></span>No account · Files deleted after processing</div>
+      <div><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="mailto:teamcentersap@gmail.com">Contact</a></div>
+    </section>
+
+    <section class="tool-section">
+      <h2 class="tool-section__title">Web Studio</h2>
+      <p class="tool-section__sub">Upload clips, set your ratio (1.33×–2× or custom), export. Runs in the browser.</p>
+    </section>
+    <main class="grid">
+      <!-- Monitor -->
+      <section class="panel monitor">
+        <div class="preview" id="previewBox">
+          <video id="video" playsinline controls preload="metadata" poster="assets/hero-desqueeze-studio.png"></video>
+          <canvas id="photoCanvas" class="hidden"></canvas>
+        </div>
+
+        <div class="controls">
+          <div class="actions">
+            <button id="play" class="start">Play</button>
+            <button id="pause" class="stop">Pause</button>
+            <button id="exportSelected" class="start" disabled>Export Selected</button>
+            <button id="exportBatch" class="start" disabled>Export Batch</button>
+            <span id="status" class="status" role="status" aria-live="polite">Idle</span>
+          </div>
+
+          <progress id="progressBar" value="0" max="100" class="hidden"></progress>
+
+          <div id="download" class="download hidden">
+            <a id="downloadLink" href="#" download>Download</a>
+          </div>
+
+          <div id="queue" class="queue hidden"></div>
+        </div>
+      </section>
+
+      <!-- Settings (UNCHANGED HOOKS/IDS) -->
+      <section class="panel" id="settings">
+        <div class="row">
+          <label>Files</label>
+          <div><small>Coming soon — seamless and secure file uploads to Amazon S3.</small></div>
+        </div>
+
+        <h2>Settings</h2>
+
+        <div class="row">
+          <label>Select Files</label>
+          <div>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <button id="clearAll" type="button" class="btn">Clear</button>
+              <input id="fileInput" type="file"
+                accept="video/*,image/*,.mts,.avi,.mov,.mp4,.png,.jpg,.jpeg" multiple />
+            </div>
+
+            <!-- ✅ UPDATED COPY (BIGGER FILES -> DOWNLOAD APPS) -->
+            <small>
+              You may select up to 10 files. (Per-file size limit: 1 MB to 5 MB for testing.)
+              For bigger files, please use our dedicated apps for faster and more reliable processing:
+              <a href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener">Windows (Microsoft Store)</a>,
+              <a href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">iOS (App Store)</a>,
+              or
+              <a href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener">Android (Play Store)</a>.
+            </small>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>De-squeeze</label>
+          <div>
+            <select id="desqPreset">
+              <option value="1">None (1.00×)</option>
+              <option value="1.25">1.25×</option>
+              <option value="1.33">1.33× (Classic)</option>
+              <option value="1.5">1.50×</option>
+              <option value="1.8">1.80×</option>
+              <option value="2">2.00×</option>
+              <option value="custom">Custom…</option>
+            </select>
+            <input id="desqCustom" type="number" step="0.01" min="1" placeholder="Custom factor" class="hidden mt8" />
+            <small>Preview updates instantly; export uses the same factor.</small>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Video FPS</label>
+          <div>
+            <select id="fpsPreset">
+              <option value="copy" selected>Keep original</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+              <option value="30">30</option>
+              <option value="50">50</option>
+              <option value="60">60</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Video Bitrate</label>
+          <div>
+            <select id="bitratePreset">
+              <option value="8000000" selected>8 Mbps</option>
+              <option value="12000000">12 Mbps</option>
+              <option value="16000000">16 Mbps</option>
+              <option value="25000000">25 Mbps</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Photo Format</label>
+          <div>
+            <select id="photoFormat">
+              <option value="image/jpeg" selected>JPEG</option>
+              <option value="image/png">PNG</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row" style="display:none">
+          <label>Upload URL</label>
+          <input id="uploadUrl" type="text" value="https://desqueeze-server-render.onrender.com/upload" />
+        </div>
+      </section>
+
+      <!-- Pro -->
+      <section class="panel" id="pro">
+        <h2>Advanced Features (Currently Free)</h2>
+        <div class="row">
+          <label>What you get</label>
+          <div>
+            <ul class="feature-list">
+              <li>2.0× de-squeeze is available for everyone</li>
+              <li>Other ratios & advanced controls available in this web tool</li>
+              <li>Batch up to 10 videos/photos at once</li>
+              <li>Faster exports & ongoing updates</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Support -->
+      <section class="panel" id="support">
+        <h2>Support</h2>
+        <div class="row">
+          <label>Feedback</label>
+          <div>
+            <form id="feedbackForm" class="feedback-box" onsubmit="return false;">
+              <textarea id="feedbackMessage" class="feedback-input" rows="4" placeholder="Tell us what's confusing, what's broken, or what you'd love to see…"></textarea>
+              <div class="feedback-actions">
+                <input id="feedbackEmail" class="feedback-email" type="email" placeholder="Your email (optional)" />
+                <button id="sendFeedback" class="btn" type="button">Send Feedback</button>
+              </div>
+              <small id="feedbackHint" class="note">We’ll open the feedback page with your message pre-filled.</small>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- How it works (short, no keyword block) — #how-it-works, #ios-app, #windows-desktop-tool for nav -->
+  <main class="seo-copy" id="how-it-works">
+    <h1>How it works</h1>
+    <p>Anamorphic lenses squeeze the image horizontally; we restore the correct aspect ratio (e.g. 2.39:1). Choose your factor (1.33×–2× or custom), then export. Use the browser for quick batches, or our <a href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener" style="color:#93c5fd;">iOS</a>, <a href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener" style="color:#93c5fd;">Android</a>, or <a href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener" style="color:#93c5fd;">Windows</a> apps for larger projects.</p>
+    <section id="ios-app"><h2>iOS</h2><p><a href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener" style="color:#93c5fd;">App Store</a> — ratio sliders, CinemaScope, batch.</p></section>
+    <section id="windows-desktop-tool"><h2>Windows</h2><p><a href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener" style="color:#93c5fd;">Microsoft Store</a> · <a href="ms-windows-store://pdp/?productid=9PH01D6PQ8X3" style="color:#93c5fd;">Open in Store app</a></p></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div>© <span id="y"></span> DeSqueeze Studio</div>
+      <div class="site-footer__links">
+        <a href="/guides.html">Guides</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="mailto:teamcentersap@gmail.com">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JSZip for batch ZIP (keep as you had) -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+  <!-- Feedback helper (unchanged behavior) -->
+  <script>
+    (function(){
+      document.getElementById('y').textContent = new Date().getFullYear();
+
+      const btn = document.getElementById('sendFeedback');
+      const msgEl = document.getElementById('feedbackMessage');
+      const emailEl = document.getElementById('feedbackEmail');
+      const hint = document.getElementById('feedbackHint');
+      if (!btn) return;
+
+      btn.addEventListener('click', function(){
+        const msg = (msgEl.value || '').trim();
+        if (!msg) {
+          hint.textContent = 'Please enter your message before sending.';
+          return;
+        }
+
+        const email = (emailEl.value || '').trim();
+        const prefill = `Message: ${msg}${email ? `\n\nEmail: ${email}` : ''}`;
+
+        try {
+          navigator.clipboard &&
+            navigator.clipboard.writeText(prefill).catch(function(){});
+        } catch(e) {}
+
+        const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeZEIzfe-UMKQntHC97awMG_uO74tx3XR9CboLh-wByuPzT6A/viewform?usp=preview';
+
+        window.open(formUrl, '_blank', 'noopener');
+
+        hint.textContent = 'Opening feedback form in a new tab. Your message was copied to the clipboard.';
+        msgEl.value = '';
+        emailEl.value = '';
+      });
+    })();
+  </script>
+
+  <div id="app"></div>
+
+  <footer id="privacy-footer" style="text-align: center; font-size: 0.8rem; color: #334155; margin-top: 2rem;">
+    We do not store your videos. All uploaded files are automatically deleted from our server after processing.
+  </footer>
+
+  <!-- App logic (keep EXACTLY as-is) -->
+  <script src="./app.js?v=3"></script>
+
+  <!-- ✅ AdSense init (safe: won't throw even when in review) -->
+  <script>
+    (function(){
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch(e) {}
+    })();
+  </script>
 </body>
 </html>
