@@ -959,6 +959,32 @@ progress.hidden { display: none; }
   overflow: hidden;
   background: #f8fafc;
 }
+.hero-banner {
+  margin-top: 0.95rem;
+  padding: 0.75rem 0.95rem;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 188, 212, 0.6);
+  background: rgba(0, 188, 212, 0.12);
+}
+.hero-banner p,
+.hero-banner strong {
+  color: var(--text);
+}
+.hero-banner--flash {
+  animation: bannerFlash 1.4s ease-in-out infinite;
+}
+@keyframes bannerFlash {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(0, 188, 212, 0);
+    border-color: rgba(0, 188, 212, 0.55);
+    background: rgba(0, 188, 212, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.18);
+    border-color: rgba(0, 188, 212, 0.95);
+    background: rgba(0, 188, 212, 0.2);
+  }
+}
 .hero-image img {
   width: 100%;
   display: block;
