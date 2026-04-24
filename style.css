@@ -1143,8 +1143,8 @@ progress.hidden { display: none; }
   color: var(--muted);
   line-height: 1.45;
 }
-.flagship-page--dark-lead .demo-embed__caption a {
-  color: #0e7490 !important;
+.info-block .demo-embed__caption a {
+  color: #0e7490;
   font-weight: 700;
 }
 
