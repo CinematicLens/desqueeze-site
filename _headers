@@ -1,0 +1,9 @@
+# Reduce stale HTML/CSS across CDN edges (Netlify / Cloudflare Pages compatible)
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/style.css
+  Cache-Control: public, max-age=86400, must-revalidate
