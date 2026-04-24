@@ -1381,6 +1381,17 @@ progress.hidden { display: none; }
   line-height: 1.55;
   color: rgba(226, 232, 240, 0.94);
 }
+.hub-hero__tool-bullets {
+  margin: 0.45rem 0 0;
+  padding-left: 1.15rem;
+  max-width: 68ch;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: rgba(203, 213, 225, 0.95);
+}
+.hub-hero__tool-bullets li {
+  margin-bottom: 0.2rem;
+}
 .hub-hero__skips {
   margin: 1.1rem 0 0;
   padding-top: 1rem;
