@@ -9,9 +9,9 @@
   <meta name="robots" content="index,follow" />
   <meta property="og:title" content="Guides — DeSqueeze Studio" />
   <meta property="og:url" content="https://anamorphic-desqueeze.com/guides.html" />
-  <link rel="stylesheet" href="./style.css?v=12" />
+  <link rel="stylesheet" href="./style.css?v=13" />
 </head>
-<body>
+<body class="product-skin product-skin--guides">
   <header class="site-header">
     <div class="site-header__inner">
       <a href="/" class="brand">
@@ -30,55 +30,79 @@
     </div>
   </header>
 
-  <main class="guides-page">
-    <h1>Guides</h1>
-    <p class="lead">Choose the right app in under a minute, then follow step-by-step guides for setup, shooting, de-squeeze, grading, and export.</p>
+  <main class="product-main guides-page guides-page--redesign">
+    <header class="product-hero">
+      <p class="product-hero__eyebrow">Documentation · Routing</p>
+      <h1 class="product-hero__title">Guides</h1>
+      <p class="product-hero__lede">Pick the workflow first, then open the right surface — App Store apps, Mac live grading, or the free in-browser Web Studio. Each guide is scoped to one problem so you are not re-reading the same catalog copy on every URL.</p>
+      <dl class="product-spec-strip">
+        <div class="product-spec-strip__item">
+          <dt>Hub</dt>
+          <dd><a href="/index.html">Filmmaker lineup</a></dd>
+        </div>
+        <div class="product-spec-strip__item">
+          <dt>Web</dt>
+          <dd><a href="/index.html#settings">Web Studio</a></dd>
+        </div>
+        <div class="product-spec-strip__item">
+          <dt>Deep dives</dt>
+          <dd>Lens &amp; ratio pages</dd>
+        </div>
+        <div class="product-spec-strip__item">
+          <dt>Support</dt>
+          <dd><a href="mailto:teamcentersap@gmail.com">Email</a></dd>
+        </div>
+      </dl>
+    </header>
 
-    <section class="quick-start" aria-label="Start here">
-      <h2 class="quick-start__title">Start here: pick your workflow</h2>
-      <p class="quick-start__desc">Most users start with iOS + Mac. If you are testing first, use Web Studio. If you already know your device, jump directly to the best-fit app below.</p>
-    </section>
+    <div class="product-body">
+      <section class="quick-start" aria-label="Start here">
+        <h2 class="quick-start__title">Start here: pick your workflow</h2>
+        <p class="quick-start__desc">Most users start with iOS + Mac. If you are testing first, use Web Studio. If you already know your device, jump directly to the best-fit app below.</p>
+      </section>
 
-    <ul class="chooser">
-      <li>
-        <strong>iPhone / iPad capture workflow → <a href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">FilmStudio (App Store)</a></strong>
-        <span>Manual ISO/shutter/focus, focus pull A/B, overlays, and fast on-set capture.</span>
-      </li>
-      <li>
-        <strong>Anamorphic correction on Apple devices → <a href="/anamorphic-desqueeze-iphone.html">Anamorphic Desqueezer guide</a></strong>
-        <span>Fix 1.33×–2× footage, preview framing, and export CinemaScope-ready output.</span>
-      </li>
-      <li>
-        <strong>Live grading on MacBook → <a href="/cinelutlivegrade.html">CineLut Live Grade</a></strong>
-        <span>LUT + CDL grading, scopes, capture options, and dailies-ready workflow.</span>
-      </li>
-      <li>
-        <strong>Compress and convert before delivery → <a href="https://apps.apple.com/us/app/mediautility/id6760351903" target="_blank" rel="noopener">MediaUtility (App Store)</a></strong>
-        <span>Resize 4K/1080p/720p, compress video, convert JPG/PNG on-device.</span>
-      </li>
-      <li>
-        <strong>Need production paperwork in one place? → <a href="/document-management-system.html">Document Management System guide</a></strong>
-        <span>Mac productivity workflow for organizing docs, notes, and handoff files.</span>
-      </li>
-      <li>
-        <strong>Need quick browser testing first? → <a href="/index.html#settings">Web Studio</a></strong>
-        <span>No install. Upload, de-squeeze, preview, and export in minutes.</span>
-      </li>
-    </ul>
+      <ul class="chooser">
+        <li>
+          <strong>iPhone / iPad capture workflow → <a href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">FilmStudio (App Store)</a></strong>
+          <span>Manual ISO/shutter/focus, focus pull A/B, overlays, and fast on-set capture.</span>
+        </li>
+        <li>
+          <strong>Anamorphic correction on Apple devices → <a href="/anamorphic-desqueeze-iphone.html">Anamorphic Desqueezer guide</a></strong>
+          <span>Fix 1.33×–2× footage, preview framing, and export CinemaScope-ready output.</span>
+        </li>
+        <li>
+          <strong>Live grading on MacBook → <a href="/cinelutlivegrade.html">CineLut Live Grade</a></strong>
+          <span>LUT + CDL grading, scopes, capture options, and dailies-ready workflow.</span>
+        </li>
+        <li>
+          <strong>Compress and convert before delivery → <a href="https://apps.apple.com/us/app/mediautility/id6760351903" target="_blank" rel="noopener">MediaUtility (App Store)</a></strong>
+          <span>Resize 4K/1080p/720p, compress video, convert JPG/PNG on-device.</span>
+        </li>
+        <li>
+          <strong>Need production paperwork in one place? → <a href="/document-management-system.html">Document Management System guide</a></strong>
+          <span>Mac productivity workflow for organizing docs, notes, and handoff files.</span>
+        </li>
+        <li>
+          <strong>Need quick browser testing first? → <a href="/index.html#settings">Web Studio</a></strong>
+          <span>No install. Upload, de-squeeze, preview, and export in minutes.</span>
+        </li>
+      </ul>
 
-    <p class="section-label">All guides</p>
-    <ul class="guides-list">
-      <li><a href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">FilmStudio — Pro camera capture on iPhone, iPad, and Mac (M1+)<span class="guide-desc">Manual controls, focus pull, film presets, overlays, and fast on-set workflow.</span></a></li>
-      <li><a href="/cinelutlivegrade.html">CineLutLiveGrade — Live LUT &amp; CDL for Mac<span class="guide-desc">On-set grading for cinematographers, DITs, and colorists.</span></a></li>
-      <li><a href="https://apps.apple.com/us/app/mediautility/id6760351903" target="_blank" rel="noopener">MediaUtility — Compress, Resize &amp; Convert Media<span class="guide-desc">Compress videos, resize media, and convert JPG/PNG on iPhone, iPad, and Mac (M1+).</span></a></li>
-      <li><a href="/document-management-system.html">Document Management System — Productivity app for Mac<span class="guide-desc">Organize production documents, project notes, and delivery files in one workflow.</span></a></li>
-      <li><a href="/how-to-desqueeze-1-33x.html">How to de-squeeze 1.33× anamorphic footage<span class="guide-desc">Presets, batch, and export. Web, iOS, Android, Windows.</span></a></li>
-      <li><a href="/anamorphic-desqueeze-iphone.html">Anamorphic de-squeeze on iPhone & iPad<span class="guide-desc">Ratio sliders, CinemaScope, ProRes & 10-bit, FCPXML. App Store.</span></a></li>
-      <li><a href="/moment-anamorphic-desqueeze.html">Moment anamorphic desqueeze<span class="guide-desc">1.33× preset and quick export for Moment lenses.</span></a></li>
-      <li><a href="/sirui-anamorphic-desqueeze.html">Sirui anamorphic desqueeze<span class="guide-desc">1.33×, 1.5×, 1.8×, 2× presets for Sirui lenses.</span></a></li>
-      <li><a href="/cinemascope-export-online.html">CinemaScope 2.39:1 export online<span class="guide-desc">Export anamorphic to 2.39:1 in the browser or apps.</span></a></li>
-    </ul>
-    <p style="margin-top: 2rem;"><a href="/index.html" style="color: #0e7490; text-decoration: none; font-size: 0.9rem; font-weight: 600;">← Back to home</a></p>
+      <p class="section-label">All guides</p>
+      <ul class="guides-list">
+        <li><a href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">FilmStudio — Pro camera capture on iPhone, iPad, and Mac (M1+)<span class="guide-desc">Manual controls, focus pull, film presets, overlays, and fast on-set workflow.</span></a></li>
+        <li><a href="/cinelutlivegrade.html">CineLutLiveGrade — Live LUT &amp; CDL for Mac<span class="guide-desc">On-set grading for cinematographers, DITs, and colorists.</span></a></li>
+        <li><a href="https://apps.apple.com/us/app/mediautility/id6760351903" target="_blank" rel="noopener">MediaUtility — Compress, Resize &amp; Convert Media<span class="guide-desc">Compress videos, resize media, and convert JPG/PNG on iPhone, iPad, and Mac (M1+).</span></a></li>
+        <li><a href="/document-management-system.html">Document Management System — Productivity app for Mac<span class="guide-desc">Organize production documents, project notes, and delivery files in one workflow.</span></a></li>
+        <li><a href="/how-to-desqueeze-1-33x.html">How to de-squeeze 1.33× anamorphic footage<span class="guide-desc">Presets, batch, and export. Web, iOS, Android, Windows.</span></a></li>
+        <li><a href="/anamorphic-desqueeze-iphone.html">Anamorphic de-squeeze on iPhone &amp; iPad<span class="guide-desc">Ratio sliders, CinemaScope, ProRes &amp; 10-bit, FCPXML. App Store.</span></a></li>
+        <li><a href="/moment-anamorphic-desqueeze.html">Moment anamorphic desqueeze<span class="guide-desc">1.33× preset and quick export for Moment lenses.</span></a></li>
+        <li><a href="/sirui-anamorphic-desqueeze.html">Sirui anamorphic desqueeze<span class="guide-desc">1.33×, 1.5×, 1.8×, 2× presets for Sirui lenses.</span></a></li>
+        <li><a href="/cinemascope-export-online.html">CinemaScope 2.39:1 export online<span class="guide-desc">Export anamorphic to 2.39:1 in the browser or apps.</span></a></li>
+      </ul>
+
+      <p class="product-back"><a href="/index.html">← Filmmaker hub</a></p>
+    </div>
   </main>
 
   <footer class="site-footer">
