@@ -1174,3 +1174,328 @@ progress.hidden { display: none; }
   font-weight: 600;
 }
 
+/* ----- Product pages (technical hero + body cards, gear-site style) ----- */
+.product-skin--moment { --product-accent: #fb923c; }
+.product-skin--sirui { --product-accent: #ea580c; }
+.product-skin--scope { --product-accent: #818cf8; }
+.product-skin--ios { --product-accent: #38bdf8; }
+.product-skin--dms { --product-accent: #34d399; }
+.product-skin--photo { --product-accent: #a78bfa; }
+
+.product-main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 1.25rem 3rem;
+}
+
+.product-hero {
+  background: linear-gradient(168deg, #141821 0%, #0a0c10 55%, #07080b 100%);
+  color: #cbd5e1;
+  padding: 2rem 1.25rem 1.85rem;
+  margin: 0 -1.25rem 1.75rem;
+  border-bottom: 3px solid var(--product-accent, var(--accent));
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.22);
+}
+
+@media (min-width: 720px) {
+  .product-hero {
+    margin: 0 0 1.75rem;
+    border-radius: 0 0 14px 14px;
+  }
+}
+
+.product-hero__eyebrow {
+  margin: 0 0 0.4rem;
+  font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.product-hero__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 4.2vw, 2.65rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  color: #f8fafc;
+}
+
+.product-hero__lede {
+  margin: 0.65rem 0 0;
+  max-width: 52ch;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: rgba(203, 213, 225, 0.92);
+}
+
+.product-hero a {
+  color: #7dd3fc !important;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.product-hero a:hover {
+  color: #bae6fd !important;
+}
+
+.product-spec-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 0.85rem 1rem;
+  margin: 1.2rem 0 0;
+  padding: 1rem 0 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.product-spec-strip__item {
+  margin: 0;
+}
+
+.product-spec-strip__item dt {
+  margin: 0 0 0.2rem;
+  font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, monospace;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.88);
+}
+
+.product-spec-strip__item dd {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 650;
+  color: #f1f5f9;
+  letter-spacing: -0.01em;
+}
+
+.product-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.65rem;
+  margin-top: 1.15rem;
+  align-items: center;
+}
+
+.product-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none !important;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #e2e8f0 !important;
+  background: rgba(255, 255, 255, 0.06);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.product-cta:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(248, 250, 252, 0.45);
+}
+
+.product-cta--primary {
+  background: var(--product-accent, var(--accent));
+  border-color: rgba(0, 0, 0, 0.35);
+  color: #0b0f14 !important;
+}
+
+.product-cta--primary:hover {
+  filter: brightness(1.06);
+}
+
+.product-body {
+  padding-top: 0.15rem;
+}
+
+.product-body a {
+  color: #0e7490;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.product-body a:hover {
+  text-decoration: underline;
+}
+
+.product-panel {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.15rem 1.1rem;
+  margin-top: 1rem;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+}
+
+.product-panel h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.product-panel p,
+.product-panel li {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.94rem;
+}
+
+.product-panel p:first-of-type {
+  margin-top: 0;
+}
+
+.product-panel ol,
+.product-panel ul {
+  margin: 0.5rem 0 0 1.1rem;
+  padding: 0;
+  color: var(--muted);
+}
+
+.product-panel li + li {
+  margin-top: 0.35rem;
+}
+
+.product-more {
+  margin-top: 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(11, 15, 20, 0.12);
+  background: rgba(255, 255, 255, 0.55);
+  padding: 0.15rem 0.65rem;
+}
+
+.product-more summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text);
+  padding: 0.55rem 0;
+  list-style: none;
+}
+
+.product-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.product-more__lede {
+  margin: 0 0 0.65rem;
+  font-size: 0.86rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.product-platform-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding-bottom: 0.65rem;
+}
+
+.product-platform-row a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none !important;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text) !important;
+}
+
+.product-platform-row a:hover {
+  border-color: rgba(0, 188, 212, 0.55);
+}
+
+.product-back {
+  margin: 1.75rem 0 0;
+  font-size: 0.9rem;
+}
+
+.product-back a {
+  color: #0e7490;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.product-back a:hover {
+  text-decoration: underline;
+}
+
+.product-roadmap-badge {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ede9fe;
+  background: rgba(167, 139, 250, 0.25);
+  border: 1px solid rgba(167, 139, 250, 0.45);
+}
+
+/* CineLut: compact spec bar (inside light hero card) */
+.flagship-spec-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+  gap: 0.5rem 0.65rem;
+  margin-top: 1rem;
+  padding: 0.65rem 0.7rem;
+  background: #0f172a;
+  border-radius: 10px;
+  border: 1px solid rgba(51, 65, 85, 0.85);
+}
+
+.flagship-spec-bar__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+}
+
+.flagship-spec-bar__label {
+  font-family: ui-monospace, monospace;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.flagship-spec-bar__value {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: -0.01em;
+}
+
+a.page-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.95rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-decoration: none !important;
+  background: var(--accent);
+  color: var(--text) !important;
+  border: 1px solid rgba(11, 15, 20, 0.16);
+}
+
+a.page-cta:hover {
+  filter: brightness(1.05);
+}
+
