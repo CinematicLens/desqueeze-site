@@ -1372,6 +1372,73 @@ progress.hidden { display: none; }
   }
 }
 
+/* ----- Hero differentiation: each route reads visually distinct (was one identical dark band) ----- */
+.product-skin--guides .product-hero {
+  background: linear-gradient(168deg, #ffffff 0%, #f1f5f9 42%, #e2e8f0 100%);
+  color: #0f172a;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+}
+.product-skin--guides .product-hero__title {
+  color: #0b0f14;
+}
+.product-skin--guides .product-hero__lede {
+  color: rgba(15, 23, 42, 0.78);
+}
+.product-skin--guides .product-hero__lede strong {
+  color: #0b0f14;
+}
+.product-skin--guides .product-hero__eyebrow {
+  color: #64748b;
+}
+.product-skin--guides .product-hero a,
+.product-skin--guides .product-hero a:hover {
+  color: #0369a1 !important;
+}
+.product-skin--guides .product-spec-strip {
+  border-top-color: rgba(15, 23, 42, 0.1);
+}
+.product-skin--guides .product-spec-strip__item dt {
+  color: #64748b;
+}
+.product-skin--guides .product-spec-strip__item dd {
+  color: #0f172a;
+}
+.product-skin--guides .product-cta {
+  color: #0b0f14 !important;
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(15, 23, 42, 0.16);
+}
+.product-skin--guides .product-cta:hover {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.26);
+}
+.product-skin--guides .product-cta--primary {
+  background: var(--product-accent);
+  border-color: rgba(11, 15, 20, 0.22);
+}
+
+.product-skin--moment .product-hero {
+  background: linear-gradient(152deg, #1f1612 0%, #120d0a 48%, #0a0706 100%);
+}
+.product-skin--sirui .product-hero {
+  background: linear-gradient(168deg, #1a100a 0%, #0f0a06 52%, #080504 100%);
+}
+.product-skin--scope .product-hero {
+  background: linear-gradient(168deg, #121825 0%, #0a0e18 52%, #050810 100%);
+}
+.product-skin--ios .product-hero {
+  background: linear-gradient(168deg, #0f1724 0%, #0a121c 52%, #060a10 100%);
+}
+.product-skin--cinelut .product-hero {
+  background: linear-gradient(168deg, #101820 0%, #0a1018 52%, #050a0f 100%);
+}
+.product-skin--dms .product-hero {
+  background: linear-gradient(168deg, #0f1a14 0%, #081210 52%, #040b08 100%);
+}
+.product-skin--photo .product-hero {
+  background: linear-gradient(168deg, #16101f 0%, #0e0a14 52%, #090612 100%);
+}
+
 .product-hero__eyebrow {
   margin: 0 0 0.4rem;
   font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, monospace;
