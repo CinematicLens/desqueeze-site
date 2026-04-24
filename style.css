@@ -1289,12 +1289,12 @@ progress.hidden { display: none; }
 }
 .hub-hero h1 {
   margin: 0;
-  font-size: clamp(1.2rem, 2.35vw, 1.65rem);
+  font-size: clamp(1.08rem, 2.4vw, 1.52rem);
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.28;
   color: #f8fafc;
-  max-width: 40rem;
+  max-width: min(46rem, 100%);
 }
 .hub-hero .product-hero__eyebrow {
   opacity: 0.95;
@@ -1308,15 +1308,48 @@ progress.hidden { display: none; }
 .hub-hero a:hover {
   color: #bae6fd !important;
 }
-.hub-hero .product-hero__lede {
-  max-width: 58ch;
+.hub-hero__tools {
+  margin-top: 1.05rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
 }
-.hub-hero .product-hero__lede strong {
+.hub-hero__tool {
+  margin: 0;
+}
+.hub-hero__tool-title {
+  margin: 0 0 0.35rem;
+  font-size: clamp(0.92rem, 1.85vw, 1.04rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.28;
   color: #f1f5f9;
+}
+.hub-hero__tool-title a {
+  color: #f1f5f9 !important;
+  text-decoration: none;
   font-weight: 700;
 }
-.hub-hero .product-spec-strip {
-  margin-top: 1.15rem;
+.hub-hero__tool-title a:hover {
+  color: #bae6fd !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.hub-hero__tool-body {
+  margin: 0;
+  max-width: 68ch;
+  font-size: 0.91rem;
+  line-height: 1.55;
+  color: rgba(226, 232, 240, 0.94);
+}
+.hub-hero__skips {
+  margin: 1.1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.22);
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: rgba(148, 163, 184, 0.96);
+  max-width: 68ch;
 }
 
 /* CineLut: dark hero inside flagship column */
