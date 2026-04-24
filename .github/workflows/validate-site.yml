@@ -16,4 +16,10 @@ jobs:
       - name: Static HTML checks
         run: python scripts/validate_site.py
       - name: Unit tests (validator)
-        run: python -m unittest discover -s tests -p "test_*.py" -v
+        run: python -m unittest discover -s tests -p "test_validate_site.py" -v
+      - name: Install dev dependencies (Playwright)
+        run: pip install -r requirements-dev.txt
+      - name: Install Chromium for e2e
+        run: python -m playwright install chromium --with-deps
+      - name: E2E click-through crawl (Playwright)
+        run: pytest e2e -v
