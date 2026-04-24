@@ -59,7 +59,7 @@
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6348292037303976"
     crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="./style.css?v=14" />
+  <link rel="stylesheet" href="./style.css?v=15" />
 
   <!-- Structured Data: SoftwareApplication + WebApplication for USA/UK/EU/MENA -->
   <script type="application/ld+json">
@@ -470,22 +470,9 @@
       </div>
     </div>
 
-    <!-- Ecosystem workflow: capture → correct → finish (original mockups) -->
-    <section class="platforms-visual" aria-label="iOS and Mac workflow">
-      <div class="platforms-visual__grid">
-        <div class="platforms-visual__card">
-          <img src="assets/product-ios.png" alt="FilmStudio and camera workflow on iPhone" loading="lazy" />
-          <span class="platforms-visual__label">Capture — FilmStudio</span>
-        </div>
-        <div class="platforms-visual__card">
-          <img src="assets/cinema-scope-export.png" alt="Anamorphic desqueeze and CinemaScope export" loading="lazy" />
-          <span class="platforms-visual__label">Correct — Anamorphic Desqueezer</span>
-        </div>
-        <div class="platforms-visual__card">
-          <img src="assets/cinelutlivegrade-icon.png" alt="CineLut Live Grade on Mac" loading="lazy" />
-          <span class="platforms-visual__label">Grade — CineLut Live Grade</span>
-        </div>
-      </div>
+    <!-- Workflow copy (replaces duplicate hero imagery for calmer layout between pages) -->
+    <section class="workflow-strip" aria-label="Filmmaking workflow">
+      <p class="workflow-strip__text"><strong>Typical pipeline</strong> — <span>Capture</span> on iPhone or iPad with FilmStudio (manual exposure, overlays, safe recording). <span>Correct</span> anamorphic squeeze with Anamorphic Desqueezer or Web Studio presets so ratios match across devices. <span>Grade</span> near set on MacBook with CineLut Live Grade (LUT + CDL, scopes, handoff). Android and Windows listings mirror the same steps for crews who split OS.</p>
     </section>
 
     <!-- Product lineup strip: CineLutLiveGrade flagship, then anamorphic tools -->
@@ -502,10 +489,7 @@
         <article class="product-card" id="filmstudio">
           <div class="product-card__tag">iPhone · iPad · Mac (M1+)</div>
           <div class="product-card__title">FilmStudio</div>
-          <div class="product-card__media">
-            <img src="assets/product-ios.png" alt="FilmStudio pro cinema camera app on iPhone">
-          </div>
-          <p class="product-card__body">Turn your iPhone into a pro cinema camera: manual ISO, shutter, focus, and white balance; focus pull A/B; one-tap film presets; shot intent modes; and a preview-first interface built for real productions.</p>
+          <p class="product-card__body">Turn your iPhone or iPad into a field-ready cinema camera: full manual ISO, shutter, focus, and white balance; focus pull A/B; zebras, peaking, histogram and waveform; timecode and take discipline; and export paths that match how video village names reels. Built when the phone is the A-cam or a dedicated insert unit.</p>
           <ul class="feature-list">
             <li>Manual camera: ISO, shutter, focus, WB · AE/AF lock</li>
             <li>Film presets, zebras, peaking, histogram / waveform</li>
@@ -521,10 +505,7 @@
         <article class="product-card" id="anamorphic">
           <div class="product-card__tag">iOS + MacBook</div>
           <div class="product-card__title">Anamorphic Desqueezer</div>
-          <div class="product-card__media">
-            <img src="assets/product-ios.png" alt="Anamorphic de-squeeze controls on an iPhone screen">
-          </div>
-          <p class="product-card__body">Live monitor and post for anamorphic footage on iPhone, iPad, and MacBook — correct 1.33×–2× squeeze and export CinemaScope-ready masters.</p>
+          <p class="product-card__body">Live monitor and post for anamorphic footage on iPhone, iPad, and MacBook. Fix 1.33×–2× (and custom) squeeze, preview 2.39:1 framing before wrap, and export ProRes or 10-bit HEVC with FCPXML so editorial inherits the same geometry as Web Studio presets.</p>
           <ul class="feature-list">
             <li>Live monitor + post: 1.33×–2× and custom ratio</li>
             <li>ProRes &amp; 10-bit, FCPXML, 2.39:1 export</li>
@@ -567,10 +548,7 @@
         <article class="product-card" id="organize">
           <div class="product-card__tag">MacBook only</div>
           <div class="product-card__title">Document Management System</div>
-          <div class="product-card__media">
-            <img src="assets/product-windows.png" alt="Document Management System app workspace on desktop">
-          </div>
-          <p class="product-card__body">Organize project documents, keep files searchable, and manage production paperwork in one streamlined desktop workflow.</p>
+          <p class="product-card__body">Production productivity on Mac: centralize call sheets, delivery memos, location agreements, and versioned notes in one searchable library so producers and coordinators stop hunting through scattered folders during turnover.</p>
           <ul class="feature-list">
             <li>Centralized document organization and quick lookup</li>
             <li>Built for production notes, delivery docs, and admin files</li>
@@ -589,10 +567,7 @@
         <article class="product-card" id="utilities">
           <div class="product-card__tag">iOS + MacBook</div>
           <div class="product-card__title">MediaUtility</div>
-          <div class="product-card__media">
-            <img src="assets/product-ios.png" alt="MediaUtility app for compressing video and resizing images">
-          </div>
-          <p class="product-card__body">On-device compression and resizing on iPhone, iPad, and Mac — no uploads, no account. Ideal after grade or desqueeze when you need smaller files or format conversion.</p>
+          <p class="product-card__body">After color or desqueeze, shrink masters for review links: compress video with quality targets, resize to 4K / 1080p / 720p, and batch-convert stills to JPG or PNG — entirely on device with no cloud upload or account wall.</p>
           <ul class="feature-list">
             <li>Compress video with quality controls</li>
             <li>Resize to 4K, 1080p, or 720p</li>
@@ -613,9 +588,6 @@
         <article class="product-card">
           <div class="product-card__tag">Android · Filmmaking — batch, LUT &amp; LiveGrade</div>
           <div class="product-card__title">Anamorphic Desqueezer</div>
-          <div class="product-card__media">
-            <img src="assets/product-android.png" alt="DeSqueeze Studio anamorphic tool on an Android phone">
-          </div>
           <p class="product-card__body">
             Play listing: batch anamorphic video and stills, true Cinemascope 2.39:1 output up to 4K, LUT pipeline, plus LiveGrade-style on-set monitoring with 3D LUT and CDL.
           </p>
@@ -633,9 +605,6 @@
         <article class="product-card">
           <div class="product-card__tag">Android · Filmmaking — live, post &amp; on-set</div>
           <div class="product-card__title">Anamorphic Desqueeze Pro Cam</div>
-          <div class="product-card__media">
-            <img src="assets/product-android.png" alt="Live and post de-squeeze on Android">
-          </div>
           <p class="product-card__body">
             Play listing: live de-squeeze for field monitoring; Post Studio for trim and graded exports; on-set references and slate. Corrected photos and videos save to DCIM/Desqueezed — no desktop round-trip.
           </p>
@@ -653,9 +622,6 @@
         <article class="product-card">
           <div class="product-card__tag">Android · Productivity — delivery</div>
           <div class="product-card__title">MediaUtility (4K export)</div>
-          <div class="product-card__media">
-            <img src="assets/product-android.png" alt="4K video export tool on Android">
-          </div>
           <p class="product-card__body">
             Play listing name <strong>MediaUtility</strong>: lightweight true 4K Ultra HD export when you need maximum clarity after edit or desqueeze — simple UI, fast path, optional premium unlock for full 4K saves on device.
           </p>
@@ -675,34 +641,20 @@
         <article class="product-card">
           <div class="product-card__tag">Windows</div>
           <div class="product-card__title">AnamorphicDesqueezePro</div>
-          <div class="product-card__media">
-            <img src="assets/product-windows.png" alt="Desktop anamorphic de-squeeze on Windows">
-          </div>
           <p class="product-card__body">
-            Batch de-squeeze, CinemaScope 2.39:1–2.76:1, LUT &amp; CDL grading, live preview, EDL export. Runs locally.
+            Desktop-grade batch de-squeeze with live preview, CinemaScope presets from 2.39:1 through 2.76:1, LUT and CDL grading, and EDL export for teams who prefer a PC tower or laptop class machine on location or in a small post bay.
           </p>
+          <ul class="feature-list">
+            <li>Folder-based batch processing and repeatable ratio presets</li>
+            <li>Local processing — suited to longer clips and higher bitrates</li>
+            <li>Handoff-friendly exports aligned with the iOS / Android apps</li>
+          </ul>
           <a class="product-card__cta" href="https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN" target="_blank" rel="noopener">
             Microsoft Store
             <span class="product-card__cta-arrow">↗</span>
           </a>
         </article>
       </div>
-      </div>
-    </section>
-
-    <!-- App UI: original mockup images (not screenshots) -->
-    <section class="app-ui-section" aria-label="App preview">
-      <h2 class="app-ui-section__title">See the app</h2>
-      <p class="app-ui-section__sub">Import, desqueeze ratio, and CinemaScope export — in one place.</p>
-      <div class="app-ui-grid">
-        <div class="app-ui-card">
-          <img src="assets/import-export-ui.png" alt="DeSqueeze Studio Import and Export screen: Add Images, Add Videos, Desqueeze Ratio, CinemaScope Export" loading="lazy" />
-          <span class="app-ui-card__label">Import &amp; Export</span>
-        </div>
-        <div class="app-ui-card">
-          <img src="assets/cinema-scope-export.png" alt="CinemaScope Export and Desqueeze Ratio settings" loading="lazy" />
-          <span class="app-ui-card__label">Desqueeze &amp; CinemaScope</span>
-        </div>
       </div>
     </section>
 
@@ -732,7 +684,7 @@
             <td>iOS</td>
             <td>On‑set monitoring & social cuts</td>
             <td>Batch projects</td>
-            <td>Video & stills</td>
+            <td>Video &amp; stills</td>
             <td><span class="specs-chip specs-chip--native">Native app</span></td>
           </tr>
           <tr>
