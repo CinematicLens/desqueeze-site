@@ -7,6 +7,44 @@ Use these for **Shorts** (20–40 sec) and **long videos** on [@cinema-anamorphi
 
 ---
 
+## Channel About / default description (paste on YouTube — matches anamorphic-desqueeze.com)
+
+Use this on the channel **About** tab and as a **default footer** under Shorts when you want the full stack listed. Links must stay in sync with the live site and store listings.
+
+```
+🎬 Welcome to DeSqueeze Studio — anamorphic & mobile cinematography
+This channel is for filmmakers who want clean anamorphic geometry: fix squeezed footage, preview CinemaScope framing, and export MP4 / stills — in the browser or with our native apps.
+
+👉 Free Web Studio (browser, batch up to 10 files): https://anamorphic-desqueeze.com/
+
+📲 iOS & iPad — Anamorphic Desqueezer (live + post, ratios through 2×, ProRes / FCPXML)
+https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068
+
+📲 Android — Anamorphic Desqueezer (batch, LUT, LiveGrade / CDL, Cinemascope export)
+https://play.google.com/store/apps/details?id=com.squeezer.app
+
+📲 Android — Anamorphic Desqueeze Pro Cam (live desqueeze, Post Studio, on-set tools)
+https://play.google.com/store/apps/details?id=com.cinematiclens.desqueeze.live
+
+💻 Windows — AnamorphicDesqueezePro
+https://apps.microsoft.com/detail/9ph01d6pq8x3?hl=en-GB&gl=IN
+
+🍎 Filmmaker hub (FilmStudio, CineLut Live Grade, MediaUtility, DMS — same studio)
+https://anamorphic-desqueeze.com/
+
+Here you’ll find:
+✨ Tutorials on anamorphic lenses & squeeze ratios (1.33×, 1.5×, 1.55×, 1.8×, 2×)
+🎥 Real-time desqueeze & batch demos (Web, iOS, Android, Windows)
+🎨 CinemaScope export, framing, and on-set workflow tips
+📸 Behind-the-scenes mobile shots
+
+Beginner or pro — we help you get predictable desqueeze from set to dailies.
+```
+
+**Do not use** legacy or third-party package IDs in channel copy (e.g. old Android `com.ua.poc.*` or unrelated iOS SKUs). The URLs above are the ones used on the official site today.
+
+---
+
 ## Shorts scripts (vertical, 20–40 seconds)
 
 ### Short 1 — Before / After 1.33×
