@@ -692,6 +692,35 @@ progress.hidden { display: none; }
 .nav a:hover {
   color: var(--text);
 }
+
+.header-buy-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none !important;
+  color: var(--text) !important;
+  background: var(--accent);
+  border: 1px solid rgba(11, 15, 20, 0.14);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.header-buy-cta:hover {
+  filter: brightness(1.06);
+}
+@media (max-width: 900px) {
+  .header-buy-cta {
+    width: 100%;
+    margin-top: 8px;
+    order: 3;
+  }
+  .site-header__inner {
+    flex-wrap: wrap;
+  }
+}
 @media (max-width: 900px) {
   .site-header__inner {
     padding: 12px 16px;

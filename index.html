@@ -59,7 +59,19 @@
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6348292037303976"
     crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="./style.css?v=9" />
+  <!-- Landing behavior: CineLut is the default landing page.
+       Keep section deep-links working: /#ios-ecosystem should stay on this page. -->
+  <script>
+    (function () {
+      try {
+        if (!window.location.hash) {
+          window.location.replace("/cinelutlivegrade.html");
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="stylesheet" href="./style.css?v=10" />
 
   <!-- Structured Data: SoftwareApplication + WebApplication for USA/UK/EU/MENA -->
   <script type="application/ld+json">
@@ -330,10 +342,61 @@
     .hero-cta-note a:hover {
       text-decoration: underline;
     }
+
+    /* Mobile: always-visible path to purchase */
+    .sticky-buy {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 60;
+      display: none;
+      gap: 8px;
+      justify-content: center;
+      align-items: stretch;
+      flex-wrap: wrap;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+      background: rgba(248, 245, 234, 0.96);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -10px 28px rgba(15, 23, 42, 0.1);
+    }
+    @media (max-width: 899px) {
+      .sticky-buy {
+        display: flex;
+      }
+      body.home-buy-focus {
+        padding-bottom: 4.75rem;
+      }
+    }
+    .sticky-buy__main {
+      flex: 1 1 140px;
+      text-align: center;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: #0b0f14 !important;
+      background: var(--accent);
+      border: 1px solid rgba(11, 15, 20, 0.14);
+    }
+    .sticky-buy__secondary {
+      flex: 1 1 120px;
+      text-align: center;
+      padding: 12px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--fg) !important;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border);
+    }
   </style>
 </head>
 
-<body>
+<body class="home-buy-focus">
 
   <!-- Header: single nav, no repetitive guide links -->
   <header class="site-header">
@@ -343,14 +406,13 @@
         <span>DeSqueeze Studio</span>
       </a>
       <nav class="nav">
-        <a href="#ios-ecosystem">iOS &amp; Mac apps</a>
-        <a href="/cinelutlivegrade.html">CineLut Live Grade</a>
-        <a href="#other-platforms">Android &amp; Windows</a>
-        <a href="#settings">Web Studio</a>
+        <a href="#filmstudio">Filmmaking</a>
+        <a href="#anamorphic">Anamorphic Flow</a>
+        <a href="/cinelutlivegrade.html">LiveGrade · DIT · Dailies</a>
+        <a href="#utilities">Utilities</a>
+        <a href="#organize">Organize</a>
+        <a href="/photo-editing.html">Photo Editing</a>
         <a href="/guides.html">Guides</a>
-        <a href="#support">Support</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
       </nav>
     </div>
   </header>
@@ -362,18 +424,18 @@
           <div class="hero__text">
             <div class="pill-strip">
               <span class="pill-strip__dot"></span>
-              iOS &amp; Mac filmmaking ecosystem
+              Buy on the App Store — start in seconds
             </div>
-            <h1>Capture, de-squeeze, grade, deliver — on Apple.</h1>
-            <p class="sub">This homepage is our <strong>main hub</strong> for paid filmmaker apps: <strong>FilmStudio</strong> for pro camera control on iPhone and iPad, <strong>Anamorphic Desqueezer</strong> for monitor and 1.33×–2× de-squeeze, <strong>CineLut Live Grade</strong> on MacBook for live LUT/CDL on set, and <strong>MediaUtility</strong> to compress and resize before you share or archive.</p>
-            <p class="sub hero-works-with">Android, Windows, and the free in-browser Web Studio are on this same page — scroll to <a href="#other-platforms" style="color: inherit; font-weight: 600;">Android &amp; Windows</a> or <a href="#settings" style="color: inherit; font-weight: 600;">Web Studio</a>.</p>
+            <h1>Pro filmmaker apps — purchase and download instantly.</h1>
+            <p class="sub">One trusted checkout on the App Store for <strong>FilmStudio</strong>, <strong>Anamorphic Desqueezer</strong>, <strong>CineLut Live Grade</strong>, <strong>MediaUtility</strong>, and <strong>Document Management System</strong>. Pick your tool and buy — no sideloading.</p>
+            <p class="sub hero-works-with">Need a free browser test first? <a href="#settings" style="color: inherit; font-weight: 600;">Web Studio</a>. Other platforms: <a href="#other-platforms" style="color: inherit; font-weight: 600;">Android &amp; Windows</a>.</p>
             <div class="cta-row hero-ctas">
-              <a class="btn btn--primary" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">Anamorphic Desqueezer — App Store</a>
-              <a class="btn" href="#ios-ecosystem">All iOS &amp; Mac apps</a>
-              <a class="btn" href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">FilmStudio</a>
-              <a class="btn" href="/cinelutlivegrade.html">CineLut Live Grade</a>
+              <a class="btn btn--primary" href="#app-store-strip">Buy on the App Store</a>
+              <a class="btn" href="https://apps.apple.com/app/cinelutlivegrade/id6760215504" target="_blank" rel="noopener">CineLut Live Grade — Buy</a>
+              <a class="btn" href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">FilmStudio — Buy</a>
+              <a class="btn" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">Anamorphic Desqueezer — Buy</a>
             </div>
-            <p class="hero-cta-note">Quick browser preview (no install): <a href="#settings">open Web Studio</a>.</p>
+            <p class="hero-cta-note">Browse all apps below or <a href="#ios-ecosystem">jump to the lineup</a>.</p>
           </div>
           <div class="hero__media" aria-hidden="true">
             <img src="assets/hero-desqueeze-studio.png" alt="Anamorphic footage being de-squeezed on screen">
@@ -383,9 +445,9 @@
       </div>
     </header>
 
-    <div class="landing-app-bar" aria-label="App Store downloads">
+    <div class="landing-app-bar" id="app-store-strip" aria-label="Buy on the App Store">
       <div class="landing-app-bar__card">
-        <p class="landing-app-bar__title">Download on the App Store</p>
+        <p class="landing-app-bar__title">Buy now — App Store &amp; Mac App Store</p>
         <div class="landing-app-bar__links">
           <a href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">FilmStudio</a>
           <a href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">Anamorphic Desqueezer</a>
@@ -439,12 +501,12 @@
             <li>Reliable recording with safety guardrails; library &amp; export</li>
           </ul>
           <a class="product-card__cta" href="https://apps.apple.com/us/app/filmstudio/id6761248370" target="_blank" rel="noopener">
-            App Store — FilmStudio
+            Buy on App Store — FilmStudio
             <span class="product-card__cta-arrow">↗</span>
           </a>
         </article>
 
-        <article class="product-card">
+        <article class="product-card" id="anamorphic">
           <div class="product-card__tag">iOS + MacBook</div>
           <div class="product-card__title">Anamorphic Desqueezer</div>
           <div class="product-card__media">
@@ -457,13 +519,13 @@
             <li>Zebras, waveform, false color for exposure</li>
             <li>Batch-friendly workflow for set and editorial handoff</li>
           </ul>
-          <a class="product-card__cta" href="/anamorphic-desqueeze-iphone.html">
-            Product page
-            <span class="product-card__cta-arrow">→</span>
-          </a>
-          <a class="product-card__cta" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener" style="margin-top: 0.35rem;">
-            App Store
+          <a class="product-card__cta" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">
+            Buy on App Store
             <span class="product-card__cta-arrow">↗</span>
+          </a>
+          <a class="product-card__cta" href="/anamorphic-desqueeze-iphone.html" style="margin-top: 0.35rem;">
+            Product details
+            <span class="product-card__cta-arrow">→</span>
           </a>
         </article>
 
@@ -480,17 +542,17 @@
             <li>EDL + CDL dailies for set and post</li>
             <li>Built for on-set speed and consistent looks</li>
           </ul>
-          <a class="product-card__cta" href="/cinelutlivegrade.html">
-            Learn more
-            <span class="product-card__cta-arrow">→</span>
-          </a>
-          <a class="product-card__cta" href="https://apps.apple.com/app/cinelutlivegrade/id6760215504" target="_blank" rel="noopener" style="margin-top: 0.35rem;">
-            Mac App Store
+          <a class="product-card__cta" href="https://apps.apple.com/app/cinelutlivegrade/id6760215504" target="_blank" rel="noopener">
+            Buy on Mac App Store
             <span class="product-card__cta-arrow">↗</span>
+          </a>
+          <a class="product-card__cta" href="/cinelutlivegrade.html" style="margin-top: 0.35rem;">
+            Product details
+            <span class="product-card__cta-arrow">→</span>
           </a>
         </article>
 
-        <article class="product-card">
+        <article class="product-card" id="organize">
           <div class="product-card__tag">MacBook only</div>
           <div class="product-card__title">Document Management System</div>
           <div class="product-card__media">
@@ -502,17 +564,17 @@
             <li>Built for production notes, delivery docs, and admin files</li>
             <li>Simple workflow for teams managing many projects</li>
           </ul>
-          <a class="product-card__cta" href="/document-management-system.html">
-            Product page
-            <span class="product-card__cta-arrow">→</span>
-          </a>
-          <a class="product-card__cta" href="https://apps.apple.com/us/app/document-management-system/id6761471161?mt=12" target="_blank" rel="noopener" style="margin-top: 0.35rem;">
-            Mac App Store
+          <a class="product-card__cta" href="https://apps.apple.com/us/app/document-management-system/id6761471161?mt=12" target="_blank" rel="noopener">
+            Buy on Mac App Store
             <span class="product-card__cta-arrow">↗</span>
+          </a>
+          <a class="product-card__cta" href="/document-management-system.html" style="margin-top: 0.35rem;">
+            Product details
+            <span class="product-card__cta-arrow">→</span>
           </a>
         </article>
 
-        <article class="product-card">
+        <article class="product-card" id="utilities">
           <div class="product-card__tag">iOS + MacBook</div>
           <div class="product-card__title">MediaUtility</div>
           <div class="product-card__media">
@@ -526,7 +588,7 @@
             <li>Private: everything stays on your device</li>
           </ul>
           <a class="product-card__cta" href="https://apps.apple.com/us/app/mediautility/id6760351903" target="_blank" rel="noopener">
-            App Store
+            Buy on App Store
             <span class="product-card__cta-arrow">↗</span>
           </a>
         </article>
@@ -881,6 +943,11 @@
       </div>
     </div>
   </footer>
+
+  <div class="sticky-buy" role="region" aria-label="Buy on the App Store">
+    <a class="sticky-buy__main" href="#app-store-strip">Buy on the App Store</a>
+    <a class="sticky-buy__secondary" href="https://apps.apple.com/app/cinelutlivegrade/id6760215504" target="_blank" rel="noopener">CineLut — Buy</a>
+  </div>
 
   <!-- JSZip for batch ZIP (keep as you had) -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
