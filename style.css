@@ -312,6 +312,45 @@ progress.hidden { display: none; }
   font-weight: 700;
 }
 
+/* Hub: anamorphic surfaces (nav “Anamorphic Flow” lands here) */
+.anamorphic-flow-strip {
+  max-width: 1200px;
+  margin: 0 auto 1.75rem;
+  padding: 0 1.5rem;
+}
+.anamorphic-flow-strip__inner {
+  padding: 1rem 1.15rem 1.05rem;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  border-left: 4px solid #0e7490;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+}
+.anamorphic-flow-strip__title {
+  margin: 0 0 0.55rem;
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.anamorphic-flow-strip__lede {
+  margin: 0 0 0.7rem;
+  font-size: 0.9rem;
+  line-height: 1.58;
+  color: var(--muted);
+}
+.anamorphic-flow-strip__lede:last-child {
+  margin-bottom: 0;
+}
+.anamorphic-flow-strip__lede a {
+  font-weight: 700;
+  color: #0e7490;
+  text-decoration: none;
+}
+.anamorphic-flow-strip__lede a:hover {
+  text-decoration: underline;
+}
+
 /* Product strip + cards */
 
 .product-strip {
