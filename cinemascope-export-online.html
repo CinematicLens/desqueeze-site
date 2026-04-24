@@ -18,7 +18,7 @@
   <meta property="og:url" content="https://anamorphic-desqueeze.com/cinemascope-export-online.html" />
   <meta property="og:image" content="https://anamorphic-desqueeze.com/preview.jpg" />
 
-  <link rel="stylesheet" href="./style.css?v=13" />
+  <link rel="stylesheet" href="./style.css?v=14" />
 </head>
 <body class="product-skin product-skin--scope">
 
@@ -71,23 +71,28 @@
 
     <div class="product-body">
       <section class="product-panel" aria-labelledby="scope-steps">
-        <h2 id="scope-steps">Pipeline in the browser</h2>
+        <h2 id="scope-steps">Aspect-first browser pass</h2>
         <ol>
-          <li>Open <a href="/index.html#settings">Web Studio</a> — no install.</li>
-          <li>Upload anamorphic video or stills.</li>
-          <li>Pick de-squeeze factor; verify 2.39:1 composition in preview.</li>
-          <li>Export MP4 or image sequence; batch up to ten clips in one pass.</li>
+          <li>Import the <strong>camera-original</strong> squeeze — do not bake a matte in camera unless you intend to keep it.</li>
+          <li>In <a href="/index.html#settings">Web Studio</a>, set the squeeze factor; enable any safe-area overlay you already agreed with the director.</li>
+          <li>Match the <strong>delivery container</strong> (2.39:1 vs 2.35:1) to the finishing spec, not whichever preset looks wider.</li>
+          <li>Export MP4 for motion or stills for storyboards; keep XML/FCPXML sidecars if the edit team expects them.</li>
         </ol>
       </section>
 
       <section class="product-panel">
-        <h2>Editorial note</h2>
-        <p>This path is ideal for quick client reviews, reframing checks, and lightweight handoffs. For finishing with full color pipeline, round-trip through your NLE or grading suite — our exports are meant to be <em>correct geometry</em> first.</p>
+        <h2>2.39:1 vs 2.35:1</h2>
+        <p>Both are valid CinemaScope containers; the difference is pixel math and how your mastering house bills time. Pick the ratio your <strong>delivery memo</strong> names, then lock the preview overlay to that frame — swapping late causes reframing notes nobody wants on a locked cut.</p>
+      </section>
+
+      <section class="product-panel">
+        <h2>When to leave the browser</h2>
+        <p>Web Studio is built for QC, client loops, and batch stills. Once you need HDR mastering, reel splits, or synced audio pulls, move into your finishing tool — export geometry-correct files here first so color starts from a neutral canvas.</p>
       </section>
 
       <details class="product-more">
-        <summary>Native apps for larger batches</summary>
-        <p class="product-more__lede">When you leave the browser, the same ratios carry over.</p>
+        <summary>Heavier batches: native apps</summary>
+        <p class="product-more__lede">Use native builds when you exceed browser throughput or need background encodes overnight.</p>
         <nav class="product-platform-row" aria-label="Native apps">
           <a href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">iOS</a>
           <a href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener">Android — DeSqueeze Studio</a>

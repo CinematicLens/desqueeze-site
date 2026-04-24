@@ -1577,3 +1577,53 @@ a.page-cta:hover {
   filter: brightness(1.05);
 }
 
+/* ----- Dedicated page layout: alignment + readable measure ----- */
+.hub-hero,
+.hub-hero__inner,
+.product-hero,
+.product-body {
+  text-align: left;
+}
+
+.product-spec-strip {
+  align-items: start;
+}
+
+.product-body > * {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.product-panel h2,
+.product-panel h3 {
+  text-wrap: balance;
+}
+
+.product-panel p,
+.product-panel li {
+  max-width: 62ch;
+}
+
+.product-panel ul,
+.product-panel ol {
+  padding-left: 1.2rem;
+}
+
+.flagship-page--dark-lead .info-block h2 {
+  text-align: left;
+}
+
+.flagship-page--dark-lead .info-block p,
+.flagship-page--dark-lead .info-block li {
+  max-width: 62ch;
+}
+
+.dms-page .product-body .block p,
+.dms-page .product-body .block li {
+  max-width: 62ch;
+}
+
+.guides-page--redesign .section-label {
+  text-align: left;
+}
+
