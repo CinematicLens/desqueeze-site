@@ -30,11 +30,31 @@ class TestValidateSite(unittest.TestCase):
     def test_single_h1(self):
         self.assertEqual(self.v.test_single_h1(), [], "each HTML page must have exactly one <h1>")
 
+    def test_single_main_landmark(self):
+        self.assertEqual(
+            self.v.test_single_main_landmark(),
+            [],
+            "each HTML page must have exactly one <main> landmark",
+        )
+
     def test_stylesheet_version(self):
         self.assertEqual(self.v.test_stylesheet_version(), [])
 
+    def test_page_document_usability(self):
+        self.assertEqual(
+            self.v.test_page_document_usability(),
+            [],
+            "lang, viewport, title, and meta description checks per page",
+        )
+
     def test_internal_links(self):
         self.assertEqual(self.v.test_internal_links(), [])
+
+    def test_local_images_usability(self):
+        self.assertEqual(self.v.test_local_images_usability(), [])
+
+    def test_video_poster_paths(self):
+        self.assertEqual(self.v.test_video_poster_paths(), [])
 
     def test_flagship_image_path(self):
         self.assertEqual(self.v.test_flagship_image_path(), [])
