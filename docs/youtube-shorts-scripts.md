@@ -22,6 +22,7 @@ https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068
 
 📲 Android — Anamorphic Desqueezer (batch, LUT, LiveGrade / CDL, Cinemascope export)
 https://play.google.com/store/apps/details?id=com.squeezer.app
+▶ Short demo (Android / Anamorphic Desqueezer): https://www.youtube.com/shorts/FnR4Y21En1U
 
 📲 Android — Anamorphic Desqueeze Pro Cam (live desqueeze, Post Studio, on-set tools)
 https://play.google.com/store/apps/details?id=com.cinematiclens.desqueeze.live
