@@ -1117,6 +1117,37 @@ progress.hidden { display: none; }
   margin: 0 auto;
   object-fit: contain;
 }
+
+/* YouTube demo embed (e.g. CineLutLiveGrade page) */
+.demo-embed__frame {
+  position: relative;
+  width: 100%;
+  max-width: min(720px, 100%);
+  margin: 0.75rem 0 0;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #0f172a;
+}
+.demo-embed__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.demo-embed__caption {
+  margin: 0.5rem 0 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.flagship-page--dark-lead .demo-embed__caption a {
+  color: #0e7490 !important;
+  font-weight: 700;
+}
+
 .flagship-page h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
@@ -1673,7 +1704,8 @@ a.page-cta:hover {
 }
 
 .flagship-page--dark-lead .info-block p,
-.flagship-page--dark-lead .info-block li {
+.flagship-page--dark-lead .info-block li,
+.flagship-page--dark-lead .info-block .demo-embed__caption {
   max-width: 62ch;
 }
 
