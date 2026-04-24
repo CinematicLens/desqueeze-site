@@ -415,6 +415,16 @@ progress.hidden { display: none; }
   letter-spacing: .16em;
   color: rgba(148, 163, 184, 0.95);
 }
+.product-card__tag a {
+  color: #0e7490;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  text-decoration: none;
+}
+.product-card__tag a:hover {
+  text-decoration: underline;
+}
 
 .product-card__title {
   font-size: .98rem;
