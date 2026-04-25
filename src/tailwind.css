@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/*
+  QA page only for now: keeps the bundle small and avoids Tailwind Preflight
+  resetting legacy pages that still use style.css alone.
+  When migrating pages, widen this glob (e.g. ../*.html) and add tailwind.css to each page.
+*/
+@source "../device-lab.html";
+/* Ensure max-* variants emit (scanner sometimes misses chained responsive classes) */
+@source inline("max-lg:hidden");
+
+@layer base {
+  :root {
+    color-scheme: dark light;
+  }
+}

@@ -247,6 +247,32 @@ def test_flagship_image_path() -> list[str]:
     return []
 
 
+def test_tailwind_bundle() -> list[str]:
+    """If any page links tailwind.css, the built file must exist and ?v= must match."""
+    failures: list[str] = []
+    uses: list[Path] = []
+    versions: set[str] = set()
+    tw_re = re.compile(r"tailwind\.css\?v=(\d+)", re.I)
+    for f in html_files():
+        text = f.read_text(encoding="utf-8", errors="replace")
+        if "tailwind.css" not in text:
+            continue
+        uses.append(f)
+        m = tw_re.search(text)
+        if not m:
+            failures.append(f"{f.name}: links tailwind.css but missing tailwind.css?v=")
+        else:
+            versions.add(m.group(1))
+    if not uses:
+        return []
+    bundle = ROOT / "assets" / "tailwind.css"
+    if not bundle.is_file():
+        failures.append("assets/tailwind.css missing (run npm run build:css)")
+    if len(versions) > 1:
+        failures.append(f"Inconsistent tailwind.css?v= across HTML: {sorted(versions, key=int)}")
+    return failures
+
+
 def main() -> int:
     failures: list[str] = []
     failures.extend(test_style_css_exists())
@@ -258,6 +284,7 @@ def main() -> int:
     failures.extend(test_local_images_usability())
     failures.extend(test_video_poster_paths())
     failures.extend(test_flagship_image_path())
+    failures.extend(test_tailwind_bundle())
 
     if failures:
         print("VALIDATION FAILED\n", file=sys.stderr)
@@ -267,7 +294,7 @@ def main() -> int:
     n = len(html_files())
     print(
         f"OK: {n} HTML file(s); one <h1> and one <main> each; document head usability; "
-        "style.css version aligned; internal hrefs and local images/posters resolve."
+        "style.css version aligned; Tailwind bundle when linked; internal hrefs and local images/posters resolve."
     )
     return 0
 

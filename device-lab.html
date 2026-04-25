@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BFDRLKVZK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-6BFDRLKVZK');
+  </script>
+
+  <title>Responsive layout QA — Tailwind shell (menus, sidebar, breakpoints) | DeSqueeze Studio</title>
+  <meta name="description"
+        content="Internal QA page for Tailwind-based responsive shell: fixed max-width desktop canvas, tablet and phone navigation patterns, and sidebar behaviour. Use Playwright device tests before publishing UI changes." />
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="canonical" href="https://anamorphic-desqueeze.com/device-lab.html" />
+
+  <link rel="stylesheet" href="./style.css?v=27" />
+  <link rel="stylesheet" href="./assets/tailwind.css?v=1" />
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+  <a href="#main" class="absolute left-4 top-3 z-[60] rounded-md bg-sky-700 px-3 py-1.5 text-xs font-semibold text-white opacity-0 shadow-lg ring-2 ring-sky-400/40 transition-opacity focus-visible:opacity-100">Main</a>
+
+  <div class="mx-auto flex min-h-screen w-full max-w-6xl flex-col border-x border-slate-800/80 bg-slate-950 shadow-2xl shadow-black/40">
+    <header class="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
+      <div class="flex items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:px-6">
+        <div class="min-w-0">
+          <p class="truncate text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">DeSqueeze Studio · QA</p>
+          <h1 class="truncate text-base font-semibold tracking-tight text-slate-50 sm:text-lg">Tailwind device shell</h1>
+        </div>
+
+        <nav class="max-lg:hidden lg:flex items-center gap-5 text-sm font-medium text-slate-200" data-testid="desktop-nav" aria-label="Primary">
+          <a class="rounded-md px-2 py-1 text-sky-300 hover:bg-slate-800/80 hover:text-sky-200" href="/index.html">Hub</a>
+          <a class="rounded-md px-2 py-1 hover:bg-slate-800/80 hover:text-white" href="/cinelutlivegrade.html">CineLut</a>
+          <a class="rounded-md px-2 py-1 hover:bg-slate-800/80 hover:text-white" href="/filmstudio.html">FilmStudio</a>
+          <a class="rounded-md px-2 py-1 hover:bg-slate-800/80 hover:text-white" href="/guides.html">Guides</a>
+        </nav>
+
+        <div class="flex items-center gap-2 lg:gap-3">
+          <button type="button"
+            class="inline-flex items-center justify-center rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm font-semibold text-slate-100 shadow-sm hover:border-slate-600 hover:bg-slate-800 lg:hidden"
+            data-testid="sidebar-toggle"
+            aria-controls="sidebar-overlay"
+            aria-expanded="false"
+            id="sidebarToggle">
+            Sidebar
+          </button>
+          <button type="button"
+            class="inline-flex items-center justify-center rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm font-semibold text-slate-100 shadow-sm hover:border-slate-600 hover:bg-slate-800 lg:hidden"
+            data-testid="menu-button"
+            aria-controls="mobile-drawer"
+            aria-expanded="false"
+            id="menuButton">
+            Menu
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="flex min-h-0 flex-1 flex-col lg:flex-row">
+      <aside class="max-lg:hidden lg:flex w-64 shrink-0 flex-col border-slate-800 bg-slate-950 lg:border-r" data-testid="sidebar-desktop" aria-label="Reference sidebar (desktop)">
+        <div class="border-b border-slate-800 px-4 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">Desktop sidebar</div>
+        <div class="flex flex-1 flex-col gap-2 p-4 text-sm text-slate-300">
+          <p class="text-slate-400">Visible from <span class="font-mono text-sky-300">lg</span> (1024px+). Below that width, use the <span class="font-semibold text-slate-200">Sidebar</span> control.</p>
+          <ul class="list-disc space-y-2 pl-4">
+            <li>Max content width: <span class="font-mono text-sky-300">max-w-6xl</span> centered shell</li>
+            <li>Tablet / phone: stacked main + overlays</li>
+          </ul>
+        </div>
+      </aside>
+
+      <main class="min-w-0 flex-1 px-4 py-6 sm:px-5 lg:px-8 lg:py-8" id="main">
+        <section class="mb-8 rounded-2xl border border-slate-800 bg-slate-900/40 p-4 sm:p-5">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500">Live viewport</h2>
+          <p class="mt-2 font-mono text-lg text-sky-300" id="viewportReadout" data-testid="viewport-readout">—</p>
+          <p class="mt-2 max-w-prose text-sm text-slate-400">Resize the window or use device emulation. Automated checks run via <span class="font-mono text-slate-200">npm run test:devices</span>.</p>
+        </section>
+
+        <section class="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <article class="rounded-2xl border border-slate-800 bg-slate-900/30 p-4">
+            <h2 class="text-base font-semibold text-slate-50">Breakpoints</h2>
+            <p class="mt-2 text-sm text-slate-400">Tailwind defaults referenced in tests.</p>
+            <dl class="mt-3 space-y-2 text-sm font-mono text-slate-300">
+              <div class="flex justify-between gap-2"><dt>sm</dt><dd>640px</dd></div>
+              <div class="flex justify-between gap-2"><dt>md</dt><dd>768px</dd></div>
+              <div class="flex justify-between gap-2"><dt>lg</dt><dd class="text-sky-300">1024px</dd></div>
+              <div class="flex justify-between gap-2"><dt>xl</dt><dd>1280px</dd></div>
+            </dl>
+          </article>
+          <article class="rounded-2xl border border-slate-800 bg-slate-900/30 p-4">
+            <h2 class="text-base font-semibold text-slate-50">Emulation targets</h2>
+            <ul class="mt-3 list-disc space-y-2 pl-4 text-sm text-slate-300">
+              <li>iPhone SE class — 375×667</li>
+              <li>iPhone 14 Pro — 390×844</li>
+              <li>iPad Mini — 768×1024</li>
+              <li>iPad Pro 11 — 834×1194</li>
+              <li>Desktop — 1440×900</li>
+            </ul>
+          </article>
+          <article class="rounded-2xl border border-slate-800 bg-slate-900/30 p-4 sm:col-span-2 xl:col-span-1">
+            <h2 class="text-base font-semibold text-slate-50">Content grid</h2>
+            <p class="mt-2 text-sm text-slate-400">1 col on small phones, 2 from <span class="font-mono">sm</span>, 3 from <span class="font-mono">xl</span>.</p>
+            <div class="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              <div class="h-16 rounded-lg bg-slate-800/80"></div>
+              <div class="h-16 rounded-lg bg-slate-800/80"></div>
+              <div class="h-16 rounded-lg bg-slate-800/80"></div>
+              <div class="h-16 rounded-lg bg-slate-800/80"></div>
+              <div class="h-16 rounded-lg bg-slate-800/80"></div>
+              <div class="h-16 rounded-lg bg-slate-800/80"></div>
+            </div>
+          </article>
+        </section>
+
+        <section class="rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-4 text-sm text-slate-400">
+          <p><strong class="text-slate-200">Publish checklist:</strong> run <span class="font-mono text-sky-300">npm run build:css</span>, then <span class="font-mono text-sky-300">npm run test:devices</span>, then <span class="font-mono text-sky-300">python scripts/validate_site.py</span>.</p>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Mobile menu drawer -->
+  <div id="mobile-drawer" class="fixed inset-0 z-50 max-lg:hidden lg:hidden" data-testid="mobile-drawer" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/60" data-testid="drawer-backdrop" id="drawerBackdrop"></div>
+    <div class="absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col border-l border-slate-800 bg-slate-950 shadow-xl">
+      <div class="flex items-center justify-between border-b border-slate-800 px-4 py-3">
+        <span class="text-sm font-semibold text-slate-200">Menu</span>
+        <button type="button" class="rounded-lg border border-slate-700 px-2 py-1 text-xs font-semibold text-slate-200 hover:bg-slate-800" data-testid="drawer-close" id="drawerClose">Close</button>
+      </div>
+      <nav class="flex flex-col gap-1 p-3 text-sm font-medium" aria-label="Mobile primary">
+        <a class="rounded-lg px-3 py-2 text-sky-300 hover:bg-slate-900" href="/index.html">Hub</a>
+        <a class="rounded-lg px-3 py-2 hover:bg-slate-900 hover:text-white" href="/cinelutlivegrade.html">CineLut Live Grade</a>
+        <a class="rounded-lg px-3 py-2 hover:bg-slate-900 hover:text-white" href="/anamorphic-desqueeze-iphone.html">Anamorphic Desqueezer</a>
+        <a class="rounded-lg px-3 py-2 hover:bg-slate-900 hover:text-white" href="/mediautility.html">MediaUtility</a>
+        <a class="rounded-lg px-3 py-2 hover:bg-slate-900 hover:text-white" href="/document-management-system.html">Document Management System</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Sidebar overlay (tablet / phone) -->
+  <div id="sidebar-overlay" class="fixed inset-0 z-40 max-lg:hidden lg:hidden" data-testid="sidebar-overlay" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/50" id="sidebarBackdrop"></div>
+    <div class="absolute left-0 top-0 flex h-full w-[min(100%,18rem)] flex-col border-r border-slate-800 bg-slate-950 shadow-xl">
+      <div class="flex items-center justify-between border-b border-slate-800 px-4 py-3">
+        <span class="text-sm font-semibold text-slate-200">Sidebar</span>
+        <button type="button" class="rounded-lg border border-slate-700 px-2 py-1 text-xs font-semibold text-slate-200 hover:bg-slate-800" id="sidebarClose" data-testid="sidebar-close">Close</button>
+      </div>
+      <div class="flex-1 overflow-auto p-4 text-sm text-slate-300">
+        <p class="text-slate-400">Overlay sidebar for viewports under <span class="font-mono text-sky-300">lg</span>. Mirrors desktop notes for QA.</p>
+        <ul class="mt-3 list-disc space-y-2 pl-4">
+          <li>Touch-friendly hit targets</li>
+          <li>Scrollable when content grows</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var menuBtn = document.getElementById('menuButton');
+      var drawer = document.getElementById('mobile-drawer');
+      var drawerBackdrop = document.getElementById('drawerBackdrop');
+      var drawerClose = document.getElementById('drawerClose');
+      var sideBtn = document.getElementById('sidebarToggle');
+      var sidePanel = document.getElementById('sidebar-overlay');
+      var sideBackdrop = document.getElementById('sidebarBackdrop');
+      var sideClose = document.getElementById('sidebarClose');
+      var readout = document.getElementById('viewportReadout');
+
+      function setOpen(btn, panel, open) {
+        if (!btn || !panel) return;
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        /* Avoid class name `hidden` — legacy style.css uses .hidden { display:none !important } */
+        panel.classList.toggle('max-lg:hidden', !open);
+        panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+      }
+
+      function updateReadout() {
+        if (!readout) return;
+        readout.textContent = window.innerWidth + ' × ' + window.innerHeight + ' (CSS px)';
+      }
+
+      window.addEventListener('resize', updateReadout);
+      updateReadout();
+
+      if (menuBtn && drawer) {
+        menuBtn.addEventListener('click', function () {
+          var open = drawer.classList.contains('max-lg:hidden');
+          setOpen(menuBtn, drawer, open);
+          if (open && sidePanel && !sidePanel.classList.contains('max-lg:hidden')) {
+            setOpen(sideBtn, sidePanel, false);
+          }
+        });
+        function closeDrawer() { setOpen(menuBtn, drawer, false); }
+        if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+        if (drawerBackdrop) drawerBackdrop.addEventListener('click', closeDrawer);
+      }
+
+      if (sideBtn && sidePanel) {
+        sideBtn.addEventListener('click', function () {
+          var open = sidePanel.classList.contains('max-lg:hidden');
+          setOpen(sideBtn, sidePanel, open);
+          if (open && drawer && !drawer.classList.contains('max-lg:hidden')) {
+            setOpen(menuBtn, drawer, false);
+          }
+        });
+        function closeSide() { setOpen(sideBtn, sidePanel, false); }
+        if (sideClose) sideClose.addEventListener('click', closeSide);
+        if (sideBackdrop) sideBackdrop.addEventListener('click', closeSide);
+      }
+
+      window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          if (drawer && !drawer.classList.contains('max-lg:hidden')) setOpen(menuBtn, drawer, false);
+          if (sidePanel && !sidePanel.classList.contains('max-lg:hidden')) setOpen(sideBtn, sidePanel, false);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

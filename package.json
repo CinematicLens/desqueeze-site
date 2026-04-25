@@ -1,0 +1,34 @@
+{
+  "name": "desqueeze-site",
+  "version": "1.0.0",
+  "description": "Static site: Tailwind build + Playwright device QA for responsive shell.",
+  "main": "app.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css -m",
+    "dev:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --watch",
+    "test:devices": "playwright test",
+    "test": "npm run test:devices"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CinematicLens/desqueeze-site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CinematicLens/desqueeze-site/issues"
+  },
+  "homepage": "https://github.com/CinematicLens/desqueeze-site#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@tailwindcss/cli": "^4.2.4",
+    "http-server": "^14.1.1",
+    "tailwindcss": "^4.2.4"
+  }
+}
