@@ -1,0 +1,493 @@
+---
+import type { StoreUrls } from '../data/storeUrls';
+
+type StoreAppMeta = {
+	id: string;
+	name: string;
+	artworkUrl512?: string;
+};
+
+interface Props {
+	filmStudioMeta: StoreAppMeta | null;
+	anamorphicMeta: StoreAppMeta | null;
+	cineLutMeta: StoreAppMeta | null;
+	storeUrls: StoreUrls;
+	filmStudioScreenshots: string[];
+}
+
+const { filmStudioMeta, anamorphicMeta, cineLutMeta, storeUrls, filmStudioScreenshots } = Astro.props;
+---
+
+	<div class="mt-12 md:mt-14">
+		<h3 class="text-pretty text-xl font-semibold tracking-tight md:text-2xl">Product deep dives</h3>
+		<p class="mt-3 max-w-2xl text-white/70">
+			Go deeper on capture, monitoring, grading, and delivery—demos, specs, and workflow notes for each step in the pipeline.
+		</p>
+
+		<div class="mt-10 space-y-3" data-suite-accordion>
+			<!-- FilmStudio -->
+			<div id="filmstudio" class="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
+				<button
+					class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-white/[0.03] focus:outline-none focus:ring-2 focus:ring-white/15"
+					type="button"
+					aria-expanded="false"
+					aria-controls="pane-filmstudio"
+					data-suite-trigger="filmstudio"
+				>
+					<div class="flex min-w-0 items-center gap-3">
+						<span class="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+							{filmStudioMeta?.artworkUrl512 ? (
+								<img
+									src={filmStudioMeta.artworkUrl512}
+									alt="FilmStudio app icon"
+									class="h-full w-full object-cover"
+									loading="lazy"
+									decoding="async"
+								/>
+							) : (
+								<svg class="h-5 w-5 text-white/70" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path d="M7 7h10l1.5 2v10a2 2 0 0 1-2 2H7.5a2 2 0 0 1-2-2V9L7 7Z" stroke="currentColor" stroke-width="1.5" />
+									<path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7" stroke="currentColor" stroke-width="1.5" />
+								</svg>
+							)}
+						</span>
+						<div class="min-w-0">
+							<p class="text-sm font-semibold tracking-[0.22em] text-white/90">
+								<span class="rounded-lg border border-white/10 bg-white/[0.05] px-2 py-0.5 shadow-[0_0_0_4px_rgba(255,106,0,0.14)] ring-1 ring-[rgba(255,106,0,0.45)]">
+									FILMSTUDIO
+								</span>
+							</p>
+							<p class="mt-2 truncate text-base font-semibold text-white/95">
+								Turn Your Phone Into A Cinema Ready Camera.
+							</p>
+							<p class="mt-1 text-xs text-white/60">
+								Full manual control + pro monitoring — built for filmmakers.
+							</p>
+						</div>
+					</div>
+					<svg class="h-5 w-5 shrink-0 text-white/55" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+						<path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+				</button>
+
+				<div id="pane-filmstudio" class="hidden border-t border-white/10 px-5 py-5" data-suite-pane="filmstudio">
+					<div class="grid gap-8 lg:grid-cols-[1.3fr,0.9fr] lg:items-start">
+						<div class="max-w-none min-w-0">
+							<p class="mt-3 text-sm leading-relaxed text-white/70">
+								FilmStudio transforms your phone into a powerful on-set camera tool.
+							</p>
+							<p class="mt-3 text-sm leading-relaxed text-white/70">
+								Control ISO, shutter, focus and white balance in real time while monitoring your image with scopes and overlays.
+							</p>
+							<p class="mt-3 text-sm leading-relaxed text-white/70">
+								Whether it's your A-cam or a dedicated monitor, you get the look and framing decisions while shooting — not later in post.
+							</p>
+
+							<div class="mt-6 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-5">
+								<p class="text-sm font-semibold">Precision Tools For Real Filmmaking</p>
+								<p class="mt-2 text-sm text-white/70">
+									Everything you need to monitor, control and capture your shot — live on set.
+								</p>
+								<div class="mt-4 flex flex-wrap gap-2">
+									<span class="fs-pill">Manual control</span>
+									<span class="fs-pill">Focus pull A/B</span>
+									<span class="fs-pill">Zebra & peaking</span>
+									<span class="fs-pill">Waveform & histogram</span>
+									<span class="fs-pill">Frame guides</span>
+									<span class="fs-pill">Timecode & takes</span>
+									<span class="fs-pill">Library & export</span>
+								</div>
+
+								<p class="mt-5 text-sm text-white/70">
+									Take control of exposure, focus, and framing with tools you can trust. Monitor in real time with scopes and overlays so what you see on set is what you get in your final footage.
+								</p>
+
+								<!-- Screenshots carousel (inside Key features card) -->
+								<div
+									class="mt-6 overflow-hidden rounded-xl border border-white/10 bg-black"
+									data-fs-carousel-root
+									data-fs-shots={JSON.stringify(filmStudioScreenshots)}
+								>
+									<div class="relative px-4 py-5 md:px-6">
+										<div class="fs-carousel-viewport" data-fs-viewport>
+											<div class="fs-carousel-track" data-fs-track>
+												{filmStudioScreenshots.map((src, i) => (
+													<div class="fs-slide" data-fs-slide data-idx={String(i)}>
+														<div class="fs-slide-inner" role="img" aria-label={`FilmStudio screenshot ${i + 1}`}>
+															<img src={src} alt="" loading="lazy" decoding="async" />
+														</div>
+													</div>
+												))}
+											</div>
+										</div>
+
+										<div class="fs-carousel-controls" aria-label="Carousel controls">
+											<button type="button" class="fs-carousel-btn" aria-label="Previous screenshots" data-fs-prev>
+												<svg viewBox="0 0 24 24" aria-hidden="true">
+													<path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+												</svg>
+											</button>
+
+											<div class="fs-carousel-dots" aria-label="Carousel position" data-fs-dots></div>
+
+											<button type="button" class="fs-carousel-btn" aria-label="Next screenshots" data-fs-next>
+												<svg viewBox="0 0 24 24" aria-hidden="true">
+													<path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+												</svg>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="mt-4 rounded-2xl border border-white/10 bg-black/30 p-5">
+								<p class="text-sm font-semibold">Anamorphic-friendly capture</p>
+								<p class="mt-2 text-sm text-white/70">
+									Compose with correct framing for widescreen delivery and monitor your shot on-set without
+									guesswork. Pair with <span class="font-semibold text-white/85">Anamorphic Desqueezer</span> for
+									de-squeeze in post.
+								</p>
+							</div>
+						</div>
+
+						<div class="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-5">
+							<p class="text-xs font-medium tracking-[0.18em] text-white/60">AT A GLANCE</p>
+							<div class="mt-4 -mx-5 overflow-x-auto px-5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+								<div class="flex min-w-max gap-3">
+									<div class="rounded-2xl border border-white/10 bg-black/30 px-4 py-3">
+										<p class="text-[11px] font-semibold tracking-wide text-white/60">Platforms</p>
+										<p class="mt-1 text-sm font-semibold text-white/90">iPhone · iPad · Mac</p>
+									</div>
+									<div class="rounded-2xl border border-white/10 bg-black/30 px-4 py-3">
+										<p class="text-[11px] font-semibold tracking-wide text-white/60">Exposure</p>
+										<p class="mt-1 text-sm font-semibold text-white/90">Manual · AE/AF lock</p>
+									</div>
+									<div class="rounded-2xl border border-white/10 bg-black/30 px-4 py-3">
+										<p class="text-[11px] font-semibold tracking-wide text-white/60">Monitoring</p>
+										<p class="mt-1 text-sm font-semibold text-white/90">Zebra · hist · WFM</p>
+									</div>
+									<div class="rounded-2xl border border-white/10 bg-black/30 px-4 py-3">
+										<p class="text-[11px] font-semibold tracking-wide text-white/60">Discipline</p>
+										<p class="mt-1 text-sm font-semibold text-white/90">Timecode · takes</p>
+									</div>
+								</div>
+							</div>
+							<div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+								<p class="text-xs text-white/55">Fast capture. Clean handoff.</p>
+								<a
+									class="inline-flex h-9 items-center gap-2 rounded-full border border-white/10 bg-white/[0.08] px-3 text-xs font-semibold text-white/90 hover:bg-white/[0.12] focus:outline-none focus:ring-2 focus:ring-white/20"
+									href={storeUrls.filmStudioIos}
+								>
+									<svg class="h-4 w-4 text-white/90" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+										<path
+											d="M16.3 2c-.9 0-2 .6-2.7 1.4-.8.9-1.3 2-1.2 3.1 1.1.1 2.3-.6 3-1.5.7-.8 1.2-1.9.9-3Z"
+											fill="currentColor"
+										/>
+										<path
+											d="M12.2 6.8c-1.5 0-2.2.8-3.3.8-1.2 0-2.1-.8-3.5-.8-1.9 0-3.9 1.6-3.9 4.8 0 1.8.7 3.7 1.6 4.9.8 1 1.5 1.9 2.6 1.9 1 0 1.5-.7 2.8-.7 1.3 0 1.7.7 2.8.7 1.1 0 1.8-1 2.5-2 .5-.8.7-1.2 1.1-2.1-2.6-1-3-4.7-.4-6-1-1.3-2.4-2-3.9-2Z"
+											fill="currentColor"
+										/>
+									</svg>
+									<span>App Store</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Anamorphic Desqueezer -->
+			<div id="anamorphic" class="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
+				<button
+					class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-white/[0.03] focus:outline-none focus:ring-2 focus:ring-white/15"
+					type="button"
+					aria-expanded="false"
+					aria-controls="pane-anamorphic"
+					data-suite-trigger="anamorphic"
+				>
+					<div class="flex min-w-0 items-center gap-3">
+						<span class="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+							{anamorphicMeta?.artworkUrl512 ? (
+								<img
+									src={anamorphicMeta.artworkUrl512}
+									alt="Anamorphic Desqueezer app icon"
+									class="h-full w-full object-cover"
+									loading="lazy"
+									decoding="async"
+								/>
+							) : (
+								<svg class="h-5 w-5 text-white/70" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path d="M4 12c3.5-6 12.5-6 16 0-3.5 6-12.5 6-16 0Z" stroke="currentColor" stroke-width="1.5" />
+									<path d="M9 12c0-1.7 1.3-3 3-3s3 1.3 3 3-1.3 3-3 3-3-1.3-3-3Z" stroke="currentColor" stroke-width="1.5" />
+								</svg>
+							)}
+						</span>
+						<div class="min-w-0">
+							<p class="text-xs font-medium tracking-[0.18em] text-white/60">ANAMORPHIC DESQUEEZER</p>
+							<p class="mt-1 truncate text-sm font-semibold text-white/90">Accurate geometry from set to post.</p>
+							<p class="mt-1 text-xs text-white/60">iPhone · iPad · Mac</p>
+						</div>
+					</div>
+					<svg class="h-5 w-5 shrink-0 text-white/55" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+						<path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+				</button>
+
+				<div id="pane-anamorphic" class="hidden border-t border-white/10 px-5 py-5" data-suite-pane="anamorphic">
+					<div class="grid gap-8 lg:grid-cols-[1.3fr,0.9fr] lg:items-start">
+						<div class="max-w-none">
+							<h4 class="text-lg font-semibold tracking-tight">Anamorphic Desqueezer — live monitor & CinemaScope</h4>
+							<p class="mt-3 text-sm leading-relaxed text-white/70">
+								Live monitor: real-time de-squeeze, squeezed / desqueezed toggle, 2.39:1 guides, true anamorphic
+								aspect. Scopes: zebras, IRE waveform, false color, peaking, luma/RGB histogram, ISO / shutter /
+								WB. Export: true 2.39:1 CinemaScope — no stretched footage — ProRes / 10-bit to Photos or Files,
+								FCPXML for Final Cut, per-clip framing, LUT, trim. Photo & batch: DNG stills, batch clips, per-clip
+								or merged timeline.
+							</p>
+
+							<div class="mt-6 rounded-2xl border border-white/10 bg-black/30 p-5">
+								<p class="text-sm font-semibold">Watch the demo</p>
+								<p class="mt-2 text-sm text-white/70">
+									Anamorphic Desqueezer on iPhone, iPad, and Mac — full walkthrough on YouTube.
+								</p>
+								<div class="mt-4 aspect-video overflow-hidden rounded-xl border border-white/10 bg-black">
+									<iframe
+										class="h-full w-full"
+										src="https://www.youtube-nocookie.com/embed/FEtxiSnYVy4"
+										title="Anamorphic Desqueezer demo"
+										loading="lazy"
+										referrerpolicy="strict-origin-when-cross-origin"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+										allowfullscreen
+									></iframe>
+								</div>
+								<div class="mt-4 flex flex-wrap gap-3">
+									<a
+										class="rounded-full bg-white px-4 py-2 text-xs font-semibold text-black hover:bg-white/90"
+										href={storeUrls.anamorphicApple}
+									>
+										Download on App Store
+									</a>
+									<a
+										class="rounded-full border border-white/20 px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/10"
+										href="https://youtu.be/FEtxiSnYVy4?si=pSHyZF1fwBBKxi6y"
+									>
+										Watch demo on YouTube
+									</a>
+								</div>
+							</div>
+
+							<div class="mt-4 grid gap-4 md:grid-cols-2">
+								<div class="rounded-2xl border border-white/10 bg-black/30 p-5">
+									<p class="text-sm font-semibold">iOS + MacBook overview</p>
+									<ul class="mt-3 space-y-2 text-sm text-white/70">
+										<li>Live monitor + post: 1.33×–2× and custom ratio</li>
+										<li>ProRes & 10-bit, FCPXML, 2.39:1 export</li>
+										<li>Zebras, waveform, false color for exposure</li>
+										<li>Batch-friendly workflow for set and editorial handoff</li>
+									</ul>
+								</div>
+								<div class="rounded-2xl border border-white/10 bg-black/30 p-5">
+									<p class="text-sm font-semibold">Why crews keep it on the phone</p>
+									<ul class="mt-3 space-y-2 text-sm text-white/70">
+										<li>Live desqueeze preview matches what you will deliver.</li>
+										<li>ProRes and 10-bit HEVC when iOS allows — not just a proxy.</li>
+										<li>Zebras, false color, and peaking for exposure and focus.</li>
+										<li>Batch passes and DNG stills when the day calls for coverage.</li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="mt-4 rounded-2xl border border-white/10 bg-black/30 p-5">
+								<p class="text-sm font-semibold">iPhone & iPad specifics</p>
+								<ul class="mt-3 space-y-2 text-sm text-white/70">
+									<li><span class="font-semibold text-white/85">iPad storyboard lane?</span> Use Split View: keep script sheets open while the live preview runs full width on the other half.</li>
+									<li><span class="font-semibold text-white/85">External monitor?</span> Mirror the corrected signal when directors want to sign off without hovering over the operator.</li>
+									<li><span class="font-semibold text-white/85">Battery shoots?</span> Pre-build ratio presets per lens serial so you are not menu-diving between setups.</li>
+									<li><span class="font-semibold text-white/85">FCPXML round-trip?</span> Export after each location wrap so editorial inherits reel names before proxies get renamed on the shuttle drive.</li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="rounded-2xl border border-white/10 bg-black/30 p-5">
+							<p class="text-xs font-medium tracking-[0.18em] text-white/60">AT A GLANCE</p>
+							<div class="mt-4 grid gap-4">
+								<div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+									<p class="text-xs font-semibold text-white/60">Live monitor</p>
+									<p class="mt-1 text-sm font-semibold text-white/90">De-squeeze · 2.39:1 toggle</p>
+								</div>
+								<div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+									<p class="text-xs font-semibold text-white/60">Scopes</p>
+									<p class="mt-1 text-sm font-semibold text-white/90">Zebra · WFM · FC · peak</p>
+								</div>
+								<div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+									<p class="text-xs font-semibold text-white/60">Export</p>
+									<p class="mt-1 text-sm font-semibold text-white/90">ProRes · 10-bit · FCPXML</p>
+								</div>
+								<div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+									<p class="text-xs font-semibold text-white/60">Photo / batch</p>
+									<p class="mt-1 text-sm font-semibold text-white/90">DNG · batch · merge</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- CineLut Live Grade -->
+			<div id="cinelut" class="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
+				<button
+					class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-white/[0.03] focus:outline-none focus:ring-2 focus:ring-white/15"
+					type="button"
+					aria-expanded="false"
+					aria-controls="pane-cinelut"
+					data-suite-trigger="cinelut"
+				>
+					<div class="flex min-w-0 items-center gap-3">
+						<span class="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+							{cineLutMeta?.artworkUrl512 ? (
+								<img
+									src={cineLutMeta.artworkUrl512}
+									alt="CineLut Live Grade app icon"
+									class="h-full w-full object-cover"
+									loading="lazy"
+									decoding="async"
+								/>
+							) : (
+								<svg class="h-5 w-5 text-white/70" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path d="M7 7h10l1.5 2v10a2 2 0 0 1-2 2H7.5a2 2 0 0 1-2-2V9L7 7Z" stroke="currentColor" stroke-width="1.5" />
+									<path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7" stroke="currentColor" stroke-width="1.5" />
+								</svg>
+							)}
+						</span>
+						<div class="min-w-0">
+							<p class="text-xs font-medium tracking-[0.18em] text-white/60">CINELUT LIVE GRADE</p>
+							<p class="mt-1 truncate text-sm font-semibold text-white/90">
+								Live LUT + CDL with scopes you can trust.
+							</p>
+							<p class="mt-1 text-xs text-white/60">macOS (DIT cart / workstation)</p>
+						</div>
+					</div>
+					<svg class="h-5 w-5 shrink-0 text-white/55" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+						<path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+				</button>
+
+				<div id="pane-cinelut" class="hidden border-t border-white/10 px-5 py-5" data-suite-pane="cinelut">
+					<div class="grid gap-8 lg:grid-cols-[1.3fr,0.9fr] lg:items-start">
+						<div class="max-w-none min-w-0">
+							<div class="overflow-hidden rounded-2xl border border-white/10 bg-black">
+								<div class="aspect-video">
+									<iframe
+										class="h-full w-full"
+										src="https://www.youtube-nocookie.com/embed/Mh3KR9obkgU"
+										title="CineLut Live Grade demo"
+										loading="lazy"
+										referrerpolicy="strict-origin-when-cross-origin"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+										allowfullscreen
+									></iframe>
+								</div>
+							</div>
+
+							<div class="mt-6 grid gap-3 sm:grid-cols-3">
+								<div class="rounded-2xl border border-purple-500/25 bg-purple-500/[0.06] p-4">
+									<p class="text-xs font-semibold uppercase tracking-wide text-purple-200/90">Live grade</p>
+									<p class="mt-2 text-sm font-semibold text-white">LUT + CDL on the feed</p>
+									<p class="mt-1 text-xs text-white/60">Lock the look while you roll.</p>
+								</div>
+								<div class="rounded-2xl border border-purple-500/25 bg-purple-500/[0.06] p-4">
+									<p class="text-xs font-semibold uppercase tracking-wide text-purple-200/90">Scopes</p>
+									<p class="mt-2 text-sm font-semibold text-white">Waveform · parade · vectors</p>
+									<p class="mt-1 text-xs text-white/60">Built for cart speed.</p>
+								</div>
+								<div class="rounded-2xl border border-purple-500/25 bg-purple-500/[0.06] p-4">
+									<p class="text-xs font-semibold uppercase tracking-wide text-purple-200/90">Handoff</p>
+									<p class="mt-2 text-sm font-semibold text-white">ProRes + EDL/CDL/LUT</p>
+									<p class="mt-1 text-xs text-white/60">Post picks up your intent.</p>
+								</div>
+							</div>
+
+							<p class="mt-6 text-sm leading-relaxed text-white/75">
+								Feed ARRI, RED, Blackmagic, or Panasonic over SDI/HDMI, grade live with scopes, and record graded ProRes — so dailies match what editorial will relink, not a guess.
+							</p>
+
+							<div class="mt-6 flex flex-wrap gap-3">
+								<a
+									class="rounded-full bg-white px-4 py-2 text-xs font-semibold text-black hover:bg-white/90"
+									href={storeUrls.cineLutMac}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Buy on Mac App Store
+								</a>
+								<a
+									class="rounded-full border border-white/20 px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/10"
+									href="https://youtu.be/Mh3KR9obkgU?si=NVUPJvdG_azELX1_"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Watch on YouTube
+								</a>
+							</div>
+
+							<details class="mt-8 rounded-2xl border border-white/10 bg-black/25 p-4 sm:p-5">
+								<summary class="cursor-pointer text-sm font-semibold text-white/90 marker:text-white/50">
+									Full specs &amp; workflow notes
+								</summary>
+								<div class="mt-5 space-y-5 text-sm text-white/70">
+									<div>
+										<p class="font-semibold text-white/90">Post handoff</p>
+										<p class="mt-2">
+											Packages <span class="font-semibold text-white/85">CDL</span>, <span class="font-semibold text-white/85">AMF</span>, <span class="font-semibold text-white/85">LUT</span>, and <span class="font-semibold text-white/85">EDL+CDL</span> so Resolve, Silverstack, and editorial can re-link the same look. Stills and per-scene looks stay in the library across setups.
+										</p>
+									</div>
+									<div>
+										<p class="font-semibold text-white/90">Who it's for</p>
+										<p class="mt-2">
+											Cinematographers, DITs, and colorists who need the final look while the camera is rolling — indies through full crews.
+										</p>
+									</div>
+									<ul class="list-disc space-y-2 pl-5">
+										<li><span class="font-semibold text-white/85">Live grading</span> — 3D LUTs and CDL-style primaries, 2.39:1 support, waveform, parade, histogram, vectorscope.</li>
+										<li><span class="font-semibold text-white/85">Recording</span> — graded ProRes with optional burn-in (timecode, reel/scene/take, slate).</li>
+										<li><span class="font-semibold text-white/85">Dailies</span> — graded ProRes plus CDL/AMF/LUT and EDL+CDL packages.</li>
+										<li><span class="font-semibold text-white/85">Shot library</span> — stills and looks per scene; import/export CDL and LUT.</li>
+									</ul>
+									<p>
+										You see what the camera sees, with your look applied. What you record is what the editor expects — predictable from set to dailies.
+									</p>
+								</div>
+							</details>
+						</div>
+
+						<div class="rounded-2xl border border-white/10 bg-black/30 p-5">
+							<p class="text-xs font-medium tracking-[0.18em] text-white/60">SETUP</p>
+							<div class="mt-4 grid gap-4">
+								<div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+									<p class="text-xs font-semibold text-white/60">Platform</p>
+									<p class="mt-1 text-sm font-semibold text-white/90">macOS 15.7+</p>
+								</div>
+								<div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+									<p class="text-xs font-semibold text-white/60">Ingest</p>
+									<p class="mt-1 text-sm font-semibold text-white/90">SDI / HDMI</p>
+								</div>
+								<div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+									<p class="text-xs font-semibold text-white/60">Grade</p>
+									<p class="mt-1 text-sm font-semibold text-white/90">LUT + CDL</p>
+								</div>
+								<div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+									<p class="text-xs font-semibold text-white/60">Record</p>
+									<p class="mt-1 text-sm font-semibold text-white/90">ProRes</p>
+								</div>
+								<div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+									<p class="text-xs font-semibold text-white/60">Scopes</p>
+									<p class="mt-1 text-sm font-semibold text-white/90">WFM · Parade · Vectors</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

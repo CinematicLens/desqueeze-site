@@ -1,0 +1,797 @@
+---
+---
+
+<script>
+	(() => {
+		// Inline styles for the FilmStudio carousel (Zoom-like).
+		// (Kept here to avoid adding global CSS files.)
+		const ensureFsStyles = () => {
+			// Versioned id so style changes apply even with HMR/caching.
+			if (document.getElementById('fs-carousel-styles-v3')) return;
+			const style = document.createElement('style');
+			style.id = 'fs-carousel-styles-v3';
+			style.textContent = `
+				.fs-pill{
+					border-radius: 999px;
+					border: 1px solid rgba(255,255,255,0.10);
+					background: rgba(0,0,0,0.30);
+					padding: 0.25rem 0.75rem;
+					font-size: 0.75rem;
+					font-weight: 600;
+					color: rgba(255,255,255,0.82);
+					transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+				}
+				.fs-pill:hover{
+					background: rgba(255,255,255,0.06);
+					border-color: rgba(255,255,255,0.16);
+					box-shadow: 0 0 0 4px rgba(255,106,0,0.12);
+					transform: translateY(-1px);
+				}
+				.fs-carousel-viewport{
+					overflow: hidden;
+					/* No padding here: padding would be clipped during translateX */
+					padding: 14px 0 12px;
+				}
+				.fs-carousel-track{
+					display: flex;
+					gap: 22px;
+					align-items: center;
+					/* Inset lives on the track so corners never clip */
+					padding: 6px 26px 18px;
+					will-change: transform;
+					transform: translateX(0px);
+					transition: transform 650ms cubic-bezier(0.2, 0.9, 0.2, 1);
+				}
+				.fs-slide{
+					flex: 0 0 auto;
+					width: clamp(210px, 24vw, 300px);
+					transform: translateY(0px);
+					transition: transform 240ms ease, opacity 240ms ease;
+					opacity: 0.9;
+				}
+				.fs-slide.is-active{ opacity: 1; }
+				.fs-slide:hover{ transform: translateY(-12px); opacity: 1; }
+				.fs-slide-inner{
+					aspect-ratio: 9 / 16;
+					border-radius: 22px;
+					border: 1px solid rgba(255,255,255,0.14);
+					background: rgba(0,0,0,0.55);
+					overflow: hidden;
+					box-shadow: 0 28px 90px rgba(0,0,0,0.55);
+					backdrop-filter: blur(10px);
+					transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+				}
+				.fs-slide:hover .fs-slide-inner{
+					border-color: rgba(255,255,255,0.22);
+					box-shadow:
+						0 28px 90px rgba(0,0,0,0.55),
+						0 0 0 4px rgba(255,106,0,0.14);
+				}
+				.fs-slide-inner img{
+					width: 100%;
+					height: 100%;
+					object-fit: contain;
+					display: block;
+				}
+				.fs-carousel-controls{
+					margin-top: 14px;
+					display: flex !important;
+					align-items: center;
+					justify-content: space-between;
+					gap: 14px;
+					padding: 10px 12px;
+					max-width: 640px;
+					margin-left: auto;
+					margin-right: auto;
+					min-height: 56px;
+					visibility: visible;
+					opacity: 1;
+					border-radius: 999px;
+					border: 1px solid rgba(255,255,255,0.14);
+					background: rgba(0,0,0,0.45);
+					color: rgba(255,255,255,0.92);
+					backdrop-filter: blur(12px);
+					box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+					position: relative;
+					z-index: 50;
+				}
+				.fs-carousel-btn{
+					width: 54px;
+					height: 40px;
+					border-radius: 999px;
+					border: 1px solid rgba(255,255,255,0.18);
+					background: rgba(255,255,255,0.06);
+					color: rgba(255,255,255,0.92);
+					display: grid;
+					place-items: center;
+					transition: transform 160ms ease, background 160ms ease;
+					flex: 0 0 auto;
+				}
+				.fs-carousel-btn:hover{
+					background: rgba(255,255,255,0.10);
+					transform: translateY(-1px);
+				}
+				.fs-carousel-btn svg{ width: 22px; height: 22px; }
+				.fs-carousel-btn svg path{ stroke: currentColor; }
+				.fs-carousel-dots{
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 8px;
+					flex: 1 1 auto;
+					min-width: 0;
+					overflow: hidden;
+				}
+				.fs-dot{
+					width: 9px;
+					height: 6px;
+					border-radius: 999px;
+					border: 1px solid rgba(255,255,255,0.22);
+					background: rgba(255,255,255,0.18);
+					transition: width 160ms ease, background 160ms ease;
+				}
+				.fs-dot.is-active{
+					width: 22px;
+					background: rgba(255,255,255,0.85);
+				}
+				.fs-showcase-tab{
+					transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+				}
+				.fs-showcase-tab:hover{
+					background: rgba(255,255,255,0.05);
+					border-color: rgba(255,255,255,0.16);
+					transform: translateY(-1px);
+				}
+				.fs-showcase-tab.is-active{
+					border-color: rgba(255,106,0,0.55);
+					box-shadow: 0 0 0 4px rgba(255,106,0,0.10);
+					background: rgba(0,0,0,0.42);
+				}
+				.fs-showcase-tab.is-active .fs-showcase-tab-icon.fs-icon-cell{
+					border-color: rgba(255,106,0,0.55);
+					box-shadow:
+						0 0 0 1px rgba(255,106,0,0.18),
+						0 0 0 4px rgba(255,106,0,0.10),
+						0 12px 40px rgba(255,106,0,0.12);
+				}
+				.fs-icon-cell{
+					box-sizing: border-box;
+					background: #1a1a1a;
+					border-radius: 12px;
+					padding: 12px;
+					border: 1px solid rgba(255,106,0,0.35);
+					box-shadow:
+						0 0 0 1px rgba(255,106,0,0.10),
+						0 10px 30px rgba(255,106,0,0.08);
+					display: grid;
+					place-items: center;
+					color: rgb(255, 106, 0);
+					transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+				}
+				.fs-icon-cell svg{
+					display: block;
+				}
+				.fs-icon-cell:hover{
+					transform: scale(1.05);
+					border-color: rgba(255,106,0,0.55);
+					box-shadow:
+						0 0 0 1px rgba(255,106,0,0.16),
+						0 12px 40px rgba(255,106,0,0.14);
+				}
+				.fs-icon-cell--row{
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					justify-content: center;
+					gap: 6px;
+					padding: 10px 11px;
+				}
+				.fs-icon-cell--sm{
+					width: 34px;
+					height: 34px;
+					padding: 8px;
+					border-radius: 10px;
+				}
+				@media (max-width: 640px){
+					.fs-carousel-track{ gap: 14px; }
+					.fs-carousel-btn{ width: 46px; height: 38px; }
+					.fs-carousel-controls{ padding: 9px 10px; gap: 10px; }
+				}
+				@media (max-width: 640px){
+					.fs-carousel-track{ padding-left: 18px; padding-right: 18px; }
+				}
+			`.trim();
+			document.head.appendChild(style);
+		};
+
+		const initFilmStudioShowcaseTabs = () => {
+			const root = document.querySelector('[data-fs-showcase]');
+			if (!(root instanceof HTMLElement)) return;
+			if (root.dataset.fsShowcaseInit === '1') return;
+			root.dataset.fsShowcaseInit = '1';
+
+			ensureFsStyles();
+
+			const tabs = Array.from(root.querySelectorAll('[data-fs-showcase-tab]'));
+			const panels = Array.from(root.querySelectorAll('[data-fs-showcase-panel]'));
+
+			const setActive = (idx) => {
+				tabs.forEach((t) => {
+					if (!(t instanceof HTMLButtonElement)) return;
+					const i = Number(t.getAttribute('data-fs-showcase-tab') ?? '-1');
+					const on = i === idx;
+					t.classList.toggle('is-active', on);
+					t.setAttribute('aria-selected', on ? 'true' : 'false');
+				});
+				panels.forEach((p) => {
+					if (!(p instanceof HTMLElement)) return;
+					const i = Number(p.getAttribute('data-fs-showcase-panel') ?? '-1');
+					p.classList.toggle('hidden', i !== idx);
+				});
+			};
+
+			tabs.forEach((t) => {
+				if (!(t instanceof HTMLButtonElement)) return;
+				t.addEventListener('click', () => {
+					const i = Number(t.getAttribute('data-fs-showcase-tab') ?? '0');
+					if (!Number.isFinite(i)) return;
+					setActive(i);
+				});
+			});
+
+			setActive(0);
+		};
+
+		initFilmStudioShowcaseTabs();
+
+		const initMobileNav = () => {
+			const roots = document.querySelectorAll('[data-mobile-nav]');
+			const mql = window.matchMedia('(min-width: 1024px)');
+
+			roots.forEach((root) => {
+				if (!(root instanceof HTMLElement)) return;
+				if (root.dataset.mobileNavBound === '1') return;
+				root.dataset.mobileNavBound = '1';
+
+				const btn = root.querySelector('[data-mobile-nav-toggle]');
+				const panel = root.querySelector('[data-mobile-nav-panel]');
+				if (!(btn instanceof HTMLButtonElement) || !(panel instanceof HTMLElement)) return;
+
+				const sr = btn.querySelector('.sr-only');
+
+				const setOpen = (open) => {
+					panel.classList.toggle('hidden', !open);
+					btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+					if (sr) sr.textContent = open ? 'Close menu' : 'Open menu';
+				};
+
+				btn.addEventListener('click', () => {
+					setOpen(panel.classList.contains('hidden'));
+				});
+
+				panel.querySelectorAll('a').forEach((a) => {
+					a.addEventListener('click', () => setOpen(false));
+				});
+
+				mql.addEventListener('change', () => {
+					if (mql.matches) setOpen(false);
+				});
+
+				document.addEventListener('keydown', (e) => {
+					if (e.key !== 'Escape') return;
+					if (!panel.classList.contains('hidden')) setOpen(false);
+				});
+			});
+		};
+
+		initMobileNav();
+
+		// Suite accordion (open/close panes + deep-link open).
+		// NOTE: Some panes call helpers (e.g. screenshot carousels). Declare them
+		// early to avoid temporal-dead-zone issues when deep-linking on page load.
+		let startFs = () => {};
+		let stopFs = () => {};
+		const suiteRoot = document.querySelector('[data-suite-accordion]');
+		if (suiteRoot instanceof HTMLElement) {
+			const triggers = Array.from(suiteRoot.querySelectorAll('[data-suite-trigger]'));
+			const panes = Array.from(suiteRoot.querySelectorAll('[data-suite-pane]'));
+
+			const scrollToAccordion = (key: string, behavior: ScrollBehavior) => {
+				const el = document.getElementById(key);
+				if (!el) return;
+				const stickyHeader = document.querySelector('header.sticky');
+				const headerH =
+					stickyHeader instanceof HTMLElement ? Math.ceil(stickyHeader.getBoundingClientRect().height) : 0;
+				const offset = headerH > 0 ? headerH + 14 : 86;
+				const top = Math.max(0, Math.floor(el.getBoundingClientRect().top + window.scrollY - offset));
+				window.scrollTo({ top, behavior });
+			};
+
+			const setOpen = (key) => {
+				triggers.forEach((t) => {
+					if (!(t instanceof HTMLButtonElement)) return;
+					const k = t.getAttribute('data-suite-trigger') ?? '';
+					const expanded = k === key;
+					t.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+				});
+				panes.forEach((p) => {
+					if (!(p instanceof HTMLElement)) return;
+					const k = p.getAttribute('data-suite-pane') ?? '';
+					p.classList.toggle('hidden', k !== key);
+				});
+				// Carousels/animations can optionally react to open/close, but they
+				// must never block initial rendering or deep-linking.
+				if (key === 'filmstudio') startFs();
+				else stopFs();
+			};
+
+			const closeAll = () => {
+				triggers.forEach((t) => {
+					if (t instanceof HTMLButtonElement) t.setAttribute('aria-expanded', 'false');
+				});
+				panes.forEach((p) => {
+					if (p instanceof HTMLElement) p.classList.add('hidden');
+				});
+			};
+
+			triggers.forEach((t) => {
+				if (!(t instanceof HTMLButtonElement)) return;
+				t.addEventListener('click', () => {
+					const key = t.getAttribute('data-suite-trigger') ?? '';
+					const isOpen = t.getAttribute('aria-expanded') === 'true';
+					if (isOpen) closeAll();
+					else {
+						setOpen(key);
+						const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
+						scrollToAccordion(key, reduceMotion ? 'auto' : 'smooth');
+					}
+				});
+			});
+
+			const openFromHash = () => {
+				const raw = (window.location.hash || '').replace('#', '');
+				if (!raw) return;
+				const allow = new Set(['filmstudio', 'anamorphic', 'cinelut']);
+				if (!allow.has(raw)) return;
+				setOpen(raw);
+				const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
+				scrollToAccordion(raw, reduceMotion ? 'auto' : 'smooth');
+			};
+
+			// Default: keep the first accordion open (FilmStudio).
+			if (!window.location.hash) setOpen('filmstudio');
+			else openFromHash();
+			window.addEventListener('hashchange', openFromHash);
+		}
+
+		// FilmStudio screenshots carousel (Zoom-like): viewport + track translateX.
+		// Must be resilient to accordion show/hide: init once per root.
+		const initFilmStudioCarousel = () => {
+			const root = document.querySelector('[data-fs-carousel-root]');
+			if (!(root instanceof HTMLElement)) return;
+			if (root.dataset.fsInit === '1') return;
+			root.dataset.fsInit = '1';
+
+			ensureFsStyles();
+
+			const viewport = root.querySelector('[data-fs-viewport]');
+			const track = root.querySelector('[data-fs-track]');
+			const prev = root.querySelector('[data-fs-prev]');
+			const next = root.querySelector('[data-fs-next]');
+			const dotsWrap = root.querySelector('[data-fs-dots]');
+			let dots = Array.from(root.querySelectorAll('[data-fs-dot]'));
+			const slides = Array.from(root.querySelectorAll('[data-fs-slide]'));
+			const label = root.querySelector('[data-fs-shot-label]');
+			const count = root.querySelector('[data-fs-shot-count]');
+
+			if (!(viewport instanceof HTMLElement)) return;
+			if (!(track instanceof HTMLElement)) return;
+			if (slides.length === 0) return;
+
+			const parseUrls = () => {
+				try {
+					const raw = JSON.parse(root.getAttribute('data-fs-shots') ?? '[]');
+					const urls = Array.isArray(raw) ? raw.filter((x) => typeof x === 'string') : [];
+					return urls.slice().sort((a, b) => a.localeCompare(b));
+				} catch {
+					return [];
+				}
+			};
+			const urls = parseUrls();
+			if (!urls.length) return;
+
+			let timer = null;
+			let page = 0;
+			let perView = 3;
+			let maxPage = 0;
+			let step = 0;
+
+			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+			const wrap = (n, maxInclusive) => {
+				if (maxInclusive <= 0) return 0;
+				return ((n % (maxInclusive + 1)) + (maxInclusive + 1)) % (maxInclusive + 1);
+			};
+
+			function show(n, behavior = 'smooth') {
+				page = wrap(n, maxPage);
+				apply(behavior === 'smooth' ? 'smooth' : 'auto');
+			}
+
+			const compute = () => {
+				// Hidden pane => width 0, delay.
+				const vw = viewport.getBoundingClientRect().width;
+				if (!Number.isFinite(vw) || vw < 40) return false;
+
+				// Match "Zoom style": desktop 3, tablet 2, mobile 1.
+				if (vw < 520) perView = 1;
+				else if (vw < 900) perView = 2;
+				else perView = 3;
+
+				// Compute step = slide width + gap.
+				const first = slides.find((s) => s instanceof HTMLElement);
+				if (!(first instanceof HTMLElement)) return false;
+				const cardW = first.getBoundingClientRect().width;
+				const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '22') || 22;
+				step = cardW + gap;
+
+				maxPage = Math.max(0, Math.ceil(slides.length / perView) - 1);
+				page = clamp(page, 0, maxPage);
+
+				// Build dots per PAGE (like Zoom), not per screenshot.
+				if (dotsWrap instanceof HTMLElement) {
+					dotsWrap.style.display = maxPage === 0 ? 'none' : 'flex';
+					dotsWrap.innerHTML = '';
+					for (let i = 0; i <= maxPage; i++) {
+						const b = document.createElement('button');
+						b.type = 'button';
+						b.className = 'fs-dot';
+						b.setAttribute('aria-label', `Go to page ${i + 1}`);
+						b.setAttribute('data-fs-dot', String(i));
+						b.addEventListener('click', () => show(i, 'smooth'));
+						dotsWrap.appendChild(b);
+					}
+					dots = Array.from(dotsWrap.querySelectorAll('[data-fs-dot]'));
+				}
+
+				return true;
+			};
+
+			const setUi = () => {
+				const startIdx = page * perView;
+				const activeIdx = clamp(startIdx, 0, slides.length - 1);
+				slides.forEach((s, i) => {
+					if (s instanceof HTMLElement) s.classList.toggle('is-active', i === activeIdx);
+				});
+				dots.forEach((d) => {
+					if (!(d instanceof HTMLElement)) return;
+					const i = Number(d.getAttribute('data-fs-dot') ?? '-1');
+					d.classList.toggle('is-active', i === page);
+				});
+				if (label instanceof HTMLElement) label.textContent = `FilmStudio screenshots`;
+				if (count instanceof HTMLElement) count.textContent = `${page + 1}/${maxPage + 1}`;
+			};
+
+			function apply(behavior) {
+				if (!compute()) {
+					requestAnimationFrame(() => apply(behavior));
+					return;
+				}
+				setUi();
+				const x = page * perView * step;
+				if (behavior === 'auto') {
+					track.style.transition = 'none';
+					track.style.transform = `translateX(${-x}px)`;
+					// Force reflow then restore transition for next moves.
+					track.getBoundingClientRect();
+					track.style.transition = 'transform 650ms cubic-bezier(0.2, 0.9, 0.2, 1)';
+				} else {
+					track.style.transform = `translateX(${-x}px)`;
+				}
+			}
+
+			const stop = () => {
+				if (!timer) return;
+				window.clearInterval(timer);
+				timer = null;
+			};
+			const startAuto = () => {
+				if (reduceMotion) return;
+				if (maxPage <= 0) return;
+				timer = window.setInterval(() => show(page + 1, 'smooth'), 2600);
+			};
+
+			// Bind controls
+			if (prev instanceof HTMLButtonElement) prev.addEventListener('click', () => show(page - 1, 'smooth'));
+			if (next instanceof HTMLButtonElement) next.addEventListener('click', () => show(page + 1, 'smooth'));
+
+			// Pause on hover
+			root.addEventListener('mouseenter', stop);
+			root.addEventListener('mouseleave', () => {
+				if (!timer) startAuto();
+			});
+
+			// Recompute on resize / when pane becomes visible.
+			const ro = new ResizeObserver(() => apply('auto'));
+			ro.observe(viewport);
+
+			// First paint
+			apply('auto');
+			startAuto();
+
+			// Expose to accordion (optional)
+			startFs = () => {
+				stop();
+				apply('auto');
+				startAuto();
+			};
+			stopFs = () => stop();
+		};
+
+		// Init now + retry when DOM changes (accordion show/hide).
+		initFilmStudioCarousel();
+		const mo = new MutationObserver(() => initFilmStudioCarousel());
+		mo.observe(document.documentElement, { childList: true, subtree: true });
+
+		// Contact form: validate + open Gmail compose (static-safe).
+		const contactForm = document.querySelector('[data-contact-form]');
+		const contactStatus = document.querySelector('[data-contact-status]');
+		const contactEmail = document.querySelector('[data-contact-email]');
+		const emailError = document.querySelector('[data-email-error]');
+		const copyEmailBtn = document.querySelector('[data-copy-email]');
+		const copyStatus = document.querySelector('[data-copy-status]');
+		if (contactForm instanceof HTMLFormElement) {
+			const validateEmail = () => {
+				if (!(contactEmail instanceof HTMLInputElement)) return true;
+				// Clear any previous custom error before re-checking validity.
+				contactEmail.setCustomValidity('');
+				const value = contactEmail.value.trim();
+				const ok = contactEmail.checkValidity() && /^\S+@\S+\.\S+$/.test(value);
+				contactEmail.setCustomValidity(ok ? '' : 'Invalid email');
+				if (emailError instanceof HTMLElement) {
+					emailError.classList.toggle('hidden', ok);
+				}
+				contactEmail.classList.toggle('border-[#ff6a00]', !ok);
+				return ok;
+			};
+
+			if (contactEmail instanceof HTMLInputElement) {
+				contactEmail.addEventListener('input', () => validateEmail());
+				contactEmail.addEventListener('blur', () => validateEmail());
+			}
+
+			contactForm.addEventListener('submit', (e) => {
+				e.preventDefault();
+				if (!validateEmail()) {
+					if (contactStatus instanceof HTMLElement) contactStatus.textContent = 'Please enter a valid email.';
+					if (contactEmail instanceof HTMLInputElement) contactEmail.focus();
+					return;
+				}
+
+				const fd = new FormData(contactForm);
+				const name = String(fd.get('name') ?? '').trim();
+				const email = String(fd.get('email') ?? '').trim();
+				const topic = String(fd.get('topic') ?? '').trim();
+				const message = String(fd.get('message') ?? '').trim();
+
+				if (!name || !email || !message) {
+					if (contactStatus instanceof HTMLElement) contactStatus.textContent = 'Please fill all fields.';
+					return;
+				}
+
+				const safeTopic = topic || 'Contact';
+				const subject = `DeSqueeze Studio — ${safeTopic} (${name})`;
+				const body = `Topic: ${safeTopic}\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n`;
+				const to = 'teamcentersap@gmail.com';
+				const gmail = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+				const mailto = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+				if (contactStatus instanceof HTMLElement) {
+					contactStatus.textContent = 'Opening Gmail…';
+				}
+				const popup = window.open(gmail, '_blank', 'noopener,noreferrer');
+				if (!popup) {
+					// Popup blocked; fall back to same-tab Gmail, then mailto as last resort.
+					window.location.href = gmail;
+					window.setTimeout(() => {
+						window.location.href = mailto;
+					}, 400);
+				}
+			});
+		}
+
+		// Direct email: copy-to-clipboard helper.
+		if (copyEmailBtn instanceof HTMLButtonElement) {
+			copyEmailBtn.addEventListener('click', async () => {
+				const address = 'teamcentersap@gmail.com';
+				const label = copyEmailBtn.querySelector('[data-copy-label]');
+				const check = copyEmailBtn.querySelector('[data-copy-check]');
+				try {
+					await navigator.clipboard.writeText(address);
+					if (label instanceof HTMLElement) label.textContent = 'Copied';
+					if (check instanceof SVGElement) check.classList.remove('hidden');
+					if (copyStatus instanceof HTMLElement) copyStatus.textContent = 'Copied';
+					copyEmailBtn.disabled = true;
+					window.setTimeout(() => {
+						if (label instanceof HTMLElement) label.textContent = 'Copy';
+						if (check instanceof SVGElement) check.classList.add('hidden');
+						if (copyStatus instanceof HTMLElement) copyStatus.textContent = '';
+						copyEmailBtn.disabled = false;
+					}, 2000);
+				} catch {
+					if (copyStatus instanceof HTMLElement) copyStatus.textContent = address;
+				}
+			});
+		}
+
+		// Contact form: custom Topic dropdown (consistent styling vs native <select>).
+		const topicTrigger = document.querySelector('[data-topic-trigger]');
+		const topicList = document.querySelector('[data-topic-list]');
+		const topicValue = document.querySelector('[data-topic-value]');
+		const topicInput = document.querySelector('[data-topic-input]');
+		const topicOptions = Array.from(document.querySelectorAll('[data-topic-option]'));
+
+		const closeTopic = () => {
+			if (!(topicTrigger instanceof HTMLButtonElement)) return;
+			if (!(topicList instanceof HTMLElement)) return;
+			topicTrigger.setAttribute('aria-expanded', 'false');
+			topicList.classList.add('hidden');
+		};
+
+		const openTopic = () => {
+			if (!(topicTrigger instanceof HTMLButtonElement)) return;
+			if (!(topicList instanceof HTMLElement)) return;
+			topicTrigger.setAttribute('aria-expanded', 'true');
+
+			// Hide currently-selected option so it doesn't repeat in the list.
+			const selected = topicInput instanceof HTMLInputElement ? topicInput.value : '';
+			topicOptions.forEach((opt) => {
+				const v = opt.getAttribute('data-topic-option') ?? '';
+				if (selected && v === selected) opt.classList.add('hidden');
+				else opt.classList.remove('hidden');
+			});
+
+			topicList.classList.remove('hidden');
+		};
+
+		if (topicTrigger instanceof HTMLButtonElement && topicList instanceof HTMLElement) {
+			topicTrigger.addEventListener('click', () => {
+				const isOpen = topicTrigger.getAttribute('aria-expanded') === 'true';
+				if (isOpen) closeTopic();
+				else openTopic();
+			});
+
+			window.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape') closeTopic();
+			});
+
+			window.addEventListener('click', (e) => {
+				const t = e.target;
+				if (!(t instanceof Node)) return;
+				if (topicTrigger.contains(t)) return;
+				if (topicList.contains(t)) return;
+				closeTopic();
+			});
+		}
+
+		topicOptions.forEach((opt) => {
+			opt.addEventListener('click', () => {
+				const value = opt.getAttribute('data-topic-option') ?? '';
+				if (topicValue instanceof HTMLElement) topicValue.textContent = value || 'Other';
+				if (topicInput instanceof HTMLInputElement) topicInput.value = value || 'Other';
+				closeTopic();
+			});
+		});
+
+		// Before/after comparison: drag (pointer) to set split; default 50%.
+		{
+			const baRoot = document.querySelector('[data-ba-root]');
+			const baBefore = document.querySelector('[data-ba-before]');
+			const baDivider = document.querySelector('[data-ba-divider]');
+			const baHandle = document.querySelector('[data-ba-handle]');
+
+			if (
+				baRoot instanceof HTMLElement &&
+				baBefore instanceof HTMLElement &&
+				baDivider instanceof HTMLElement &&
+				baHandle instanceof HTMLElement
+			) {
+				let dragging = false;
+				let splitPct = 50;
+				const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
+
+				const setSplit = (pctRaw) => {
+					splitPct = Math.min(100, Math.max(0, pctRaw));
+					baBefore.style.width = `${splitPct}%`;
+					baDivider.style.left = `${splitPct}%`;
+					baDivider.style.transform = 'translateX(-50%)';
+					baHandle.style.left = `${splitPct}%`;
+					baHandle.setAttribute('aria-valuenow', String(Math.round(splitPct)));
+				};
+
+				const pctFromClientX = (clientX) => {
+					const r = baRoot.getBoundingClientRect();
+					if (r.width <= 0) return 50;
+					return ((clientX - r.left) / r.width) * 100;
+				};
+
+				baHandle.setAttribute('role', 'slider');
+				baHandle.setAttribute('aria-valuemin', '0');
+				baHandle.setAttribute('aria-valuemax', '100');
+				baHandle.setAttribute('aria-valuenow', '50');
+				baRoot.style.touchAction = 'none';
+				baRoot.style.userSelect = 'none';
+
+				const onPointerDown = (e) => {
+					if (e.pointerType === 'mouse' && e.button !== 0) return;
+					dragging = true;
+					try {
+						baRoot.setPointerCapture(e.pointerId);
+					} catch (_) {}
+					setSplit(pctFromClientX(e.clientX));
+					e.preventDefault();
+				};
+
+				const onPointerMove = (e) => {
+					if (!dragging) return;
+					setSplit(pctFromClientX(e.clientX));
+				};
+
+				const onPointerEnd = (e) => {
+					if (!dragging) return;
+					dragging = false;
+					try {
+						baRoot.releasePointerCapture(e.pointerId);
+					} catch (_) {}
+				};
+
+				baRoot.addEventListener('pointerdown', onPointerDown);
+				baRoot.addEventListener('pointermove', onPointerMove);
+				baRoot.addEventListener('pointerup', onPointerEnd);
+				baRoot.addEventListener('pointercancel', onPointerEnd);
+
+				if (!reducedMotion) {
+					baHandle.addEventListener('keydown', (e) => {
+						const step = e.shiftKey ? 10 : 2;
+						if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+							e.preventDefault();
+							setSplit(splitPct - step);
+						} else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+							e.preventDefault();
+							setSplit(splitPct + step);
+						}
+					});
+				}
+
+				setSplit(50);
+			}
+		}
+
+		// Scroll-to-top button.
+		const scrollTopBtn = document.querySelector('[data-scroll-top]');
+		if (scrollTopBtn instanceof HTMLButtonElement) {
+			const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
+
+			const show = () => {
+				scrollTopBtn.classList.remove('hidden');
+				scrollTopBtn.classList.add('flex');
+			};
+			const hide = () => {
+				scrollTopBtn.classList.add('hidden');
+				scrollTopBtn.classList.remove('flex');
+			};
+
+			const updateVisibility = () => {
+				if (window.scrollY > 600) show();
+				else hide();
+			};
+
+			updateVisibility();
+			window.addEventListener('scroll', updateVisibility, { passive: true });
+
+			scrollTopBtn.addEventListener('click', () => {
+				window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+			});
+		}
+	})();
+</script>

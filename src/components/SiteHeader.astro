@@ -1,0 +1,172 @@
+---
+import {
+	downloadAppsButtonClass,
+	downloadAppsHref,
+	getHeaderNav,
+	HEADER_LOGO_SRC,
+	siteNavLinkActiveClass,
+	siteNavLinkClass,
+	siteNavMobileLinkActiveClass,
+	siteNavMobileLinkClass,
+	type SiteHeaderPage,
+} from '../data/siteNav';
+
+interface Props {
+	page: SiteHeaderPage;
+}
+
+const { page } = Astro.props;
+const { items, activeId } = getHeaderNav(page);
+const mobilePanelId = `site-mobile-nav-${page}`;
+const downloadHref = downloadAppsHref(page);
+---
+
+<header class="sticky top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur-xl" data-mobile-nav>
+	<div class="page-shell flex min-h-[4.25rem] items-center justify-between gap-3 py-3 md:min-h-[4.75rem] md:gap-4 md:py-3.5">
+		<a
+			href="/"
+			class="inline-flex shrink-0 items-center rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black/80"
+			aria-label="DeSqueeze Studio"
+		>
+			<img
+				src={HEADER_LOGO_SRC}
+				alt=""
+				width="320"
+				height="85"
+				class="h-12 w-auto max-h-[4.75rem] max-w-[min(320px,78vw)] origin-left object-contain object-left sm:h-14 md:h-16 [filter:brightness(1.14)_contrast(1.08)_drop-shadow(0_0_10px_rgba(255,255,255,0.28))_drop-shadow(0_2px_16px_rgba(70,150,255,0.22))]"
+				loading="eager"
+				fetchpriority="high"
+				decoding="async"
+			/>
+		</a>
+		<nav class="hidden items-center gap-0.5 lg:flex" aria-label="Main" data-nav-surface="desktop">
+			{
+				items.map((item) => (
+					<a
+						href={item.href}
+						class={page === 'home' ? siteNavLinkClass : activeId === item.id ? siteNavLinkActiveClass : siteNavLinkClass}
+						aria-current={page !== 'home' && activeId === item.id ? 'page' : undefined}
+						data-nav-link={item.id}
+					>
+						{item.label}
+					</a>
+				))
+			}
+		</nav>
+		<div class="flex shrink-0 items-center gap-2">
+			<button
+				type="button"
+				class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 bg-white/[0.06] text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30 lg:hidden"
+				aria-expanded="false"
+				aria-controls={mobilePanelId}
+				data-mobile-nav-toggle
+			>
+				<span class="sr-only">Open menu</span>
+				<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"></path>
+				</svg>
+			</button>
+			<a class={downloadAppsButtonClass} href={downloadHref}>Download Apps</a>
+		</div>
+	</div>
+	<div
+		id={mobilePanelId}
+		class="hidden flex-col border-t border-white/10 bg-black/92 py-2 backdrop-blur-xl lg:hidden"
+		data-mobile-nav-panel
+	>
+		<nav class="page-shell flex flex-col gap-0.5 py-2" aria-label="Main" data-nav-surface="mobile">
+			{
+				items.map((item) => (
+					<a
+						href={item.href}
+						class={page === 'home' ? siteNavMobileLinkClass : activeId === item.id ? siteNavMobileLinkActiveClass : siteNavMobileLinkClass}
+						aria-current={page !== 'home' && activeId === item.id ? 'page' : undefined}
+						data-nav-link={item.id}
+					>
+						{item.label}
+					</a>
+				))
+			}
+		</nav>
+	</div>
+</header>
+
+{
+	page === 'home' && (
+		<script>
+			import {
+				siteNavLinkActiveClass,
+				siteNavLinkClass,
+				siteNavMobileLinkActiveClass,
+				siteNavMobileLinkClass,
+			} from '../data/siteNav';
+
+			const SECTION_IDS = ['suite', 'features', 'before-after', 'faq', 'contact'];
+
+			function getActiveNavId() {
+				const header = document.querySelector('[data-mobile-nav]');
+				const h = (header?.getBoundingClientRect().height ?? 64) + 12;
+				const y = window.scrollY + h;
+				let active = 'home';
+				for (const id of SECTION_IDS) {
+					const el = document.getElementById(id);
+					if (!el) continue;
+					const rect = el.getBoundingClientRect();
+					const docTop = window.scrollY + rect.top;
+					const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+					// scroll-margin-top (e.g. on #suite) shifts snap position; without this, y never "reaches" suite top and Home stays active.
+					if (docTop - margin <= y) active = id;
+				}
+				return active;
+			}
+
+			function applyActive(activeId) {
+				document.querySelectorAll('a[data-nav-link]').forEach((el) => {
+					const id = el.getAttribute('data-nav-link');
+					if (!id) return;
+					const surface = el.closest('[data-nav-surface]')?.getAttribute('data-nav-surface');
+					const active = id === activeId;
+					if (surface === 'desktop') {
+						el.setAttribute('class', active ? siteNavLinkActiveClass : siteNavLinkClass);
+					} else if (surface === 'mobile') {
+						el.setAttribute('class', active ? siteNavMobileLinkActiveClass : siteNavMobileLinkClass);
+					}
+					if (active) el.setAttribute('aria-current', 'page');
+					else el.removeAttribute('aria-current');
+				});
+			}
+
+			function sync() {
+				applyActive(getActiveNavId());
+			}
+
+			function init() {
+				sync();
+				requestAnimationFrame(() => sync());
+				let ticking = false;
+				window.addEventListener(
+					'scroll',
+					() => {
+						if (!ticking) {
+							requestAnimationFrame(() => {
+								sync();
+								ticking = false;
+							});
+							ticking = true;
+						}
+					},
+					{ passive: true },
+				);
+				window.addEventListener('hashchange', () => {
+					requestAnimationFrame(() => {
+						sync();
+						requestAnimationFrame(sync);
+					});
+				});
+			}
+
+			if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+			else init();
+		</script>
+	)
+}
