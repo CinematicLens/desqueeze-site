@@ -14,7 +14,21 @@ jobs:
         with:
           node-version: 20
           cache: npm
+      - name: Diagnostics (node/npm)
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node -v
+          npm -v
+          echo "pwd: $(pwd)"
+          ls -la
       - name: Install dependencies
-        run: npm ci
+        shell: bash
+        run: |
+          set -euxo pipefail
+          npm ci
       - name: Build (Astro)
-        run: npm run build
+        shell: bash
+        run: |
+          set -euxo pipefail
+          npm run build
