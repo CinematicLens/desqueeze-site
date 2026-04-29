@@ -114,7 +114,7 @@ const pageDescription =
 														data-preview
 													>
 														<video
-															class="block h-full w-full object-contain"
+															class="hidden block h-full w-full object-contain"
 															playsinline
 															muted
 															loop
@@ -122,9 +122,13 @@ const pageDescription =
 															preload="metadata"
 															data-preview-video
 														>
-															<source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
 														</video>
 														<img class="hidden block h-full w-full object-contain" alt="Preview" data-preview-image loading="lazy" decoding="async" />
+														<div class="pointer-events-none absolute inset-0 grid place-items-center" data-preview-empty>
+															<p class="rounded-full border border-white/15 bg-black/55 px-4 py-2 text-xs font-semibold tracking-[0.16em] text-white/70">
+																UPLOAD IMAGE OR VIDEO TO PREVIEW
+															</p>
+														</div>
 													</div>
 												</div>
 
@@ -395,6 +399,7 @@ const pageDescription =
 								const previewClip = root.querySelector('[data-preview-clip]');
 								const previewVideo = root.querySelector('[data-preview-video]');
 								const previewImage = root.querySelector('[data-preview-image]');
+								const previewEmpty = root.querySelector('[data-preview-empty]');
 								const activeGlow = root.querySelector('[data-active-glow]');
 								const statusEl = root.querySelector('[data-status]');
 								const fpsPulse = root.querySelector('[data-fps-pulse]');
@@ -477,7 +482,7 @@ const pageDescription =
 								const getActiveMediaEl = () => {
 									if (previewImage && !previewImage.classList.contains('hidden')) return previewImage;
 									if (previewVideo && !previewVideo.classList.contains('hidden')) return previewVideo;
-									return previewVideo || previewImage || null;
+									return null;
 								};
 
 								const getMediaAspect = (el) => {
@@ -636,6 +641,7 @@ const pageDescription =
 
 								const setPreviewFromFile = (file) => {
 									if (!previewVideo || !previewImage) return;
+									if (previewEmpty) previewEmpty.classList.add('hidden');
 
 									if (currentObjectUrl) URL.revokeObjectURL(currentObjectUrl);
 									currentObjectUrl = URL.createObjectURL(file);
@@ -768,8 +774,9 @@ const pageDescription =
 										previewVideo.pause();
 										previewVideo.removeAttribute('src');
 										previewVideo.load();
-										previewVideo.classList.remove('hidden');
+										previewVideo.classList.add('hidden');
 									}
+									if (previewEmpty) previewEmpty.classList.remove('hidden');
 									applyDesqueezePreview();
 									applyFps();
 								};
