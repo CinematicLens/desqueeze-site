@@ -1,15 +1,114 @@
+---
+import '../styles/global.css';
+import SiteScripts from '../components/SiteScripts.astro';
+import {
+	ADSENSE_CLIENT,
+	DEFAULT_KEYWORDS,
+	GA_MEASUREMENT_ID,
+	HOME_DEFAULT_DESCRIPTION,
+	HOME_DEFAULT_TITLE,
+	SITE_ORIGIN,
+	absUrl,
+	defaultSoftwareLdJson,
+} from '../data/siteMeta';
+
+interface Props {
+	title?: string;
+	description?: string;
+	/** Path under `public/`, e.g. `/preview.jpg` */
+	image?: string;
+	keywords?: string;
+	robots?: string;
+	/** Optional shorter title for og:title / twitter (defaults to `title`) */
+	ogTitle?: string;
+}
+
+const {
+	title = HOME_DEFAULT_TITLE,
+	description = HOME_DEFAULT_DESCRIPTION,
+	image = '/preview.jpg',
+	keywords = DEFAULT_KEYWORDS,
+	robots = 'index,follow',
+	ogTitle,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, SITE_ORIGIN).href;
+const ogImageAbs = absUrl(image);
+const socialTitle = ogTitle || title;
+const ldJson = JSON.stringify(defaultSoftwareLdJson(canonicalUrl, ogImageAbs)).replace(/</g, '\\u003c');
+
+const loadMonetization = import.meta.env.PROD;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" href="/favicon.ico" sizes="any" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<link rel="canonical" href={canonicalUrl} />
+		<meta name="robots" content={robots} />
+		<meta name="geo.region" content="IN" />
+		<meta name="geo.region" content="US" />
+		<meta name="geo.region" content="GB" />
+		<meta name="geo.region" content="JP" />
+		<meta name="geo.region" content="EU" />
+		<meta name="language" content="English" />
+		<meta name="distribution" content="global" />
+		<meta name="revisit-after" content="7 days" />
+
+		<link rel="alternate" hreflang="en-in" href={canonicalUrl} />
+		<link rel="alternate" hreflang="en-us" href={canonicalUrl} />
+		<link rel="alternate" hreflang="en-gb" href={canonicalUrl} />
+		<link rel="alternate" hreflang="en" href={canonicalUrl} />
+		<link rel="alternate" hreflang="ja" href={canonicalUrl} />
+		<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={socialTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content={ogImageAbs} />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:locale:alternate" content="en_GB" />
+		<meta property="og:locale:alternate" content="ja_JP" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={socialTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageAbs} />
+
+		{loadMonetization && <meta name="google-adsense-account" content={ADSENSE_CLIENT} />}
+
+		<script type="application/ld+json" set:html={ldJson} />
+
+		{
+			loadMonetization && (
+				<>
+					<script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
+					<script
+						is:inline
+						set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_MEASUREMENT_ID}');`}
+					/>
+					<script
+						async
+						src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+						crossorigin="anonymous"
+					/>
+				</>
+			)
+		}
 	</head>
-	<body>
+	<body class="bg-black text-white antialiased">
 		<slot />
+		<SiteScripts />
 	</body>
 </html>
 
