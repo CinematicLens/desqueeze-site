@@ -4,11 +4,14 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { downloadAppsButtonClass } from '../data/siteNav';
 import { lucideSvg } from '../lib/lucideSvg';
-import { ChevronRight } from 'lucide';
+import { ChevronRight, Zap, Download, Repeat } from 'lucide';
 
 const pageTitle = 'How to De-Squeeze 1.33× Anamorphic Footage | DeSqueeze Studio';
 const pageDescription =
 	'Learn how to de-squeeze 1.33×, 1.5×, 1.8× and 2× anamorphic footage online, on iPhone, Android, Mac and Windows.';
+
+const startHereCardBase =
+	'group flex min-h-[3.75rem] items-center gap-3 rounded-2xl border px-3.5 py-2.5 transition hover:border-white/25 hover:bg-white/[0.04] sm:min-h-[4rem] sm:gap-4 sm:px-4 sm:py-3 md:px-5';
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -41,21 +44,47 @@ const pageDescription =
 					</a>
 				</div>
 
-				<div class="mt-10 grid gap-4 md:grid-cols-3">
-					<div class="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-						<p class="text-xs font-semibold tracking-[0.18em] text-white/55">FAST</p>
-						<p class="mt-2 text-sm font-semibold text-white">Preview the right framing</p>
-						<p class="mt-2 text-sm leading-relaxed text-white/60">Confirm squeeze ratio before you commit to an edit.</p>
+				<div class="mt-10 grid gap-3 md:grid-cols-3">
+					<div class={`${startHereCardBase} border-white/10 bg-white/[0.02] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]`}>
+						<span
+							class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#FF7A1A]/10 text-[#FF7A1A]"
+							set:html={lucideSvg(Zap, 'h-5 w-5', 20)}
+							aria-hidden="true"
+						></span>
+						<span class="min-w-0 flex-1">
+							<span class="block text-xs font-semibold tracking-[0.18em] text-white/55">FAST</span>
+							<span class="mt-1 block text-sm font-semibold text-white">Preview the right framing</span>
+							<span class="mt-1 block text-sm leading-relaxed text-white/60">Confirm squeeze ratio before you commit to an edit.</span>
+						</span>
+						<span class="text-white/40 group-hover:text-white/70" set:html={lucideSvg(ChevronRight, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
 					</div>
-					<div class="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-						<p class="text-xs font-semibold tracking-[0.18em] text-white/55">CLEAN</p>
-						<p class="mt-2 text-sm font-semibold text-white">Export corrected files</p>
-						<p class="mt-2 text-sm leading-relaxed text-white/60">Hand off desqueezed clips to your NLE without guesswork.</p>
+
+					<div class={`${startHereCardBase} border-white/10 bg-white/[0.02] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]`}>
+						<span
+							class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#FF7A1A]/10 text-[#FF7A1A]"
+							set:html={lucideSvg(Download, 'h-5 w-5', 20)}
+							aria-hidden="true"
+						></span>
+						<span class="min-w-0 flex-1">
+							<span class="block text-xs font-semibold tracking-[0.18em] text-white/55">CLEAN</span>
+							<span class="mt-1 block text-sm font-semibold text-white">Export corrected files</span>
+							<span class="mt-1 block text-sm leading-relaxed text-white/60">Hand off desqueezed clips to your NLE without guesswork.</span>
+						</span>
+						<span class="text-white/40 group-hover:text-white/70" set:html={lucideSvg(ChevronRight, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
 					</div>
-					<div class="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-						<p class="text-xs font-semibold tracking-[0.18em] text-white/55">CONSISTENT</p>
-						<p class="mt-2 text-sm font-semibold text-white">Use the same ratios everywhere</p>
-						<p class="mt-2 text-sm leading-relaxed text-white/60">From mobile to desktop, keep your look and geometry consistent.</p>
+
+					<div class={`${startHereCardBase} border-white/10 bg-white/[0.02] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]`}>
+						<span
+							class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#FF7A1A]/10 text-[#FF7A1A]"
+							set:html={lucideSvg(Repeat, 'h-5 w-5', 20)}
+							aria-hidden="true"
+						></span>
+						<span class="min-w-0 flex-1">
+							<span class="block text-xs font-semibold tracking-[0.18em] text-white/55">CONSISTENT</span>
+							<span class="mt-1 block text-sm font-semibold text-white">Use the same ratios everywhere</span>
+							<span class="mt-1 block text-sm leading-relaxed text-white/60">From mobile to desktop, keep your look and geometry consistent.</span>
+						</span>
+						<span class="text-white/40 group-hover:text-white/70" set:html={lucideSvg(ChevronRight, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
 					</div>
 				</div>
 			</div>

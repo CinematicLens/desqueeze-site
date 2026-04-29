@@ -116,7 +116,7 @@ const suiteDemoPrimaryMp4 = '/film-suite-reel.mp4';
 const suiteDemoFallbackMp4 = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
 
 const startHereCardBase =
-	'group flex min-h-[3.75rem] items-center gap-3 rounded-2xl border px-3.5 py-2.5 transition hover:border-white/25 hover:bg-white/[0.04] sm:min-h-[4rem] sm:gap-4 sm:px-4 sm:py-3 md:px-5';
+	'group flex min-h-[3.75rem] items-center gap-3 rounded-2xl border px-3.5 py-2.5 transition hover:border-white/25 hover:bg-white/[0.04] sm:min-h-[4rem] sm:gap-4 sm:px-4 sm:py-3 md:px-5 lg:flex-1 lg:basis-0';
 
 // FilmStudio UI screenshots: avoid brace-extension globs (can miss `.PNG` on Windows).
 const filmStudioScreenshots = loadFilmStudioScreenshots();
@@ -203,7 +203,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 									d="M12 3.5l1.8 4.1 4.5.4-3.4 3 1 4.4L12 14.2 7.1 15.4l1-4.4-3.4-3 4.5-.4L12 3.5z"
 									stroke-linejoin="round"></path>
 							</svg>
-							<span>Start with FilmStudio — most filmmakers begin here.</span>
+							<span>Trusted squeeze math for 1.33×–2× lenses.</span>
 						</p>
 				</div>
 			</div>
@@ -267,7 +267,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 						</a>
 						<a
 							href="/products#filmstudio"
-							class={`${startHereCardBase} min-h-0 min-w-0 flex-1 border-[rgba(255,122,26,0.28)] bg-[rgba(255,122,26,0.08)]`}
+							class={`${startHereCardBase} min-h-0 min-w-0 border-[rgba(255,122,26,0.28)] bg-[rgba(255,122,26,0.08)]`}
 						>
 							<span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[rgba(255,122,26,0.12)] text-[#FF7A1A]" set:html={lucideSvg(Camera, 'h-5 w-5', 20)} aria-hidden="true"></span>
 							<span class="min-w-0 flex-1">
@@ -994,6 +994,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 					})();
 				</script>
 
+				<div id="ecosystem" class="scroll-mt-28" aria-hidden="true"></div>
 				<div id="suite-apps" class="mt-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 					<div>
 						<p class="text-xs font-semibold tracking-[0.22em] text-[rgb(255,106,0)]">YOUR ECOSYSTEM</p>
@@ -2411,3 +2412,4 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 		<span class="hidden sm:inline">Top</span>
 	</button>
 </Layout>
+

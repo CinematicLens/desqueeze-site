@@ -26,12 +26,9 @@ export function getHeaderNav(page: SiteHeaderPage): { items: NavItem[]; activeId
 			activeId: 'home',
 			items: [
 				{ id: 'home', label: 'Home', href: '/' },
-				{ id: 'suite', label: 'Film Suite', href: '#suite' },
+				{ id: 'before-after', label: 'Try Live', href: '#before-after' },
 				{ id: 'products', label: 'Products', href: '/products' },
 				{ id: 'guides', label: 'Guides', href: '/guides' },
-				{ id: 'features', label: 'Features', href: '#features' },
-				{ id: 'before-after', label: 'See It Live', href: '#before-after' },
-				{ id: 'faq', label: 'FAQ', href: '#faq' },
 				{ id: 'contact', label: 'Contact', href: '#contact' },
 			],
 		};
@@ -42,12 +39,9 @@ export function getHeaderNav(page: SiteHeaderPage): { items: NavItem[]; activeId
 			activeId: 'guides',
 			items: [
 				{ id: 'home', label: 'Home', href: '/' },
-				{ id: 'suite', label: 'Film Suite', href: '/#suite' },
+				{ id: 'before-after', label: 'Try Live', href: '/#before-after' },
 				{ id: 'products', label: 'Products', href: '/products' },
 				{ id: 'guides', label: 'Guides', href: '/guides' },
-				{ id: 'features', label: 'Features', href: '/#features' },
-				{ id: 'before-after', label: 'See It Live', href: '/#before-after' },
-				{ id: 'faq', label: 'FAQ', href: '/#faq' },
 				{ id: 'contact', label: 'Contact', href: '/#contact' },
 			],
 		};
@@ -57,17 +51,14 @@ export function getHeaderNav(page: SiteHeaderPage): { items: NavItem[]; activeId
 		activeId: 'products',
 		items: [
 			{ id: 'home', label: 'Home', href: '/' },
-			{ id: 'suite', label: 'Film Suite', href: '/#suite' },
+			{ id: 'before-after', label: 'Try Live', href: '/#before-after' },
 			{ id: 'products', label: 'Products', href: '/products' },
 			{ id: 'guides', label: 'Guides', href: '/guides' },
-			{ id: 'features', label: 'Features', href: '/#features' },
-			{ id: 'before-after', label: 'See It Live', href: '/#before-after' },
-			{ id: 'faq', label: 'FAQ', href: '/#faq' },
 			{ id: 'contact', label: 'Contact', href: '/#contact' },
 		],
 	};
 }
 
 export function downloadAppsHref(page: SiteHeaderPage): string {
-	return page === 'home' ? '#suite' : '/#suite';
+	return page === 'home' ? '#ecosystem' : '/#ecosystem';
 }
