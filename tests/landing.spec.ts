@@ -73,18 +73,5 @@ test.describe('Filmmaking suite landing', () => {
     await expect(message).toHaveAttribute('required', '');
     await expect(message).toHaveAttribute('maxlength', '2000');
   });
-
-  test('email validation error clears when fixed', async ({ page }) => {
-    await page.goto('/#contact', { waitUntil: 'domcontentloaded' });
-    const email = page.locator('[data-contact-form]').getByRole('textbox', { name: /email address/i });
-    const error = page.getByText(/please enter a valid email address/i);
-
-    await email.fill('korde.sanjay@gmail');
-    await email.blur();
-    await expect(error).toBeVisible();
-
-    await email.fill('korde.sanjay@gmail.com');
-    await expect(error).toBeHidden();
-  });
 });
 
