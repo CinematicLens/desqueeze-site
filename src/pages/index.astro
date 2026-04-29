@@ -1,0 +1,2413 @@
+---
+import { storeUrls } from '../data/storeUrls';
+import { downloadAppsButtonClass, downloadAppsHref } from '../data/siteNav';
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { loadFilmStudioScreenshots } from '../lib/filmStudioScreenshots';
+import { lucideSvg } from '../lib/lucideSvg';
+import { fetchAppStoreMeta } from '../lib/storeMeta';
+import { heroPrimaryCtaClass, heroSecondaryCtaClass } from '../lib/uiClasses';
+import {
+	Activity,
+	Award,
+	Box,
+	Camera,
+	Check,
+	ChevronRight,
+	CircleCheck,
+	Clapperboard,
+	ExternalLink,
+	Globe,
+	Package,
+	Palette,
+	Scan,
+	Star,
+	Target,
+	Timer,
+	Upload,
+	Users,
+	Zap,
+} from 'lucide';
+
+/** @param {string} s */
+function decodeBasicEntities(s) {
+	return s.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+}
+
+/**
+ * Read Open Graph title/image from a public store HTML page (build-time).
+ * @param {string} url
+ * @returns {Promise<{ title: string | null; image: string | null } | null>}
+ */
+async function fetchOgMetaFromPage(url) {
+	const ua =
+		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
+	try {
+		const res = await fetch(url, {
+			headers: { 'User-Agent': ua, Accept: 'text/html,application/xhtml+xml' },
+		});
+		if (!res.ok) return null;
+		const html = await res.text();
+		const pick = (prop) => {
+			const m1 = html.match(new RegExp(`<meta[^>]*\\sproperty=["']${prop}["'][^>]*\\scontent=["']([^"']+)["']`, 'i'));
+			if (m1?.[1]) return decodeBasicEntities(m1[1]);
+			const m2 = html.match(new RegExp(`<meta[^>]*\\scontent=["']([^"']+)["'][^>]*\\sproperty=["']${prop}["']`, 'i'));
+			return m2?.[1] ? decodeBasicEntities(m2[1]) : null;
+		};
+		return { title: pick('og:title'), image: pick('og:image') };
+	} catch {
+		return null;
+	}
+}
+
+/** @param {string} detailsUrl */
+function playPackageIdFromDetailsUrl(detailsUrl) {
+	try {
+		return new URL(detailsUrl).searchParams.get('id') || '';
+	} catch {
+		return '';
+	}
+}
+
+/** @param {string} detailsUrl storeUrls.android* */
+async function fetchPlayStoreMetaFromDetailsUrl(detailsUrl) {
+	const id = playPackageIdFromDetailsUrl(detailsUrl);
+	if (!id) return null;
+	const og = await fetchOgMetaFromPage(
+		`https://play.google.com/store/apps/details?id=${encodeURIComponent(id)}&hl=en`,
+	);
+	if (!og?.title && !og?.image) return null;
+	const name = (og.title || '')
+		.replace(/\s*-\s*Apps on Google Play\s*$/i, '')
+		.replace(/\s*-\s*Google Play\s*$/i, '')
+		.trim();
+	return { id, name, artworkUrl512: og.image || undefined };
+}
+
+/** @param {string} detailUrl e.g. storeUrls.windowsPro */
+async function fetchMicrosoftStoreMetaFromDetailUrl(detailUrl) {
+	const og = await fetchOgMetaFromPage(detailUrl);
+	if (!og?.title && !og?.image) return null;
+	const name = (og.title || '')
+		.replace(/\s*-\s*Download.*$/i, '')
+		.replace(/\s*\|\s*Microsoft Store\s*$/i, '')
+		.trim();
+	return { id: 'ms-store', name, artworkUrl512: og.image || undefined };
+}
+
+const filmStudioMeta = await fetchAppStoreMeta('6761248370');
+const anamorphicMeta = await fetchAppStoreMeta('6757354068');
+const mediaUtilityMeta = await fetchAppStoreMeta('6760351903');
+const cineLutMeta = await fetchAppStoreMeta('6760215504');
+const dmsMeta = await fetchAppStoreMeta('6761471161');
+
+const androidDesqueezePlayMeta = await fetchPlayStoreMetaFromDetailsUrl(storeUrls.androidDesqueeze);
+const androidProCamPlayMeta = await fetchPlayStoreMetaFromDetailsUrl(storeUrls.androidProCam);
+const windowsStorePlayMeta = await fetchMicrosoftStoreMetaFromDetailUrl(storeUrls.windowsPro);
+
+/** Landing hero full-bleed art (`public/images/background.png`). */
+const landingHeroBgSrc = '/images/background.png';
+
+/** Film Suite strip background (wide art; text/icons render on top). Replace `public/images/film-suite-hero-bg.png` to update. */
+const filmSuiteHeroBgSrc = '/images/film-suite-hero-bg.png';
+
+const suiteDemoPrimaryMp4 = '/film-suite-reel.mp4';
+const suiteDemoFallbackMp4 = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
+
+const startHereCardBase =
+	'group flex min-h-[3.75rem] items-center gap-3 rounded-2xl border px-3.5 py-2.5 transition hover:border-white/25 hover:bg-white/[0.04] sm:min-h-[4rem] sm:gap-4 sm:px-4 sm:py-3 md:px-5';
+
+// FilmStudio UI screenshots: avoid brace-extension globs (can miss `.PNG` on Windows).
+const filmStudioScreenshots = loadFilmStudioScreenshots();
+
+---
+
+<Layout>
+	<main class="min-h-dvh">
+		<SiteHeader page="home" />
+		<section class="relative isolate overflow-hidden pb-0">
+			<div class="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+				<div class="absolute inset-0 bg-[#060606]"></div>
+				<!-- Full-height hero plate: mobile = full-bleed cover; md+ = wide right column so it reads as environment, not a corner patch -->
+				<div
+					class="pointer-events-none absolute inset-0 z-[1] bg-no-repeat opacity-[0.52] sm:opacity-[0.56] [background-position:center_38%] max-md:bg-cover md:inset-auto md:top-0 md:right-0 md:bottom-0 md:left-[18%] md:opacity-[0.62] md:[background-size:auto_84%] md:[background-position:center_40%] lg:left-[14%] lg:[background-size:auto_88%] lg:[background-position:center_38%] xl:left-[10%] xl:[background-size:auto_94%] xl:[background-position:center_36%] 2xl:left-[4%] 2xl:[background-size:cover] 2xl:[background-position:center_34%]"
+					style={`background-image: url('${landingHeroBgSrc}')`}
+				></div>
+				<div
+					class="pointer-events-none absolute inset-0 z-[1] [background:linear-gradient(to_right,#060606_0%,rgba(6,6,6,0.94)_14%,rgba(6,6,6,0.55)_32%,rgba(6,6,6,0.12)_50%,transparent_70%)] md:[background:linear-gradient(to_right,#060606_0%,rgba(6,6,6,0.92)_10%,rgba(6,6,6,0.5)_24%,rgba(6,6,6,0.14)_40%,transparent_62%)]"
+				></div>
+				<div class="pointer-events-none absolute inset-0 z-[1] opacity-25 [background:radial-gradient(70%_65%_at_82%_42%,rgba(255,255,255,0.07),transparent_60%)]"></div>
+				<div class="pointer-events-none absolute inset-0 z-[1] opacity-[0.18] [background:radial-gradient(48%_52%_at_88%_48%,rgba(255,122,26,0.12),transparent_58%)]"></div>
+			</div>
+			<div class="relative z-[2] page-shell pb-4 pt-6 sm:pt-8 md:pb-5 md:pt-10 lg:pt-8">
+				<div
+					class="relative w-full max-w-[680px] px-6 py-6 sm:px-10 sm:py-8 md:px-0 md:py-10 lg:py-8"
+				>
+						<p class="text-xs font-semibold tracking-[0.2em] text-[#FF7A1A]">FILMMAKING SUITE</p>
+						<h1
+							class="mt-3 max-w-[22ch] text-pretty text-[clamp(1.875rem,3.85vw,3rem)] font-semibold leading-[1.06] tracking-[-0.5px] text-white sm:max-w-none lg:mt-3.5"
+						>
+							<span class="block text-white">Shoot with confidence.</span>
+							<span class="mt-1 block text-white sm:mt-1.5">Deliver the look you imagined.</span>
+						</h1>
+						<p class="mt-3 max-w-[48ch] text-pretty text-sm leading-snug text-white/72 sm:text-base md:mt-3.5 md:text-base md:leading-relaxed">
+							Monitor. Control. Lock your look — before it's too late.
+						</p>
+
+						<ul class="mt-4 max-w-[52ch] space-y-2.5 text-sm leading-snug text-white/88 sm:space-y-3 md:mt-5 md:text-[0.95rem]" aria-label="Key capabilities">
+							<li class="flex gap-3.5">
+								<span class="mt-0.5 shrink-0" aria-hidden="true">
+									<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect x="3.5" y="9" width="9.5" height="11.5" rx="1.25" stroke="#FF7A1A" stroke-width="2"></rect>
+										<rect x="11" y="3" width="9.5" height="9.5" rx="1.25" stroke="#FF7A1A" stroke-width="2"></rect>
+									</svg>
+								</span>
+								<span>Live desqueeze preview for accurate framing</span>
+							</li>
+							<li class="flex gap-3.5">
+								<span class="mt-0.5 shrink-0" aria-hidden="true">
+									<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect x="3" y="3" width="18" height="18" rx="2" stroke="#FF7A1A" stroke-width="2"></rect>
+										<path
+											d="M7 14.5 L9.5 11l2.5 3 3.5-5.5L17 14"
+											stroke="#FF7A1A"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"></path>
+									</svg>
+								</span>
+								<span>Real-time LUT + scopes for confident exposure</span>
+							</li>
+							<li class="flex gap-3.5">
+								<span class="mt-0.5 shrink-0 text-[#FF7A1A]" set:html={lucideSvg(CircleCheck, 'h-6 w-6', 24)} aria-hidden="true"></span>
+								<span>Clean exports ready for edit</span>
+							</li>
+						</ul>
+
+						<div class="mt-5 flex flex-col gap-2.5 sm:mt-6 sm:flex-row sm:items-center sm:flex-wrap sm:gap-3">
+							<a class={heroPrimaryCtaClass} href="#suite" data-testid="cta-try-filmstudio">
+								<span>Start Shooting with AnamorphicDesqueezer</span>
+								<span set:html={lucideSvg(ChevronRight, 'h-4 w-4 shrink-0 opacity-95', 16)} aria-hidden="true"></span>
+							</a>
+							<a class={heroSecondaryCtaClass} href="#suite-apps">
+								<span>Explore suite apps</span>
+								<span set:html={lucideSvg(ChevronRight, 'h-4 w-4 shrink-0 opacity-95', 16)} aria-hidden="true"></span>
+							</a>
+						
+						</div>
+
+						<p class="mt-4 flex flex-wrap items-center gap-2 text-xs font-medium leading-relaxed text-[#FF7A1A] sm:mt-5 sm:text-sm">
+							<svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+								<path
+									d="M12 3.5l1.8 4.1 4.5.4-3.4 3 1 4.4L12 14.2 7.1 15.4l1-4.4-3.4-3 4.5-.4L12 3.5z"
+									stroke-linejoin="round"></path>
+							</svg>
+							<span>Start with FilmStudio — most filmmakers begin here.</span>
+						</p>
+				</div>
+			</div>
+
+			<div class="relative z-[2] page-shell px-6 pb-1 pt-2 sm:px-10 sm:pb-2 sm:pt-3 md:pb-3 md:pt-4">
+				<div
+					class="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-md sm:gap-4 sm:p-4 md:flex-row md:flex-wrap md:items-center md:gap-x-8 md:gap-y-3 md:p-4 lg:gap-x-10"
+				>
+					<div class="flex shrink-0 items-center gap-3">
+						<p class="text-[11px] font-semibold tracking-[0.22em] text-white/50">TRUSTED BY FILMMAKERS</p>
+						<span class="hidden h-5 w-px bg-white/20 md:inline-block" aria-hidden="true"></span>
+					</div>
+					<div class="flex flex-1 flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium text-white/92 sm:gap-x-6 sm:gap-y-3 sm:text-sm md:gap-x-8">
+						<span class="inline-flex items-center gap-2.5">
+							<span class="text-[#FF7A1A]" set:html={lucideSvg(Scan, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
+							Accurate Framing
+						</span>
+						<span class="inline-flex items-center gap-2.5">
+							<span class="text-[#FF7A1A]" set:html={lucideSvg(Activity, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
+							Real-time Monitoring
+						</span>
+						<span class="inline-flex items-center gap-2.5">
+							<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+								<circle cx="9" cy="11" r="4.5" stroke="#FF7A1A" stroke-width="1.75"></circle>
+								<circle cx="15" cy="11" r="4.5" stroke="#FF7A1A" stroke-width="1.75"></circle>
+								<circle cx="12" cy="14.5" r="4.5" stroke="#FF7A1A" stroke-width="1.75"></circle>
+							</svg>
+							Cinematic Color
+						</span>
+						<span class="inline-flex items-center gap-2.5">
+							<span class="text-[#FF7A1A]" set:html={lucideSvg(Zap, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
+							Faster Workflow
+						</span>
+						<span class="inline-flex items-center gap-2.5">
+							<span class="text-[#FF7A1A]" set:html={lucideSvg(Clapperboard, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
+							Production Ready
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="relative z-[2] page-shell px-6 pb-10 pt-3 sm:px-10 sm:pb-12 sm:pt-4 md:pb-14 md:pt-5">
+				<div
+					class="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:gap-4 sm:p-4 lg:flex-row lg:items-stretch lg:gap-5 lg:p-4"
+				>
+					<div class="flex w-max shrink-0 flex-col justify-center gap-1 pr-2 lg:pr-4">
+						<h2 class="whitespace-nowrap text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl lg:text-2xl">Start in 10 sec</h2>
+						<p class="text-xs leading-snug text-white/55 sm:text-sm">What are you trying to do right now?</p>
+					</div>
+					<div class="grid min-w-0 flex-1 grid-cols-1 gap-2.5 sm:grid-cols-2 lg:flex lg:grid-cols-none lg:flex-nowrap lg:gap-2.5">
+						<a
+							href="/products#anamorphic"
+							class={`${startHereCardBase} border-sky-500/25 bg-sky-500/[0.06]`}
+						>
+							<span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sky-500/15 text-sky-400" set:html={lucideSvg(Activity, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							<span class="min-w-0 flex-1">
+								<span class="block text-xs text-white/65">Fix anamorphic</span>
+								<span class="block text-sm font-semibold text-sky-300">Desqueeze</span>
+							</span>
+							<span class="text-white/40 group-hover:text-white/70" set:html={lucideSvg(ChevronRight, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
+						</a>
+						<a
+							href="/products#filmstudio"
+							class={`${startHereCardBase} min-h-0 min-w-0 flex-1 border-[rgba(255,122,26,0.28)] bg-[rgba(255,122,26,0.08)]`}
+						>
+							<span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[rgba(255,122,26,0.12)] text-[#FF7A1A]" set:html={lucideSvg(Camera, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							<span class="min-w-0 flex-1">
+								<span class="block text-xs text-white/65">I want to shoot</span>
+								<span class="block text-sm font-semibold text-[#FF7A1A]">FilmStudio</span>
+							</span>
+							<span class="text-white/40 group-hover:text-white/70" set:html={lucideSvg(ChevronRight, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
+						</a>
+						<a
+							href="/products#cinelut"
+							class={`${startHereCardBase} border-violet-500/25 bg-violet-500/[0.07]`}
+						>
+							<span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-500/15 text-violet-300" set:html={lucideSvg(Box, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							<span class="min-w-0 flex-1">
+								<span class="block text-xs text-white/65">Color grade</span>
+								<span class="block text-sm font-semibold text-violet-300">CineLut</span>
+							</span>
+							<span class="text-white/40 group-hover:text-white/70" set:html={lucideSvg(ChevronRight, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
+						</a>
+						<a
+							href="/#suite-apps"
+							class={`${startHereCardBase} border-emerald-500/25 bg-emerald-500/[0.07]`}
+						>
+							<span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-300" set:html={lucideSvg(Upload, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							<span class="min-w-0 flex-1">
+								<span class="block text-xs text-white/65">Export / compress</span>
+								<span class="block text-sm font-semibold text-emerald-300">MediaUtility</span>
+							</span>
+							<span class="text-white/40 group-hover:text-white/70" set:html={lucideSvg(ChevronRight, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="suite" class="scroll-mt-24 page-shell py-16 md:scroll-mt-28 md:py-24">
+			<div class="rounded-[28px] border border-white/10 bg-[#0a0a0a] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:p-8 lg:p-10">
+				<div class="relative mb-10 min-h-[124px] overflow-hidden rounded-2xl border border-white/10 bg-black md:mb-11 md:min-h-[136px]">
+					<div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+						<!-- Wider + taller than box, anchored right: removes sub-pixel / letterbox gaps at rounded corners. -->
+						<img
+							src={filmSuiteHeroBgSrc}
+							alt=""
+							class="absolute right-0 top-1/2 z-0 h-[calc(100%+10px)] w-[calc(100%+32px)] max-w-none -translate-y-1/2 object-cover object-right md:h-[calc(100%+12px)] md:w-[calc(100%+40px)]"
+							loading="lazy"
+							decoding="async"
+						/>
+						<div
+							class="absolute inset-0 z-[1] bg-gradient-to-b from-black via-black/78 to-black/92 md:bg-gradient-to-r md:from-[#0a0a0a] md:from-0% md:via-[#0a0a0a]/96 md:via-[52%] md:to-transparent"
+						>
+						</div>
+						<div
+							class="absolute inset-0 z-[1] opacity-90 mix-blend-soft-light md:opacity-100 [background:radial-gradient(ellipse_48%_72%_at_90%_50%,rgba(255,180,80,0.09),transparent_58%)]"
+						>
+						</div>
+					</div>
+
+					<div
+						class="relative z-10 flex min-h-[124px] flex-row flex-wrap items-center gap-x-5 gap-y-3 px-5 py-3.5 sm:gap-x-7 sm:px-6 md:min-h-[136px] md:gap-x-10 md:px-8 md:py-4 lg:px-10"
+					>
+						<div class="shrink-0">
+							<p class="text-xl font-bold tracking-[0.28em] text-white sm:text-2xl md:tracking-[0.34em]">FILM SUITE</p>
+							<p
+								class="mt-1.5 text-[10px] font-semibold leading-relaxed tracking-[0.24em] text-[rgb(255,106,0)] sm:text-[11px] md:mt-2 md:tracking-[0.28em]"
+							>
+								FROM SET TO FINAL FRAME
+							</p>
+							<div class="mt-1.5 h-0.5 w-12 rounded-full bg-[rgb(255,106,0)] sm:w-14" aria-hidden="true"></div>
+						</div>
+
+						<div
+							class="suite-banner-icons flex shrink-0 items-center gap-0 border-l border-white/15 pl-5 text-white [color:rgba(255,255,255,0.92)] sm:pl-7 md:pl-9"
+							data-suite-banner-icons
+							aria-label="Pipeline: capture, monitor, grade, deliver"
+						>
+							<span class="inline-flex items-center justify-center px-3 sm:px-4 md:px-5" title="Capture">
+								<span set:html={lucideSvg(Scan, 'h-6 w-6 md:h-7 md:w-7', 28)} aria-hidden="true" />
+							</span>
+							<span class="mx-1 h-6 w-px shrink-0 bg-white/20 sm:mx-1.5 md:h-7" aria-hidden="true"></span>
+							<span class="inline-flex items-center justify-center px-3 sm:px-4 md:px-5" title="Monitor">
+								<span set:html={lucideSvg(Activity, 'h-6 w-6 md:h-7 md:w-7', 28)} aria-hidden="true" />
+							</span>
+							<span class="mx-1 h-6 w-px shrink-0 bg-white/20 sm:mx-1.5 md:h-7" aria-hidden="true"></span>
+							<span class="inline-flex items-center justify-center px-3 sm:px-4 md:px-5" title="Grade">
+								<span set:html={lucideSvg(Palette, 'h-6 w-6 md:h-7 md:w-7', 28)} aria-hidden="true" />
+							</span>
+							<span class="mx-1 h-6 w-px shrink-0 bg-white/20 sm:mx-1.5 md:h-7" aria-hidden="true"></span>
+							<span class="inline-flex items-center justify-center px-3 sm:px-4 md:px-5" title="Deliver">
+								<span set:html={lucideSvg(Upload, 'h-6 w-6 md:h-7 md:w-7', 28)} aria-hidden="true" />
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+					<div class="min-w-0">
+						<h2 class="text-pretty text-2xl font-semibold tracking-tight md:text-3xl lg:text-4xl lg:leading-[1.12]">
+							One Workflow. <span class="text-[rgb(255,106,0)]">From Capture to Final.</span>
+						</h2>
+						<p class="mt-4 max-w-xl text-pretty text-base font-medium leading-relaxed text-white/85 md:text-lg lg:max-w-2xl">
+							Start with FilmStudio. Add tools only when needed.
+						</p>
+						<p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-white/70 md:text-base lg:max-w-2xl">
+							Built for real filmmaking workflows.
+						</p>
+						<ul class="mt-8 space-y-4 text-sm text-white/80">
+							<li class="flex gap-3">
+								<span
+									class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[rgb(255,106,0)]/30 bg-black/50 text-[rgb(255,106,0)]"
+									set:html={lucideSvg(Zap, 'h-4 w-4', 16)}
+									aria-hidden="true"
+								/>
+								<span>Live desqueeze preview</span>
+							</li>
+							<li class="flex gap-3">
+								<span
+									class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[rgb(255,106,0)]/30 bg-black/50 text-[rgb(255,106,0)]"
+									set:html={lucideSvg(Target, 'h-4 w-4', 16)}
+									aria-hidden="true"
+								/>
+								<span>Real-time LUT + scopes </span>
+							</li>
+							<li class="flex gap-3">
+								<span
+									class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[rgb(255,106,0)]/30 bg-black/50 text-[rgb(255,106,0)]"
+									set:html={lucideSvg(Package, 'h-4 w-4', 16)}
+									aria-hidden="true"
+								/>
+								<span>Clean, export-ready output</span>
+							</li>
+						</ul>
+					</div>
+					<div class="min-w-0">
+						<div class="relative overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+							<div class="aspect-video w-full">
+								<video class="h-full w-full object-cover opacity-95" autoplay muted loop playsinline preload="metadata">
+									<source src={suiteDemoPrimaryMp4} type="video/mp4" />
+									<source src={suiteDemoFallbackMp4} type="video/mp4" />
+								</video>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="mt-8">
+					<div class="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-5" aria-label="Film Suite tools">
+						<!-- Desqueeze (Start here) -->
+						<div class="relative flex-1 overflow-visible rounded-2xl border border-[#FF7A1A]/45 bg-[linear-gradient(180deg,rgba(255,122,26,0.08),rgba(0,0,0,0.2))] p-5 pt-12 shadow-[0_0_0_1px_rgba(255,122,26,0.10),0_18px_60px_rgba(0,0,0,0.55)]">
+							<div class="pointer-events-none absolute inset-0 opacity-80 [background:radial-gradient(55%_55%_at_20%_18%,rgba(255,122,26,0.18),transparent_62%)]" aria-hidden="true"></div>
+							<div class="pointer-events-none absolute inset-0 opacity-60 [background:radial-gradient(55%_55%_at_90%_70%,rgba(255,122,26,0.10),transparent_62%)]" aria-hidden="true"></div>
+							<div class="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2">
+								<span class="inline-flex items-center gap-2 rounded-full border border-[#FF7A1A]/35 bg-black/70 px-3 py-1 text-[11px] font-semibold tracking-wide text-[#FF7A1A] shadow-[0_10px_30px_rgba(0,0,0,0.55)]">
+									<span class="text-[#FF7A1A]" set:html={lucideSvg(Star, 'h-3.5 w-3.5', 14)} aria-hidden="true"></span>
+									START HERE
+								</span>
+							</div>
+							<div class="relative flex h-full flex-col">
+								<div class="flex-1">
+									<div class="flex items-start gap-4">
+										<div class="grid h-12 w-12 place-items-center overflow-hidden rounded-2xl border border-[#FF7A1A]/35 bg-black/40">
+											{anamorphicMeta?.artworkUrl512 ? (
+												<img src={anamorphicMeta.artworkUrl512} alt="Anamorphic Desqueezer app icon" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+											) : (
+												<span class="text-[#FF7A1A]" set:html={lucideSvg(Activity, 'h-6 w-6', 24)} aria-hidden="true"></span>
+											)}
+										</div>
+										<div class="min-w-0 pt-0.5">
+											<p class="text-xl font-semibold tracking-tight text-white">{anamorphicMeta?.name || 'Anamorphic Desqueezer'}</p>
+											<p class="mt-1 text-sm text-white/60">Fix anamorphic footage.</p>
+										</div>
+									</div>
+
+									<ul class="mt-5 space-y-2.5 text-sm text-white/75">
+										<li class="flex items-center gap-2.5">
+											<span class="text-[#FF7A1A]" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true"></span>
+											<span>1.33x / 1.55x / 2x support</span>
+										</li>
+										<li class="flex items-center gap-2.5">
+											<span class="text-[#FF7A1A]" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true"></span>
+											<span>Batch processing</span>
+										</li>
+									</ul>
+								</div>
+
+								<div class="mt-5 h-px w-full bg-white/10"></div>
+								<a class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#FF7A1A] hover:text-[#ff8f3d]" href="#suite-apps">
+									Learn more
+									<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+							</div>
+						</div>
+
+						<div class="hidden shrink-0 items-center justify-center text-white/20 lg:flex" aria-hidden="true">
+							<span set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+						</div>
+
+						<!-- FilmStudio -->
+						<div class="relative flex-1 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
+							<div class="pointer-events-none absolute inset-0 opacity-60 [background:radial-gradient(55%_55%_at_20%_18%,rgba(96,165,250,0.18),transparent_62%)]" aria-hidden="true"></div>
+							<div class="relative flex h-full flex-col">
+								<div class="flex-1">
+									<div class="flex items-start gap-4">
+										<div class="grid h-12 w-12 place-items-center overflow-hidden rounded-2xl border border-sky-500/25 bg-black/40">
+											{filmStudioMeta?.artworkUrl512 ? (
+												<img src={filmStudioMeta.artworkUrl512} alt="FilmStudio app icon" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+											) : (
+												<span class="text-sky-400" set:html={lucideSvg(Camera, 'h-6 w-6', 24)} aria-hidden="true"></span>
+											)}
+										</div>
+										<div class="min-w-0 pt-0.5">
+											<p class="break-words pr-1 text-[clamp(1.05rem,1.5vw,1.25rem)] font-semibold leading-[1.15] tracking-tight text-white">{filmStudioMeta?.name || 'FilmStudio'}</p>
+											<p class="mt-1 text-sm text-white/60">Capture &amp; monitor in real-time.</p>
+										</div>
+									</div>
+
+									<ul class="mt-5 space-y-2.5 text-sm text-white/75">
+										<li class="flex items-center gap-2.5">
+											<span class="text-sky-400" set:html={lucideSvg(CircleCheck, 'h-4 w-4', 16)} aria-hidden="true"></span>
+											<span>Live desqueeze preview</span>
+										</li>
+										<li class="flex items-center gap-2.5">
+											<span class="text-sky-400" set:html={lucideSvg(CircleCheck, 'h-4 w-4', 16)} aria-hidden="true"></span>
+											<span>Scopes &amp; exposure tools</span>
+										</li>
+										<li class="flex items-center gap-2.5">
+											<span class="text-sky-400" set:html={lucideSvg(CircleCheck, 'h-4 w-4', 16)} aria-hidden="true"></span>
+											<span>Lock your look on set</span>
+										</li>
+									</ul>
+								</div>
+
+								<div class="mt-5 h-px w-full bg-white/10"></div>
+								<a class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-400 hover:text-sky-300" href="#suite-apps">
+									Learn more
+									<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+							</div>
+						</div>
+
+						<div class="hidden shrink-0 items-center justify-center text-white/20 lg:flex" aria-hidden="true">
+							<span set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+						</div>
+
+						<!-- CineLut -->
+						<div class="relative flex-1 lg:flex-[1.15] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
+							<div class="pointer-events-none absolute inset-0 opacity-60 [background:radial-gradient(55%_55%_at_20%_18%,rgba(167,139,250,0.18),transparent_62%)]" aria-hidden="true"></div>
+							<div class="relative flex h-full flex-col">
+								<div class="flex-1">
+									<div class="flex items-start gap-4">
+										<div class="grid h-12 w-12 place-items-center overflow-hidden rounded-2xl border border-violet-500/25 bg-black/40">
+											{cineLutMeta?.artworkUrl512 ? (
+												<img src={cineLutMeta.artworkUrl512} alt="CineLut app icon" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+											) : (
+												<span class="text-violet-300" set:html={lucideSvg(Box, 'h-6 w-6', 24)} aria-hidden="true"></span>
+											)}
+										</div>
+										<div class="min-w-0 pt-0.5">
+											<p class="pr-1 text-[clamp(1.05rem,1.5vw,1.25rem)] font-semibold leading-[1.15] tracking-tight text-white">{cineLutMeta?.name || 'CineLut'}</p>
+											<p class="mt-1 text-sm text-white/60">Grade your footage.</p>
+										</div>
+									</div>
+
+									<ul class="mt-5 space-y-2.5 text-sm text-white/75">
+										<li class="flex items-center gap-2.5">
+											<span class="text-violet-300" set:html={lucideSvg(CircleCheck, 'h-4 w-4', 16)} aria-hidden="true"></span>
+											<span>LUTs &amp; CDL</span>
+										</li>
+										<li class="flex items-center gap-2.5">
+											<span class="text-violet-300" set:html={lucideSvg(CircleCheck, 'h-4 w-4', 16)} aria-hidden="true"></span>
+											<span>Cinematic color control</span>
+										</li>
+									</ul>
+								</div>
+
+								<div class="mt-5 h-px w-full bg-white/10"></div>
+								<a class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-violet-300 hover:text-violet-200" href="#suite-apps">
+									Learn more
+									<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+							</div>
+						</div>
+
+						<div class="hidden shrink-0 items-center justify-center text-white/20 lg:flex" aria-hidden="true">
+							<span set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+						</div>
+
+						<!-- Export -->
+						<div class="relative flex-1 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
+							<div class="pointer-events-none absolute inset-0 opacity-60 [background:radial-gradient(55%_55%_at_20%_18%,rgba(52,211,153,0.18),transparent_62%)]" aria-hidden="true"></div>
+							<div class="relative flex h-full flex-col">
+								<div class="flex-1">
+									<div class="flex items-start gap-4">
+										<div class="grid h-12 w-12 place-items-center overflow-hidden rounded-2xl border border-emerald-500/25 bg-black/40">
+											{mediaUtilityMeta?.artworkUrl512 ? (
+												<img src={mediaUtilityMeta.artworkUrl512} alt="MediaUtility app icon" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+											) : (
+												<span class="text-emerald-300" set:html={lucideSvg(Upload, 'h-6 w-6', 24)} aria-hidden="true"></span>
+											)}
+										</div>
+										<div class="min-w-0 pt-0.5">
+											<p class="break-words pr-1 text-[clamp(1.05rem,1.5vw,1.25rem)] font-semibold leading-[1.15] tracking-tight text-white">{mediaUtilityMeta?.name || 'Export'}</p>
+											<p class="mt-1 text-sm text-white/60">Deliver final output.</p>
+										</div>
+									</div>
+
+									<ul class="mt-5 space-y-2.5 text-sm text-white/75">
+										<li class="flex items-center gap-2.5">
+											<span class="text-emerald-300" set:html={lucideSvg(CircleCheck, 'h-4 w-4', 16)} aria-hidden="true"></span>
+											<span>Compress &amp; convert</span>
+										</li>
+										<li class="flex items-center gap-2.5">
+											<span class="text-emerald-300" set:html={lucideSvg(CircleCheck, 'h-4 w-4', 16)} aria-hidden="true"></span>
+											<span>Multiple export presets</span>
+										</li>
+									</ul>
+								</div>
+
+								<div class="mt-5 h-px w-full bg-white/10"></div>
+								<a class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-300 hover:text-emerald-200" href="#suite-apps">
+									Learn more
+									<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="mt-10 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+					<div class="grid grid-cols-1 divide-y divide-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+						<div class="flex items-center gap-4 px-5 py-3 sm:px-6 sm:py-4">
+							<span class="text-white/70" set:html={lucideSvg(Box, 'h-5 w-5', 20)} aria-hidden="true" />
+							<div class="min-w-0">
+								<p class="text-lg font-semibold leading-none text-white md:text-xl">8+</p>
+								<p class="mt-1 text-xs font-medium text-white/60">Products</p>
+							</div>
+						</div>
+						<div class="flex items-center gap-4 px-5 py-3 sm:px-6 sm:py-4">
+							<span class="text-white/70" set:html={lucideSvg(Users, 'h-5 w-5', 20)} aria-hidden="true" />
+							<div class="min-w-0">
+								<p class="text-lg font-semibold leading-none text-white md:text-xl">4</p>
+								<p class="mt-1 text-xs font-medium text-white/60">Platforms</p>
+								<p class="mt-1 text-xs font-medium text-white/45">iOS • macOS • Android • Windows</p>
+							</div>
+						</div>
+						<div class="flex items-center gap-4 px-5 py-3 sm:px-6 sm:py-4">
+							<span class="text-white/70" set:html={lucideSvg(Timer, 'h-5 w-5', 20)} aria-hidden="true" />
+							<div class="min-w-0">
+								<p class="text-lg font-semibold leading-none text-white md:text-xl">0</p>
+								<p class="mt-1 text-xs font-medium text-white/60">Guesswork in the pipeline</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="mt-12 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:p-6" data-workflow-pause-area>
+<p class="text-sm font-semibold tracking-[0.22em] text-[rgb(255,106,0)] uppercase">A clear 4-step pipeline.</p>
+<h3 class="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 tracking-tight">
+	<span class="text-xl font-semibold text-white md:text-2xl">Workflow.</span>
+	<span class="text-sm font-medium text-white/70 md:text-base">Move through monitor → grade → export.</span>
+</h3>
+
+					<div
+						class="mt-5 pt-3 max-sm:-mx-1 max-sm:overflow-x-auto max-sm:px-1 max-sm:pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+						aria-label="4-step workflow diagram"
+						data-workflow-pipeline
+					>
+<div class="max-sm:flex max-sm:min-w-max max-sm:items-center max-sm:gap-3 sm:flex sm:w-full sm:items-center sm:justify-center sm:gap-3" data-workflow-steps>
+							<div class="relative flex items-center gap-3 rounded-xl border border-[#FF7A1A]/35 bg-[#FF7A1A]/[0.06] px-3.5 pb-2.5 pt-4 transition-[transform,opacity,box-shadow,border-color,background-color] duration-400 ease-in-out will-change-transform sm:w-[13.75rem]" data-step-card="1">
+								<span class="absolute -top-2 left-1/2 grid h-6 w-6 -translate-x-1/2 place-items-center rounded-full border border-[#FF7A1A]/40 bg-black text-xs font-semibold text-[#FF7A1A] transition-colors duration-400 ease-in-out" data-step-badge>1</span>
+								<span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#FF7A1A]/15 text-[#FF7A1A] transition-colors duration-400 ease-in-out" set:html={lucideSvg(Camera, 'h-4 w-4', 16)} aria-hidden="true" data-step-icon />
+								<div class="min-w-0">
+									<p class="text-sm font-semibold text-white">Monitor &amp;</p>
+									<p class="text-sm font-semibold text-white/90">Set looks</p>
+								</div>
+							</div>
+							<span class="text-white/20 opacity-60 transition-[opacity,transform,color] duration-400 ease-in-out sm:shrink-0" set:html={lucideSvg(ChevronRight, 'h-5 w-5', 20)} aria-hidden="true" data-step-arrow="1"></span>
+							<div class="relative flex items-center gap-3 rounded-xl border border-white/10 bg-black/20 px-3.5 pb-2.5 pt-4 opacity-55 transition-[transform,opacity,box-shadow,border-color,background-color] duration-400 ease-in-out will-change-transform sm:w-[13.75rem]" data-step-card="2">
+								<span class="absolute -top-2 left-1/2 grid h-6 w-6 -translate-x-1/2 place-items-center rounded-full border border-white/15 bg-black text-xs font-semibold text-white/70 transition-colors duration-400 ease-in-out" data-step-badge>2</span>
+								<span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.05] text-white/70 transition-colors duration-400 ease-in-out" set:html={lucideSvg(Activity, 'h-4 w-4', 16)} aria-hidden="true" data-step-icon />
+								<div class="min-w-0">
+									<p class="text-sm font-semibold text-white">Monitor</p>
+									<p class="text-xs font-medium text-white/55">Anamorphic</p>
+								</div>
+							</div>
+							<span class="text-white/20 opacity-60 transition-[opacity,transform,color] duration-400 ease-in-out sm:shrink-0" set:html={lucideSvg(ChevronRight, 'h-5 w-5', 20)} aria-hidden="true" data-step-arrow="2"></span>
+							<div class="relative flex items-center gap-3 rounded-xl border border-white/10 bg-black/20 px-3.5 pb-2.5 pt-4 opacity-55 transition-[transform,opacity,box-shadow,border-color,background-color] duration-400 ease-in-out will-change-transform sm:w-[13.75rem]" data-step-card="3">
+								<span class="absolute -top-2 left-1/2 grid h-6 w-6 -translate-x-1/2 place-items-center rounded-full border border-white/15 bg-black text-xs font-semibold text-white/70 transition-colors duration-400 ease-in-out" data-step-badge>3</span>
+								<span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.05] text-white/70 transition-colors duration-400 ease-in-out" set:html={lucideSvg(Palette, 'h-4 w-4', 16)} aria-hidden="true" data-step-icon />
+								<div class="min-w-0">
+									<p class="text-sm font-semibold text-white">Grade</p>
+									<p class="text-xs font-medium text-white/55">Editorial</p>
+								</div>
+							</div>
+							<span class="text-white/20 opacity-60 transition-[opacity,transform,color] duration-400 ease-in-out sm:shrink-0" set:html={lucideSvg(ChevronRight, 'h-5 w-5', 20)} aria-hidden="true" data-step-arrow="3"></span>
+							<div class="relative flex items-center gap-3 rounded-xl border border-white/10 bg-black/20 px-3.5 pb-2.5 pt-4 opacity-55 transition-[transform,opacity,box-shadow,border-color,background-color] duration-400 ease-in-out will-change-transform sm:w-[13.75rem]" data-step-card="4">
+								<span class="absolute -top-2 left-1/2 grid h-6 w-6 -translate-x-1/2 place-items-center rounded-full border border-white/15 bg-black text-xs font-semibold text-white/70 transition-colors duration-400 ease-in-out" data-step-badge>4</span>
+								<span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.05] text-white/70 transition-colors duration-400 ease-in-out" set:html={lucideSvg(Upload, 'h-4 w-4', 16)} aria-hidden="true" data-step-icon />
+								<div class="min-w-0">
+									<p class="text-sm font-semibold text-white">Export</p>
+									<p class="text-xs font-medium text-white/55">Media Ready</p>
+								</div>
+							</div>
+							<div class="hidden lg:block">
+								<div class="pl-3 text-right">
+									<a
+										class="inline-flex items-center justify-center gap-2 rounded-full border border-white/12 bg-black/40 px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/[0.06] focus:outline-none focus:ring-2 focus:ring-white/20"
+										href="/products"
+									>
+										See all apps
+										<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+									</a>
+									<p class="mt-2 text-[11px] font-medium text-white/45">Explore full tools</p>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="mt-5 flex justify-end lg:hidden">
+						<div class="text-right">
+							<a
+								class="inline-flex items-center justify-center gap-2 rounded-full border border-white/12 bg-black/40 px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/[0.06] focus:outline-none focus:ring-2 focus:ring-white/20"
+								href="/products"
+							>
+								See all apps
+								<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+							<p class="mt-2 text-[11px] font-medium text-white/45">Explore full tools</p>
+						</div>
+					</div>
+
+					<div class="mt-3 flex items-center justify-center gap-2" aria-label="Workflow pagination" data-workflow-dots>
+						<button type="button" class="h-1.5 w-1.5 rounded-full bg-white/25 opacity-80 transition-[transform,background-color,opacity] duration-300 ease-in-out" aria-label="Go to step 1" data-dot="1"></button>
+						<button type="button" class="h-1.5 w-1.5 rounded-full bg-white/25 opacity-80 transition-[transform,background-color,opacity] duration-300 ease-in-out" aria-label="Go to step 2" data-dot="2"></button>
+						<button type="button" class="h-1.5 w-1.5 rounded-full bg-white/25 opacity-80 transition-[transform,background-color,opacity] duration-300 ease-in-out" aria-label="Go to step 3" data-dot="3"></button>
+						<button type="button" class="h-1.5 w-1.5 rounded-full bg-white/25 opacity-80 transition-[transform,background-color,opacity] duration-300 ease-in-out" aria-label="Go to step 4" data-dot="4"></button>
+					</div>
+					<p class="mt-4 text-center text-xs font-medium text-white/55">Each step is built to work perfectly with the next.</p>
+
+<div class="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-4" data-detail-cards>
+						<div class="flex h-full flex-col overflow-hidden rounded-2xl border border-[#FF7A1A]/30 bg-black/25 opacity-65 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[transform,opacity,box-shadow,border-color] duration-400 ease-in-out will-change-transform" data-detail-card="1">
+							<div class="p-5">
+								<div class="flex items-start justify-between gap-4">
+									<div class="min-w-0">
+										<p class="text-sm font-semibold text-white">1. Monitor &amp; Set looks</p>
+										<p class="mt-1 text-xs leading-relaxed text-white/60">
+											Get perfect framing, exposure, and color confidence on set.
+										</p>
+									</div>
+									<span
+										class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FF7A1A]/15 text-[#FF7A1A]"
+										set:html={lucideSvg(Camera, 'h-5 w-5', 20)}
+										aria-hidden="true"
+									/>
+								</div>
+							</div>
+							<div class="px-5 pb-5">
+								<div class="aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-black/60">
+									<img
+										src="/images/pipeline%20workflow/1_monitor%20looks.png"
+										alt="Monitor and set looks"
+										class="h-full w-full object-contain"
+										loading="lazy"
+										decoding="async"
+									/>
+								</div>
+							</div>
+						</div>
+
+						<div class="flex h-full flex-col overflow-hidden rounded-2xl border border-sky-500/25 bg-black/25 opacity-65 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[transform,opacity,box-shadow,border-color] duration-400 ease-in-out will-change-transform" data-detail-card="2">
+							<div class="p-5">
+								<div class="flex items-start justify-between gap-4">
+									<div class="min-w-0">
+										<p class="text-sm font-semibold text-white">2. Monitor Anamorphic</p>
+										<p class="mt-1 text-xs leading-relaxed text-white/60">
+											De-squeeze and review footage with accurate aspect ratios.
+										</p>
+									</div>
+									<span
+										class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-500/15 text-sky-300"
+										set:html={lucideSvg(Activity, 'h-5 w-5', 20)}
+										aria-hidden="true"
+									/>
+								</div>
+							</div>
+							<div class="px-5 pb-5">
+								<div class="aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-black/60">
+									<img
+										src="/images/pipeline%20workflow/2_monitor%20anomorphic.png"
+										alt="Monitor anamorphic"
+										class="h-full w-full object-contain"
+										loading="lazy"
+										decoding="async"
+									/>
+								</div>
+							</div>
+						</div>
+
+						<div class="flex h-full flex-col overflow-hidden rounded-2xl border border-fuchsia-500/20 bg-black/25 opacity-65 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[transform,opacity,box-shadow,border-color] duration-400 ease-in-out will-change-transform" data-detail-card="3">
+							<div class="p-5">
+								<div class="flex items-start justify-between gap-4">
+									<div class="min-w-0">
+										<p class="text-sm font-semibold text-white">3. Grade Editorial</p>
+										<p class="mt-1 text-xs leading-relaxed text-white/60">
+											Apply LUTs and CDL to shape your cinematic story.
+										</p>
+									</div>
+									<span
+										class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-fuchsia-500/15 text-fuchsia-300"
+										set:html={lucideSvg(Palette, 'h-5 w-5', 20)}
+										aria-hidden="true"
+									/>
+								</div>
+							</div>
+							<div class="px-5 pb-5">
+								<div class="aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-black/60">
+									<img
+										src="/images/pipeline%20workflow/3_grade.png"
+										alt="Grade editorial"
+										class="h-full w-full object-contain"
+										loading="lazy"
+										decoding="async"
+									/>
+								</div>
+							</div>
+						</div>
+
+						<div class="flex h-full flex-col overflow-hidden rounded-2xl border border-emerald-500/20 bg-black/25 opacity-65 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[transform,opacity,box-shadow,border-color] duration-400 ease-in-out will-change-transform" data-detail-card="4">
+							<div class="p-5">
+								<div class="flex items-start justify-between gap-4">
+									<div class="min-w-0">
+										<p class="text-sm font-semibold text-white">4. Export Media Ready</p>
+										<p class="mt-1 text-xs leading-relaxed text-white/60">
+											Deliver in any format — ready for post, web, or cinema.
+										</p>
+									</div>
+									<span
+										class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-300"
+										set:html={lucideSvg(Upload, 'h-5 w-5', 20)}
+										aria-hidden="true"
+									/>
+								</div>
+							</div>
+							<div class="px-5 pb-5">
+								<div class="aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-black/60">
+									<img
+										src="/images/pipeline%20workflow/4_export.png"
+										alt="Export media ready"
+										class="h-full w-full object-contain"
+										loading="lazy"
+										decoding="async"
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
+</div>
+
+				
+				<script is:inline>
+					(() => {
+						const root = document.querySelector('[data-workflow-pause-area]');
+						const pipeline = root?.querySelector('[data-workflow-pipeline]');
+						const steps = pipeline?.querySelector('[data-workflow-steps]');
+						if (!root || !pipeline || !steps) return;
+
+						const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
+						const cards = Array.from(steps.querySelectorAll('[data-step-card]'));
+						const arrows = Array.from(steps.querySelectorAll('[data-step-arrow]'));
+						const detailCards = Array.from(root.querySelectorAll('[data-detail-card]'));
+						const dotsWrap = root.querySelector('[data-workflow-dots]');
+						const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('[data-dot]')) : [];
+						if (cards.length < 4) return;
+
+						const ACTIVE_CARD = ['scale-[1.02]', 'opacity-100'];
+						const INACTIVE_CARD = ['opacity-55', 'scale-100', 'shadow-none', 'border-white/10', 'bg-black/20'];
+						const STEP_ACCENT = [
+							[
+								'border-[#FF7A1A]/50',
+								'bg-[#FF7A1A]/[0.06]',
+								'shadow-[0_0_0_1px_rgba(255,122,26,0.18),0_0_26px_rgba(255,122,26,0.14)]'
+							],
+							[
+								'border-sky-500/40',
+								'bg-sky-500/[0.08]',
+								'shadow-[0_0_0_1px_rgba(56,189,248,0.16),0_0_26px_rgba(56,189,248,0.12)]'
+							],
+							[
+								'border-fuchsia-500/35',
+								'bg-fuchsia-500/[0.08]',
+								'shadow-[0_0_0_1px_rgba(217,70,239,0.16),0_0_26px_rgba(217,70,239,0.12)]'
+							],
+							[
+								'border-emerald-500/35',
+								'bg-emerald-500/[0.08]',
+								'shadow-[0_0_0_1px_rgba(16,185,129,0.16),0_0_26px_rgba(16,185,129,0.12)]'
+							]
+						];
+						const BADGE_ACTIVE = [
+							['border-[#FF7A1A]/40', 'text-[#FF7A1A]'],
+							['border-sky-500/35', 'text-sky-300'],
+							['border-fuchsia-500/30', 'text-fuchsia-300'],
+							['border-emerald-500/30', 'text-emerald-300']
+						];
+						const BADGE_INACTIVE = ['border-white/15', 'text-white/70'];
+						const ICON_ACTIVE = [
+							['bg-[#FF7A1A]/15', 'text-[#FF7A1A]'],
+							['bg-sky-500/15', 'text-sky-300'],
+							['bg-fuchsia-500/15', 'text-fuchsia-300'],
+							['bg-emerald-500/15', 'text-emerald-300']
+						];
+						const ICON_INACTIVE = ['bg-white/[0.05]', 'text-white/70'];
+						const ARROW_ACTIVE = ['text-[#FF7A1A]/60', 'text-sky-400/60', 'text-fuchsia-400/60', 'text-emerald-400/60'];
+
+						const DETAIL_ACTIVE = ['opacity-100', '-translate-y-0.5'];
+						const DETAIL_INACTIVE = ['opacity-65', 'translate-y-0'];
+						const DETAIL_ACCENT = [
+							['border-[#FF7A1A]/45', 'shadow-[0_0_0_1px_rgba(255,122,26,0.16),0_0_26px_rgba(255,122,26,0.12)]'],
+							['border-sky-500/35', 'shadow-[0_0_0_1px_rgba(56,189,248,0.14),0_0_26px_rgba(56,189,248,0.10)]'],
+							['border-fuchsia-500/30', 'shadow-[0_0_0_1px_rgba(217,70,239,0.14),0_0_26px_rgba(217,70,239,0.10)]'],
+							['border-emerald-500/30', 'shadow-[0_0_0_1px_rgba(16,185,129,0.14),0_0_26px_rgba(16,185,129,0.10)]']
+						];
+						const DOT_ACTIVE = ['bg-[#FF7A1A]', 'bg-sky-400', 'bg-fuchsia-400', 'bg-emerald-400'];
+
+						const setActive = (idx) => {
+							cards.forEach((card, i) => {
+								const isActive = i === idx;
+								card.classList.remove(...ACTIVE_CARD, ...INACTIVE_CARD, ...STEP_ACCENT.flat());
+								card.classList.add(...(isActive ? ACTIVE_CARD : INACTIVE_CARD));
+								if (isActive) card.classList.add(...STEP_ACCENT[i]);
+
+								const badge = card.querySelector('[data-step-badge]');
+								const icon = card.querySelector('[data-step-icon]');
+
+								if (badge) {
+									badge.classList.remove(...BADGE_INACTIVE, ...BADGE_ACTIVE.flat());
+									badge.classList.add(...(isActive ? BADGE_ACTIVE[i] : BADGE_INACTIVE));
+								}
+								if (icon) {
+									icon.classList.remove(...ICON_INACTIVE, ...ICON_ACTIVE.flat());
+									icon.classList.add(...(isActive ? ICON_ACTIVE[i] : ICON_INACTIVE));
+								}
+							});
+
+							if (detailCards.length >= 4) {
+								detailCards.forEach((card, i) => {
+									const isActive = i === idx;
+									card.classList.remove(...DETAIL_ACTIVE, ...DETAIL_INACTIVE, ...DETAIL_ACCENT.flat());
+									card.classList.add(...(isActive ? DETAIL_ACTIVE : DETAIL_INACTIVE));
+									if (isActive) card.classList.add(...DETAIL_ACCENT[i]);
+								});
+							}
+
+							if (dots.length === 4) {
+								dots.forEach((dot, i) => {
+									dot.classList.remove('scale-125', ...DOT_ACTIVE);
+									dot.classList.add('bg-white/25');
+									if (i === idx) {
+										dot.classList.remove('bg-white/25');
+										dot.classList.add('scale-125', DOT_ACTIVE[i]);
+									}
+								});
+							}
+
+								arrows.forEach((arrow) => {
+								const n = Number(arrow.getAttribute('data-step-arrow'));
+								const isActiveArrow = n === idx + 1;
+									arrow.classList.remove(...ARROW_ACTIVE);
+									if (isActiveArrow) arrow.classList.add(ARROW_ACTIVE[idx]);
+								arrow.classList.toggle('opacity-90', isActiveArrow);
+								arrow.classList.toggle('translate-x-0.5', isActiveArrow);
+								arrow.classList.toggle('text-white/20', !isActiveArrow);
+								arrow.classList.toggle('opacity-60', !isActiveArrow);
+								arrow.classList.toggle('translate-x-0', !isActiveArrow);
+							});
+						};
+
+						let index = 0;
+						let timer = null;
+						const start = () => {
+							if (reduceMotion) return;
+							if (timer) return;
+							timer = window.setInterval(() => {
+								index = (index + 1) % cards.length;
+								setActive(index);
+							}, 2500);
+						};
+						const stop = () => {
+							if (!timer) return;
+							window.clearInterval(timer);
+							timer = null;
+						};
+
+						const pause = () => {
+							root.classList.add('is-paused');
+							stop();
+						};
+						const resume = () => {
+							root.classList.remove('is-paused');
+							start();
+							setActive(index);
+						};
+
+						setActive(0);
+						start();
+
+						if (dots.length === 4) {
+							dots.forEach((dot) => {
+								dot.addEventListener('click', () => {
+									const n = Number(dot.getAttribute('data-dot'));
+									if (!Number.isFinite(n) || n < 1 || n > 4) return;
+									index = n - 1;
+									setActive(index);
+									stop();
+									start();
+								});
+							});
+						}
+
+						root.addEventListener('mouseenter', pause, { passive: true });
+						root.addEventListener('mouseleave', resume, { passive: true });
+						root.addEventListener('focusin', pause);
+						root.addEventListener('focusout', resume);
+					})();
+				</script>
+
+				<div id="suite-apps" class="mt-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+					<div>
+						<p class="text-xs font-semibold tracking-[0.22em] text-[rgb(255,106,0)]">YOUR ECOSYSTEM</p>
+						<h3 class="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">Get the right tools for your pipeline.</h3>
+						<p class="mt-2 max-w-2xl text-sm text-white/70">Powerful apps. One seamless ecosystem.</p>
+					</div>
+					<a
+						class="inline-flex items-center justify-center gap-2 self-start rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/[0.10] sm:self-auto"
+						href="/products"
+					>
+						Explore all apps
+						<span class="text-white/50" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+					</a>
+				</div>
+
+				<div class="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-black/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" data-ecosystem-selector>
+					<div class="p-4 md:p-6">
+						<div
+							class="grid grid-cols-3 overflow-hidden rounded-2xl border border-white/10 bg-black/25 p-1"
+							role="tablist"
+							aria-label="Platform selector"
+							data-ecosystem-tabs
+						>
+							<button
+								type="button"
+								class="flex items-center justify-center gap-2 rounded-xl border border-transparent bg-transparent px-4 py-2.5 text-xs font-semibold text-[#FF7A1A] shadow-[0_0_0_1px_rgba(255,122,26,0.16),0_0_22px_rgba(255,122,26,0.14)] transition-[background-color,color,box-shadow]"
+								role="tab"
+								aria-selected="true"
+								data-ecosystem-tab="apple"
+							>
+								<svg class="h-4 w-4" viewBox="0 0 384 512" aria-hidden="true">
+									<path
+										fill="currentColor"
+										d="M318.7 268.6c-.2-56.4 46.1-83.5 48.2-84.8-26.3-38.4-67.2-43.7-81.7-44.3-34.8-3.5-68 20.5-85.6 20.5-17.6 0-44.9-20-73.8-19.5-38 0-73 22.1-92.5 56.1-39.6 68.5-10.1 169.9 28.4 225.4 18.8 27.1 41.1 57.6 70.5 56.5 28.4-1.1 39.2-18.4 73.5-18.4 34.3 0 44 18.4 74.1 17.8 30.6-.6 49.9-27.9 68.6-55.1 21.6-31.6 30.5-62.2 30.9-63.8-.7-.3-59.3-22.8-59.1-90.4zM259.6 96.2c15.6-18.9 26.1-45.3 23.2-71.7-22.5.9-49.8 15-65.9 33.9-14.5 16.9-27.2 43.9-23.7 69.8 25.1 2 50.8-12.7 66.4-32z"
+									/>
+								</svg>
+								Apple
+							</button>
+							<button
+								type="button"
+								class="flex items-center justify-center gap-2 rounded-xl border border-transparent bg-transparent px-4 py-2.5 text-xs font-semibold text-white/60 hover:bg-white/[0.04] hover:text-white/80 transition"
+								role="tab"
+								aria-selected="false"
+								data-ecosystem-tab="android"
+							>
+								<svg class="h-4 w-4" viewBox="0 0 576 512" aria-hidden="true">
+									<path
+										fill="currentColor"
+										d="M420.6 96.4 472.4 4.7c2.8-5 1.1-11.3-3.9-14.1s-11.3-1.1-14.1 3.9l-53.1 94.3C367.8 74.1 329.5 64 288 64c-41.5 0-79.8 10.1-113.3 24.8L121.6-5.5c-2.8-5-9.1-6.7-14.1-3.9s-6.7 9.1-3.9 14.1l51.8 91.7C89.6 138.6 48 207.3 48 288v80c0 17.7 14.3 32 32 32h32v64c0 17.7 14.3 32 32 32s32-14.3 32-32v-64h224v64c0 17.7 14.3 32 32 32s32-14.3 32-32v-64h32c17.7 0 32-14.3 32-32v-80c0-80.7-41.6-149.4-107.4-191.6zM160 256c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm256 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"
+									/>
+								</svg>
+								Android
+							</button>
+							<button
+								type="button"
+								class="flex items-center justify-center gap-2 rounded-xl border border-transparent bg-transparent px-4 py-2.5 text-xs font-semibold text-white/60 hover:bg-white/[0.04] hover:text-white/80 transition"
+								role="tab"
+								aria-selected="false"
+								data-ecosystem-tab="windows"
+							>
+								<svg class="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
+									<path fill="currentColor" d="M2 2h9v9H2V2z" />
+									<path fill="currentColor" d="M13 2h9v9h-9V2z" />
+									<path fill="currentColor" d="M2 13h9v9H2v-9z" />
+									<path fill="currentColor" d="M13 13h9v9h-9v-9z" />
+								</svg>
+								Windows
+							</button>
+						</div>
+
+						<div
+							class="isolate mt-5 grid min-h-0 grid-cols-1 grid-rows-1 items-start"
+							data-ecosystem-panels
+						>
+							<div class="relative col-start-1 row-start-1 min-w-0 w-full self-start" data-ecosystem-panel="apple">
+								<div class="space-y-6">
+									<div class="rounded-2xl border border-white/10 bg-black/25 p-4">
+										<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+											<div class="flex items-center gap-2">
+												<svg class="h-4 w-4 text-white/80" viewBox="0 0 384 512" aria-hidden="true">
+													<path fill="currentColor" d="M318.7 268.6c-.2-56.4 46.1-83.5 48.2-84.8-26.3-38.4-67.2-43.7-81.7-44.3-34.8-3.5-68 20.5-85.6 20.5-17.6 0-44.9-20-73.8-19.5-38 0-73 22.1-92.5 56.1-39.6 68.5-10.1 169.9 28.4 225.4 18.8 27.1 41.1 57.6 70.5 56.5 28.4-1.1 39.2-18.4 73.5-18.4 34.3 0 44 18.4 74.1 17.8 30.6-.6 49.9-27.9 68.6-55.1 21.6-31.6 30.5-62.2 30.9-63.8-.7-.3-59.3-22.8-59.1-90.4zM259.6 96.2c15.6-18.9 26.1-45.3 23.2-71.7-22.5.9-49.8 15-65.9 33.9-14.5 16.9-27.2 43.9-23.7 69.8 25.1 2 50.8-12.7 66.4-32z" />
+												</svg>
+												<p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">iPhone &amp; iPad</p>
+												<span class="inline-flex items-center rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-white/65">3 APPS</span>
+											</div>
+											<a class="inline-flex items-center gap-2 text-xs font-semibold text-white/75 hover:text-white" href="/products">
+												View all for iOS
+												<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+											</a>
+										</div>
+										<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+											<div class="group relative flex min-h-[165px] flex-col overflow-hidden rounded-2xl border border-[#FF7A1A]/35 bg-black/35 p-5 shadow-[0_0_0_1px_rgba(255,122,26,0.10)]">
+												<div class="pointer-events-none absolute inset-0 opacity-70 [background:radial-gradient(55%_55%_at_20%_18%,rgba(255,122,26,0.16),transparent_62%)]" aria-hidden="true"></div>
+												<div class="relative flex flex-col">
+													<div class="flex items-start gap-3">
+														<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-[#FF7A1A]/25 bg-black/50">
+															<img
+																src="/images/app-icons/ios-anamorphic.png"
+																alt="Anamorphic Desqueezer app icon"
+																class="h-full w-full object-cover"
+																loading="lazy"
+																decoding="async"
+															/>
+														</div>
+														<p class="min-w-0 flex-1 pr-2 pt-0.5 text-sm font-semibold leading-snug text-white truncate">
+															{anamorphicMeta?.name || 'Anamorphic Desqueezer'}
+														</p>
+														<span class="inline-flex shrink-0 items-center rounded-full border border-[#FF7A1A]/25 bg-[#FF7A1A]/[0.10] px-2 py-0.5 text-[10px] font-semibold tracking-[0.14em] text-[#FF7A1A]">PRIMARY</span>
+													</div>
+													<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Live de-squeeze and accurate monitoring.</p>
+													<a class="relative z-[1] mt-4 inline-flex items-center gap-2 text-xs font-semibold text-[#FF7A1A] hover:text-[#ff8f3d]" href={storeUrls.anamorphicApple} target="_blank" rel="noopener noreferrer">
+														Fix footage
+														<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+													</a>
+												</div>
+											</div>
+											<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-sky-500/25 bg-black/35 p-5">
+												<div class="relative flex flex-col">
+													<div class="flex items-start gap-3">
+														<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-sky-500/20 bg-black/50">
+															<img
+																src="/images/app-icons/ios-filmstudio.png"
+																alt="FilmStudio app icon"
+																class="h-full w-full object-cover"
+																loading="lazy"
+																decoding="async"
+															/>
+														</div>
+														<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">{filmStudioMeta?.name || 'FilmStudio'}</p>
+													</div>
+													<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">On-set camera control, monitoring and more.</p>
+													<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-sky-300 hover:text-sky-200" href={storeUrls.filmStudioIos} target="_blank" rel="noopener noreferrer">
+														Start shooting →
+													</a>
+												</div>
+											</div>
+											<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-emerald-500/20 bg-black/35 p-5">
+												<div class="relative flex flex-col">
+													<div class="flex items-start gap-3">
+														<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-emerald-500/20 bg-black/50">
+															<img
+																src="/images/app-icons/ios-mediautility.png"
+																alt="MediaUtility app icon"
+																class="h-full w-full object-cover"
+																loading="lazy"
+																decoding="async"
+															/>
+														</div>
+														<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">{mediaUtilityMeta?.name || 'MediaUtility'}</p>
+													</div>
+													<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Compress, resize, and export delivery‑ready files fast.</p>
+													<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-emerald-200 hover:text-emerald-100" href={storeUrls.mediaUtilityIos} target="_blank" rel="noopener noreferrer">
+														Export media
+														<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="rounded-2xl border border-white/10 bg-black/25 p-4">
+										<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+											<div class="flex items-center gap-2">
+												<svg class="h-4 w-4 text-white/80" viewBox="0 0 384 512" aria-hidden="true">
+													<path fill="currentColor" d="M318.7 268.6c-.2-56.4 46.1-83.5 48.2-84.8-26.3-38.4-67.2-43.7-81.7-44.3-34.8-3.5-68 20.5-85.6 20.5-17.6 0-44.9-20-73.8-19.5-38 0-73 22.1-92.5 56.1-39.6 68.5-10.1 169.9 28.4 225.4 18.8 27.1 41.1 57.6 70.5 56.5 28.4-1.1 39.2-18.4 73.5-18.4 34.3 0 44 18.4 74.1 17.8 30.6-.6 49.9-27.9 68.6-55.1 21.6-31.6 30.5-62.2 30.9-63.8-.7-.3-59.3-22.8-59.1-90.4zM259.6 96.2c15.6-18.9 26.1-45.3 23.2-71.7-22.5.9-49.8 15-65.9 33.9-14.5 16.9-27.2 43.9-23.7 69.8 25.1 2 50.8-12.7 66.4-32z" />
+												</svg>
+												<p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">Mac</p>
+												<span class="inline-flex items-center rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-white/65">3 APPS</span>
+											</div>
+											<a class="inline-flex items-center gap-2 text-xs font-semibold text-white/75 hover:text-white" href="/products">
+												View all for macOS
+												<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+											</a>
+										</div>
+										<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+											<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-sky-500/25 bg-black/35 p-5">
+												<div class="relative flex flex-col">
+													<div class="flex items-start gap-3">
+														<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-sky-500/20 bg-black/50">
+															<img
+																src="/images/app-icons/mac-anamorphic.png"
+																alt="Anamorphic Desqueezer app icon"
+																class="h-full w-full object-cover"
+																loading="lazy"
+																decoding="async"
+															/>
+														</div>
+														<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">{anamorphicMeta?.name || 'Anamorphic Desqueezer'}</p>
+													</div>
+													<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Live de-squeeze and accurate monitoring.</p>
+													<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-sky-300 hover:text-sky-200" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068?platform=mac" target="_blank" rel="noopener noreferrer">
+														Fix footage
+														<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+													</a>
+												</div>
+											</div>
+											<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-violet-500/20 bg-black/35 p-5">
+												<div class="relative flex flex-col">
+													<div class="flex items-start gap-3">
+														<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-violet-500/20 bg-black/50">
+															<img
+																src="/images/app-icons/mac-cinelut.png"
+																alt="CineLut Live Grade app icon"
+																class="h-full w-full object-cover"
+																loading="lazy"
+																decoding="async"
+															/>
+														</div>
+														<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">{cineLutMeta?.name || 'CineLut Live Grade'}</p>
+													</div>
+													<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Apply cinematic color live or in post.</p>
+													<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-violet-300 hover:text-violet-200" href={storeUrls.cineLutMac} target="_blank" rel="noopener noreferrer">
+														Color grade
+														<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+													</a>
+												</div>
+											</div>
+											<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-amber-500/15 bg-black/35 p-5">
+												<div class="relative flex flex-col">
+													<div class="flex items-start gap-3">
+														<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-amber-500/15 bg-black/50">
+															<img
+																src="/images/app-icons/mac-dms.png"
+																alt="Document Management System app icon"
+																class="h-full w-full object-cover"
+																loading="lazy"
+																decoding="async"
+															/>
+														</div>
+														<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">{dmsMeta?.name || 'Document System'}</p>
+													</div>
+													<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Organize, track and manage your projects.</p>
+													<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-amber-200/90 hover:text-amber-200" href={storeUrls.dmsMac} target="_blank" rel="noopener noreferrer">
+														Organize now
+														<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+							</div>
+							</div>
+
+							<div
+								class="pointer-events-none relative invisible z-0 col-start-1 row-start-1 min-w-0 w-full self-start"
+								data-ecosystem-panel="android"
+								aria-hidden="true"
+							>
+								<div class="rounded-2xl border border-white/10 bg-black/25 p-4">
+									<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+										<div class="flex items-center gap-2">
+											<svg class="h-4 w-4 text-white/80" viewBox="0 0 576 512" aria-hidden="true">
+												<path
+													fill="currentColor"
+													d="M420.6 96.4 472.4 4.7c2.8-5 1.1-11.3-3.9-14.1s-11.3-1.1-14.1 3.9l-53.1 94.3C367.8 74.1 329.5 64 288 64c-41.5 0-79.8 10.1-113.3 24.8L121.6-5.5c-2.8-5-9.1-6.7-14.1-3.9s-6.7 9.1-3.9 14.1l51.8 91.7C89.6 138.6 48 207.3 48 288v80c0 17.7 14.3 32 32 32h32v64c0 17.7 14.3 32 32 32s32-14.3 32-32v-64h224v64c0 17.7 14.3 32 32 32s32-14.3 32-32v-64h32c17.7 0 32-14.3 32-32v-80c0-80.7-41.6-149.4-107.4-191.6zM160 256c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm256 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"
+												/>
+											</svg>
+											<p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">Android</p>
+											<span class="inline-flex items-center rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-white/65">2 APPS</span>
+										</div>
+										<a class="inline-flex items-center gap-2 text-xs font-semibold text-white/75 hover:text-white" href="/products">
+											View all for Android
+											<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+										</a>
+									</div>
+
+									<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+										<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-sky-500/20 bg-black/35 p-5">
+											<div class="relative flex flex-col">
+												<div class="flex items-start gap-3">
+													<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-sky-500/20 bg-black/50">
+														<img
+															src="/images/app-icons/android-desqueeze.png"
+															alt={androidDesqueezePlayMeta?.name || anamorphicMeta?.name || 'App icon'}
+															class="h-full w-full object-cover"
+															loading="lazy"
+															decoding="async"
+														/>
+													</div>
+													<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">
+														{androidDesqueezePlayMeta?.name || anamorphicMeta?.name || 'App'}
+													</p>
+												</div>
+												<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Live de-squeeze and accurate monitoring.</p>
+												<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-sky-300 hover:text-sky-200" href={storeUrls.androidDesqueeze} target="_blank" rel="noopener noreferrer">
+													Fix footage
+													<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+												</a>
+											</div>
+										</div>
+
+										<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-[#FF7A1A]/20 bg-black/35 p-5">
+											<div class="relative flex flex-col">
+												<div class="flex items-start gap-3">
+													<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-[#FF7A1A]/20 bg-black/50">
+														<img
+															src="/images/app-icons/android-procam.png"
+															alt={androidProCamPlayMeta?.name || anamorphicMeta?.name || 'App icon'}
+															class="h-full w-full object-cover opacity-95"
+															loading="lazy"
+															decoding="async"
+														/>
+													</div>
+													<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">
+														{androidProCamPlayMeta?.name || anamorphicMeta?.name || 'App'}
+													</p>
+												</div>
+												<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Live de-squeeze + capture when you shoot on Android.</p>
+												<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-[#FF7A1A] hover:text-[#ff8f3d]" href={storeUrls.androidProCam} target="_blank" rel="noopener noreferrer">
+													Connect now
+													<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div
+								class="pointer-events-none relative invisible z-0 col-start-1 row-start-1 min-w-0 w-full self-start"
+								data-ecosystem-panel="windows"
+								aria-hidden="true"
+							>
+								<div class="rounded-2xl border border-white/10 bg-black/25 p-4">
+									<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+										<div class="flex items-center gap-2">
+											<svg class="h-4 w-4 text-white/80" viewBox="0 0 24 24" aria-hidden="true">
+												<path fill="currentColor" d="M2 2h9v9H2V2z" />
+												<path fill="currentColor" d="M13 2h9v9h-9V2z" />
+												<path fill="currentColor" d="M2 13h9v9H2v-9z" />
+												<path fill="currentColor" d="M13 13h9v9h-9v-9z" />
+											</svg>
+											<p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">Windows</p>
+											<span class="inline-flex items-center rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-white/65">2 APPS</span>
+										</div>
+										<a class="inline-flex items-center gap-2 text-xs font-semibold text-white/75 hover:text-white" href="/products">
+											View all for Windows
+											<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+										</a>
+									</div>
+
+									<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+										<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-sky-500/20 bg-black/35 p-5">
+											<div class="relative flex flex-col">
+												<div class="flex items-start gap-3">
+													<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-sky-500/20 bg-black/50">
+														<img
+															src="/images/app-icons/windows-desqueezepro.png"
+															alt={windowsStorePlayMeta?.name || 'AnamorphicDesqueezePro'}
+															class="h-full w-full object-cover"
+															loading="lazy"
+															decoding="async"
+														/>
+													</div>
+													<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">
+														{windowsStorePlayMeta?.name || anamorphicMeta?.name || 'App'}
+													</p>
+												</div>
+												<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Desktop batch de-squeeze for PC dailies.</p>
+												<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-sky-300 hover:text-sky-200" href={storeUrls.windowsPro} target="_blank" rel="noopener noreferrer">
+													Fix footage
+													<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+												</a>
+											</div>
+										</div>
+
+										<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-amber-500/15 bg-black/35 p-5">
+											<div class="relative flex flex-col">
+												<div class="flex items-start gap-3">
+													<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-amber-500/15 bg-black/50">
+														<img
+															src="/images/app-icons/windows-docrev.png"
+															alt="DocRev Manager app icon"
+															class="h-full w-full object-cover"
+															loading="lazy"
+															decoding="async"
+														/>
+													</div>
+													<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">DocRev Manager</p>
+												</div>
+												<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Organize, track and manage your projects.</p>
+												<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-amber-200/90 hover:text-amber-200" href="https://apps.microsoft.com/detail/9MXR3WLMQ0G7?hl=en-us&gl=IN&ocid=pdpshare" target="_blank" rel="noopener noreferrer">
+													Organize now
+													<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div
+					class="mt-6 flex flex-col gap-5 rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_14px_42px_rgba(0,0,0,0.38)] sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+					aria-label="Film suite ecosystem platforms"
+				>
+					<div class="flex items-start gap-4 sm:items-center">
+						<span
+							class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#FF7A1A]/30 bg-[#FF7A1A]/[0.09] shadow-[0_0_28px_rgba(255,122,26,0.22)]"
+							set:html={lucideSvg(Star, 'h-5 w-5 text-[#FF7A1A]', 20)}
+							aria-hidden="true"
+						/>
+						<div class="min-w-0">
+							<p class="text-base font-semibold leading-snug text-white">One ecosystem. All platforms. Built for filmmakers.</p>
+						</div>
+					</div>
+					<div class="flex flex-col items-start gap-3 sm:shrink-0 sm:items-end" role="group" aria-label="Supported platforms">
+						<div class="flex items-center gap-0">
+							<span
+								class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/35 text-white/65 transition-colors hover:border-white/20 hover:text-white"
+								title="Apple"
+							>
+								<svg class="h-5 w-5" viewBox="0 0 384 512" aria-hidden="true">
+									<path
+										fill="currentColor"
+										d="M318.7 268.6c-.2-56.4 46.1-83.5 48.2-84.8-26.3-38.4-67.2-43.7-81.7-44.3-34.8-3.5-68 20.5-85.6 20.5-17.6 0-44.9-20-73.8-19.5-38 0-73 22.1-92.5 56.1-39.6 68.5-10.1 169.9 28.4 225.4 18.8 27.1 41.1 57.6 70.5 56.5 28.4-1.1 39.2-18.4 73.5-18.4 34.3 0 44 18.4 74.1 17.8 30.6-.6 49.9-27.9 68.6-55.1 21.6-31.6 30.5-62.2 30.9-63.8-.7-.3-59.3-22.8-59.1-90.4zM259.6 96.2c15.6-18.9 26.1-45.3 23.2-71.7-22.5.9-49.8 15-65.9 33.9-14.5 16.9-27.2 43.9-23.7 69.8 25.1 2 50.8-12.7 66.4-32z"
+									/>
+								</svg>
+							</span>
+							<span class="mx-2 h-8 w-px shrink-0 bg-white/15" aria-hidden="true"></span>
+							<span
+								class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/35 text-white/65 transition-colors hover:border-white/20 hover:text-white"
+								title="Android"
+							>
+								<svg class="h-5 w-5" viewBox="0 0 576 512" aria-hidden="true">
+									<path
+										fill="currentColor"
+										d="M420.6 96.4 472.4 4.7c2.8-5 1.1-11.3-3.9-14.1s-11.3-1.1-14.1 3.9l-53.1 94.3C367.8 74.1 329.5 64 288 64c-41.5 0-79.8 10.1-113.3 24.8L121.6-5.5c-2.8-5-9.1-6.7-14.1-3.9s-6.7 9.1-3.9 14.1l51.8 91.7C89.6 138.6 48 207.3 48 288v80c0 17.7 14.3 32 32 32h32v64c0 17.7 14.3 32 32 32s32-14.3 32-32v-64h224v64c0 17.7 14.3 32 32 32s32-14.3 32-32v-64h32c17.7 0 32-14.3 32-32v-80c0-80.7-41.6-149.4-107.4-191.6zM160 256c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm256 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"
+									/>
+								</svg>
+							</span>
+							<span class="mx-2 h-8 w-px shrink-0 bg-white/15" aria-hidden="true"></span>
+							<span
+								class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/35 text-white/65 transition-colors hover:border-white/20 hover:text-white"
+								title="Windows"
+							>
+								<svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+									<path fill="currentColor" d="M2 2h9v9H2V2z" />
+									<path fill="currentColor" d="M13 2h9v9h-9V2z" />
+									<path fill="currentColor" d="M2 13h9v9H2v-9z" />
+									<path fill="currentColor" d="M13 13h9v9h-9v-9z" />
+								</svg>
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<script is:inline>
+					(() => {
+						const root = document.querySelector('[data-ecosystem-selector]');
+						if (!root) return;
+						const tabsWrap = root.querySelector('[data-ecosystem-tabs]');
+						const tabs = tabsWrap ? Array.from(tabsWrap.querySelectorAll('[data-ecosystem-tab]')) : [];
+						const panelsWrap = root.querySelector('[data-ecosystem-panels]');
+						const panels = panelsWrap ? Array.from(panelsWrap.querySelectorAll('[data-ecosystem-panel]')) : [];
+						if (tabs.length < 3 || panels.length < 3) return;
+
+						const ACTIVE_TAB = [
+							'border-transparent',
+							'bg-black/55',
+							'text-[#FF7A1A]',
+							'shadow-[0_0_0_1px_rgba(255,122,26,0.16),0_0_22px_rgba(255,122,26,0.14)]',
+						];
+						const INACTIVE_TAB = ['border-transparent', 'bg-transparent', 'text-white/60'];
+
+						const setActive = (key) => {
+							panels.forEach((p) => {
+								const k = p.getAttribute('data-ecosystem-panel');
+								const active = k === key;
+								p.classList.toggle('invisible', !active);
+								p.classList.toggle('pointer-events-none', !active);
+								p.classList.toggle('z-10', active);
+								p.classList.toggle('z-0', !active);
+								p.setAttribute('aria-hidden', active ? 'false' : 'true');
+							});
+							tabs.forEach((t) => {
+								const k = t.getAttribute('data-ecosystem-tab');
+								const isActive = k === key;
+								t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+								t.classList.remove(...ACTIVE_TAB, ...INACTIVE_TAB);
+								t.classList.add(...(isActive ? ACTIVE_TAB : INACTIVE_TAB));
+							});
+						};
+
+						tabs.forEach((t) => {
+							t.addEventListener('click', () => {
+								const key = t.getAttribute('data-ecosystem-tab');
+								if (!key) return;
+								setActive(key);
+							});
+						});
+					})();
+				</script>
+
+				<div class="hidden" aria-hidden="true">
+				<p class="mt-10 text-xs font-semibold tracking-[0.22em] text-[rgb(255,106,0)]">iPhone &amp; iPad (App Store)</p>
+				<div class="mt-4 grid gap-6 lg:grid-cols-3">
+					<!-- FilmStudio -->
+					<div class="flex flex-col rounded-2xl border border-sky-500/25 bg-black/35 p-6 md:p-7">
+						<div class="flex items-start gap-4">
+							<div class="h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-sky-500/30 bg-black/50">
+								{filmStudioMeta?.artworkUrl512 ? (
+									<img src={filmStudioMeta.artworkUrl512} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+								) : (
+									<div class="grid h-full w-full place-items-center text-sm font-bold text-sky-300">FS</div>
+								)}
+							</div>
+							<div class="min-w-0">
+								<p class="text-lg font-semibold text-white">FilmStudio</p>
+								<span class="mt-2 inline-block rounded-full border border-sky-500/35 bg-sky-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-sky-300">
+									On-set camera control
+								</span>
+							</div>
+						</div>
+						<p class="mt-4 text-sm leading-relaxed text-white/70">
+							Turn your phone into a cinema-ready camera with full manual control, scopes, and timecode.
+						</p>
+						<ul class="mt-5 space-y-2.5 text-sm text-white/80">
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-sky-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Monitor exposure with confidence</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-sky-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Control focus and framing in real time</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-sky-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Capture clean footage ready for post</span>
+							</li>
+						</ul>
+						<a
+							class="mt-6 inline-flex items-center gap-2 text-xs font-semibold text-white/85 hover:text-white"
+							href={storeUrls.filmStudioIos}
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Download on the App Store"
+						>
+							<span class="inline-flex h-11 min-h-[2.75rem] items-center gap-2.5 rounded-full border border-white/15 bg-black px-4 text-white shadow-sm">
+								<svg class="h-5 w-5 shrink-0 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path
+										d="M16.9 13.6c0 2.2 1.9 2.9 1.9 2.9s-1.4 4.1-3.4 4.1c-.9 0-1.6-.6-2.6-.6s-1.8.6-2.9.6c-1.8 0-3.3-3.9-3.3-6.3 0-2.4 1.3-3.7 3-3.7 1 0 1.7.7 2.6.7s1.6-.7 2.9-.7c.5 0 2 .1 3 1.5-.1.1-1.2.7-1.2 1.5Z"
+										stroke="currentColor"
+										stroke-width="1.35"
+										stroke-linejoin="round"
+									/>
+									<path d="M14.9 3.5c.2 1.4-.8 2.9-1.9 3.7-.2-1.3.8-2.8 1.9-3.7Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" />
+								</svg>
+								<span class="flex flex-col justify-center leading-tight">
+									<span class="text-[10px] font-semibold tracking-wide text-white/75">Download on the</span>
+									<span class="text-[13px] font-semibold">App Store</span>
+								</span>
+							</span>
+							<span class="shrink-0 text-white/40" set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+						</a>
+					</div>
+
+					<!-- Anamorphic Desqueezer -->
+					<div class="flex flex-col rounded-2xl border border-[rgb(255,106,0)]/30 bg-black/35 p-6 md:p-7">
+						<div class="flex items-start gap-4">
+							<div class="h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-[rgb(255,106,0)]/35 bg-black/50">
+								{anamorphicMeta?.artworkUrl512 ? (
+									<img src={anamorphicMeta.artworkUrl512} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+								) : (
+									<div class="grid h-full w-full place-items-center text-sm font-bold text-[rgb(255,106,0)]">AD</div>
+								)}
+							</div>
+							<div class="min-w-0">
+								<p class="text-lg font-semibold text-white">Anamorphic Desqueezer</p>
+								<span class="mt-2 inline-block rounded-full border border-[rgb(255,106,0)]/40 bg-[rgb(255,106,0)]/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[rgb(255,200,140)]">
+									Live monitoring &amp; de-squeeze
+								</span>
+							</div>
+						</div>
+						<p class="mt-4 text-sm leading-relaxed text-white/70">
+							Preview and monitor anamorphic footage exactly as it will be delivered.
+						</p>
+						<ul class="mt-5 space-y-2.5 text-sm text-white/80">
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-[rgb(255,160,90)]" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Accurate desqueeze ratios</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-[rgb(255,160,90)]" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Professional scopes and overlays</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-[rgb(255,160,90)]" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Clean handoff to grading and export</span>
+							</li>
+						</ul>
+						<a
+							class="mt-6 inline-flex items-center gap-2 text-xs font-semibold text-white/85 hover:text-white"
+							href={storeUrls.anamorphicApple}
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Download on the App Store"
+						>
+							<span class="inline-flex h-11 min-h-[2.75rem] items-center gap-2.5 rounded-full border border-white/15 bg-black px-4 text-white shadow-sm">
+								<svg class="h-5 w-5 shrink-0 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path
+										d="M16.9 13.6c0 2.2 1.9 2.9 1.9 2.9s-1.4 4.1-3.4 4.1c-.9 0-1.6-.6-2.6-.6s-1.8.6-2.9.6c-1.8 0-3.3-3.9-3.3-6.3 0-2.4 1.3-3.7 3-3.7 1 0 1.7.7 2.6.7s1.6-.7 2.9-.7c.5 0 2 .1 3 1.5-.1.1-1.2.7-1.2 1.5Z"
+										stroke="currentColor"
+										stroke-width="1.35"
+										stroke-linejoin="round"
+									/>
+									<path d="M14.9 3.5c.2 1.4-.8 2.9-1.9 3.7-.2-1.3.8-2.8 1.9-3.7Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" />
+								</svg>
+								<span class="flex flex-col justify-center leading-tight">
+									<span class="text-[10px] font-semibold tracking-wide text-white/75">Download on the</span>
+									<span class="text-[13px] font-semibold">App Store</span>
+								</span>
+							</span>
+							<span class="shrink-0 text-white/40" set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+						</a>
+					</div>
+
+					<!-- MediaUtility (iOS) -->
+					<div class="flex flex-col rounded-2xl border border-emerald-500/25 bg-black/35 p-6 md:p-7">
+						<div class="flex items-start gap-4">
+							<div class="h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-emerald-500/30 bg-black/50">
+								{mediaUtilityMeta?.artworkUrl512 ? (
+									<img src={mediaUtilityMeta.artworkUrl512} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+								) : (
+									<div class="grid h-full w-full place-items-center text-sm font-bold text-emerald-300">MU</div>
+								)}
+							</div>
+							<div class="min-w-0">
+								<p class="text-lg font-semibold text-white">MediaUtility</p>
+								<span class="mt-2 inline-block rounded-full border border-emerald-500/35 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-200">
+									Fast media processing
+								</span>
+							</div>
+						</div>
+						<p class="mt-4 text-base font-semibold leading-snug text-white/95">
+							Fast Media Processing for Real Workflows
+						</p>
+						<p class="mt-2 text-sm leading-relaxed text-white/70">
+							After capture and grading, prepare your footage for delivery in seconds.
+						</p>
+						<ul class="mt-5 space-y-2.5 text-sm text-white/80">
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-emerald-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Compress and resize without trashing your image</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-emerald-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Batch process clips instantly</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-emerald-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Export files ready for clients or platforms</span>
+							</li>
+						</ul>
+						<a
+							class="mt-6 inline-flex items-center gap-2 text-xs font-semibold text-white/85 hover:text-white"
+							href={storeUrls.mediaUtilityIos}
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Download on the App Store"
+						>
+							<span class="inline-flex h-11 min-h-[2.75rem] items-center gap-2.5 rounded-full border border-white/15 bg-black px-4 text-white shadow-sm">
+								<svg class="h-5 w-5 shrink-0 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path
+										d="M16.9 13.6c0 2.2 1.9 2.9 1.9 2.9s-1.4 4.1-3.4 4.1c-.9 0-1.6-.6-2.6-.6s-1.8.6-2.9.6c-1.8 0-3.3-3.9-3.3-6.3 0-2.4 1.3-3.7 3-3.7 1 0 1.7.7 2.6.7s1.6-.7 2.9-.7c.5 0 2 .1 3 1.5-.1.1-1.2.7-1.2 1.5Z"
+										stroke="currentColor"
+										stroke-width="1.35"
+										stroke-linejoin="round"
+									/>
+									<path d="M14.9 3.5c.2 1.4-.8 2.9-1.9 3.7-.2-1.3.8-2.8 1.9-3.7Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" />
+								</svg>
+								<span class="flex flex-col justify-center leading-tight">
+									<span class="text-[10px] font-semibold tracking-wide text-white/75">Download on the</span>
+									<span class="text-[13px] font-semibold">App Store</span>
+								</span>
+							</span>
+							<span class="shrink-0 text-white/40" set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+						</a>
+					</div>
+				</div>
+
+				<p class="mt-12 text-xs font-semibold tracking-[0.22em] text-[rgb(255,106,0)]">macOS (Mac App Store &amp; hub)</p>
+				<div class="mt-4 grid gap-6 sm:grid-cols-2">
+					<div class="flex flex-col rounded-2xl border border-purple-500/30 bg-black/35 p-6 md:p-7">
+						<div class="flex items-start gap-4">
+							<div class="h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-purple-500/35 bg-black/50">
+								{cineLutMeta?.artworkUrl512 ? (
+									<img src={cineLutMeta.artworkUrl512} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+								) : (
+									<div class="grid h-full w-full place-items-center text-sm font-bold text-purple-300">CL</div>
+								)}
+							</div>
+							<div class="min-w-0">
+								<p class="text-lg font-semibold text-white">CineLut Live Grade</p>
+								<span class="mt-2 inline-block rounded-full border border-purple-500/35 bg-purple-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-purple-200">
+									Color &amp; look development
+								</span>
+							</div>
+						</div>
+						<p class="mt-4 text-sm leading-relaxed text-white/70">
+							Grade your footage live and lock your cinematic look while shooting.
+						</p>
+						<ul class="mt-5 space-y-2.5 text-sm text-white/80">
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-purple-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Real-time LUT + CDL</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-purple-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Professional scopes</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-purple-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Ready-to-share dailies</span>
+							</li>
+						</ul>
+						<a
+							class="mt-6 inline-flex items-center gap-2 text-xs font-semibold text-white/85 hover:text-white"
+							href={storeUrls.cineLutMac}
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Download on the Mac App Store"
+						>
+							<span class="inline-flex h-11 min-h-[2.75rem] items-center gap-2.5 rounded-full border border-white/15 bg-black px-4 text-white shadow-sm">
+								<svg class="h-5 w-5 shrink-0 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path
+										d="M16.9 13.6c0 2.2 1.9 2.9 1.9 2.9s-1.4 4.1-3.4 4.1c-.9 0-1.6-.6-2.6-.6s-1.8.6-2.9.6c-1.8 0-3.3-3.9-3.3-6.3 0-2.4 1.3-3.7 3-3.7 1 0 1.7.7 2.6.7s1.6-.7 2.9-.7c.5 0 2 .1 3 1.5-.1.1-1.2.7-1.2 1.5Z"
+										stroke="currentColor"
+										stroke-width="1.35"
+										stroke-linejoin="round"
+									/>
+									<path d="M14.9 3.5c.2 1.4-.8 2.9-1.9 3.7-.2-1.3.8-2.8 1.9-3.7Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" />
+								</svg>
+								<span class="flex flex-col justify-center leading-tight">
+									<span class="text-[10px] font-semibold tracking-wide text-white/75">Download on the</span>
+									<span class="text-[13px] font-semibold">Mac App Store</span>
+								</span>
+							</span>
+							<span class="shrink-0 text-white/40" set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+						</a>
+					</div>
+
+					<div class="flex flex-col rounded-2xl border border-amber-500/25 bg-black/35 p-6 md:p-7">
+						<div class="flex items-start gap-4">
+							<div class="h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-amber-500/30 bg-black/50">
+								{dmsMeta?.artworkUrl512 ? (
+									<img src={dmsMeta.artworkUrl512} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+								) : (
+									<div class="grid h-full w-full place-items-center text-sm font-bold text-amber-200">DMS</div>
+								)}
+							</div>
+							<div class="min-w-0">
+								<p class="text-lg font-semibold text-white">Document System</p>
+								<span class="mt-2 inline-block rounded-full border border-amber-500/35 bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-100">
+									Production organization
+								</span>
+							</div>
+						</div>
+						<p class="mt-4 text-base font-semibold leading-snug text-white/95">
+							Production Organization That Actually Works
+						</p>
+						<p class="mt-2 text-sm leading-relaxed text-white/70">
+							Stop losing files, notes, and shot details across your project.
+						</p>
+						<ul class="mt-5 space-y-2.5 text-sm text-white/80">
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-amber-300" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Keep all production data in one place</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-amber-300" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Track shots, notes, and continuity</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-amber-300" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Find anything instantly during post</span>
+							</li>
+						</ul>
+						<a
+							class="mt-6 inline-flex items-center gap-2 text-xs font-semibold text-white/85 hover:text-white"
+							href={storeUrls.dmsMac}
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Download on the Mac App Store"
+						>
+							<span class="inline-flex h-11 min-h-[2.75rem] items-center gap-2.5 rounded-full border border-white/15 bg-black px-4 text-white shadow-sm">
+								<svg class="h-5 w-5 shrink-0 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path
+										d="M16.9 13.6c0 2.2 1.9 2.9 1.9 2.9s-1.4 4.1-3.4 4.1c-.9 0-1.6-.6-2.6-.6s-1.8.6-2.9.6c-1.8 0-3.3-3.9-3.3-6.3 0-2.4 1.3-3.7 3-3.7 1 0 1.7.7 2.6.7s1.6-.7 2.9-.7c.5 0 2 .1 3 1.5-.1.1-1.2.7-1.2 1.5Z"
+										stroke="currentColor"
+										stroke-width="1.35"
+										stroke-linejoin="round"
+									/>
+									<path d="M14.9 3.5c.2 1.4-.8 2.9-1.9 3.7-.2-1.3.8-2.8 1.9-3.7Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" />
+								</svg>
+								<span class="flex flex-col justify-center leading-tight">
+									<span class="text-[10px] font-semibold tracking-wide text-white/75">Download on the</span>
+									<span class="text-[13px] font-semibold">Mac App Store</span>
+								</span>
+							</span>
+							<span class="shrink-0 text-white/40" set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+						</a>
+					</div>
+
+					<div class="flex flex-col rounded-2xl border border-[rgb(255,106,0)]/30 bg-black/35 p-6 md:p-7">
+						<div class="flex items-start gap-4">
+							<div class="h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-[rgb(255,106,0)]/35 bg-black/50">
+								{anamorphicMeta?.artworkUrl512 ? (
+									<img src={anamorphicMeta.artworkUrl512} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+								) : (
+									<div class="grid h-full w-full place-items-center text-sm font-bold text-[rgb(255,106,0)]">AD</div>
+								)}
+							</div>
+							<div class="min-w-0">
+								<p class="text-lg font-semibold text-white">Anamorphic Desqueezer</p>
+								<span class="mt-2 inline-block rounded-full border border-[rgb(255,106,0)]/40 bg-[rgb(255,106,0)]/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[rgb(255,200,140)]">
+									Mac · Apple Silicon
+								</span>
+							</div>
+						</div>
+						<p class="mt-4 text-sm leading-relaxed text-white/70">
+							Post de-squeeze on Mac with the same geometry you trusted on set — same App Store listing as iOS where universal purchase applies.
+						</p>
+						<ul class="mt-5 space-y-2.5 text-sm text-white/80">
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-[rgb(255,160,90)]" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Honest CinemaScope geometry for editorial</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-[rgb(255,160,90)]" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Batch and export paths that match your iOS setup</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-[rgb(255,160,90)]" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Built for Apple Silicon post workflows</span>
+							</li>
+						</ul>
+						<a
+							class="mt-6 inline-flex items-center gap-2 text-xs font-semibold text-white/85 hover:text-white"
+							href={storeUrls.anamorphicApple}
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Download on the Mac App Store"
+						>
+							<span class="inline-flex h-11 min-h-[2.75rem] items-center gap-2.5 rounded-full border border-white/15 bg-black px-4 text-white shadow-sm">
+								<svg class="h-5 w-5 shrink-0 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path
+										d="M16.9 13.6c0 2.2 1.9 2.9 1.9 2.9s-1.4 4.1-3.4 4.1c-.9 0-1.6-.6-2.6-.6s-1.8.6-2.9.6c-1.8 0-3.3-3.9-3.3-6.3 0-2.4 1.3-3.7 3-3.7 1 0 1.7.7 2.6.7s1.6-.7 2.9-.7c.5 0 2 .1 3 1.5-.1.1-1.2.7-1.2 1.5Z"
+										stroke="currentColor"
+										stroke-width="1.35"
+										stroke-linejoin="round"
+									/>
+									<path d="M14.9 3.5c.2 1.4-.8 2.9-1.9 3.7-.2-1.3.8-2.8 1.9-3.7Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" />
+								</svg>
+								<span class="flex flex-col justify-center leading-tight">
+									<span class="text-[10px] font-semibold tracking-wide text-white/75">Download on the</span>
+									<span class="text-[13px] font-semibold">Mac App Store</span>
+								</span>
+							</span>
+							<span class="shrink-0 text-white/40" set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+						</a>
+					</div>
+
+					<div class="flex flex-col rounded-2xl border border-emerald-500/25 bg-black/35 p-6 md:p-7">
+						<div class="flex items-start gap-4">
+							<div class="h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-emerald-500/30 bg-black/50">
+								{mediaUtilityMeta?.artworkUrl512 ? (
+									<img src={mediaUtilityMeta.artworkUrl512} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+								) : (
+									<div class="grid h-full w-full place-items-center text-sm font-bold text-emerald-300">MU</div>
+								)}
+							</div>
+							<div class="min-w-0">
+								<p class="text-lg font-semibold text-white">MediaUtility (Mac)</p>
+								<span class="mt-2 inline-block rounded-full border border-emerald-500/35 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-200">
+									Fast media processing
+								</span>
+							</div>
+						</div>
+						<p class="mt-4 text-base font-semibold leading-snug text-white/95">
+							Fast Media Processing for Real Workflows
+						</p>
+						<p class="mt-2 text-sm leading-relaxed text-white/70">
+							After capture and grading, prepare your footage for delivery in seconds — same App Store listing as iPhone and iPad when
+							universal purchase applies.
+						</p>
+						<ul class="mt-5 space-y-2.5 text-sm text-white/80">
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-emerald-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Compress and resize without trashing your image</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-emerald-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Batch process clips instantly</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-emerald-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Export files ready for clients or platforms</span>
+							</li>
+						</ul>
+						<a
+							class="mt-6 inline-flex items-center gap-2 text-xs font-semibold text-white/85 hover:text-white"
+							href={storeUrls.mediaUtilityMac}
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Download on the Mac App Store"
+						>
+							<span class="inline-flex h-11 min-h-[2.75rem] items-center gap-2.5 rounded-full border border-white/15 bg-black px-4 text-white shadow-sm">
+								<svg class="h-5 w-5 shrink-0 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path
+										d="M16.9 13.6c0 2.2 1.9 2.9 1.9 2.9s-1.4 4.1-3.4 4.1c-.9 0-1.6-.6-2.6-.6s-1.8.6-2.9.6c-1.8 0-3.3-3.9-3.3-6.3 0-2.4 1.3-3.7 3-3.7 1 0 1.7.7 2.6.7s1.6-.7 2.9-.7c.5 0 2 .1 3 1.5-.1.1-1.2.7-1.2 1.5Z"
+										stroke="currentColor"
+										stroke-width="1.35"
+										stroke-linejoin="round"
+									/>
+									<path d="M14.9 3.5c.2 1.4-.8 2.9-1.9 3.7-.2-1.3.8-2.8 1.9-3.7Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" />
+								</svg>
+								<span class="flex flex-col justify-center leading-tight">
+									<span class="text-[10px] font-semibold tracking-wide text-white/75">Download on the</span>
+									<span class="text-[13px] font-semibold">Mac App Store</span>
+								</span>
+							</span>
+							<span class="shrink-0 text-white/40" set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+						</a>
+					</div>
+				</div>
+
+				<p class="mt-12 text-xs font-semibold tracking-[0.22em] text-[rgb(255,106,0)]">Android (Google Play)</p>
+				<div class="mt-4 grid gap-4 md:grid-cols-2">
+					<div class="flex flex-col rounded-2xl border border-white/10 bg-black/30 p-5 md:flex-row md:items-start md:gap-5">
+						<div class="flex shrink-0 items-start gap-3">
+							<div class="h-12 w-12 overflow-hidden rounded-xl border border-white/10 bg-black/50">
+								{anamorphicMeta?.artworkUrl512 ? (
+									<img src={anamorphicMeta.artworkUrl512} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+								) : (
+									<div class="grid h-full w-full place-items-center text-[10px] font-bold text-white/50">AD</div>
+								)}
+							</div>
+							<div class="min-w-0 md:hidden">
+								<p class="text-[10px] font-semibold uppercase tracking-wide text-white/55">Android</p>
+								<p class="text-sm font-semibold text-white">Anamorphic Desqueeze</p>
+							</div>
+						</div>
+						<div class="min-w-0 flex-1 pt-4 md:pt-0">
+							<p class="hidden text-[10px] font-semibold uppercase tracking-wide text-white/55 md:block">Android</p>
+							<p class="hidden text-sm font-semibold text-white md:block">Anamorphic Desqueeze</p>
+							<p class="mt-2 text-sm text-white/70">
+								Finish the pipeline on Android: batch de-squeeze, LUT, and 4K export when you’re away from the cart.
+							</p>
+							<ul class="mt-3 space-y-1.5 text-sm text-white/70">
+								<li class="flex gap-2">
+									<span class="mt-0.5 shrink-0 text-emerald-400" set:html={lucideSvg(Check, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+									<span>Batch pipeline for editorial handoff</span>
+								</li>
+								<li class="flex gap-2">
+									<span class="mt-0.5 shrink-0 text-emerald-400" set:html={lucideSvg(Check, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+									<span>LUT + high-res export path</span>
+								</li>
+							</ul>
+							<div class="mt-4 flex flex-wrap gap-3 text-xs font-semibold">
+								<a
+									class="inline-flex items-center gap-2 text-white/85 hover:text-white"
+									href={storeUrls.androidDesqueeze}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<span class="inline-flex h-11 min-h-[2.75rem] items-center gap-2.5 rounded-full border border-white/15 bg-black px-4 text-white shadow-sm">
+										<svg class="h-5 w-5 shrink-0" viewBox="0 0 512 512" aria-hidden="true">
+											<path fill="#00A0FF" d="M93.09 72.3c-8.86 9.4-14.32 24.08-14.32 43.33v280.74c0 19.25 5.46 33.93 14.32 43.33l2.3 2.26L259.2 256 95.39 70.04l-2.3 2.26z" />
+											<path fill="#00D2FF" d="M314.84 201.01 259.2 256l55.64 54.99 69.16-38.74c19.73-11.05 32.91-24.3 32.91-38.25s-13.18-27.2-32.91-38.25l-69.16-38.74z" />
+											<path fill="#FFCE00" d="M95.39 441.96c9.83 10.42 24.84 12.55 45.33.98l174.34-98.09-55.86-55.2L95.39 441.96z" />
+											<path fill="#FF3D57" d="M140.72 69.06c-20.49-11.57-35.5-9.44-45.33.98L259.2 222.35l55.86-55.2L140.72 69.06z" />
+											<path fill="#32A071" d="M95.39 70.04 259.2 222.35l55.86-55.2-174.34-98.09z" />
+										</svg>
+										<span class="flex flex-col justify-center leading-tight">
+											<span class="text-[10px] font-semibold tracking-wide text-white/75">GET IT ON</span>
+											<span class="text-[13px] font-semibold">Google Play</span>
+										</span>
+									</span>
+									<span class="shrink-0 text-white/40" set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="flex flex-col rounded-2xl border border-[rgb(255,106,0)]/20 bg-black/30 p-5 md:flex-row md:items-start md:gap-5">
+						<div class="flex shrink-0 items-start gap-3">
+							<div class="h-12 w-12 overflow-hidden rounded-xl border border-[rgb(255,106,0)]/25 bg-black/50">
+								{anamorphicMeta?.artworkUrl512 ? (
+									<img src={anamorphicMeta.artworkUrl512} alt="" class="h-full w-full object-cover opacity-90" loading="lazy" decoding="async" />
+								) : (
+									<div class="grid h-full w-full place-items-center text-[10px] font-bold text-[rgb(255,160,90)]">CAM</div>
+								)}
+							</div>
+							<div class="min-w-0 md:hidden">
+								<p class="text-[10px] font-semibold uppercase tracking-wide text-white/55">Android</p>
+								<p class="text-sm font-semibold text-white">Anamorphic Desqueeze Pro Cam</p>
+							</div>
+						</div>
+						<div class="min-w-0 flex-1 pt-4 md:pt-0">
+							<p class="hidden text-[10px] font-semibold uppercase tracking-wide text-white/55 md:block">Android</p>
+							<p class="hidden text-sm font-semibold text-white md:block">Anamorphic Desqueeze Pro Cam</p>
+							<p class="mt-2 text-sm text-white/70">
+								Live monitoring and capture on Android so your ratio and scopes match what the suite expects upstream.
+							</p>
+							<ul class="mt-3 space-y-1.5 text-sm text-white/70">
+								<li class="flex gap-2">
+									<span class="mt-0.5 shrink-0 text-[rgb(255,160,90)]" set:html={lucideSvg(Check, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+									<span>Live de-squeeze preview while rolling</span>
+								</li>
+								<li class="flex gap-2">
+									<span class="mt-0.5 shrink-0 text-[rgb(255,160,90)]" set:html={lucideSvg(Check, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+									<span>Scopes tuned for exposure confidence</span>
+								</li>
+							</ul>
+							<div class="mt-4 flex flex-wrap gap-3 text-xs font-semibold">
+								<a
+									class="inline-flex items-center gap-2 text-white/85 hover:text-white"
+									href={storeUrls.androidProCam}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<span class="inline-flex h-11 min-h-[2.75rem] items-center gap-2.5 rounded-full border border-white/15 bg-black px-4 text-white shadow-sm">
+										<svg class="h-5 w-5 shrink-0" viewBox="0 0 512 512" aria-hidden="true">
+											<path fill="#00A0FF" d="M93.09 72.3c-8.86 9.4-14.32 24.08-14.32 43.33v280.74c0 19.25 5.46 33.93 14.32 43.33l2.3 2.26L259.2 256 95.39 70.04l-2.3 2.26z" />
+											<path fill="#00D2FF" d="M314.84 201.01 259.2 256l55.64 54.99 69.16-38.74c19.73-11.05 32.91-24.3 32.91-38.25s-13.18-27.2-32.91-38.25l-69.16-38.74z" />
+											<path fill="#FFCE00" d="M95.39 441.96c9.83 10.42 24.84 12.55 45.33.98l174.34-98.09-55.86-55.2L95.39 441.96z" />
+											<path fill="#FF3D57" d="M140.72 69.06c-20.49-11.57-35.5-9.44-45.33.98L259.2 222.35l55.86-55.2L140.72 69.06z" />
+											<path fill="#32A071" d="M95.39 70.04 259.2 222.35l55.86-55.2-174.34-98.09z" />
+										</svg>
+										<span class="flex flex-col justify-center leading-tight">
+											<span class="text-[10px] font-semibold tracking-wide text-white/75">GET IT ON</span>
+											<span class="text-[13px] font-semibold">Google Play</span>
+										</span>
+									</span>
+									<span class="shrink-0 text-white/40" set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<p class="mt-12 text-xs font-semibold tracking-[0.22em] text-[rgb(255,106,0)]">Windows (Microsoft Store)</p>
+				<div class="mt-4 grid gap-6 rounded-2xl border border-sky-500/25 bg-black/30 p-6 md:grid-cols-2 md:p-8">
+					<div class="flex gap-4">
+						<div class="h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-sky-500/30 bg-black/50">
+							{anamorphicMeta?.artworkUrl512 ? (
+								<img src={anamorphicMeta.artworkUrl512} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+							) : (
+								<div class="grid h-full w-full place-items-center text-xs font-bold text-sky-300">AD</div>
+							)}
+						</div>
+						<div class="min-w-0">
+							<p class="text-lg font-semibold text-white">AnamorphicDesqueezePro</p>
+							<span class="mt-2 inline-block rounded-full border border-sky-500/35 bg-sky-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-sky-200">
+								Windows
+							</span>
+							<p class="mt-3 text-sm text-white/70">
+								Desktop batch de-squeeze, LUT, and EDL for PC dailies — slots into the same pipeline as Mac, iPad, and Android so nothing
+								gets rebuilt by hand.
+							</p>
+						</div>
+					</div>
+					<div class="flex flex-col justify-between gap-4 border-t border-white/10 pt-6 md:border-l md:border-t-0 md:pl-8 md:pt-0">
+						<ul class="space-y-2 text-sm text-white/75">
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-sky-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>CinemaScope timelines with accurate de-squeeze</span>
+							</li>
+							<li class="flex gap-2">
+								<span class="mt-0.5 shrink-0 text-sky-400" set:html={lucideSvg(Check, 'h-4 w-4', 16)} aria-hidden="true" />
+								<span>Batch processing, LUT, and EDL export for editorial</span>
+							</li>
+						</ul>
+						<div class="flex flex-wrap gap-3 text-xs font-semibold">
+							<a
+								class="inline-flex items-center gap-2 text-white/85 hover:text-white"
+								href={storeUrls.windowsPro}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<span class="inline-flex h-11 min-h-[2.75rem] items-center gap-2.5 rounded-full border border-white/15 bg-black px-4 text-white shadow-sm">
+									<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+										<path fill="#F25022" d="M2 2h9v9H2V2z" />
+										<path fill="#7FBA00" d="M13 2h9v9h-9V2z" />
+										<path fill="#00A4EF" d="M2 13h9v9H2v-9z" />
+										<path fill="#FFB900" d="M13 13h9v9h-9v-9z" />
+									</svg>
+									<span class="flex flex-col justify-center leading-tight">
+										<span class="text-[10px] font-semibold tracking-wide text-white/75">Get it from</span>
+										<span class="text-[13px] font-semibold">Microsoft Store</span>
+									</span>
+								</span>
+								<span class="shrink-0 text-white/40" set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="mt-10 flex flex-col gap-4 rounded-2xl border border-white/10 bg-black/35 p-5 md:flex-row md:items-center md:justify-between md:p-6 hidden">
+					<div class="flex items-start gap-3">
+						<span class="mt-0.5 shrink-0 text-white/70" set:html={lucideSvg(Globe, 'h-5 w-5', 20)} aria-hidden="true" />
+						<div>
+							<p class="text-[10px] font-semibold uppercase tracking-wide text-white/55">Ecosystem hub</p>
+							<p class="mt-1 text-sm text-white/75">
+								<span class="font-semibold text-white">anamorphic-desqueeze.com</span> — official downloads, MediaUtility hub, and news for
+								the full DeSqueeze Studio line-up.
+							</p>
+						</div>
+					</div>
+					<a
+						class="inline-flex items-center justify-center gap-2 self-stretch rounded-full border border-white/15 bg-white/[0.08] px-4 py-2.5 text-xs font-semibold text-white/90 hover:bg-white/[0.12] md:self-auto"
+						href={storeUrls.website}
+					>
+						Visit official site
+						<span set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+					</a>
+				</div>
+			</div>
+			</div>
+		</section>
+
+		<section id="features" class="border-y border-white/10 bg-white/[0.02]">
+			<div class="page-shell py-16 md:py-24">
+				<h2 class="text-2xl font-semibold tracking-tight md:text-4xl">Features that matter on set.</h2>
+				<p class="mt-3 max-w-2xl text-white/70">
+					No clutter. Just the controls cinematographers and editors reach for under real time pressure.
+				</p>
+
+				<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					<div class="rounded-2xl border border-white/10 bg-black/40 p-6">
+						<p class="text-sm font-semibold">Sticky preview</p>
+						<p class="mt-2 text-sm text-white/70">See your framing and look as you work—no mode switching.</p>
+					</div>
+					<div class="rounded-2xl border border-white/10 bg-black/40 p-6">
+						<p class="text-sm font-semibold">Real-time LUT</p>
+						<p class="mt-2 text-sm text-white/70">Preview 3D LUTs and keep look intent consistent.</p>
+					</div>
+					<div class="rounded-2xl border border-white/10 bg-black/40 p-6">
+						<p class="text-sm font-semibold">CDL controls</p>
+						<p class="mt-2 text-sm text-white/70">Slope/offset/power-style primaries tuned for set speed.</p>
+					</div>
+					<div class="rounded-2xl border border-white/10 bg-black/40 p-6">
+						<p class="text-sm font-semibold">Scopes</p>
+						<p class="mt-2 text-sm text-white/70">Waveform, vectors, false color—confidence when it counts.</p>
+					</div>
+					<div class="rounded-2xl border border-white/10 bg-black/40 p-6">
+						<p class="text-sm font-semibold">Timecode-ready</p>
+						<p class="mt-2 text-sm text-white/70">Metadata and handoff that keeps teams aligned.</p>
+					</div>
+					<div class="rounded-2xl border border-white/10 bg-black/40 p-6">
+						<p class="text-sm font-semibold">Instant output</p>
+						<p class="mt-2 text-sm text-white/70">Exports designed to move fast into post and delivery.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="before-after" class="page-shell py-16 md:py-24">
+			<h2 class="text-2xl font-semibold tracking-tight md:text-4xl">See the difference instantly.</h2>
+			<p class="mt-3 max-w-2xl text-white/70">
+				Drag the slider to compare squeezed vs desqueezed with a cinematic look applied.
+			</p>
+
+			<div class="mt-10 rounded-3xl border border-white/10 bg-white/[0.03] p-4 md:p-6">
+				<div class="relative overflow-hidden rounded-2xl border border-white/10 bg-black" data-ba-root>
+					<div class="aspect-[16/9]">
+						<div class="absolute inset-0 bg-gradient-to-br from-white/15 to-white/0"></div>
+						<div class="absolute inset-0 opacity-25 [background:radial-gradient(80%_60%_at_50%_30%,rgba(255,106,0,0.18),transparent_60%)]"></div>
+						<div
+							class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+							style="background-image:url('/images/before-after/after-desqueezed-lut.png')"
+							data-ba-after
+							aria-label="After: desqueezed with LUT applied"
+						></div>
+						<div class="absolute inset-y-0 left-0 w-1/2 overflow-hidden" data-ba-before>
+							<div
+								class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+								style="background-image:url('/images/before-after/before-squeezed.png')"
+								aria-label="Before: squeezed"
+							></div>
+							<div class="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.06),rgba(255,255,255,0.00))]"></div>
+						</div>
+						<div class="absolute inset-y-0 left-1/2 w-px bg-white/50 cursor-ew-resize" data-ba-divider></div>
+						<button
+							class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/30 bg-black/40 px-4 py-2 text-xs font-semibold text-white/90 backdrop-blur cursor-ew-resize transition-[box-shadow,border-color,background-color] hover:border-[#FF7A1A]/45 hover:bg-black/55 hover:shadow-[0_0_0_4px_rgba(255,122,26,0.12)] focus:outline-none focus:ring-2 focus:ring-[#FF7A1A]/30"
+							type="button"
+							aria-label="Drag slider"
+							data-ba-handle
+						>
+							Drag
+						</button>
+					</div>
+				</div>
+
+				<div class="mt-6 grid gap-4 md:grid-cols-2 md:items-center">
+					<div>
+						<p class="text-sm font-semibold text-white/90">Before / After</p>
+						<p class="mt-2 text-sm text-white/70">
+							Real frames: squeezed capture vs desqueezed output with a cinematic look applied.
+						</p>
+					</div>
+					<div id="trust" class="flex flex-wrap items-center justify-start gap-6 text-sm text-white/45 md:justify-end">
+						<span class="font-semibold tracking-wide">ARRI</span>
+						<span class="font-semibold tracking-wide">RED</span>
+						<span class="font-semibold tracking-wide">Blackmagic</span>
+						<span class="font-semibold tracking-wide">Panasonic</span>
+					</div>
+				</div>
+		</section>
+
+		<section id="faq" class="border-t border-white/10 bg-white/[0.02]">
+			<div class="page-shell py-16 md:py-24">
+				<h2 class="text-2xl font-semibold tracking-tight md:text-3xl">FAQ</h2>
+				<div class="mt-10 grid gap-6 md:grid-cols-2">
+					<div class="rounded-2xl border border-white/10 bg-black/40 p-6">
+						<h3 class="text-sm font-semibold">Do I need an NLE?</h3>
+						<p class="mt-2 text-sm text-white/70">
+							No. Use the suite for monitoring, capture, and live looks. Editorial can stay in the tools they already use.
+						</p>
+					</div>
+					<div class="rounded-2xl border border-white/10 bg-black/40 p-6">
+						<h3 class="text-sm font-semibold">Does it support common anamorphic ratios?</h3>
+						<p class="mt-2 text-sm text-white/70">
+							Yes—common squeeze factors and custom math for unusual lenses.
+						</p>
+					</div>
+					<div class="rounded-2xl border border-white/10 bg-black/40 p-6">
+						<h3 class="text-sm font-semibold">How do exports hand off to editorial?</h3>
+						<p class="mt-2 text-sm text-white/70">
+							The apps are designed around clean export paths, preserving geometry and look intent for the next stage.
+						</p>
+					</div>
+					<div class="rounded-2xl border border-white/10 bg-black/40 p-6">
+						<h3 class="text-sm font-semibold">Is this optimized for mobile and tablets?</h3>
+						<p class="mt-2 text-sm text-white/70">
+							Yes—responsive layout, performance-first media, and reduced-motion support.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="contact" class="border-t border-white/10 bg-black">
+			<div class="page-shell py-16 md:py-24">
+				<h2 class="mx-auto max-w-2xl text-2xl font-semibold tracking-tight md:text-4xl">Contact us</h2>
+				<p class="mx-auto mt-3 max-w-2xl text-white/70">
+					Questions, feedback, a bug report, or want to collaborate? Send a message and we’ll reply by email.
+				</p>
+				<div class="mx-auto mt-4 flex max-w-2xl flex-wrap items-center gap-3 text-sm text-white/65">
+					<span class="text-white/50">Or email us directly:</span>
+					<span class="font-semibold text-white/85" data-direct-email>teamcentersap@gmail.com</span>
+					<button
+						type="button"
+						class="inline-flex h-8 items-center justify-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 text-xs font-semibold text-white/75 hover:bg-white/[0.06] focus:outline-none focus:ring-2 focus:ring-white/20"
+						data-copy-email
+					>
+						<svg class="hidden h-4 w-4 text-white/80" viewBox="0 0 24 24" fill="none" aria-hidden="true" data-copy-check>
+							<path
+								d="M20 6L9 17l-5-5"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
+						<span data-copy-label>Copy</span>
+					</button>
+					<span class="sr-only" aria-live="polite" data-copy-status></span>
+				</div>
+
+				<div class="mt-10">
+					<form
+						class="mx-auto max-w-2xl rounded-3xl border border-white/10 bg-white/[0.03] p-6"
+						data-contact-form
+						novalidate
+					>
+						<div class="grid gap-4">
+							<label class="grid gap-2 text-sm font-semibold text-white/80">
+								Name
+								<input
+									class="h-11 rounded-xl border border-white/10 bg-black/40 px-4 text-sm text-white outline-none focus:border-white/25"
+									type="text"
+									name="name"
+									required
+									autocomplete="name"
+								/>
+							</label>
+							<label class="grid gap-2 text-sm font-semibold text-white/80">
+								Email address
+								<input
+									class="h-11 rounded-xl border border-white/10 bg-black/40 px-4 text-sm text-white outline-none focus:border-white/25"
+									type="email"
+									name="email"
+									required
+									autocomplete="email"
+									inputmode="email"
+									aria-describedby="email-error"
+									data-contact-email
+								/>
+								<span id="email-error" class="text-xs font-medium text-[#ff6a00] hidden" data-email-error>
+									Please enter a valid email address.
+								</span>
+							</label>
+							<div class="grid gap-2 text-sm font-semibold text-white/80">
+								<span id="topic-label">Topic</span>
+								<input type="hidden" name="topic" value="Collaboration" data-topic-input />
+								<div class="relative">
+									<button
+										class="flex h-11 w-full items-center justify-between rounded-xl border border-white/10 bg-black/40 px-4 text-left text-sm text-white outline-none transition focus:border-white/25 focus:ring-2 focus:ring-white/10"
+										type="button"
+										aria-haspopup="listbox"
+										aria-expanded="false"
+										aria-labelledby="topic-label"
+										data-topic-trigger
+									>
+										<span class="font-semibold text-white/90" data-topic-value>Collaboration</span>
+										<svg class="h-4 w-4 text-white/60" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+											<path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+										</svg>
+									</button>
+
+									<div
+										class="absolute left-0 right-0 z-20 mt-2 hidden overflow-hidden rounded-2xl border border-white/10 bg-black/95 shadow-[0_20px_60px_rgba(0,0,0,0.7)] backdrop-blur"
+										role="listbox"
+										aria-labelledby="topic-label"
+										data-topic-list
+									>
+										<button
+											type="button"
+											role="option"
+											class="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm text-white/90 hover:bg-white/5"
+											data-topic-option="Collaboration"
+										>
+											<span>Collaboration</span>
+										</button>
+										<button
+											type="button"
+											role="option"
+											aria-selected="false"
+											class="w-full px-4 py-2.5 text-left text-sm text-white/85 hover:bg-white/5"
+											data-topic-option="Technical support"
+										>
+											Technical support
+										</button>
+										<button
+											type="button"
+											role="option"
+											aria-selected="false"
+											class="w-full px-4 py-2.5 text-left text-sm text-white/85 hover:bg-white/5"
+											data-topic-option="Bug report"
+										>
+											Bug report
+										</button>
+										<button
+											type="button"
+											role="option"
+											aria-selected="false"
+											class="w-full px-4 py-2.5 text-left text-sm text-white/85 hover:bg-white/5"
+											data-topic-option="Press / media"
+										>
+											Press / media
+										</button>
+										<button
+											type="button"
+											role="option"
+											aria-selected="false"
+											class="w-full px-4 py-2.5 text-left text-sm text-white/85 hover:bg-white/5"
+											data-topic-option="Other"
+										>
+											Other
+										</button>
+									</div>
+								</div>
+							</div>
+							<label class="grid gap-2 text-sm font-semibold text-white/80">
+								Message
+								<textarea
+									class="min-h-32 resize-y rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white outline-none focus:border-white/25"
+									name="message"
+									required
+									maxlength="2000"
+									placeholder="Tell us what you’re trying to do, device, and what you’re seeing."
+								></textarea>
+								<span class="text-xs font-medium text-white/45">Max 2000 characters.</span>
+							</label>
+						</div>
+
+						<div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+							<button
+								class="inline-flex h-11 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-black hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/40"
+								type="submit"
+							>
+								Send
+							</button>
+							<p class="text-xs text-white/50" data-contact-status></p>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+
+		<SiteFooter />
+
+	</main>
+
+	<button
+		class="fixed bottom-5 right-5 z-40 hidden items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-3 text-xs font-semibold text-white/90 shadow-lg backdrop-blur transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30"
+		type="button"
+		aria-label="Scroll to top"
+		data-scroll-top
+	>
+		<span class="text-sm leading-none">↑</span>
+		<span class="hidden sm:inline">Top</span>
+	</button>
+</Layout>

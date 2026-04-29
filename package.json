@@ -1,34 +1,26 @@
 {
-  "name": "desqueeze-site",
-  "version": "1.0.0",
-  "description": "Static site: Tailwind build + Playwright device QA for responsive shell.",
-  "main": "app.js",
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
+  "name": "sanjay-site",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
   },
   "scripts": {
-    "build:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css -m",
-    "dev:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --watch",
-    "test:devices": "playwright test",
-    "test": "npm run test:devices"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CinematicLens/desqueeze-site.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/CinematicLens/desqueeze-site/issues"
-  },
-  "homepage": "https://github.com/CinematicLens/desqueeze-site#readme",
-  "devDependencies": {
-    "@playwright/test": "^1.52.0",
-    "@tailwindcss/cli": "^4.2.4",
-    "http-server": "^14.1.1",
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "astro": "^6.1.9",
+    "lucide": "^1.11.0",
     "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1"
   }
 }
