@@ -65,17 +65,18 @@ test.describe('Filmmaking suite landing', () => {
   test('contact form has required fields and message length limit', async ({ page }) => {
     await page.goto('/#contact', { waitUntil: 'domcontentloaded' });
     await expect(page.getByRole('heading', { name: /contact us/i })).toBeVisible();
-    await expect(page.getByRole('textbox', { name: /^name$/i })).toHaveAttribute('required', '');
-    await expect(page.getByRole('textbox', { name: /email address/i })).toHaveAttribute('required', '');
-    await expect(page.getByRole('button', { name: /topic/i })).toBeVisible();
-    const message = page.getByRole('textbox', { name: /message/i });
+    const contactForm = page.locator('[data-contact-form]');
+    await expect(contactForm.getByRole('textbox', { name: /^name$/i })).toHaveAttribute('required', '');
+    await expect(contactForm.getByRole('textbox', { name: /email address/i })).toHaveAttribute('required', '');
+    await expect(contactForm.getByRole('button', { name: /topic/i })).toBeVisible();
+    const message = contactForm.getByRole('textbox', { name: /message/i });
     await expect(message).toHaveAttribute('required', '');
     await expect(message).toHaveAttribute('maxlength', '2000');
   });
 
   test('email validation error clears when fixed', async ({ page }) => {
     await page.goto('/#contact', { waitUntil: 'domcontentloaded' });
-    const email = page.getByRole('textbox', { name: /email address/i });
+    const email = page.locator('[data-contact-form]').getByRole('textbox', { name: /email address/i });
     const error = page.getByText(/please enter a valid email address/i);
 
     await email.fill('korde.sanjay@gmail');
