@@ -25,79 +25,192 @@ const startHereCardBase =
 			</div>
 
 			<div class="page-shell relative z-10 py-14 md:py-20">
-				<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">ANAMORPHIC GUIDE</p>
-				<h1 class="mt-3 max-w-4xl text-balance text-3xl font-semibold tracking-tight text-white md:text-5xl">
-					How to De-Squeeze 1.33× Anamorphic Footage
-				</h1>
-				<p class="mt-4 max-w-3xl text-pretty text-base leading-relaxed text-white/70 md:text-lg">
-					Fix squeezed footage from Moment, Sirui, Moondog Labs, and other anamorphic lenses — preview, correct, and export for a clean
-					cinematic frame.
-				</p>
+				<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-md md:p-8">
+					<div
+						class="pointer-events-none absolute left-1/2 top-16 h-[220px] w-[520px] -translate-x-1/2 rounded-full blur-3xl opacity-60 [background:radial-gradient(closest-side,rgba(255,122,26,0.18),transparent)]"
+						aria-hidden="true"
+					></div>
 
-				<div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-					<a
-						class={`${downloadAppsButtonClass} gap-2`}
-						href="/#suite-apps"
-					>
-						Explore Apps
-						<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
-					</a>
-				</div>
+					<div class="relative grid gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-start">
+						<div class="min-w-0">
+							<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">ANAMORPHIC GUIDE</p>
+							<h1 class="mt-3 max-w-4xl text-balance text-3xl font-semibold tracking-tight text-white md:text-5xl">
+								How to De-Squeeze 1.33× Anamorphic Footage
+							</h1>
+							<p class="mt-4 max-w-3xl text-pretty text-base leading-relaxed text-white/70 md:text-lg">
+								Fix squeezed footage from Moment, Sirui, Moondog Labs, and other anamorphic lenses — preview, correct, and export for a clean
+								cinematic frame.
+							</p>
 
-				<div class="mt-10 grid gap-3 md:grid-cols-3">
-					<div class={`${startHereCardBase} border-white/10 bg-white/[0.02] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]`}>
-						<span
-							class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#FF7A1A]/10 text-[#FF7A1A]"
-							set:html={lucideSvg(Zap, 'h-5 w-5', 20)}
-							aria-hidden="true"
-						></span>
-						<span class="min-w-0 flex-1">
-							<span class="block text-xs font-semibold tracking-[0.18em] text-white/55">FAST</span>
-							<span class="mt-1 block text-sm font-semibold text-white">Preview the right framing</span>
-							<span class="mt-1 block text-sm leading-relaxed text-white/60">Confirm squeeze ratio before you commit to an edit.</span>
-						</span>
-						<span class="text-white/40 group-hover:text-white/70" set:html={lucideSvg(ChevronRight, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
-					</div>
+							<div class="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+								<a class={`${downloadAppsButtonClass} gap-2`} href="/#ecosystem">
+									Explore Apps
+									<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+								<a
+									class="inline-flex items-center justify-center gap-2 self-start rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/[0.10] sm:self-auto"
+									href="#workflow"
+								>
+									See workflow
+									<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+							</div>
+						</div>
 
-					<div class={`${startHereCardBase} border-white/10 bg-white/[0.02] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]`}>
-						<span
-							class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#FF7A1A]/10 text-[#FF7A1A]"
-							set:html={lucideSvg(Download, 'h-5 w-5', 20)}
-							aria-hidden="true"
-						></span>
-						<span class="min-w-0 flex-1">
-							<span class="block text-xs font-semibold tracking-[0.18em] text-white/55">CLEAN</span>
-							<span class="mt-1 block text-sm font-semibold text-white">Export corrected files</span>
-							<span class="mt-1 block text-sm leading-relaxed text-white/60">Hand off desqueezed clips to your NLE without guesswork.</span>
-						</span>
-						<span class="text-white/40 group-hover:text-white/70" set:html={lucideSvg(ChevronRight, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
-					</div>
-
-					<div class={`${startHereCardBase} border-white/10 bg-white/[0.02] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]`}>
-						<span
-							class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#FF7A1A]/10 text-[#FF7A1A]"
-							set:html={lucideSvg(Repeat, 'h-5 w-5', 20)}
-							aria-hidden="true"
-						></span>
-						<span class="min-w-0 flex-1">
-							<span class="block text-xs font-semibold tracking-[0.18em] text-white/55">CONSISTENT</span>
-							<span class="mt-1 block text-sm font-semibold text-white">Use the same ratios everywhere</span>
-							<span class="mt-1 block text-sm leading-relaxed text-white/60">From mobile to desktop, keep your look and geometry consistent.</span>
-						</span>
-						<span class="text-white/40 group-hover:text-white/70" set:html={lucideSvg(ChevronRight, 'h-5 w-5 shrink-0', 20)} aria-hidden="true"></span>
+						<aside class="rounded-3xl border border-white/10 bg-black/40 p-5 shadow-[0_22px_70px_rgba(0,0,0,0.55)]">
+							<p class="text-xs font-semibold tracking-[0.22em] text-white/55">TRY IT NOW</p>
+							<p class="mt-2 text-base font-semibold text-white">Try Web Studio</p>
+							<p class="mt-2 text-sm leading-relaxed text-white/60">Upload one clip. Choose factor. Preview the corrected frame.</p>
+							<a
+								class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#FF7A1A]/35 bg-[#FF7A1A]/10 px-4 py-2.5 text-sm font-semibold text-[#FF7A1A] shadow-[0_0_0_1px_rgba(255,122,26,0.16),0_0_18px_rgba(255,122,26,0.10)] hover:bg-[#FF7A1A]/15 focus:outline-none focus:ring-2 focus:ring-[#FF7A1A]/35"
+								href="#web-studio"
+							>
+								Try Web Studio
+								<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+						</aside>
 					</div>
 				</div>
 			</div>
 		</section>
 
 		<section class="page-shell py-12 md:py-16">
-			<div class="grid gap-10 lg:items-start">
-				<div class="min-w-0 space-y-10">
-					<section class="scroll-mt-28" aria-label="Web Studio tool">
+			<div class="min-w-0 space-y-12 md:space-y-14">
+				<section id="workflow" class="scroll-mt-28">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">FILMMAKER WORKFLOW</p>
+						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">From shoot to final delivery.</h2>
+					</div>
+
+					<div class="mt-6 grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] md:items-stretch">
+						<div class="rounded-3xl border border-[#FF7A1A]/20 bg-[#FF7A1A]/[0.06] p-5 shadow-[0_0_0_1px_rgba(255,122,26,0.12),0_0_26px_rgba(255,122,26,0.12)]">
+							<div class="flex items-start justify-between gap-4">
+								<div class="min-w-0">
+									<p class="text-xs font-semibold tracking-[0.18em] text-white/60">SHOOT</p>
+									<p class="mt-2 text-sm font-semibold text-white">Capture squeezed footage</p>
+									<p class="mt-2 text-sm leading-relaxed text-white/65">Capture squeezed anamorphic footage on mobile or cinema camera.</p>
+								</div>
+								<span class="shrink-0 text-[#FF7A1A]" set:html={lucideSvg(Zap, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							</div>
+						</div>
+
+						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
+							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+						</div>
+
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<div class="flex items-start justify-between gap-4">
+								<div class="min-w-0">
+									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">PREVIEW</p>
+									<p class="mt-2 text-sm font-semibold text-white">Check framing</p>
+									<p class="mt-2 text-sm leading-relaxed text-white/60">Check framing and geometry before editing.</p>
+								</div>
+								<span class="shrink-0 text-white/35" set:html={lucideSvg(ChevronRight, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							</div>
+						</div>
+
+						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
+							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+						</div>
+
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<div class="flex items-start justify-between gap-4">
+								<div class="min-w-0">
+									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">DESQUEEZE</p>
+									<p class="mt-2 text-sm font-semibold text-white">Correct the image</p>
+									<p class="mt-2 text-sm leading-relaxed text-white/60">Choose the correct squeeze factor and correct the image.</p>
+								</div>
+								<span class="shrink-0 text-white/35" set:html={lucideSvg(Repeat, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							</div>
+						</div>
+
+						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
+							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+						</div>
+
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<div class="flex items-start justify-between gap-4">
+								<div class="min-w-0">
+									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">EXPORT</p>
+									<p class="mt-2 text-sm font-semibold text-white">Deliver clean widescreen</p>
+									<p class="mt-2 text-sm leading-relaxed text-white/60">Deliver corrected footage for edit, web, or client review.</p>
+								</div>
+								<span class="shrink-0 text-white/35" set:html={lucideSvg(Download, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="scroll-mt-28">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">WHAT DESQUEEZE DOES</p>
+						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Squeezed frame → corrected frame → cinematic output.</h2>
+					</div>
+
+					<div class="mt-6 grid gap-4 md:grid-cols-3">
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Squeezed</p>
+							<p class="mt-1 text-xs text-white/55">Tall / incorrect preview</p>
+							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
+								<div class="relative aspect-[16/10]">
+									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,255,255,0.10),transparent_60%)]"></div>
+									<div class="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-[#FF7A1A]/50"></div>
+									<div class="absolute inset-y-0 left-[35%] w-px bg-white/10"></div>
+									<div class="absolute inset-y-0 left-[65%] w-px bg-white/10"></div>
+									<div class="absolute inset-x-0 top-[18%] h-px bg-white/10"></div>
+									<div class="absolute inset-x-0 bottom-[18%] h-px bg-white/10"></div>
+									<div class="absolute inset-0 [background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent_26%,transparent_74%,rgba(255,255,255,0.02))]"></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Desqueezed</p>
+							<p class="mt-1 text-xs text-white/55">Corrected wide frame</p>
+							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
+								<div class="relative aspect-[16/10]">
+									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,122,26,0.12),transparent_60%)]"></div>
+									<div class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[#FF7A1A]/50"></div>
+									<div class="absolute inset-x-0 top-[35%] h-px bg-white/10"></div>
+									<div class="absolute inset-x-0 top-[65%] h-px bg-white/10"></div>
+									<div class="absolute inset-y-0 left-[18%] w-px bg-white/10"></div>
+									<div class="absolute inset-y-0 right-[18%] w-px bg-white/10"></div>
+									<div class="absolute inset-0 [background:linear-gradient(to_bottom,rgba(255,255,255,0.03),transparent_30%,transparent_70%,rgba(255,255,255,0.03))]"></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Final Output</p>
+							<p class="mt-1 text-xs text-white/55">Letterbox delivery</p>
+							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
+								<div class="relative aspect-[16/10]">
+									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,255,255,0.08),transparent_60%)]"></div>
+									<div class="absolute inset-x-0 top-0 h-[22%] bg-black/80"></div>
+									<div class="absolute inset-x-0 bottom-0 h-[22%] bg-black/80"></div>
+									<div class="absolute inset-x-0 bottom-[22%] h-px bg-[#FF7A1A]/35"></div>
+									<div class="absolute inset-0 [background:linear-gradient(to_bottom,transparent,rgba(0,0,0,0.20),transparent)]"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="web-studio" class="scroll-mt-28" aria-label="Web Studio tool">
 						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-7" data-desqueeze-studio>
 							<div class="flex flex-col gap-1">
 								<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">WEB STUDIO</p>
 								<h2 class="mt-1 text-xl font-semibold tracking-tight text-white md:text-2xl">Real-time de-squeeze preview</h2>
+							</div>
+
+							<div class="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-white/65">
+								<span class="rounded-full border border-white/10 bg-black/40 px-3 py-1">Upload</span>
+								<span class="text-white/25" aria-hidden="true">→</span>
+								<span class="rounded-full border border-white/10 bg-black/40 px-3 py-1">Choose factor</span>
+								<span class="text-white/25" aria-hidden="true">→</span>
+								<span class="rounded-full border border-white/10 bg-black/40 px-3 py-1">Preview</span>
+								<span class="text-white/25" aria-hidden="true">→</span>
+								<span class="rounded-full border border-white/10 bg-black/40 px-3 py-1">Export</span>
 							</div>
 
 							<div class="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
@@ -919,85 +1032,101 @@ const startHereCardBase =
 						</script>
 					</section>
 
-					<section id="what" class="scroll-mt-28">
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">What is anamorphic de-squeeze?</h2>
-						<div class="mt-4 rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-7">
-							<p class="text-sm leading-relaxed text-white/70 md:text-base">
-								Anamorphic lenses squeeze the image horizontally to capture a wider field of view on a normal sensor. This look is popular
-								with filmmakers using mobile anamorphic lenses from Moment, Sirui, Moondog Labs, and similar brands. Without de-squeezing,
-								footage looks tall and skinny.
-							</p>
-							<p class="mt-4 text-sm leading-relaxed text-white/70 md:text-base">
-								De-squeezing stretches the image back horizontally to the intended cinematic aspect ratio, such as 2.39:1, so the final
-								frame looks natural, wide, and professional.
-							</p>
-						</div>
-					</section>
+				<section class="scroll-mt-28">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">CHOOSE THE RIGHT FACTOR</p>
+						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Choose the right squeeze factor.</h2>
+					</div>
 
-					<section id="settings" class="scroll-mt-28">
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Recommended settings</h2>
-						<div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-							<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-								<p class="text-sm font-semibold text-white">1.33× Classic</p>
-								<p class="mt-2 text-sm text-white/60">Best for Moment-style mobile anamorphic lenses.</p>
-								<p class="mt-3 text-sm text-white/70">Use the 1.33× preset for quick correction and preview.</p>
-							</div>
-							<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-								<p class="text-sm font-semibold text-white">1.5× / 1.55×</p>
-								<p class="mt-2 text-sm text-white/60">Useful for some mobile and compact anamorphic adapters.</p>
-								<p class="mt-3 text-sm text-white/70">Choose the matching preset or use custom ratio.</p>
-							</div>
-							<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-								<p class="text-sm font-semibold text-white">1.8×</p>
-								<p class="mt-2 text-sm text-white/60">For stronger squeeze looks and wider cinematic framing.</p>
-								<p class="mt-3 text-sm text-white/70">Preview before export to confirm composition.</p>
-							</div>
-							<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-								<p class="text-sm font-semibold text-white">2.0×</p>
-								<p class="mt-2 text-sm text-white/60">Common for classic cinema anamorphic workflows.</p>
-								<p class="mt-3 text-sm text-white/70">Use 2.0× when footage appears heavily squeezed.</p>
-							</div>
-							<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-								<p class="text-sm font-semibold text-white">Custom</p>
-								<p class="mt-2 text-sm text-white/60">When your lens doesn’t match a standard preset.</p>
-								<p class="mt-3 text-sm text-white/70">Use custom ratio to dial in the exact stretch.</p>
-							</div>
+					<div class="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">1.25× / 1.30×</p>
+							<p class="mt-2 text-sm text-white/65">Subtle mobile adapters and light squeeze looks.</p>
 						</div>
-					</section>
-
-					<section id="apps" class="scroll-mt-28">
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">When to use Web Studio vs native apps</h2>
-						<div class="mt-5 grid gap-4 md:grid-cols-2">
-							<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-								<p class="text-sm font-semibold text-white">Web Studio</p>
-								<p class="mt-3 text-sm leading-relaxed text-white/70">Best for quick browser previews, client links, small batches, and fast correction without installing anything.</p>
-							</div>
-							<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-								<p class="text-sm font-semibold text-white">iPhone / iPad</p>
-								<p class="mt-3 text-sm leading-relaxed text-white/70">Best for mobile shooting, fast preview, live monitoring, and on-set workflows.</p>
-							</div>
-							<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-								<p class="text-sm font-semibold text-white">Android</p>
-								<p class="mt-3 text-sm leading-relaxed text-white/70">Best for live desqueeze, quick correction, and mobile creator workflows.</p>
-							</div>
-							<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-								<p class="text-sm font-semibold text-white">Windows</p>
-								<p class="mt-3 text-sm leading-relaxed text-white/70">Best for desktop batch processing, longer clips, and post-production workflows.</p>
-							</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">1.33×</p>
+							<p class="mt-2 text-sm text-white/65">Common mobile anamorphic lenses (fast, reliable framing).</p>
 						</div>
-					</section>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">1.50× / 1.55×</p>
+							<p class="mt-2 text-sm text-white/65">Balanced cinematic look and wider corrected frame.</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">1.80×</p>
+							<p class="mt-2 text-sm text-white/65">Wider stylized look — preview carefully before export.</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">2.00×</p>
+							<p class="mt-2 text-sm text-white/65">Classic cinema anamorphic workflows and strong squeeze.</p>
+						</div>
+					</div>
 
-					<section id="nle" class="scroll-mt-28">
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Premiere, DaVinci Resolve, Final Cut — or DeSqueeze Studio?</h2>
-						<div class="mt-4 rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-7">
-							<p class="text-sm leading-relaxed text-white/70 md:text-base">
-								You can manually de-squeeze footage inside an editor by adjusting horizontal scale or pixel aspect ratio. That works well
-								for full finishing. But for fast previews, client checks, batch conversion, and corrected files before editing, DeSqueeze
-								Studio is faster: choose ratio, preview, export.
+					<div class="mt-4 rounded-3xl border border-white/10 bg-black/40 p-5 text-sm text-white/65">
+						<p>
+							<span class="font-semibold text-white">Quick check:</span> If faces look too wide, the factor is too high. If footage still looks tall,
+							the factor is too low.
+						</p>
+					</div>
+				</section>
+
+				<section class="scroll-mt-28">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">COMMON MISTAKES</p>
+						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Common mistakes (and fast fixes).</h2>
+					</div>
+
+					<div class="mt-6 grid gap-3 md:grid-cols-2">
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Cropping instead of desqueezing</p>
+							<p class="mt-2 text-sm text-white/65">Crop hides the problem. Correct geometry first, then choose delivery framing.</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Choosing the wrong factor</p>
+							<p class="mt-2 text-sm text-white/65">Preview faces and circles — if they look off, adjust factor before export.</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Exporting before previewing</p>
+							<p class="mt-2 text-sm text-white/65">Always check framing + geometry in preview mode (Fit / True) first.</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Forgetting final delivery ratio</p>
+							<p class="mt-2 text-sm text-white/65">Decide whether you’re delivering 16:9, 2.39:1, or social crops after correction.</p>
+						</div>
+					</div>
+				</section>
+
+				<section class="scroll-mt-28">
+					<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:p-8">
+						<div class="flex flex-col gap-2">
+							<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">CONTINUE YOUR WORKFLOW</p>
+							<h2 class="text-2xl font-semibold tracking-tight text-white md:text-3xl">Continue your workflow</h2>
+							<p class="mt-1 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
+								Run a quick preview in Web Studio, then move to native apps when you’re ready to shoot or batch export.
 							</p>
 						</div>
-					</section>
-				</div>
+
+						<div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+							<a class={`${downloadAppsButtonClass} gap-2`} href="#web-studio">
+								Try Web Studio
+								<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+							<a
+								class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
+								href="/products"
+							>
+								Explore Products
+								<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+							<a
+								class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
+								href="/#ecosystem"
+							>
+								Download Apps
+								<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+						</div>
+					</div>
+				</section>
 			</div>
 		</section>
 
