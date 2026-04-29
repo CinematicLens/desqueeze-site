@@ -14,14 +14,6 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - name: Diagnostics (node/npm)
-        shell: bash
-        run: |
-          set -euxo pipefail
-          node -v
-          npm -v
-          echo "pwd: $(pwd)"
-          ls -la
       - name: Install dependencies
         shell: bash
         run: |
@@ -32,3 +24,24 @@ jobs:
         run: |
           set -euxo pipefail
           npm run build
+      - name: Validate generated routes (dist/)
+        shell: bash
+        run: |
+          set -euxo pipefail
+          test -f dist/index.html
+          test -f dist/guides/index.html
+          test -f dist/products/index.html
+
+      - name: Install Playwright browsers (if configured)
+        if: ${{ hashFiles('playwright.config.*') != '' }}
+        shell: bash
+        run: |
+          set -euxo pipefail
+          npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests (if present)
+        if: ${{ hashFiles('playwright.config.*', 'tests/**', 'e2e/**') != '' }}
+        shell: bash
+        run: |
+          set -euxo pipefail
+          npx playwright test
