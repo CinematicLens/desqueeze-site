@@ -6,7 +6,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { loadFilmStudioScreenshots } from '../lib/filmStudioScreenshots';
 import { lucideSvg } from '../lib/lucideSvg';
-import { fetchAppStoreMeta } from '../lib/storeMeta';
+import { fetchAppStoreMeta, fetchMicrosoftStoreMetaFromDetailUrl, fetchOgMetaFromPage } from '../lib/storeMeta';
 import { heroPrimaryCtaClass, heroSecondaryCtaClass } from '../lib/uiClasses';
 import {
 	Activity,
@@ -29,37 +29,6 @@ import {
 	Users,
 	Zap,
 } from 'lucide';
-
-/** @param {string} s */
-function decodeBasicEntities(s) {
-	return s.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
-}
-
-/**
- * Read Open Graph title/image from a public store HTML page (build-time).
- * @param {string} url
- * @returns {Promise<{ title: string | null; image: string | null } | null>}
- */
-async function fetchOgMetaFromPage(url) {
-	const ua =
-		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
-	try {
-		const res = await fetch(url, {
-			headers: { 'User-Agent': ua, Accept: 'text/html,application/xhtml+xml' },
-		});
-		if (!res.ok) return null;
-		const html = await res.text();
-		const pick = (prop) => {
-			const m1 = html.match(new RegExp(`<meta[^>]*\\sproperty=["']${prop}["'][^>]*\\scontent=["']([^"']+)["']`, 'i'));
-			if (m1?.[1]) return decodeBasicEntities(m1[1]);
-			const m2 = html.match(new RegExp(`<meta[^>]*\\scontent=["']([^"']+)["'][^>]*\\sproperty=["']${prop}["']`, 'i'));
-			return m2?.[1] ? decodeBasicEntities(m2[1]) : null;
-		};
-		return { title: pick('og:title'), image: pick('og:image') };
-	} catch {
-		return null;
-	}
-}
 
 /** @param {string} detailsUrl */
 function playPackageIdFromDetailsUrl(detailsUrl) {
@@ -85,26 +54,17 @@ async function fetchPlayStoreMetaFromDetailsUrl(detailsUrl) {
 	return { id, name, artworkUrl512: og.image || undefined };
 }
 
-/** @param {string} detailUrl e.g. storeUrls.windowsPro */
-async function fetchMicrosoftStoreMetaFromDetailUrl(detailUrl) {
-	const og = await fetchOgMetaFromPage(detailUrl);
-	if (!og?.title && !og?.image) return null;
-	const name = (og.title || '')
-		.replace(/\s*-\s*Download.*$/i, '')
-		.replace(/\s*\|\s*Microsoft Store\s*$/i, '')
-		.trim();
-	return { id: 'ms-store', name, artworkUrl512: og.image || undefined };
-}
-
 const filmStudioMeta = await fetchAppStoreMeta('6761248370');
 const anamorphicMeta = await fetchAppStoreMeta('6757354068');
 const mediaUtilityMeta = await fetchAppStoreMeta('6760351903');
 const cineLutMeta = await fetchAppStoreMeta('6760215504');
 const dmsMeta = await fetchAppStoreMeta('6761471161');
+const cineSnapIosMeta = await fetchAppStoreMeta('6764743916');
 
 const androidDesqueezePlayMeta = await fetchPlayStoreMetaFromDetailsUrl(storeUrls.androidDesqueeze);
 const androidProCamPlayMeta = await fetchPlayStoreMetaFromDetailsUrl(storeUrls.androidProCam);
 const windowsStorePlayMeta = await fetchMicrosoftStoreMetaFromDetailUrl(storeUrls.windowsPro);
+const cineSnapMicrosoftMeta = await fetchMicrosoftStoreMetaFromDetailUrl(storeUrls.cineSnapAiWindows);
 
 /** Landing hero full-bleed art (`public/images/background.png`). */
 const landingHeroBgSrc = '/images/background.png';
@@ -423,7 +383,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 									<span class="text-[#FF7A1A]" set:html={lucideSvg(Star, 'h-3.5 w-3.5', 14)} aria-hidden="true"></span>
 									START HERE
 								</span>
-							</div>
+						</div>
 							<div class="relative flex h-full flex-col">
 								<div class="flex-1">
 									<div class="flex items-start gap-4">
@@ -433,7 +393,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 											) : (
 												<span class="text-[#FF7A1A]" set:html={lucideSvg(Activity, 'h-6 w-6', 24)} aria-hidden="true"></span>
 											)}
-										</div>
+					</div>
 										<div class="min-w-0 pt-0.5">
 											<p class="text-xl font-semibold tracking-tight text-white">{anamorphicMeta?.name || 'Anamorphic Desqueezer'}</p>
 											<p class="mt-1 text-sm text-white/60">Fix anamorphic footage.</p>
@@ -605,15 +565,15 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 							</div>
 						</div>
 						<div class="flex items-center gap-4 px-5 py-3 sm:px-6 sm:py-4">
-							<span class="text-white/70" set:html={lucideSvg(Users, 'h-5 w-5', 20)} aria-hidden="true" />
+						<span class="text-white/70" set:html={lucideSvg(Users, 'h-5 w-5', 20)} aria-hidden="true" />
 							<div class="min-w-0">
 								<p class="text-lg font-semibold leading-none text-white md:text-xl">4</p>
 								<p class="mt-1 text-xs font-medium text-white/60">Platforms</p>
 								<p class="mt-1 text-xs font-medium text-white/45">iOS • macOS • Android • Windows</p>
-							</div>
 						</div>
+					</div>
 						<div class="flex items-center gap-4 px-5 py-3 sm:px-6 sm:py-4">
-							<span class="text-white/70" set:html={lucideSvg(Timer, 'h-5 w-5', 20)} aria-hidden="true" />
+						<span class="text-white/70" set:html={lucideSvg(Timer, 'h-5 w-5', 20)} aria-hidden="true" />
 							<div class="min-w-0">
 								<p class="text-lg font-semibold leading-none text-white md:text-xl">0</p>
 								<p class="mt-1 text-xs font-medium text-white/60">Guesswork in the pipeline</p>
@@ -774,14 +734,14 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 										<p class="mt-1 text-xs leading-relaxed text-white/60">
 											Apply LUTs and CDL to shape your cinematic story.
 										</p>
-									</div>
+						</div>
 									<span
 										class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-fuchsia-500/15 text-fuchsia-300"
 										set:html={lucideSvg(Palette, 'h-5 w-5', 20)}
 										aria-hidden="true"
 									/>
-								</div>
-							</div>
+						</div>
+						</div>
 							<div class="px-5 pb-5">
 								<div class="aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-black/60">
 									<img
@@ -792,8 +752,8 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 										decoding="async"
 									/>
 								</div>
-							</div>
 						</div>
+					</div>
 
 						<div class="flex h-full flex-col overflow-hidden rounded-2xl border border-emerald-500/20 bg-black/25 opacity-65 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[transform,opacity,box-shadow,border-color] duration-400 ease-in-out will-change-transform" data-detail-card="4">
 							<div class="p-5">
@@ -824,7 +784,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 							</div>
 						</div>
 					</div>
-</div>
+				</div>
 
 				
 				<script is:inline>
@@ -1078,7 +1038,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 													<path fill="currentColor" d="M318.7 268.6c-.2-56.4 46.1-83.5 48.2-84.8-26.3-38.4-67.2-43.7-81.7-44.3-34.8-3.5-68 20.5-85.6 20.5-17.6 0-44.9-20-73.8-19.5-38 0-73 22.1-92.5 56.1-39.6 68.5-10.1 169.9 28.4 225.4 18.8 27.1 41.1 57.6 70.5 56.5 28.4-1.1 39.2-18.4 73.5-18.4 34.3 0 44 18.4 74.1 17.8 30.6-.6 49.9-27.9 68.6-55.1 21.6-31.6 30.5-62.2 30.9-63.8-.7-.3-59.3-22.8-59.1-90.4zM259.6 96.2c15.6-18.9 26.1-45.3 23.2-71.7-22.5.9-49.8 15-65.9 33.9-14.5 16.9-27.2 43.9-23.7 69.8 25.1 2 50.8-12.7 66.4-32z" />
 												</svg>
 												<p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">iPhone &amp; iPad</p>
-												<span class="inline-flex items-center rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-white/65">3 APPS</span>
+												<span class="inline-flex items-center rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-white/65">4 APPS</span>
 											</div>
 											<a class="inline-flex items-center gap-2 text-xs font-semibold text-white/75 hover:text-white" href="/products">
 												View all for iOS
@@ -1148,6 +1108,29 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 													<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Compress, resize, and export delivery‑ready files fast.</p>
 													<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-emerald-200 hover:text-emerald-100" href={storeUrls.mediaUtilityIos} target="_blank" rel="noopener noreferrer">
 														Export media
+														<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+													</a>
+												</div>
+											</div>
+											<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-violet-500/25 bg-black/35 p-5">
+												<div class="relative flex flex-col">
+													<div class="flex items-start gap-3">
+														<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-violet-500/20 bg-black/50">
+															<img
+																src={cineSnapIosMeta?.artworkUrl512 || '/images/tab_icon.png'}
+																alt={`${cineSnapIosMeta?.name || 'CineSnap AI'} app icon`}
+																class="h-full w-full object-cover"
+																loading="lazy"
+																decoding="async"
+															/>
+														</div>
+														<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">{cineSnapIosMeta?.name || 'CineSnap AI: Photo Editor'}</p>
+													</div>
+													<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">
+														Film presets and color grade — cinematic looks on device, one-tap edits, and clean exports.
+													</p>
+													<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-violet-300 hover:text-violet-200" href={storeUrls.cineSnapIos} target="_blank" rel="noopener noreferrer">
+														Edit photos
 														<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
 													</a>
 												</div>
@@ -1328,7 +1311,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 												<path fill="currentColor" d="M13 13h9v9h-9v-9z" />
 											</svg>
 											<p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">Windows</p>
-											<span class="inline-flex items-center rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-white/65">2 APPS</span>
+											<span class="inline-flex items-center rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-white/65">3 APPS</span>
 										</div>
 										<a class="inline-flex items-center gap-2 text-xs font-semibold text-white/75 hover:text-white" href="/products">
 											View all for Windows
@@ -1336,7 +1319,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 										</a>
 									</div>
 
-									<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+									<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
 										<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-sky-500/20 bg-black/35 p-5">
 											<div class="relative flex flex-col">
 												<div class="flex items-start gap-3">
@@ -1376,8 +1359,32 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 													<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">DocRev Manager</p>
 												</div>
 												<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Organize, track and manage your projects.</p>
-												<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-amber-200/90 hover:text-amber-200" href="https://apps.microsoft.com/detail/9MXR3WLMQ0G7?hl=en-us&gl=IN&ocid=pdpshare" target="_blank" rel="noopener noreferrer">
+												<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-amber-200/90 hover:text-amber-200" href={storeUrls.docRevWindows} target="_blank" rel="noopener noreferrer">
 													Organize now
+													<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+												</a>
+											</div>
+										</div>
+
+										<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-fuchsia-500/20 bg-black/35 p-5">
+											<div class="relative flex flex-col">
+												<div class="flex items-start gap-3">
+													<div class="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-fuchsia-500/20 bg-black/50">
+														<img
+															src={cineSnapMicrosoftMeta?.artworkUrl512 || '/images/tab_icon.png'}
+															alt={`${cineSnapMicrosoftMeta?.name || 'CineSnap AI'} app icon`}
+															class="h-full w-full object-cover"
+															loading="lazy"
+															decoding="async"
+														/>
+													</div>
+													<p class="min-w-0 flex-1 pt-0.5 text-sm font-semibold text-white">{cineSnapMicrosoftMeta?.name || 'CineSnap AI'}</p>
+												</div>
+												<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">
+													Cinematic AI photo editor for Windows — curated looks, batch processing, and Text Studio for creators.
+												</p>
+												<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-fuchsia-300 hover:text-fuchsia-200" href={storeUrls.cineSnapAiWindows} target="_blank" rel="noopener noreferrer">
+													Get the app
 													<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
 												</a>
 											</div>

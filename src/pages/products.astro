@@ -2,17 +2,293 @@
 import { storeUrls } from '../data/storeUrls';
 import { PRODUCTS_PAGE_DESCRIPTION, PRODUCTS_PAGE_TITLE } from '../data/siteMeta';
 import { loadFilmStudioScreenshots } from '../lib/filmStudioScreenshots';
-import { fetchAppStoreMeta } from '../lib/storeMeta';
+import { fetchAppStoreMeta, fetchMicrosoftStoreMetaFromDetailUrl } from '../lib/storeMeta';
 import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
-import SuiteProductAccordion from '../components/SuiteProductAccordion.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import ProductStorePill from '../components/ProductStorePill.astro';
 
 const filmStudioMeta = await fetchAppStoreMeta('6761248370');
 const anamorphicMeta = await fetchAppStoreMeta('6757354068');
 const cineLutMeta = await fetchAppStoreMeta('6760215504');
+const mediaUtilityMeta = await fetchAppStoreMeta('6760351903');
+const dmsMeta = await fetchAppStoreMeta('6761471161');
+const cineSnapIosMeta = await fetchAppStoreMeta('6764743916');
+
+const windowsProMicrosoftMeta = await fetchMicrosoftStoreMetaFromDetailUrl(storeUrls.windowsPro);
+const docRevMicrosoftMeta = await fetchMicrosoftStoreMetaFromDetailUrl(storeUrls.docRevWindows);
+const cineSnapWindowsMicrosoftMeta = await fetchMicrosoftStoreMetaFromDetailUrl(storeUrls.cineSnapAiWindows);
 
 const filmStudioScreenshots = loadFilmStudioScreenshots();
+
+type PlatformKey = 'ios' | 'android' | 'mac' | 'windows' | 'web';
+type AppCard = {
+	id: string;
+	platforms: PlatformKey[];
+	name: string;
+	positioning: string;
+	role: string;
+	features: string[];
+	ctaLabel: string;
+	ctaHref: string;
+	iconUrl?: string;
+	hasScreenshots?: boolean;
+};
+
+const apps: AppCard[] = [
+	{
+		id: 'filmstudio-ios',
+		platforms: ['ios'],
+		name: 'FilmStudio',
+		positioning: 'On-set camera and monitoring tool for mobile filmmakers.',
+		role: 'Shooting / Capture',
+		features: [
+			'Manual camera control for capture',
+			'Exposure tools and framing confidence',
+			'Scopes and overlays for monitoring',
+			'Timecode, takes and organized capture',
+			'Clean handoff for editing workflow',
+		],
+		ctaLabel: 'Download on App Store',
+		ctaHref: storeUrls.filmStudioIos,
+		iconUrl: filmStudioMeta?.artworkUrl512,
+		hasScreenshots: true,
+	},
+	{
+		id: 'anamorphic-ios',
+		platforms: ['ios', 'mac'],
+		name: 'Anamorphic Desqueezer',
+		positioning: 'Native anamorphic correction for iPhone, iPad and Mac workflows.',
+		role: 'Geometry correction / De-squeeze',
+		features: [
+			'Live monitor and post de-squeeze',
+			'1.33×, 1.5×, 1.55×, 1.8×, 2.0× and custom ratios',
+			'CinemaScope export and batch correction',
+			'Scopes for framing and geometry confidence',
+			'ProRes / 10-bit / FCPXML style handoff if supported in current app copy',
+		],
+		ctaLabel: 'Download on App Store',
+		ctaHref: storeUrls.anamorphicApple,
+		iconUrl: anamorphicMeta?.artworkUrl512,
+	},
+	{
+		id: 'mediautility-ios',
+		platforms: ['ios'],
+		name: 'MediaUtility',
+		positioning: 'Fast media processing for real creator workflows.',
+		role: 'Utility / Compression / Delivery',
+		features: [
+			'Compress and resize media quickly',
+			'Batch stills or clips where supported',
+			'Prepare delivery files after capture or grading',
+			'Useful for client delivery and platform upload',
+			'Works as a utility companion to the filmmaking apps',
+		],
+		ctaLabel: 'Download on App Store',
+		ctaHref: storeUrls.mediaUtilityIos,
+		iconUrl: mediaUtilityMeta?.artworkUrl512,
+	},
+	{
+		id: 'cinesnap-ios',
+		platforms: ['ios'],
+		name: cineSnapIosMeta?.name || 'CineSnap AI: Photo Editor',
+		positioning: 'Film presets & color grade — cinematic looks on iPhone, edited locally.',
+		role: 'Photo & Video',
+		features: [
+			'50+ cinematic looks (Pro): Hollywood-style tones, film-stock vibes, portrait, travel, wedding, and more',
+			'One-tap looks plus fine control — exposure, color, curves, HSL, perspective, crop, rotate, and flip',
+			'Local tools (Pro): smart enhance, strong denoise, sharpen, and 2× upscale on your device',
+			'Before/after compare: hold to match original, or split slider (Original vs Enhanced)',
+			'Export for Instagram post/square/story, YouTube thumbnail, and web; Recipes (Pro) save full edits',
+		],
+		ctaLabel: 'Download on App Store',
+		ctaHref: storeUrls.cineSnapIos,
+		iconUrl: cineSnapIosMeta?.artworkUrl512,
+	},
+
+	// Android
+	{
+		id: 'anamorphic-android',
+		platforms: ['android'],
+		name: 'Anamorphic Desqueezer',
+		positioning: 'Batch anamorphic video and still correction with LUT and LiveGrade-style controls.',
+		role: 'Batch correction / LUT / LiveGrade',
+		features: [
+			'Supports 1.33×, 1.5×, 1.55×, 1.6×, 1.8×, 2.0× and custom ratios',
+			'Batch videos and images',
+			'True CinemaScope 2.39:1 output up to 4K where supported',
+			'Built-in cinematic LUTs and .cube import',
+			'LiveGrade-style 3D LUT + CDL scene look workflow',
+		],
+		ctaLabel: 'Get it on Google Play',
+		ctaHref: storeUrls.androidDesqueeze,
+		iconUrl: '/images/app-icons/android-desqueeze.png',
+	},
+	{
+		id: 'procam-android',
+		platforms: ['android'],
+		name: 'Anamorphic Desqueeze Pro Cam',
+		positioning: 'Live on-set de-squeeze camera and post studio for Android.',
+		role: 'Live camera / On-set monitoring',
+		features: [
+			'Live de-squeeze for field monitoring',
+			'Ratios 1.33×, 1.5×, 1.55×, 1.8×, 2.0× and 1.0×',
+			'Scopes: histogram, waveform, vectorscope, false color, zebras and peaking',
+			'Post Studio with trim, before/after and precision squeeze slider',
+			'Saves corrected media to DCIM/Desqueezed for fast mobile workflow',
+		],
+		ctaLabel: 'Get it on Google Play',
+		ctaHref: storeUrls.androidProCam,
+		iconUrl: '/images/app-icons/android-procam.png',
+	},
+
+	// Mac
+	{
+		id: 'cinelut-mac',
+		platforms: ['mac'],
+		name: 'CineLut Live Grade',
+		positioning: 'Live LUT and CDL grading for MacBook-based monitoring and dailies.',
+		role: 'Color grading / LiveGrade',
+		features: [
+			'Live LUT preview and CDL controls',
+			'Scopes for exposure and color confidence',
+			'Capture and dailies workflow',
+			'Build and preview a cinematic look on set',
+			'Useful for DIT-style live grading workflows',
+		],
+		ctaLabel: 'Download on Mac App Store',
+		ctaHref: storeUrls.cineLutMac,
+		iconUrl: cineLutMeta?.artworkUrl512,
+	},
+	{
+		id: 'dms-mac',
+		platforms: ['mac'],
+		name: 'Document Management System',
+		positioning: 'Production organization tool for notes, documents and delivery continuity.',
+		role: 'Production organization',
+		features: [
+			'Call sheets and production notes in one place',
+			'Delivery memos and versioned records',
+			'Searchable production library',
+			'Helps keep production data organized',
+			'Useful for project continuity and team handoff',
+		],
+		ctaLabel: 'Download on Mac App Store',
+		ctaHref: storeUrls.dmsMac,
+		iconUrl: dmsMeta?.artworkUrl512,
+	},
+
+	// Windows
+	{
+		id: 'windows-pro',
+		platforms: ['windows'],
+		name: 'AnamorphicDesqueezePro',
+		positioning: 'Desktop-grade batch de-squeeze for Windows laptops and workstations.',
+		role: 'Windows batch / Desktop post',
+		features: [
+			'Folder-based batch processing',
+			'CinemaScope presets from 2.39:1 through 2.76:1',
+			'LUT and CDL grading workflow',
+			'Local processing for longer clips and higher bitrates',
+			'EDL-friendly exports for handoff',
+		],
+		ctaLabel: 'Get it on Microsoft Store',
+		ctaHref: storeUrls.windowsPro,
+		iconUrl: windowsProMicrosoftMeta?.artworkUrl512 ?? '/images/app-icons/windows-desqueezepro.png',
+	},
+	{
+		id: 'docrev-windows',
+		platforms: ['windows'],
+		name: 'DocRev Manager',
+		positioning: 'Organize, track and manage production documents and delivery continuity on Windows.',
+		role: 'Production organization',
+		features: [
+			'Call sheets, notes and delivery memos in one place',
+			'Versioned records and searchable project library',
+			'Helps teams stay aligned through production and post',
+			'Handoff-friendly continuity for clients and collaborators',
+			'Pairs with suite capture, grade, and de-squeeze tools',
+		],
+		ctaLabel: 'Get it on Microsoft Store',
+		ctaHref: storeUrls.docRevWindows,
+		iconUrl: docRevMicrosoftMeta?.artworkUrl512 ?? '/images/app-icons/windows-docrev.png',
+	},
+	{
+		id: 'cinesnap-windows',
+		platforms: ['windows'],
+		name: 'CineSnap AI',
+		positioning: 'Cinematic AI photo editor for Windows — curated looks, batch processing, and Text Studio for creators.',
+		role: 'Photo & video / Cinematics',
+		features: [
+			'Cinematic AI looks with a fast grading workflow',
+			'Batch processing for large shoots and galleries',
+			'Consistent looks across weddings, events, and scene sets',
+			'Before/after compare, crop, and Text Studio for captions',
+			'High-quality local exports for clients and social delivery',
+		],
+		ctaLabel: 'Get it on Microsoft Store',
+		ctaHref: storeUrls.cineSnapAiWindows,
+		iconUrl: cineSnapWindowsMicrosoftMeta?.artworkUrl512 ?? '/images/tab_icon.png',
+	},
+
+	// Web
+	{
+		id: 'web-studio',
+		platforms: ['web'],
+		name: 'Web Studio',
+		positioning: 'Free browser-based preview for quick anamorphic checks.',
+		role: 'Quick preview / Browser tool',
+		features: [
+			'Upload clips or stills in browser',
+			'Select 1.33×–2.0× or custom ratio',
+			'Preview de-squeeze instantly',
+			'Light batch workflow for MP4, JPG and PNG where supported',
+			'Best for quick tests before using native apps',
+		],
+		ctaLabel: 'Open Web Studio',
+		ctaHref: '/try-live',
+	},
+];
+
+const platforms: { key: 'apple' | 'android' | 'windows'; label: string }[] = [
+	{ key: 'apple', label: 'Apple' },
+	{ key: 'android', label: 'Android' },
+	{ key: 'windows', label: 'Windows' },
+];
+
+const productsPlatformTabsInit = `(() => {
+  const DEFAULT = 'apple';
+  const tabs = Array.from(document.querySelectorAll('[data-platform-tab]'));
+  const sections = Array.from(document.querySelectorAll('[data-platform-section]'));
+
+  const setActive = (key) => {
+    tabs.forEach((t) => {
+      const k = t.getAttribute('data-platform-tab') || DEFAULT;
+      const active = k === key;
+      t.classList.toggle('border-[#FF7A1A]/35', active);
+      t.classList.toggle('bg-[#FF7A1A]/10', active);
+      t.classList.toggle('text-[#FF7A1A]', active);
+      t.classList.toggle('border-white/10', !active);
+      t.classList.toggle('bg-black/40', !active);
+      t.classList.toggle('text-white/65', !active);
+    });
+
+    sections.forEach((s) => {
+      const k = s.getAttribute('data-platform-section') || '';
+      const on =
+        (key === 'apple' && (k === 'ios' || k === 'mac')) ||
+        (key === 'android' && k === 'android') ||
+        (key === 'windows' && k === 'windows');
+      s.classList.toggle('hidden', !on);
+    });
+  };
+
+  tabs.forEach((t) => {
+    t.addEventListener('click', () => setActive(t.getAttribute('data-platform-tab') || DEFAULT));
+  });
+
+  setActive(DEFAULT);
+})();`;
 ---
 
 <Layout title={PRODUCTS_PAGE_TITLE} description={PRODUCTS_PAGE_DESCRIPTION}>
@@ -20,41 +296,286 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 		<SiteHeader page="products" />
 
 		<section class="page-shell py-14 md:py-20">
-			<p class="text-xs font-medium tracking-[0.18em] text-white/60">DEEP DIVES</p>
-			<h1 class="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">Products</h1>
-			<p class="mt-3 max-w-2xl text-white/70">
-				Demos, specs, and workflow notes for FilmStudio, Anamorphic Desqueezer, and CineLut Live Grade.
+			<h1 class="text-3xl font-semibold tracking-tight md:text-4xl">Products</h1>
+			<p class="mt-3 max-w-3xl text-white/70">
+				Pick your platform, then choose the right tool for capture, de-squeeze, grading, utility processing, and delivery.
 			</p>
-			<SuiteProductAccordion
-				filmStudioMeta={filmStudioMeta}
-				anamorphicMeta={anamorphicMeta}
-				cineLutMeta={cineLutMeta}
-				storeUrls={storeUrls}
-				filmStudioScreenshots={filmStudioScreenshots}
-			/>
 
-			<section id="export" class="mt-10 rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:p-7">
-				<p class="text-xs font-medium tracking-[0.18em] text-white/60">EXPORT</p>
-				<h2 class="mt-2 text-xl font-semibold tracking-tight text-white md:text-2xl">MediaUtility</h2>
-				<p class="mt-2 max-w-2xl text-sm text-white/70 md:text-base">
-					Compress, convert, and prepare delivery files fast — clean output for real workflows.
-				</p>
-				<a
-					class="mt-4 inline-flex items-center gap-2 rounded-full border border-white/12 bg-black/40 px-4 py-2 text-xs font-semibold text-white/85 hover:bg-white/[0.06]"
-					href={storeUrls.mediaUtilityHub}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Open MediaUtility hub
-					<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-						<path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-						<path d="M10 7h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-					</svg>
-				</a>
-			</section>
+			<!-- Platform tabs -->
+			<div class="mt-8">
+				<div class="-mx-2 overflow-x-auto px-2 [scrollbar-width:thin] [scrollbar-color:rgba(255,122,26,0.35)_rgba(255,255,255,0.06)]">
+					<div class="flex w-max items-center gap-2 pb-1">
+						{platforms.map((p) => (
+							<button
+								type="button"
+								class:list={[
+									'rounded-full border px-3.5 py-1.5 text-xs font-semibold transition',
+									p.key === 'apple'
+										? 'border-[#FF7A1A]/35 bg-[#FF7A1A]/10 text-[#FF7A1A]'
+										: 'border-white/10 bg-black/40 text-white/65 hover:bg-white/[0.04]',
+								]}
+								data-platform-tab={p.key}
+							>
+								{p.label}
+							</button>
+						))}
+					</div>
+				</div>
+			</div>
+
+			<div class="mt-10 space-y-12">
+				<!-- iPhone & iPad -->
+				<section data-platform-section="ios">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">IPHONE & IPAD APPS</p>
+						<p class="text-sm text-white/70">Shoot, preview, de-squeeze and export on mobile.</p>
+					</div>
+					<div class="mt-6 grid gap-4 lg:grid-cols-2">
+						{apps
+							.filter((a) => a.platforms.includes('ios'))
+							.map((a) => (
+								<article class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" data-app-card data-platforms={a.platforms.join(',')}>
+									<div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:gap-4">
+										<div class="flex min-w-0 items-start gap-4">
+											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+												{a.iconUrl ? (
+													<img src={a.iconUrl} alt={`${a.name} app icon`} class="h-full w-full object-cover" loading="lazy" decoding="async" />
+												) : (
+													<span class="text-xs font-semibold text-white/70">{a.name.slice(0, 2).toUpperCase()}</span>
+												)}
+											</span>
+											<div class="min-w-0">
+												<p class="text-sm font-semibold text-white">{a.name}</p>
+												<p class="mt-1 text-sm text-white/65">{a.positioning}</p>
+												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-white/45">{a.role}</p>
+											</div>
+										</div>
+
+										<ProductStorePill variant="app-store" href={a.ctaHref} accessibilityLabel={a.ctaLabel} />
+									</div>
+
+									<ul class="mt-4 grid gap-2 text-sm text-white/70">
+										{a.features.map((f) => (
+											<li class="flex gap-2">
+												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF7A1A]/70" aria-hidden="true"></span>
+												<span class="min-w-0">{f}</span>
+											</li>
+										))}
+									</ul>
+
+									{a.hasScreenshots && (
+										<div class="mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black" data-fs-carousel-root data-fs-shots={JSON.stringify(filmStudioScreenshots)}>
+											<div class="relative px-4 py-5 md:px-6">
+												<p class="text-xs font-semibold tracking-[0.18em] text-white/60">SCREENSHOTS</p>
+												<div class="mt-3 fs-carousel-viewport" data-fs-viewport>
+													<div class="fs-carousel-track" data-fs-track>
+														{filmStudioScreenshots.map((src, i) => (
+															<div class="fs-slide" data-fs-slide data-idx={String(i)}>
+																<div class="fs-slide-inner" role="img" aria-label={`FilmStudio screenshot ${i + 1}`}>
+																	<img src={src} alt="" loading="lazy" decoding="async" />
+																</div>
+															</div>
+														))}
+													</div>
+												</div>
+
+												<div class="fs-carousel-controls" aria-label="Carousel controls">
+													<button type="button" class="fs-carousel-btn" aria-label="Previous screenshots" data-fs-prev>
+														<svg viewBox="0 0 24 24" aria-hidden="true">
+															<path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+														</svg>
+													</button>
+													<div class="fs-carousel-dots" aria-label="Carousel position" data-fs-dots></div>
+													<button type="button" class="fs-carousel-btn" aria-label="Next screenshots" data-fs-next>
+														<svg viewBox="0 0 24 24" aria-hidden="true">
+															<path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+														</svg>
+													</button>
+												</div>
+											</div>
+										</div>
+									)}
+								</article>
+							))}
+					</div>
+				</section>
+
+				<!-- Android -->
+				<section data-platform-section="android" class="hidden">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">ANDROID APPS</p>
+						<p class="text-sm text-white/70">Live monitoring, batch de-squeeze, LUT/CDL and 4K workflows.</p>
+					</div>
+					<div class="mt-6 grid gap-4 lg:grid-cols-2">
+						{apps
+							.filter((a) => a.platforms.includes('android'))
+							.map((a) => (
+								<article class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" data-app-card data-platforms={a.platforms.join(',')}>
+									<div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:gap-4">
+										<div class="flex min-w-0 items-start gap-4">
+											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+												{a.iconUrl ? (
+													<img src={a.iconUrl} alt={`${a.name} app icon`} class="h-full w-full object-cover" loading="lazy" decoding="async" />
+												) : (
+													<span class="text-xs font-semibold text-white/70">{a.name.slice(0, 2).toUpperCase()}</span>
+												)}
+											</span>
+											<div class="min-w-0">
+												<p class="text-sm font-semibold text-white">{a.name}</p>
+												<p class="mt-1 text-sm text-white/65">{a.positioning}</p>
+												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-white/45">{a.role}</p>
+											</div>
+										</div>
+
+										<ProductStorePill variant="google-play" href={a.ctaHref} accessibilityLabel={a.ctaLabel} />
+									</div>
+
+									<ul class="mt-4 grid gap-2 text-sm text-white/70">
+										{a.features.map((f) => (
+											<li class="flex gap-2">
+												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF7A1A]/70" aria-hidden="true"></span>
+												<span class="min-w-0">{f}</span>
+											</li>
+										))}
+									</ul>
+
+								</article>
+							))}
+					</div>
+				</section>
+
+				<!-- Mac -->
+				<section data-platform-section="mac">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">MAC APPS</p>
+						<p class="text-sm text-white/70">Live grading, de-squeeze, utility processing and production organization.</p>
+					</div>
+					<div class="mt-6 grid gap-4 lg:grid-cols-2">
+						{apps
+							.filter((a) => a.platforms.includes('mac'))
+							.map((a) => (
+								<article class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" data-app-card data-platforms={a.platforms.join(',')}>
+									<div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:gap-4">
+										<div class="flex min-w-0 items-start gap-4">
+											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+												{a.iconUrl ? (
+													<img src={a.iconUrl} alt={`${a.name} app icon`} class="h-full w-full object-cover" loading="lazy" decoding="async" />
+												) : (
+													<span class="text-xs font-semibold text-white/70">{a.name.slice(0, 2).toUpperCase()}</span>
+												)}
+											</span>
+											<div class="min-w-0">
+												<p class="text-sm font-semibold text-white">{a.name}</p>
+												<p class="mt-1 text-sm text-white/65">{a.positioning}</p>
+												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-white/45">{a.role}</p>
+											</div>
+										</div>
+
+										<ProductStorePill variant="mac-app-store" href={a.ctaHref} accessibilityLabel={a.ctaLabel} />
+									</div>
+
+									<ul class="mt-4 grid gap-2 text-sm text-white/70">
+										{a.features.map((f) => (
+											<li class="flex gap-2">
+												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF7A1A]/70" aria-hidden="true"></span>
+												<span class="min-w-0">{f}</span>
+											</li>
+										))}
+									</ul>
+
+								</article>
+							))}
+					</div>
+				</section>
+
+				<!-- Windows -->
+				<section data-platform-section="windows" class="hidden">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">WINDOWS APPS</p>
+						<p class="text-sm text-white/70">Desktop-grade batch de-squeeze and handoff-friendly export.</p>
+					</div>
+					<div class="mt-6 grid gap-4 lg:grid-cols-2">
+						{apps
+							.filter((a) => a.platforms.includes('windows'))
+							.map((a) => (
+								<article class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" data-app-card data-platforms={a.platforms.join(',')}>
+									<div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:gap-4">
+										<div class="flex min-w-0 items-start gap-4">
+											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+												{a.iconUrl ? (
+													<img src={a.iconUrl} alt={`${a.name} app icon`} class="h-full w-full object-cover" loading="lazy" decoding="async" />
+												) : (
+													<span class="text-xs font-semibold text-white/70">{a.name.slice(0, 2).toUpperCase()}</span>
+												)}
+											</span>
+											<div class="min-w-0">
+												<p class="text-sm font-semibold text-white">{a.name}</p>
+												<p class="mt-1 text-sm text-white/65">{a.positioning}</p>
+												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-white/45">{a.role}</p>
+											</div>
+										</div>
+
+										<ProductStorePill variant="microsoft-store" href={a.ctaHref} accessibilityLabel={a.ctaLabel} />
+									</div>
+
+									<ul class="mt-4 grid gap-2 text-sm text-white/70">
+										{a.features.map((f) => (
+											<li class="flex gap-2">
+												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF7A1A]/70" aria-hidden="true"></span>
+												<span class="min-w-0">{f}</span>
+											</li>
+										))}
+									</ul>
+
+								</article>
+							))}
+					</div>
+				</section>
+
+				<!-- Web -->
+				<section data-platform-section="web" class="hidden">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">WEB STUDIO</p>
+						<p class="text-sm text-white/70">Quick browser-based previews and light batch processing.</p>
+					</div>
+					<div class="mt-6 grid gap-4 lg:grid-cols-2">
+						{apps
+							.filter((a) => a.platforms.includes('web'))
+							.map((a) => (
+								<article class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" data-app-card data-platforms={a.platforms.join(',')}>
+									<div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:gap-4">
+										<div class="flex min-w-0 items-start gap-4">
+											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+												<span class="text-xs font-semibold text-white/70">WS</span>
+											</span>
+											<div class="min-w-0">
+												<p class="text-sm font-semibold text-white">{a.name}</p>
+												<p class="mt-1 text-sm text-white/65">{a.positioning}</p>
+												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-white/45">{a.role}</p>
+											</div>
+										</div>
+
+										<ProductStorePill variant="web" href={a.ctaHref} accessibilityLabel={a.ctaLabel} />
+									</div>
+
+									<ul class="mt-4 grid gap-2 text-sm text-white/70">
+										{a.features.map((f) => (
+											<li class="flex gap-2">
+												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF7A1A]/70" aria-hidden="true"></span>
+												<span class="min-w-0">{f}</span>
+											</li>
+										))}
+									</ul>
+
+								</article>
+							))}
+					</div>
+				</section>
+			</div>
 		</section>
 
 		<SiteFooter />
 	</main>
 
+	<script is:inline set:html={productsPlatformTabsInit}></script>
 </Layout>

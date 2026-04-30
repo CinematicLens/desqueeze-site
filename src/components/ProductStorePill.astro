@@ -1,0 +1,63 @@
+---
+export type ProductStorePillVariant = 'app-store' | 'mac-app-store' | 'google-play' | 'microsoft-store' | 'web';
+
+interface Props {
+	variant: ProductStorePillVariant;
+	href: string;
+	/** e.g. prior CTA copy for screen readers */
+	accessibilityLabel?: string;
+}
+
+const { variant, href, accessibilityLabel } = Astro.props;
+
+const isExternal = variant !== 'web';
+
+const copy: Record<ProductStorePillVariant, { line1: string; line2: string }> = {
+	'app-store': { line1: 'Download on the', line2: 'App Store' },
+	'mac-app-store': { line1: 'Download on the', line2: 'Mac App Store' },
+	'google-play': { line1: 'GET IT ON', line2: 'Google Play' },
+	'microsoft-store': { line1: 'Get it from', line2: 'Microsoft Store' },
+	web: { line1: 'Open in browser', line2: 'Web Studio' },
+};
+
+const { line1, line2 } = copy[variant];
+const ariaLabel = accessibilityLabel ?? `${line1} ${line2}`;
+
+const pillClass =
+	'product-store-pill group inline-flex max-w-[min(100%,11.5rem)] shrink-0 items-center gap-2 rounded-[10px] border border-white/18 bg-black px-2 py-1.5 pr-2.5 text-left shadow-[0_0_0_1px_rgba(255,122,26,0.28),0_0_22px_rgba(255,122,26,0.18)] outline-none transition hover:border-[#FF7A1A]/55 hover:shadow-[0_0_0_1px_rgba(255,122,26,0.45),0_0_32px_rgba(255,122,26,0.28)] focus-visible:ring-2 focus-visible:ring-[#FF7A1A]/45';
+---
+
+<a href={href} class={pillClass} aria-label={ariaLabel} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener noreferrer' : undefined}>
+	<span class="grid h-9 w-9 shrink-0 place-items-center" aria-hidden="true">
+		{
+			variant === 'app-store' || variant === 'mac-app-store' ? (
+				<svg class="h-[1.65rem] w-[1.65rem] text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+					<path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.06 1.87-2.54 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+				</svg>
+			) : variant === 'google-play' ? (
+				<svg class="h-[1.65rem] w-[1.65rem]" viewBox="0 0 24 24" aria-hidden="true">
+					<path fill="#00D9FF" d="M2.5 3.2v17.6L13.2 12 2.5 3.2z" />
+					<path fill="#00F076" d="M2.5 20.8 15.5 12l-2.3-2.1L2.5 20.8z" />
+					<path fill="#FFE500" d="M15.5 12 2.5 3.2l10.7 8.8 2.3-2z" />
+					<path fill="#FF3A44" d="M2.5 3.2 13.2 12l2.3-2.1L2.5 3.2z" />
+				</svg>
+			) : variant === 'microsoft-store' ? (
+				<svg class="h-[1.65rem] w-[1.65rem]" viewBox="0 0 21 21" aria-hidden="true">
+					<path fill="#F25022" d="M0 0h10v10H0z" />
+					<path fill="#7FBA00" d="M11 0h10v10H11z" />
+					<path fill="#00A4EF" d="M0 11h10v10H0z" />
+					<path fill="#FFB900" d="M11 11h10v10H11z" />
+				</svg>
+			) : (
+				<svg class="h-6 w-6 text-white/85" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+					<circle cx="12" cy="12" r="9" />
+					<path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" stroke-linecap="round" />
+				</svg>
+			)
+		}
+	</span>
+	<span class="min-w-0 leading-tight">
+		<span class="block text-[0.625rem] font-medium uppercase tracking-[0.06em] text-white/75">{line1}</span>
+		<span class="block text-[0.8125rem] font-semibold tracking-tight text-white">{line2}</span>
+	</span>
+</a>
