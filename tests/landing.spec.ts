@@ -9,43 +9,42 @@ test.describe('Filmmaking suite landing', () => {
     await expect(page.locator('#suite')).toContainText(/one workflow/i);
   });
 
-  test('shows three product sections', async ({ page }) => {
+  test('products page shows flagship apps on the default Apple view', async ({ page }) => {
     await page.goto('/products');
-    await expect(page.locator('#filmstudio')).toBeVisible();
-    await expect(page.locator('#anamorphic')).toBeVisible();
-    await expect(page.locator('#cinelut')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: /^Products$/i })).toBeVisible();
+    const ios = page.locator('[data-platform-section="ios"]');
+    const mac = page.locator('[data-platform-section="mac"]');
+    await expect(ios.getByText('FilmStudio', { exact: true })).toBeVisible();
+    await expect(ios.getByText('Anamorphic Desqueezer', { exact: true })).toBeVisible();
+    await expect(mac.getByText('CineLut Live Grade', { exact: true })).toBeVisible();
   });
 
-  test('suite panes open and only one is expanded', async ({ page }) => {
-    // Keep this test stable: prevent slow third‑party embeds from affecting it.
-    await page.route(/.*(youtube\.com|youtu\.be|googlevideo\.com).*/i, (route) => route.abort());
+  test('products platform tabs show one platform group at a time', async ({ page }) => {
     await page.goto('/products', { waitUntil: 'domcontentloaded' });
 
-    const filmstudio = page.locator('#filmstudio [data-suite-trigger="filmstudio"]');
-    const anamorphic = page.locator('#anamorphic [data-suite-trigger="anamorphic"]');
-    const cinelut = page.locator('#cinelut [data-suite-trigger="cinelut"]');
+    const ios = page.locator('[data-platform-section="ios"]');
+    const mac = page.locator('[data-platform-section="mac"]');
+    const android = page.locator('[data-platform-section="android"]');
+    const windows = page.locator('[data-platform-section="windows"]');
 
-    // Site script opens FilmStudio by default when there is no hash — first click would close it.
-    await expect(filmstudio).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.locator('#pane-filmstudio')).toBeVisible();
-    await expect(page.locator('#pane-anamorphic')).toBeHidden();
+    await expect(ios).toBeVisible();
+    await expect(mac).toBeVisible();
+    await expect(android).toBeHidden();
+    await expect(windows).toBeHidden();
 
-    await anamorphic.click();
-    await expect(anamorphic).toHaveAttribute('aria-expanded', 'true');
-    await expect(filmstudio).toHaveAttribute('aria-expanded', 'false');
-    await expect(page.locator('#pane-anamorphic')).toBeVisible();
-    await expect(page.getByRole('heading', { name: /anamorphic desqueezer/i })).toBeVisible();
+    await page.locator('[data-platform-tab="android"]').click();
+    await expect(ios).toBeHidden();
+    await expect(mac).toBeHidden();
+    await expect(android).toBeVisible();
 
-    await cinelut.click();
-    await expect(cinelut).toHaveAttribute('aria-expanded', 'true');
-    await expect(anamorphic).toHaveAttribute('aria-expanded', 'false');
-    await expect(page.locator('#pane-cinelut')).toBeVisible();
-    await expect(page.locator('#pane-cinelut').locator('iframe[title="CineLut Live Grade demo"]')).toBeVisible();
+    await page.locator('[data-platform-tab="windows"]').click();
+    await expect(android).toBeHidden();
+    await expect(windows).toBeVisible();
 
-    await filmstudio.click();
-    await expect(filmstudio).toHaveAttribute('aria-expanded', 'true');
-    await expect(cinelut).toHaveAttribute('aria-expanded', 'false');
-    await expect(page.locator('#pane-filmstudio')).toBeVisible();
+    await page.locator('[data-platform-tab="apple"]').click();
+    await expect(ios).toBeVisible();
+    await expect(mac).toBeVisible();
+    await expect(android).toBeHidden();
   });
 
   test('has no horizontal scrolling at common viewports', async ({ page }) => {
