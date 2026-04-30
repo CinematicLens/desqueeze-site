@@ -66,7 +66,7 @@ const downloadHref = downloadAppsHref(page);
 					<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"></path>
 				</svg>
 			</button>
-			<a class={downloadAppsButtonClass} href={downloadHref}>Download</a>
+			<a class={downloadAppsButtonClass} href={downloadHref}>Continue in App</a>
 		</div>
 	</div>
 	<div
@@ -101,7 +101,7 @@ const downloadHref = downloadAppsHref(page);
 				siteNavMobileLinkClass,
 			} from '../data/siteNav';
 
-			const SECTION_IDS = ['before-after', 'ecosystem', 'contact'];
+			const SECTION_IDS = ['ecosystem', 'contact'];
 
 			function getActiveNavId() {
 				const header = document.querySelector('[data-mobile-nav]');

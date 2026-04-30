@@ -1,0 +1,1291 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import GuidesNavigator from '../components/GuidesNavigator.astro';
+import { downloadAppsButtonClass } from '../data/siteNav';
+import { storeUrls } from '../data/storeUrls';
+import { lucideSvg } from '../lib/lucideSvg';
+import { ChevronRight, Zap, Download, Repeat, Smartphone, Cpu, Laptop } from 'lucide';
+
+const pageTitle = 'How to De-Squeeze 1.5× Anamorphic Footage | DeSqueeze Studio';
+const pageDescription =
+	'How to de-squeeze 1.5× anamorphic footage online: preview the corrected frame in Web Studio, then export clean widescreen for edit or delivery.';
+const pageKeywords = 'how to desqueeze 1.5x, desqueeze 1.5x, 1.5x anamorphic desqueeze, 1.5x squeezed footage fix';
+
+const startHereCardBase =
+	'group flex min-h-[3.75rem] items-center gap-3 rounded-2xl border px-3.5 py-2.5 transition hover:border-white/25 hover:bg-white/[0.04] sm:min-h-[4rem] sm:gap-4 sm:px-4 sm:py-3 md:px-5';
+---
+
+<Layout title={pageTitle} description={pageDescription} keywords={pageKeywords}>
+	<main class="min-h-dvh">
+		<SiteHeader page="guides" />
+
+		<section class="relative isolate overflow-hidden border-b border-white/10 bg-black">
+			<div class="pointer-events-none absolute inset-0" aria-hidden="true">
+				<div class="absolute inset-0 bg-[#060606]"></div>
+				<div class="absolute inset-0 opacity-30 [background:radial-gradient(80%_60%_at_50%_10%,rgba(255,122,26,0.14),transparent_60%)]"></div>
+			</div>
+
+			<div class="page-shell relative z-10 py-14 md:py-20">
+				<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-md md:p-8">
+					<div
+						class="pointer-events-none absolute left-1/2 top-16 h-[220px] w-[520px] -translate-x-1/2 rounded-full blur-3xl opacity-60 [background:radial-gradient(closest-side,rgba(255,122,26,0.18),transparent)]"
+						aria-hidden="true"
+					></div>
+
+					<div class="relative grid gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-start">
+						<div class="min-w-0">
+							<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">ANAMORPHIC GUIDE</p>
+							<h1 class="mt-3 max-w-4xl text-balance text-3xl font-semibold tracking-tight text-white md:text-5xl">
+								How to De-Squeeze 1.5× Anamorphic Footage
+							</h1>
+							<p class="mt-4 max-w-3xl text-pretty text-base leading-relaxed text-white/70 md:text-lg">
+								Fix squeezed 1.5× footage from anamorphic lenses — preview, correct, and export for a clean cinematic frame.
+							</p>
+
+							<div class="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+								<a class={`${downloadAppsButtonClass} gap-2`} href="/products">
+									Explore Apps
+									<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+								<a
+									class="inline-flex items-center justify-center gap-2 self-start rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/[0.10] sm:self-auto"
+									href="#workflow"
+								>
+									See workflow
+									<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+							</div>
+						</div>
+
+					</div>
+
+					<GuidesNavigator variant="mobile" />
+				</div>
+			</div>
+		</section>
+
+		<section class="page-shell py-12 md:py-16">
+			<div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+				<div class="min-w-0 space-y-12 md:space-y-14">
+				<section id="workflow" class="scroll-mt-28">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">FILMMAKER WORKFLOW</p>
+						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">De-squeeze 1.5× footage from shoot to final delivery.</h2>
+					</div>
+
+					<div class="mt-6 grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] md:items-stretch">
+						<div class="rounded-3xl border border-[#FF7A1A]/20 bg-[#FF7A1A]/[0.06] p-5 shadow-[0_0_0_1px_rgba(255,122,26,0.12),0_0_26px_rgba(255,122,26,0.12)]">
+							<div class="flex items-start justify-between gap-4">
+								<div class="min-w-0">
+									<p class="text-xs font-semibold tracking-[0.18em] text-white/60">SHOOT</p>
+									<p class="mt-2 text-sm font-semibold text-white">Capture squeezed footage</p>
+									<p class="mt-2 text-sm leading-relaxed text-white/65">Capture squeezed anamorphic footage on mobile or cinema camera.</p>
+								</div>
+								<span class="shrink-0 text-[#FF7A1A]" set:html={lucideSvg(Zap, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							</div>
+						</div>
+
+						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
+							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+						</div>
+
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<div class="flex items-start justify-between gap-4">
+								<div class="min-w-0">
+									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">PREVIEW</p>
+									<p class="mt-2 text-sm font-semibold text-white">Check framing</p>
+									<p class="mt-2 text-sm leading-relaxed text-white/60">Check framing and geometry before editing.</p>
+								</div>
+								<span class="shrink-0 text-white/35" set:html={lucideSvg(ChevronRight, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							</div>
+						</div>
+
+						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
+							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+						</div>
+
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<div class="flex items-start justify-between gap-4">
+								<div class="min-w-0">
+									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">DESQUEEZE</p>
+									<p class="mt-2 text-sm font-semibold text-white">Correct the image</p>
+									<p class="mt-2 text-sm leading-relaxed text-white/60">Choose the correct squeeze factor and correct the image.</p>
+								</div>
+								<span class="shrink-0 text-white/35" set:html={lucideSvg(Repeat, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							</div>
+						</div>
+
+						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
+							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+						</div>
+
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<div class="flex items-start justify-between gap-4">
+								<div class="min-w-0">
+									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">EXPORT</p>
+									<p class="mt-2 text-sm font-semibold text-white">Deliver clean widescreen</p>
+									<p class="mt-2 text-sm leading-relaxed text-white/60">Deliver corrected footage for edit, web, or client review.</p>
+								</div>
+								<span class="shrink-0 text-white/35" set:html={lucideSvg(Download, 'h-5 w-5', 20)} aria-hidden="true"></span>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="scroll-mt-28">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">WHAT DESQUEEZE DOES</p>
+						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">1.5× squeezed frame → corrected frame → cinematic output.</h2>
+					</div>
+
+					<div class="mt-6 grid gap-4 md:grid-cols-3">
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Squeezed</p>
+							<p class="mt-1 text-xs text-white/55">Tall / incorrect preview</p>
+							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
+								<div class="relative aspect-[16/10]">
+									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,255,255,0.10),transparent_60%)]"></div>
+									<div class="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-[#FF7A1A]/50"></div>
+									<div class="absolute inset-y-0 left-[35%] w-px bg-white/10"></div>
+									<div class="absolute inset-y-0 left-[65%] w-px bg-white/10"></div>
+									<div class="absolute inset-x-0 top-[18%] h-px bg-white/10"></div>
+									<div class="absolute inset-x-0 bottom-[18%] h-px bg-white/10"></div>
+									<div class="absolute inset-0 [background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent_26%,transparent_74%,rgba(255,255,255,0.02))]"></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Desqueezed</p>
+							<p class="mt-1 text-xs text-white/55">Corrected wide frame</p>
+							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
+								<div class="relative aspect-[16/10]">
+									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,122,26,0.12),transparent_60%)]"></div>
+									<div class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[#FF7A1A]/50"></div>
+									<div class="absolute inset-x-0 top-[35%] h-px bg-white/10"></div>
+									<div class="absolute inset-x-0 top-[65%] h-px bg-white/10"></div>
+									<div class="absolute inset-y-0 left-[18%] w-px bg-white/10"></div>
+									<div class="absolute inset-y-0 right-[18%] w-px bg-white/10"></div>
+									<div class="absolute inset-0 [background:linear-gradient(to_bottom,rgba(255,255,255,0.03),transparent_30%,transparent_70%,rgba(255,255,255,0.03))]"></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Final Output</p>
+							<p class="mt-1 text-xs text-white/55">Letterbox delivery</p>
+							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
+								<div class="relative aspect-[16/10]">
+									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,255,255,0.08),transparent_60%)]"></div>
+									<div class="absolute inset-x-0 top-0 h-[22%] bg-black/80"></div>
+									<div class="absolute inset-x-0 bottom-0 h-[22%] bg-black/80"></div>
+									<div class="absolute inset-x-0 bottom-[22%] h-px bg-[#FF7A1A]/35"></div>
+									<div class="absolute inset-0 [background:linear-gradient(to_bottom,transparent,rgba(0,0,0,0.20),transparent)]"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="web-studio" class="scroll-mt-28" aria-label="Web Studio tool">
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-7" data-desqueeze-studio>
+							<div class="flex flex-col gap-1">
+								<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">WEB STUDIO</p>
+								<h2 class="mt-1 text-xl font-semibold tracking-tight text-white md:text-2xl">Real-time 1.5× de-squeeze preview</h2>
+							</div>
+
+							<div class="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-white/65">
+								<span class="rounded-full border border-white/10 bg-black/40 px-3 py-1">Upload</span>
+								<span class="text-white/25" aria-hidden="true">→</span>
+								<span class="rounded-full border border-white/10 bg-black/40 px-3 py-1">Choose factor</span>
+								<span class="text-white/25" aria-hidden="true">→</span>
+								<span class="rounded-full border border-white/10 bg-black/40 px-3 py-1">Preview</span>
+								<span class="text-white/25" aria-hidden="true">→</span>
+								<span class="rounded-full border border-white/10 bg-black/40 px-3 py-1">Export</span>
+							</div>
+
+							<div class="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+								<div class="min-w-0 flex flex-col gap-4">
+									<div class="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-[0_24px_70px_rgba(0,0,0,0.50)]">
+										<div
+											class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 ease-out [background:radial-gradient(60%_60%_at_50%_20%,rgba(255,122,26,0.22),transparent_58%)]"
+											data-active-glow
+											aria-hidden="true"
+										></div>
+
+										<div class="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-4">
+											<div class="min-w-0">
+												<p class="inline-flex items-center gap-2 text-sm font-semibold text-white">
+													<span class="relative inline-flex h-2.5 w-2.5">
+														<span class="absolute inset-0 rounded-full bg-emerald-400/35 blur-[6px]" aria-hidden="true"></span>
+														<span class="relative h-2.5 w-2.5 rounded-full bg-emerald-400 ring-1 ring-emerald-300/40" aria-hidden="true"></span>
+													</span>
+													Live Preview
+												</p>
+											</div>
+										</div>
+
+										<div class="p-5">
+											<div
+												class="group relative w-full overflow-hidden rounded-2xl border border-white/35 bg-black/60"
+												style="aspect-ratio: var(--preview-aspect, 16 / 9);"
+												data-preview-frame
+											>
+												<div class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true">
+													<div class="absolute inset-0 [background:linear-gradient(to_bottom,rgba(255,255,255,0.05),transparent_20%,transparent_80%,rgba(255,255,255,0.05))]"></div>
+													<div class="absolute left-3 top-3 rounded-full border border-white/10 bg-black/50 px-2.5 py-1 text-[11px] font-semibold text-white/70">
+														FPS <span data-fps-label>—</span>
+													</div>
+												</div>
+												<div class="pointer-events-none absolute inset-0 opacity-0" data-fps-pulse aria-hidden="true"></div>
+
+												<div class="absolute inset-0 overflow-hidden" data-preview-clip>
+													<div
+														class="absolute inset-0 min-h-0 origin-center will-change-transform"
+														style="transform: scaleX(1); transform-origin: center; transition: transform 250ms ease;"
+														data-preview
+													>
+														<video
+															class="hidden block h-full w-full object-contain"
+															playsinline
+															muted
+															loop
+															autoplay
+															preload="metadata"
+															data-preview-video
+														>
+														</video>
+														<img class="hidden block h-full w-full object-contain" alt="Preview" data-preview-image loading="lazy" decoding="async" />
+														<div class="pointer-events-none absolute inset-0 grid place-items-center" data-preview-empty>
+															<p class="rounded-full border border-white/15 bg-black/55 px-4 py-2 text-xs font-semibold tracking-[0.16em] text-white/70">
+																UPLOAD IMAGE OR VIDEO TO PREVIEW
+															</p>
+														</div>
+													</div>
+												</div>
+
+												<div class="pointer-events-none absolute inset-0 opacity-60 [background:radial-gradient(55%_55%_at_20%_18%,rgba(255,122,26,0.14),transparent_62%)]" aria-hidden="true"></div>
+											</div>
+
+											<div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+												<div class="flex flex-wrap items-center gap-2 invisible pointer-events-none" data-video-controls>
+													<button
+														type="button"
+														class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
+														data-play
+													>
+														Play
+													</button>
+													<button
+														type="button"
+														class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
+														data-pause
+													>
+														Pause
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="flex flex-col rounded-2xl border border-white/10 bg-black/30 p-5" aria-label="Files">
+										<div class="flex shrink-0 items-start justify-between gap-3">
+											<div class="min-w-0">
+												<p class="text-sm font-semibold text-white">Files</p>
+												<p class="mt-1 text-xs text-white/60">Upload an image or video to preview.</p>
+											</div>
+											<div class="flex items-center gap-2">
+												<button
+													type="button"
+													class="hidden rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
+													data-clear-files
+												>
+													Clear
+												</button>
+											</div>
+										</div>
+
+										<div
+											class="mt-4 shrink-0 rounded-2xl border border-dashed border-white/15 bg-black/40 p-4 transition-colors hover:border-white/25 hover:bg-white/[0.04]"
+											role="button"
+											tabindex="0"
+											data-dropzone
+										>
+											<input
+												class="sr-only"
+												type="file"
+												accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.webm,video/mp4,video/webm,video/quicktime,image/jpeg,image/png,image/webp"
+												multiple
+												data-file-input
+											/>
+											<div class="flex items-start gap-3">
+												<div class="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-white/10 bg-black/50 text-white/70" aria-hidden="true">
+													<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
+														<path d="M12 16V4" stroke-linecap="round"></path>
+														<path d="M7 9l5-5 5 5" stroke-linecap="round" stroke-linejoin="round"></path>
+														<path d="M4 20h16" stroke-linecap="round"></path>
+													</svg>
+												</div>
+												<div class="min-w-0">
+													<p class="text-sm font-semibold text-white">Drop files here or click to browse</p>
+													<p class="mt-1 text-xs leading-relaxed text-white/60">Images or videos — keep one media type per batch</p>
+												</div>
+											</div>
+										</div>
+
+										<div class="mt-4 hidden shrink-0 rounded-2xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-100/90" data-mixed-error>
+											Please upload either images or videos in one batch, not both.
+										</div>
+
+										<div class="file-list-scroll mt-4 min-h-0 max-h-[calc(2*3.5rem+0.5rem)] overflow-x-hidden overflow-y-auto pr-1">
+											<div class="space-y-2" data-file-list>
+												<p class="text-sm text-white/60">No files selected.</p>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="min-w-0 flex flex-col gap-4">
+									<div class="rounded-2xl border border-white/10 bg-black/30 p-5">
+										<p class="text-sm font-semibold text-white">Settings</p>
+
+										<div class="mt-5 grid gap-4">
+											<div class="rounded-2xl border border-white/10 bg-black/40 p-4">
+												<p class="text-xs font-semibold tracking-[0.16em] text-white/60">Pre-defined Squeeze Factor</p>
+												<label class="sr-only" for="squeeze-factor">Pre-defined Squeeze Factor</label>
+												<select
+													id="squeeze-factor"
+													class="mt-2 h-11 w-full rounded-xl border border-white/15 bg-black/50 px-3 text-sm text-white/90 outline-none ring-0 focus:border-[#FF7A1A]/50 focus:ring-2 focus:ring-[#FF7A1A]/25"
+													data-ratio
+												>
+													<option value="1">None (1.00×)</option>
+													<option value="1.25">1.25×</option>
+													<option value="1.30">1.30×</option>
+													<option value="1.33">1.33× Classic</option>
+													<option value="1.35">1.35×</option>
+													<option value="1.42">1.42×</option>
+													<option value="1.45">1.45×</option>
+													<option value="1.50">1.50×</option>
+													<option value="1.55">1.55×</option>
+													<option value="1.60">1.60×</option>
+													<option value="1.66">1.66×</option>
+													<option value="1.75">1.75×</option>
+													<option value="1.80">1.80×</option>
+													<option value="2.00">2.00×</option>
+													<option value="custom">Custom</option>
+												</select>
+												<div class="hidden" data-custom-ratio-row>
+													<div class="mt-2 grid grid-cols-[1fr_auto] items-center gap-2">
+														<input
+															class="h-11 w-full rounded-xl border border-white/15 bg-black/50 px-3 text-sm text-white/90 outline-none focus:border-[#FF7A1A]/50 focus:ring-2 focus:ring-[#FF7A1A]/25"
+															type="number"
+															inputmode="decimal"
+															step="0.01"
+															min="1"
+															max="3"
+															value="1.33"
+															aria-label="Custom ratio"
+															data-custom-ratio
+														/>
+														<span class="text-xs font-semibold text-white/55">×</span>
+													</div>
+													<p class="mt-2 text-xs text-white/55">Tip: Match your lens squeeze ratio for accurate framing.</p>
+												</div>
+											</div>
+
+											<div class="rounded-2xl border border-white/10 bg-black/40 p-4">
+												<p class="text-xs font-semibold tracking-[0.16em] text-white/60">Preview Mode</p>
+												<p class="mt-2 text-xs text-white/55">Fit shows the full frame. True shows the real corrected width.</p>
+												<div class="mt-3 grid grid-cols-2 gap-2" data-preview-mode>
+													<button
+														type="button"
+														class="rounded-xl border border-[#FF7A1A]/35 bg-[#FF7A1A]/10 px-3 py-2 text-sm font-semibold text-[#FF7A1A] shadow-[0_0_0_1px_rgba(255,122,26,0.16),0_0_18px_rgba(255,122,26,0.10)] transition"
+														data-preview-mode-btn="fit"
+													>
+														Fit to Screen
+													</button>
+													<button
+														type="button"
+														class="rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-sm font-semibold text-white/70 transition hover:bg-white/[0.06]"
+														data-preview-mode-btn="true"
+													>
+														True Desqueezed
+													</button>
+												</div>
+											</div>
+
+											<div class="hidden rounded-2xl border border-white/10 bg-black/40 p-4" data-photo-export>
+												<div class="flex items-center justify-between gap-3">
+													<p class="text-sm font-semibold text-white">Photo Export</p>
+													<span class="rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[11px] font-semibold text-white/55">Images</span>
+												</div>
+												<div class="mt-4 grid gap-3">
+													<div class="grid gap-2">
+														<label class="text-xs font-semibold tracking-[0.16em] text-white/55">Photo Format</label>
+														<select class="mt-2 h-11 w-full rounded-xl border border-white/15 bg-black/50 px-3 text-sm text-white/90 outline-none focus:border-[#FF7A1A]/50 focus:ring-2 focus:ring-[#FF7A1A]/25" data-photo-format>
+															<option value="jpeg">JPEG</option>
+															<option value="png">PNG</option>
+															<option value="webp">WEBP</option>
+														</select>
+													</div>
+													<div class="grid gap-2">
+														<label class="text-xs font-semibold tracking-[0.16em] text-white/55">Quality</label>
+														<select class="mt-2 h-11 w-full rounded-xl border border-white/15 bg-black/50 px-3 text-sm text-white/90 outline-none focus:border-[#FF7A1A]/50 focus:ring-2 focus:ring-[#FF7A1A]/25" data-photo-quality>
+															<option value="80">80%</option>
+															<option value="90">90%</option>
+															<option value="100">100%</option>
+														</select>
+													</div>
+													<div class="grid gap-2">
+														<label class="text-xs font-semibold tracking-[0.16em] text-white/55">Output Size</label>
+														<select class="mt-2 h-11 w-full rounded-xl border border-white/15 bg-black/50 px-3 text-sm text-white/90 outline-none focus:border-[#FF7A1A]/50 focus:ring-2 focus:ring-[#FF7A1A]/25" data-photo-size>
+															<option value="keep">Keep original</option>
+															<option value="1080p">1080p</option>
+															<option value="4k">4K</option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="hidden rounded-2xl border border-white/10 bg-black/40 p-4" data-video-export>
+												<div class="flex items-center justify-between gap-3">
+													<p class="text-sm font-semibold text-white">Video Export</p>
+													<span class="rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[11px] font-semibold text-white/55">Videos</span>
+												</div>
+												<div class="mt-4 grid gap-3">
+													<div class="grid gap-2">
+														<label class="text-xs font-semibold tracking-[0.16em] text-white/55">Video FPS</label>
+														<select class="mt-2 h-11 w-full rounded-xl border border-white/15 bg-black/50 px-3 text-sm text-white/90 outline-none focus:border-[#FF7A1A]/50 focus:ring-2 focus:ring-[#FF7A1A]/25" data-fps>
+															<option value="keep">Keep original</option>
+															<option value="24">24</option>
+															<option value="25">25</option>
+															<option value="30">30</option>
+															<option value="50">50</option>
+															<option value="60">60</option>
+														</select>
+													</div>
+													<div class="grid gap-2">
+														<label class="text-xs font-semibold tracking-[0.16em] text-white/55">Video Bitrate</label>
+														<select class="mt-2 h-11 w-full rounded-xl border border-white/15 bg-black/50 px-3 text-sm text-white/90 outline-none focus:border-[#FF7A1A]/50 focus:ring-2 focus:ring-[#FF7A1A]/25" data-bitrate>
+															<option value="8">8 Mbps</option>
+															<option value="12">12 Mbps</option>
+															<option value="16">16 Mbps</option>
+															<option value="25">25 Mbps</option>
+															<option value="50">50 Mbps</option>
+														</select>
+													</div>
+													<div class="grid gap-2">
+														<label class="text-xs font-semibold tracking-[0.16em] text-white/55">Output Format</label>
+														<select class="mt-2 h-11 w-full rounded-xl border border-white/15 bg-black/50 px-3 text-sm text-white/90 outline-none focus:border-[#FF7A1A]/50 focus:ring-2 focus:ring-[#FF7A1A]/25" data-video-format>
+															<option value="mp4">MP4</option>
+															<option value="mov">MOV</option>
+															<option value="webm">WEBM</option>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="flex shrink-0 flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
+										<button
+											type="button"
+											class="inline-flex items-center justify-center rounded-full border border-[#FF7A1A]/35 bg-[#FF7A1A]/10 px-4 py-2 text-sm font-semibold text-[#FF7A1A] hover:bg-[#FF7A1A]/15 focus:outline-none focus:ring-2 focus:ring-[#FF7A1A]/35"
+											data-export-selected
+										>
+											Export Selected
+										</button>
+										<button
+											type="button"
+											class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
+											data-export-batch
+										>
+											Export Batch
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<div
+								class="mt-6 rounded-3xl border border-white/10 bg-white/[0.03] p-5 opacity-0 translate-y-1 pointer-events-none transition duration-200 md:p-6"
+								data-conversion-card
+								aria-live="polite"
+								aria-atomic="true"
+							>
+								<div class="flex flex-col gap-3">
+									<p class="text-xs font-semibold tracking-[0.18em] text-emerald-300/90">✔ Looks correct</p>
+									<div class="flex flex-col gap-1">
+										<h3 class="text-lg font-semibold text-white md:text-xl">Continue your workflow</h3>
+										<p class="text-sm text-white/60" data-corrected-status>✔ Corrected with —</p>
+										<p class="text-sm text-white/55">→ Continue in app for export and advanced controls</p>
+									</div>
+
+									<div class="mt-1 flex flex-col gap-3 sm:flex-row sm:items-center">
+										<a
+											class="inline-flex items-center justify-center gap-2 rounded-full border border-[#FF7A1A]/35 bg-[#FF7A1A]/10 px-5 py-2.5 text-sm font-semibold text-[#FF7A1A] shadow-[0_0_0_1px_rgba(255,122,26,0.16),0_0_18px_rgba(255,122,26,0.10)] hover:bg-[#FF7A1A]/15 focus:outline-none focus:ring-2 focus:ring-[#FF7A1A]/35"
+											href={storeUrls.anamorphicApple}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											Continue in App
+											<span class="text-[#FF7A1A]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+										</a>
+
+										<div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-white/65" aria-label="Platforms">
+											<a
+												class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/40 px-3 py-1.5 text-white/75 hover:border-[#FF7A1A]/35 hover:text-[#FF7A1A] transition"
+												href={storeUrls.anamorphicApple}
+												target="_blank"
+												rel="noopener noreferrer"
+												aria-label="iPhone"
+											>
+												<span set:html={lucideSvg(Smartphone, 'h-4 w-4', 16)} aria-hidden="true"></span>
+												iPhone
+											</a>
+											<a
+												class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/40 px-3 py-1.5 text-white/75 hover:border-[#FF7A1A]/35 hover:text-[#FF7A1A] transition"
+												href={storeUrls.androidDesqueeze}
+												target="_blank"
+												rel="noopener noreferrer"
+												aria-label="Android"
+											>
+												<span set:html={lucideSvg(Cpu, 'h-4 w-4', 16)} aria-hidden="true"></span>
+												Android
+											</a>
+											<a
+												class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/40 px-3 py-1.5 text-white/75 hover:border-[#FF7A1A]/35 hover:text-[#FF7A1A] transition"
+												href={storeUrls.anamorphicApple}
+												target="_blank"
+												rel="noopener noreferrer"
+												aria-label="Mac"
+											>
+												<span set:html={lucideSvg(Laptop, 'h-4 w-4', 16)} aria-hidden="true"></span>
+												Mac
+											</a>
+										</div>
+									</div>
+
+									<p class="text-xs font-semibold text-white/55">Export faster • Higher quality • LUT grading • Batch processing</p>
+
+									<div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/50">
+										<span>Used by mobile filmmakers</span>
+										<span>No watermark</span>
+										<span>Real-time preview</span>
+									</div>
+
+									<div class="mt-1 flex flex-wrap items-center gap-2 text-xs font-semibold text-white/55" aria-label="Flow">
+										<span class="rounded-full border border-white/10 bg-black/40 px-3 py-1">Before</span>
+										<span class="text-white/25" aria-hidden="true">→</span>
+										<span class="rounded-full border border-white/10 bg-black/40 px-3 py-1">After</span>
+										<span class="text-white/25" aria-hidden="true">→</span>
+										<span class="rounded-full border border-[#FF7A1A]/25 bg-[#FF7A1A]/10 px-3 py-1 text-[#FF7A1A]">Continue in App</span>
+									</div>
+								</div>
+							</div>
+
+							<a
+								class="fixed bottom-6 right-6 z-[55] inline-flex items-center gap-2 rounded-full bg-[#FF7A1A] px-4 py-2 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(0,0,0,0.55)] opacity-0 translate-y-1 pointer-events-none transition duration-200 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-[#FF7A1A]/40"
+								href={storeUrls.anamorphicApple}
+								target="_blank"
+								rel="noopener noreferrer"
+								data-sticky-cta
+							>
+								Continue in App
+								<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+
+							<div
+								class="pointer-events-none fixed bottom-5 left-1/2 z-[60] w-[min(540px,calc(100vw-2.5rem))] -translate-x-1/2 opacity-0 transition-opacity duration-200"
+								data-toast
+								aria-live="polite"
+								aria-atomic="true"
+							>
+								<div class="rounded-2xl border border-white/10 bg-black/80 px-4 py-3 text-sm text-white/80 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.60)]">
+									<span class="text-white" data-toast-title>Coming soon</span>
+									<span class="ml-2 text-white/60" data-toast-body>Export will be available in the next update.</span>
+								</div>
+							</div>
+						</div>
+
+						<script is:inline>
+							(() => {
+								const root = document.querySelector('[data-desqueeze-studio]');
+								if (!root) return;
+
+								const preview = root.querySelector('[data-preview]');
+								const previewFrame = root.querySelector('[data-preview-frame]');
+								const previewClip = root.querySelector('[data-preview-clip]');
+								const previewVideo = root.querySelector('[data-preview-video]');
+								const previewImage = root.querySelector('[data-preview-image]');
+								const previewEmpty = root.querySelector('[data-preview-empty]');
+								const activeGlow = root.querySelector('[data-active-glow]');
+								const statusEl = root.querySelector('[data-status]');
+								const fpsPulse = root.querySelector('[data-fps-pulse]');
+								const fpsLabel = root.querySelector('[data-fps-label]');
+
+								const conversionCard = root.querySelector('[data-conversion-card]');
+								const correctedStatus = root.querySelector('[data-corrected-status]');
+								const stickyCta = root.querySelector('[data-sticky-cta]');
+
+								const ratioSelect = root.querySelector('[data-ratio]');
+								const customRatioRow = root.querySelector('[data-custom-ratio-row]');
+								const customRatioInput = root.querySelector('[data-custom-ratio]');
+								const fpsSelect = root.querySelector('[data-fps]');
+								const photoExport = root.querySelector('[data-photo-export]');
+								const videoExport = root.querySelector('[data-video-export]');
+
+								const fileInput = root.querySelector('[data-file-input]');
+								const fileList = root.querySelector('[data-file-list]');
+								const mixedError = root.querySelector('[data-mixed-error]');
+								const dropzone = root.querySelector('[data-dropzone]');
+								const clearBtn = root.querySelector('[data-clear-files]');
+
+								const playBtn = root.querySelector('[data-play]');
+								const pauseBtn = root.querySelector('[data-pause]');
+								const videoControls = root.querySelector('[data-video-controls]');
+								const previewModeRoot = root.querySelector('[data-preview-mode]');
+								const previewModeFitBtn = root.querySelector('[data-preview-mode-btn="fit"]');
+								const previewModeTrueBtn = root.querySelector('[data-preview-mode-btn="true"]');
+								const exportSelectedBtn = root.querySelector('[data-export-selected]');
+								const exportBatchBtn = root.querySelector('[data-export-batch]');
+
+								const toast = root.querySelector('[data-toast]');
+								const toastTitle = root.querySelector('[data-toast-title]');
+								const toastBody = root.querySelector('[data-toast-body]');
+
+								let currentObjectUrl = null;
+								let selectedIndex = -1;
+								let files = [];
+								let mediaKind = null;
+								let previewMode = 'fit';
+								let fpsTimer = null;
+								let toastTimer = null;
+
+								const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+
+								const formatRatio = (v) => {
+									const n = Number(v);
+									if (!Number.isFinite(n)) return null;
+									const s = n.toFixed(2).replace(/\.00$/, '');
+									return `${s}x`;
+								};
+
+								const getSelectedRatioLabel = () => {
+									if (!ratioSelect) return null;
+									if (ratioSelect.value === 'custom') return formatRatio(customRatioInput ? customRatioInput.value : '1.33');
+									return formatRatio(ratioSelect.value);
+								};
+
+								const setConversionVisible = (on) => {
+									if (conversionCard instanceof HTMLElement) {
+										conversionCard.classList.toggle('opacity-0', !on);
+										conversionCard.classList.toggle('translate-y-1', !on);
+										conversionCard.classList.toggle('pointer-events-none', !on);
+									}
+									if (stickyCta instanceof HTMLElement) {
+										stickyCta.classList.toggle('opacity-0', !on);
+										stickyCta.classList.toggle('translate-y-1', !on);
+										stickyCta.classList.toggle('pointer-events-none', !on);
+									}
+								};
+
+								const updateCorrectedStatus = () => {
+									const label = getSelectedRatioLabel();
+									if (!correctedStatus) return;
+									correctedStatus.textContent = label ? `✔ Corrected with ${label}` : '✔ Corrected with —';
+								};
+
+								const setStatus = (text) => {
+									if (!statusEl) return;
+									statusEl.textContent = text;
+								};
+
+								const showToast = (title, body) => {
+									if (!toast) return;
+									if (toastTitle) toastTitle.textContent = title;
+									if (toastBody) toastBody.textContent = body;
+									toast.style.opacity = '1';
+									clearTimeout(toastTimer);
+									toastTimer = setTimeout(() => {
+										toast.style.opacity = '0';
+									}, 1400);
+								};
+
+								const flashActive = () => {
+									if (!activeGlow) return;
+									activeGlow.style.opacity = '1';
+									window.clearTimeout(activeGlow.__t);
+									activeGlow.__t = window.setTimeout(() => {
+										activeGlow.style.opacity = '0';
+									}, 220);
+								};
+
+								const getRatio = () => {
+									let ratio = 1;
+
+									if (ratioSelect && ratioSelect.value === 'custom') {
+										const v = customRatioInput ? Number(customRatioInput.value) : 1.33;
+										ratio = clamp(Number.isFinite(v) ? v : 1.33, 1, 3);
+									} else if (ratioSelect) {
+										ratio = Number(ratioSelect.value) || 1;
+									}
+
+									return ratio;
+								};
+
+								const getActiveMediaEl = () => {
+									if (previewImage && !previewImage.classList.contains('hidden')) return previewImage;
+									if (previewVideo && !previewVideo.classList.contains('hidden')) return previewVideo;
+									return null;
+								};
+
+								const getMediaAspect = (el) => {
+									if (!el) return null;
+									if (el instanceof HTMLImageElement) {
+										const w = el.naturalWidth || 0;
+										const h = el.naturalHeight || 0;
+										if (w > 0 && h > 0) return w / h;
+									}
+									if (el instanceof HTMLVideoElement) {
+										const w = el.videoWidth || 0;
+										const h = el.videoHeight || 0;
+										if (w > 0 && h > 0) return w / h;
+									}
+									return null;
+								};
+
+								const applyDesqueezePreview = () => {
+									if (!previewFrame) return;
+									const mediaEl = getActiveMediaEl();
+									if (!mediaEl) return;
+
+									const rect = previewFrame.getBoundingClientRect();
+									if (rect.width <= 0 || rect.height <= 0) return;
+
+									const containerAspect = rect.width / rect.height;
+									const mediaAspect = getMediaAspect(mediaEl);
+									const factor = getRatio();
+
+									mediaEl.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.35) inset';
+
+									if (previewClip instanceof HTMLElement) {
+										previewClip.style.overflowY = 'hidden';
+										previewClip.style.overflowX = previewMode === 'true' ? 'auto' : 'hidden';
+									}
+
+									if (previewMode === 'true') {
+										const pxW = Math.max(1, Math.round(rect.width * factor));
+										const pxH = Math.max(1, Math.round(rect.height));
+										if (preview instanceof HTMLElement) {
+											preview.style.width = `${pxW}px`;
+											preview.style.height = `${pxH}px`;
+										}
+										mediaEl.style.position = 'relative';
+										mediaEl.style.left = '';
+										mediaEl.style.top = '';
+										mediaEl.style.transformOrigin = 'left center';
+										mediaEl.style.width = `${(100 / factor).toFixed(4)}%`;
+										mediaEl.style.height = '100%';
+										mediaEl.style.transform = `scaleX(${factor})`;
+										if (previewClip instanceof HTMLElement) {
+											previewClip.scrollLeft = Math.max(0, (previewClip.scrollWidth - previewClip.clientWidth) / 2);
+										}
+										flashActive();
+										return;
+									}
+
+									if (preview instanceof HTMLElement) {
+										preview.style.width = '100%';
+										preview.style.height = '100%';
+									}
+									mediaEl.style.position = 'absolute';
+									mediaEl.style.left = '50%';
+									mediaEl.style.top = '50%';
+									mediaEl.style.width = '100%';
+									mediaEl.style.height = '100%';
+									mediaEl.style.transformOrigin = 'center center';
+
+									if (!mediaAspect || !Number.isFinite(mediaAspect)) {
+										mediaEl.style.transform = `translate(-50%, -50%) scaleX(${factor})`;
+										return;
+									}
+
+									const desqueezedAspect = mediaAspect * factor;
+									const fitScale = desqueezedAspect > containerAspect ? containerAspect / desqueezedAspect : 1;
+									mediaEl.style.transform = `translate(-50%, -50%) scaleX(${factor}) scale(${fitScale})`;
+									flashActive();
+								};
+
+								const setMixedError = (on) => {
+									if (!mixedError) return;
+									mixedError.classList.toggle('hidden', !on);
+								};
+
+								const setExportUi = (kind) => {
+									mediaKind = kind;
+									if (photoExport) photoExport.classList.toggle('hidden', kind !== 'image');
+									if (videoExport) videoExport.classList.toggle('hidden', kind !== 'video');
+									if (videoControls) {
+										videoControls.classList.toggle('invisible', kind !== 'video');
+										videoControls.classList.toggle('pointer-events-none', kind !== 'video');
+									}
+								};
+
+								const setClearVisible = (on) => {
+									if (!clearBtn) return;
+									clearBtn.classList.toggle('hidden', !on);
+								};
+
+								const stopFpsPulse = () => {
+									if (fpsTimer) window.clearInterval(fpsTimer);
+									fpsTimer = null;
+									if (fpsPulse) fpsPulse.style.opacity = '0';
+								};
+
+								const startFpsPulse = (fps) => {
+									stopFpsPulse();
+									if (!fpsPulse) return;
+
+									const periodMs = Math.max(16, Math.round(1000 / fps));
+									let on = false;
+									fpsTimer = window.setInterval(() => {
+										on = !on;
+										fpsPulse.style.opacity = on ? '0.16' : '0';
+										fpsPulse.style.background =
+											'linear-gradient(to bottom, rgba(255,255,255,0.08), transparent 22%, transparent 78%, rgba(255,255,255,0.08))';
+									}, periodMs);
+								};
+
+								const applyFps = () => {
+									if (!fpsSelect) return;
+									const v = fpsSelect.value;
+									if (fpsLabel) fpsLabel.textContent = v === 'keep' ? 'orig' : v;
+
+									if (v === 'keep') {
+										stopFpsPulse();
+									} else {
+										const fps = clamp(Number(v) || 24, 10, 120);
+										startFpsPulse(fps);
+									}
+									flashActive();
+								};
+
+								const extOf = (name) => {
+									const s = String(name || '');
+									const i = s.lastIndexOf('.');
+									return i >= 0 ? s.slice(i + 1).toLowerCase() : '';
+								};
+
+								const classifyFile = (file) => {
+									const t = String(file?.type || '');
+									if (t.startsWith('image/')) return 'image';
+									if (t.startsWith('video/')) return 'video';
+									const ext = extOf(file?.name);
+									if (['jpg', 'jpeg', 'png', 'webp'].includes(ext)) return 'image';
+									if (['mp4', 'mov', 'webm'].includes(ext)) return 'video';
+									return null;
+								};
+
+								const setPreviewFromFile = (file) => {
+									if (!previewVideo || !previewImage) return;
+									if (previewEmpty) previewEmpty.classList.add('hidden');
+
+									if (currentObjectUrl) URL.revokeObjectURL(currentObjectUrl);
+									currentObjectUrl = URL.createObjectURL(file);
+
+									const kind = classifyFile(file);
+									const isVideo = kind === 'video';
+									const isImage = kind === 'image';
+
+									if (isVideo) {
+										previewImage.classList.add('hidden');
+										previewVideo.classList.remove('hidden');
+										previewVideo.src = currentObjectUrl;
+										previewVideo.load();
+									} else if (isImage) {
+										previewVideo.pause();
+										previewVideo.removeAttribute('src');
+										previewVideo.load();
+										previewVideo.classList.add('hidden');
+										previewImage.classList.remove('hidden');
+										previewImage.src = currentObjectUrl;
+									}
+								};
+
+								const renderFileList = () => {
+									if (!fileList) return;
+									if (!files.length) {
+										fileList.innerHTML = '<p class="text-sm text-white/60">No files selected.</p>';
+										selectedIndex = -1;
+										setClearVisible(false);
+										return;
+									}
+
+									const rows = files
+										.map((f, i) => {
+											const active = i === selectedIndex;
+											const name = String(f.name || 'Untitled');
+											const meta = f.type ? `${f.type}` : 'file';
+											return `
+												<button
+													type="button"
+													class="group flex min-h-[3.5rem] w-full items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left transition-colors ${
+														active
+															? 'border-[#FF7A1A]/35 bg-[#FF7A1A]/10'
+															: 'border-white/10 bg-black/40 hover:bg-white/[0.06]'
+													}"
+													data-file-row="${i}"
+												>
+													<span class="min-w-0">
+														<span class="block truncate text-sm font-semibold ${active ? 'text-[#FF7A1A]' : 'text-white/85'}">${name}</span>
+														<span class="mt-0.5 block truncate text-xs ${active ? 'text-[#FF7A1A]/80' : 'text-white/55'}">${meta}</span>
+													</span>
+													<span class="shrink-0 rounded-full border border-white/10 bg-black/30 px-2.5 py-1 text-[11px] font-semibold text-white/60">
+														${active ? 'Selected' : 'Select'}
+													</span>
+												</button>
+											`;
+										})
+										.join('');
+
+									fileList.innerHTML = `<div class="grid gap-2">${rows}</div>`;
+									setClearVisible(true);
+								};
+
+								const ensureSelected = (index) => {
+									selectedIndex = clamp(index, 0, files.length - 1);
+									renderFileList();
+									setPreviewFromFile(files[selectedIndex]);
+									applyDesqueezePreview();
+									applyFps();
+								};
+
+								ratioSelect?.addEventListener('change', () => {
+									const isCustom = ratioSelect.value === 'custom';
+									customRatioRow?.classList.toggle('hidden', !isCustom);
+									applyDesqueezePreview();
+									updateCorrectedStatus();
+								});
+								customRatioInput?.addEventListener(
+									'input',
+									() => {
+										applyDesqueezePreview();
+										updateCorrectedStatus();
+									},
+									{ passive: true }
+								);
+
+								fpsSelect?.addEventListener('change', applyFps);
+
+								const setPickedFiles = (picked) => {
+									setMixedError(false);
+									const supported = picked.filter((f) => classifyFile(f));
+									const kinds = new Set(supported.map((f) => classifyFile(f)).filter(Boolean));
+
+									if (kinds.size > 1) {
+										setMixedError(true);
+										showToast('Mixed media', 'Please upload one media type per batch.');
+										return;
+									}
+
+									const kind = kinds.size === 1 ? Array.from(kinds)[0] : null;
+									files = supported;
+									setExportUi(kind);
+									renderFileList();
+									if (files.length) ensureSelected(0);
+									else showToast('No files', 'Please pick an image or video.');
+									setConversionVisible(files.length > 0);
+									updateCorrectedStatus();
+								};
+
+								fileInput?.addEventListener('change', () => {
+									const picked = Array.from(fileInput.files || []);
+									if (!picked.length) return;
+									setPickedFiles(picked);
+								});
+
+								fileList?.addEventListener('click', (e) => {
+									const btn = e.target && e.target.closest ? e.target.closest('[data-file-row]') : null;
+									if (!btn) return;
+									const idx = Number(btn.getAttribute('data-file-row'));
+									if (!Number.isFinite(idx)) return;
+									ensureSelected(idx);
+								});
+
+								const clearAll = () => {
+									setMixedError(false);
+									files = [];
+									selectedIndex = -1;
+									setExportUi(null);
+									renderFileList();
+									if (fileInput) fileInput.value = '';
+									if (currentObjectUrl) {
+										URL.revokeObjectURL(currentObjectUrl);
+										currentObjectUrl = null;
+									}
+									if (previewImage) {
+										previewImage.src = '';
+										previewImage.classList.add('hidden');
+									}
+									if (previewVideo) {
+										previewVideo.pause();
+										previewVideo.removeAttribute('src');
+										previewVideo.load();
+										previewVideo.classList.add('hidden');
+									}
+									if (previewEmpty) previewEmpty.classList.remove('hidden');
+									applyDesqueezePreview();
+									applyFps();
+									setConversionVisible(false);
+									updateCorrectedStatus();
+								};
+
+								clearBtn?.addEventListener('click', clearAll);
+
+								const openPicker = () => fileInput && fileInput.click();
+								dropzone?.addEventListener('click', openPicker);
+								dropzone?.addEventListener('keydown', (e) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										e.preventDefault();
+										openPicker();
+									}
+								});
+								['dragenter', 'dragover'].forEach((evt) => {
+									dropzone?.addEventListener(evt, (e) => {
+										e.preventDefault();
+										dropzone.classList.add('border-[#FF7A1A]/40', 'bg-[#FF7A1A]/[0.06]');
+									});
+								});
+								['dragleave', 'drop'].forEach((evt) => {
+									dropzone?.addEventListener(evt, (e) => {
+										e.preventDefault();
+										dropzone.classList.remove('border-[#FF7A1A]/40', 'bg-[#FF7A1A]/[0.06]');
+									});
+								});
+								dropzone?.addEventListener('drop', (e) => {
+									const dt = e.dataTransfer;
+									if (!dt?.files?.length) return;
+									setPickedFiles(Array.from(dt.files));
+								});
+
+								playBtn?.addEventListener('click', () => {
+									if (!previewVideo || previewVideo.classList.contains('hidden')) return;
+									previewVideo.play().catch(() => {});
+									flashActive();
+								});
+
+								pauseBtn?.addEventListener('click', () => {
+									if (!previewVideo || previewVideo.classList.contains('hidden')) return;
+									previewVideo.pause();
+									flashActive();
+								});
+
+								const handleExportClick = (mode) => {
+									setStatus('Processing');
+									showToast('Coming soon', mode === 'batch' ? 'Batch export will be available soon.' : 'Export will be available soon.');
+									window.setTimeout(() => setStatus('Idle'), 900);
+								};
+
+								exportSelectedBtn?.addEventListener('click', () => handleExportClick('selected'));
+								exportBatchBtn?.addEventListener('click', () => handleExportClick('batch'));
+
+								customRatioRow?.classList.add('hidden');
+								setExportUi(null);
+								setMixedError(false);
+								setConversionVisible(false);
+								updateCorrectedStatus();
+								applyDesqueezePreview();
+								applyFps();
+
+								const setPreviewMode = (mode) => {
+									previewMode = mode === 'true' ? 'true' : 'fit';
+									if (previewModeFitBtn instanceof HTMLButtonElement) {
+										const active = previewMode === 'fit';
+										previewModeFitBtn.classList.toggle('border-[#FF7A1A]/35', active);
+										previewModeFitBtn.classList.toggle('bg-[#FF7A1A]/10', active);
+										previewModeFitBtn.classList.toggle('text-[#FF7A1A]', active);
+										previewModeFitBtn.classList.toggle('shadow-[0_0_0_1px_rgba(255,122,26,0.16),0_0_18px_rgba(255,122,26,0.10)]', active);
+										previewModeFitBtn.classList.toggle('border-white/10', !active);
+										previewModeFitBtn.classList.toggle('bg-black/40', !active);
+										previewModeFitBtn.classList.toggle('text-white/70', !active);
+										previewModeFitBtn.classList.toggle('hover:bg-white/[0.06]', !active);
+									}
+									if (previewModeTrueBtn instanceof HTMLButtonElement) {
+										const active = previewMode === 'true';
+										previewModeTrueBtn.classList.toggle('border-[#FF7A1A]/35', active);
+										previewModeTrueBtn.classList.toggle('bg-[#FF7A1A]/10', active);
+										previewModeTrueBtn.classList.toggle('text-[#FF7A1A]', active);
+										previewModeTrueBtn.classList.toggle('shadow-[0_0_0_1px_rgba(255,122,26,0.16),0_0_18px_rgba(255,122,26,0.10)]', active);
+										previewModeTrueBtn.classList.toggle('border-white/10', !active);
+										previewModeTrueBtn.classList.toggle('bg-black/40', !active);
+										previewModeTrueBtn.classList.toggle('text-white/70', !active);
+										previewModeTrueBtn.classList.toggle('hover:bg-white/[0.06]', !active);
+									}
+									applyDesqueezePreview();
+								};
+
+								if (previewModeRoot instanceof HTMLElement) {
+									previewModeRoot.addEventListener('click', (e) => {
+										const t = e.target;
+										if (!(t instanceof Element)) return;
+										const btn = t.closest('[data-preview-mode-btn]');
+										if (!(btn instanceof HTMLElement)) return;
+										const mode = btn.getAttribute('data-preview-mode-btn') || 'fit';
+										setPreviewMode(mode);
+									});
+								}
+								setPreviewMode('fit');
+
+								previewImage?.addEventListener('load', applyDesqueezePreview, { passive: true });
+								previewVideo?.addEventListener('loadedmetadata', applyDesqueezePreview, { passive: true });
+								window.addEventListener('resize', applyDesqueezePreview, { passive: true });
+
+								window.addEventListener(
+									'beforeunload',
+									() => {
+										if (currentObjectUrl) URL.revokeObjectURL(currentObjectUrl);
+									},
+									{ once: true }
+								);
+							})();
+						</script>
+					</section>
+
+				<section class="scroll-mt-28">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">CHOOSE THE RIGHT FACTOR</p>
+						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Choose the 1.5× squeeze factor.</h2>
+					</div>
+
+					<div class="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">1.25× / 1.30×</p>
+							<p class="mt-2 text-sm text-white/65">Subtle mobile adapters and light squeeze looks.</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">1.33×</p>
+							<p class="mt-2 text-sm text-white/65">Common mobile anamorphic lenses (fast, reliable framing).</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">1.50× / 1.55×</p>
+							<p class="mt-2 text-sm text-white/65">Balanced cinematic look and wider corrected frame.</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">1.80×</p>
+							<p class="mt-2 text-sm text-white/65">Wider stylized look — preview carefully before export.</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">2.00×</p>
+							<p class="mt-2 text-sm text-white/65">Classic cinema anamorphic workflows and strong squeeze.</p>
+						</div>
+					</div>
+
+					<div class="mt-4 rounded-3xl border border-white/10 bg-black/40 p-5 text-sm text-white/65">
+						<p>
+							<span class="font-semibold text-white">Quick check:</span> If faces look too wide, the factor is too high. If footage still looks tall,
+							the factor is too low.
+						</p>
+					</div>
+				</section>
+
+				<section class="scroll-mt-28">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">COMMON MISTAKES</p>
+						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Common 1.5× de-squeeze mistakes (and fast fixes).</h2>
+					</div>
+
+					<div class="mt-6 grid gap-3 md:grid-cols-2">
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Cropping instead of desqueezing</p>
+							<p class="mt-2 text-sm text-white/65">Crop hides the problem. Correct geometry first, then choose delivery framing.</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Choosing the wrong factor</p>
+							<p class="mt-2 text-sm text-white/65">Preview faces and circles — if they look off, adjust factor before export.</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Exporting before previewing</p>
+							<p class="mt-2 text-sm text-white/65">Always check framing + geometry in preview mode (Fit / True) first.</p>
+						</div>
+						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+							<p class="text-sm font-semibold text-white">Forgetting final delivery ratio</p>
+							<p class="mt-2 text-sm text-white/65">Decide whether you’re delivering 16:9, 2.39:1, or social crops after correction.</p>
+						</div>
+					</div>
+				</section>
+
+				<section class="scroll-mt-28">
+					<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:p-8">
+						<div class="flex flex-col gap-2">
+							<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">CONTINUE YOUR WORKFLOW</p>
+							<h2 class="text-2xl font-semibold tracking-tight text-white md:text-3xl">Continue after de-squeezing 1.5×</h2>
+							<p class="mt-1 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
+								Run a quick preview in Web Studio, then move to native apps when you’re ready to shoot or batch export.
+							</p>
+						</div>
+
+						<div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+							<a class={`${downloadAppsButtonClass} gap-2`} href="/try-live">
+								Try Web Studio
+								<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+							<a
+								class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
+								href="/products"
+							>
+								Explore Products
+								<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+							<a
+								class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
+								href="/products"
+							>
+								Continue in App
+								<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+						</div>
+					</div>
+				</section>
+				</div>
+
+				<aside class="hidden lg:block self-start justify-self-end lg:sticky lg:top-28 lg:border-l lg:border-white/10 lg:pl-6 lg:pr-1">
+					<div class="max-h-[calc(100vh-8.25rem)] overflow-auto pr-1 [scrollbar-width:thin] [scrollbar-color:rgba(255,122,26,0.35)_rgba(255,255,255,0.06)]">
+						<GuidesNavigator variant="desktop" />
+					</div>
+				</aside>
+			</div>
+		</section>
+
+		<SiteFooter />
+	</main>
+</Layout>
+
+<style>
+	[data-desqueeze-studio] select {
+		color-scheme: dark;
+	}
+	[data-desqueeze-studio] select option {
+		background: #0b0b0b;
+		color: rgba(255, 255, 255, 0.92);
+	}
+	[data-desqueeze-studio] .file-list-scroll {
+		scrollbar-width: thin;
+		scrollbar-color: rgba(255, 122, 26, 0.35) rgba(255, 255, 255, 0.05);
+	}
+	[data-desqueeze-studio] .file-list-scroll::-webkit-scrollbar {
+		width: 5px;
+	}
+	[data-desqueeze-studio] .file-list-scroll::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	[data-desqueeze-studio] .file-list-scroll::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.12);
+		border-radius: 9999px;
+	}
+	[data-desqueeze-studio] .file-list-scroll::-webkit-scrollbar-thumb:hover {
+		background: rgba(255, 122, 26, 0.35);
+	}
+</style>
+
