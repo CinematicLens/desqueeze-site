@@ -33,7 +33,7 @@ const downloadHref = downloadAppsHref(page);
 				alt=""
 				width="320"
 				height="85"
-				class="h-12 w-auto max-h-[4.75rem] max-w-[min(320px,78vw)] origin-left object-contain object-left sm:h-14 md:h-16 [filter:brightness(1.14)_contrast(1.08)_drop-shadow(0_0_10px_rgba(255,255,255,0.28))_drop-shadow(0_2px_16px_rgba(70,150,255,0.22))]"
+				class="h-12 w-auto max-h-[4.75rem] max-w-[min(320px,78vw)] origin-left object-contain object-left sm:h-14 md:h-16 [filter:brightness(1.22)_contrast(1.16)_drop-shadow(0_0_12px_rgba(255,255,255,0.34))_drop-shadow(0_2px_18px_rgba(70,150,255,0.26))]"
 				loading="eager"
 				fetchpriority="high"
 				decoding="async"
@@ -66,7 +66,7 @@ const downloadHref = downloadAppsHref(page);
 					<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"></path>
 				</svg>
 			</button>
-			<a class={downloadAppsButtonClass} href={downloadHref}>Download Apps</a>
+			<a class={downloadAppsButtonClass} href={downloadHref}>Continue in App</a>
 		</div>
 	</div>
 	<div
@@ -101,7 +101,7 @@ const downloadHref = downloadAppsHref(page);
 				siteNavMobileLinkClass,
 			} from '../data/siteNav';
 
-			const SECTION_IDS = ['suite', 'features', 'before-after', 'faq', 'contact'];
+			const SECTION_IDS = ['ecosystem', 'contact'];
 
 			function getActiveNavId() {
 				const header = document.querySelector('[data-mobile-nav]');

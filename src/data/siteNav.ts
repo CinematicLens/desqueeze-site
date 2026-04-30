@@ -15,7 +15,7 @@ export const siteNavMobileLinkClass =
 
 export const siteNavMobileLinkActiveClass = `${siteNavMobileLinkClass} bg-white/[0.08] text-white hover:text-white`;
 
-export type SiteHeaderPage = 'home' | 'products' | 'guides';
+export type SiteHeaderPage = 'home' | 'products' | 'guides' | 'try-live';
 
 export type NavItem = { id: string; label: string; href: string };
 
@@ -26,13 +26,23 @@ export function getHeaderNav(page: SiteHeaderPage): { items: NavItem[]; activeId
 			activeId: 'home',
 			items: [
 				{ id: 'home', label: 'Home', href: '/' },
-				{ id: 'suite', label: 'Film Suite', href: '#suite' },
+				{ id: 'try-live', label: 'Try Live', href: '/try-live' },
 				{ id: 'products', label: 'Products', href: '/products' },
 				{ id: 'guides', label: 'Guides', href: '/guides' },
-				{ id: 'features', label: 'Features', href: '#features' },
-				{ id: 'before-after', label: 'See It Live', href: '#before-after' },
-				{ id: 'faq', label: 'FAQ', href: '#faq' },
 				{ id: 'contact', label: 'Contact', href: '#contact' },
+			],
+		};
+	}
+
+	if (page === 'try-live') {
+		return {
+			activeId: 'try-live',
+			items: [
+				{ id: 'home', label: 'Home', href: '/' },
+				{ id: 'try-live', label: 'Try Live', href: '/try-live' },
+				{ id: 'products', label: 'Products', href: '/products' },
+				{ id: 'guides', label: 'Guides', href: '/guides' },
+				{ id: 'contact', label: 'Contact', href: '/#contact' },
 			],
 		};
 	}
@@ -42,12 +52,9 @@ export function getHeaderNav(page: SiteHeaderPage): { items: NavItem[]; activeId
 			activeId: 'guides',
 			items: [
 				{ id: 'home', label: 'Home', href: '/' },
-				{ id: 'suite', label: 'Film Suite', href: '/#suite' },
+				{ id: 'try-live', label: 'Try Live', href: '/try-live' },
 				{ id: 'products', label: 'Products', href: '/products' },
 				{ id: 'guides', label: 'Guides', href: '/guides' },
-				{ id: 'features', label: 'Features', href: '/#features' },
-				{ id: 'before-after', label: 'See It Live', href: '/#before-after' },
-				{ id: 'faq', label: 'FAQ', href: '/#faq' },
 				{ id: 'contact', label: 'Contact', href: '/#contact' },
 			],
 		};
@@ -57,17 +64,14 @@ export function getHeaderNav(page: SiteHeaderPage): { items: NavItem[]; activeId
 		activeId: 'products',
 		items: [
 			{ id: 'home', label: 'Home', href: '/' },
-			{ id: 'suite', label: 'Film Suite', href: '/#suite' },
+			{ id: 'try-live', label: 'Try Live', href: '/try-live' },
 			{ id: 'products', label: 'Products', href: '/products' },
 			{ id: 'guides', label: 'Guides', href: '/guides' },
-			{ id: 'features', label: 'Features', href: '/#features' },
-			{ id: 'before-after', label: 'See It Live', href: '/#before-after' },
-			{ id: 'faq', label: 'FAQ', href: '/#faq' },
 			{ id: 'contact', label: 'Contact', href: '/#contact' },
 		],
 	};
 }
 
 export function downloadAppsHref(page: SiteHeaderPage): string {
-	return page === 'home' ? '#suite' : '/#suite';
+	return page === 'home' ? '#ecosystem' : '/#ecosystem';
 }

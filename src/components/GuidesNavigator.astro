@@ -1,0 +1,76 @@
+---
+type Variant = 'desktop' | 'mobile';
+
+interface Props {
+	variant?: Variant;
+}
+
+const { variant = 'desktop' } = Astro.props;
+
+const items = [
+	{ label: 'How to Desqueeze 1.33x', short: '1.33x', href: '/how-to-desqueeze-1-33x' },
+	{ label: 'How to Desqueeze 1.5x', short: '1.5x', href: '/how-to-desqueeze-1-5x' },
+	{ label: 'Fix Stretched Video', short: 'Fix Video', href: '/fix-stretched-video' },
+	{ label: 'Desqueeze Video Online', short: 'Online Tool', href: '/desqueeze-video-online' },
+];
+
+const normalize = (p: string) => (p || '/').replace(/\/+$/, '') || '/';
+const currentPath = normalize(Astro.url?.pathname ?? '/');
+const isActive = (href: string) => normalize(href) === currentPath;
+
+const baseLink =
+	'flex w-full items-center justify-between gap-3 rounded-xl border px-3 py-2 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-[#FF7A1A]/35';
+const idleLink = `${baseLink} border-white/10 bg-black/30 text-white/60 hover:bg-white/[0.04] hover:text-white/80`;
+const activeLink =
+	`${baseLink} border-[#FF7A1A]/30 bg-[#FF7A1A]/10 text-white shadow-[0_0_0_1px_rgba(255,122,26,0.12),0_0_22px_rgba(255,122,26,0.08)]`;
+---
+
+{variant === 'desktop' ? (
+	<aside class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 shadow-[0_22px_70px_rgba(0,0,0,0.55)]">
+		<p class="text-xs font-semibold tracking-[0.22em] text-white/55">GUIDES</p>
+
+		<nav class="mt-4 flex flex-col gap-2" aria-label="Guides navigator">
+			{items.map((item) => (
+				<a class={isActive(item.href) ? activeLink : idleLink} href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+					<span class="min-w-0 truncate">{item.label}</span>
+					<span class="shrink-0 text-xs font-semibold text-white/35">→</span>
+				</a>
+			))}
+		</nav>
+
+		<div class="mt-4 border-t border-white/10 pt-4">
+			<a
+				href="/try-live"
+				class="inline-flex w-full items-center justify-center rounded-xl border border-[#FF7A1A]/35 bg-[#FF7A1A]/10 px-3 py-2 text-sm font-semibold text-[#FF7A1A] hover:bg-[#FF7A1A]/15 focus:outline-none focus:ring-2 focus:ring-[#FF7A1A]/35"
+			>
+				Try Live Tool
+			</a>
+		</div>
+	</aside>
+) : (
+	<nav class="mt-5 lg:hidden" aria-label="Guides navigator">
+		<div class="-mx-1.5 overflow-x-auto px-1.5 [scrollbar-width:thin] [scrollbar-color:rgba(255,122,26,0.35)_rgba(255,255,255,0.06)]">
+			<div class="flex w-max items-center gap-2 pb-1.5">
+				{items.map((item) => (
+					<a
+						href={item.href}
+						aria-current={isActive(item.href) ? 'page' : undefined}
+						class={
+							isActive(item.href)
+								? 'inline-flex items-center rounded-full border border-[#FF7A1A]/35 bg-[#FF7A1A]/10 px-3.5 py-1.5 text-xs font-semibold text-[#FF7A1A] shadow-[0_0_0_1px_rgba(255,122,26,0.12)]'
+								: 'inline-flex items-center rounded-full border border-white/10 bg-black/40 px-3.5 py-1.5 text-xs font-semibold text-white/65 hover:bg-white/[0.04]'
+						}
+					>
+						{item.short}
+					</a>
+				))}
+				<a
+					href="/try-live"
+					class="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs font-semibold text-white/70 hover:bg-white/[0.06]"
+				>
+					Try Live
+				</a>
+			</div>
+		</div>
+	</nav>
+)}
