@@ -22,19 +22,19 @@ const startHereCardBase =
 		<section class="relative isolate overflow-hidden border-b border-white/10 bg-black">
 			<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 				<div class="absolute inset-0 bg-[#060606]"></div>
-				<div class="absolute inset-0 opacity-30 [background:radial-gradient(80%_60%_at_50%_10%,rgba(255,122,26,0.14),transparent_60%)]"></div>
+				<div class="absolute inset-0 opacity-30 [background:radial-gradient(80%_60%_at_50%_10%,var(--color-accent-14),transparent_60%)]"></div>
 			</div>
 
 			<div class="page-shell relative z-10 py-14 md:py-20">
 				<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-md md:p-8">
 					<div
-						class="pointer-events-none absolute left-1/2 top-16 h-[220px] w-[520px] -translate-x-1/2 rounded-full blur-3xl opacity-60 [background:radial-gradient(closest-side,rgba(255,122,26,0.18),transparent)]"
+						class="pointer-events-none absolute left-1/2 top-16 h-[220px] w-[520px] -translate-x-1/2 rounded-full blur-3xl opacity-60 [background:radial-gradient(closest-side,var(--color-accent-18),transparent)]"
 						aria-hidden="true"
 					></div>
 
 					<div class="relative grid gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-start">
 						<div class="min-w-0">
-							<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">ANAMORPHIC GUIDE</p>
+							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">ANAMORPHIC GUIDE</p>
 							<h1 class="mt-3 max-w-4xl text-balance text-3xl font-semibold tracking-tight text-white md:text-5xl">
 								How to De-Squeeze 1.33× Anamorphic Footage
 							</h1>
@@ -69,64 +69,64 @@ const startHereCardBase =
 				<div class="min-w-0 space-y-12 md:space-y-14">
 				<section id="workflow" class="scroll-mt-28">
 					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">FILMMAKER WORKFLOW</p>
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">From shoot to final delivery.</h2>
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">FILMMAKER WORKFLOW</p>
+						<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">From shoot to final delivery.</h2>
 					</div>
 
 					<div class="mt-6 grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] md:items-stretch">
-						<div class="rounded-3xl border border-[#FF7A1A]/20 bg-[#FF7A1A]/[0.06] p-5 shadow-[0_0_0_1px_rgba(255,122,26,0.12),0_0_26px_rgba(255,122,26,0.12)]">
+						<div class="rounded-3xl border border-[var(--color-accent-20)] bg-[var(--color-accent-06)] p-5 shadow-[0_0_0_1px_var(--color-accent-12),0_0_26px_var(--color-accent-12)]">
 							<div class="flex items-start justify-between gap-4">
 								<div class="min-w-0">
-									<p class="text-xs font-semibold tracking-[0.18em] text-white/60">SHOOT</p>
-									<p class="mt-2 text-sm font-semibold text-white">Capture squeezed footage</p>
-									<p class="mt-2 text-sm leading-relaxed text-white/65">Capture squeezed anamorphic footage on mobile or cinema camera.</p>
+									<p class="text-xs font-semibold tracking-[0.18em] text-[var(--color-muted)]">SHOOT</p>
+									<p class="mt-2 text-sm font-semibold text-[var(--color-text)]">Capture squeezed footage</p>
+									<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">Capture squeezed anamorphic footage on mobile or cinema camera.</p>
 								</div>
-								<span class="shrink-0 text-[#FF7A1A]" set:html={lucideSvg(Zap, 'h-5 w-5', 20)} aria-hidden="true"></span>
+								<span class="shrink-0 text-[var(--color-accent)]" set:html={lucideSvg(Zap, 'h-5 w-5', 20)} aria-hidden="true"></span>
 							</div>
 						</div>
 
 						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
-							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+							<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
 						</div>
 
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
 							<div class="flex items-start justify-between gap-4">
 								<div class="min-w-0">
-									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">PREVIEW</p>
-									<p class="mt-2 text-sm font-semibold text-white">Check framing</p>
-									<p class="mt-2 text-sm leading-relaxed text-white/60">Check framing and geometry before editing.</p>
+									<p class="text-xs font-semibold tracking-[0.18em] text-[var(--color-muted-faint)]">PREVIEW</p>
+									<p class="mt-2 text-sm font-semibold text-[var(--color-text)]">Check framing</p>
+									<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">Check framing and geometry before editing.</p>
 								</div>
-								<span class="shrink-0 text-white/35" set:html={lucideSvg(ChevronRight, 'h-5 w-5', 20)} aria-hidden="true"></span>
+								<span class="shrink-0 text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-5 w-5', 20)} aria-hidden="true"></span>
 							</div>
 						</div>
 
 						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
-							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+							<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
 						</div>
 
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
 							<div class="flex items-start justify-between gap-4">
 								<div class="min-w-0">
-									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">DESQUEEZE</p>
-									<p class="mt-2 text-sm font-semibold text-white">Correct the image</p>
-									<p class="mt-2 text-sm leading-relaxed text-white/60">Choose the correct squeeze factor and correct the image.</p>
+									<p class="text-xs font-semibold tracking-[0.18em] text-[var(--color-muted-faint)]">DESQUEEZE</p>
+									<p class="mt-2 text-sm font-semibold text-[var(--color-text)]">Correct the image</p>
+									<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">Choose the correct squeeze factor and correct the image.</p>
 								</div>
-								<span class="shrink-0 text-white/35" set:html={lucideSvg(Repeat, 'h-5 w-5', 20)} aria-hidden="true"></span>
+								<span class="shrink-0 text-[var(--color-muted-faint)]" set:html={lucideSvg(Repeat, 'h-5 w-5', 20)} aria-hidden="true"></span>
 							</div>
 						</div>
 
 						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
-							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+							<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
 						</div>
 
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
 							<div class="flex items-start justify-between gap-4">
 								<div class="min-w-0">
-									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">EXPORT</p>
-									<p class="mt-2 text-sm font-semibold text-white">Deliver clean widescreen</p>
-									<p class="mt-2 text-sm leading-relaxed text-white/60">Deliver corrected footage for edit, web, or client review.</p>
+									<p class="text-xs font-semibold tracking-[0.18em] text-[var(--color-muted-faint)]">EXPORT</p>
+									<p class="mt-2 text-sm font-semibold text-[var(--color-text)]">Deliver clean widescreen</p>
+									<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">Deliver corrected footage for edit, web, or client review.</p>
 								</div>
-								<span class="shrink-0 text-white/35" set:html={lucideSvg(Download, 'h-5 w-5', 20)} aria-hidden="true"></span>
+								<span class="shrink-0 text-[var(--color-muted-faint)]" set:html={lucideSvg(Download, 'h-5 w-5', 20)} aria-hidden="true"></span>
 							</div>
 						</div>
 					</div>
@@ -134,18 +134,18 @@ const startHereCardBase =
 
 				<section class="scroll-mt-28">
 					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">WHAT DESQUEEZE DOES</p>
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Squeezed frame → corrected frame → cinematic output.</h2>
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">WHAT DESQUEEZE DOES</p>
+						<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">Squeezed frame → corrected frame → cinematic output.</h2>
 					</div>
 
 					<div class="mt-6 grid gap-4 md:grid-cols-3">
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Squeezed</p>
-							<p class="mt-1 text-xs text-white/55">Tall / incorrect preview</p>
-							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">Squeezed</p>
+							<p class="mt-1 text-xs text-[var(--color-muted-faint)]">Tall / incorrect preview</p>
+							<div class="mt-4 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black/60">
 								<div class="relative aspect-[16/10]">
 									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,255,255,0.10),transparent_60%)]"></div>
-									<div class="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-[#FF7A1A]/50"></div>
+									<div class="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-[var(--color-accent-50)]"></div>
 									<div class="absolute inset-y-0 left-[35%] w-px bg-white/10"></div>
 									<div class="absolute inset-y-0 left-[65%] w-px bg-white/10"></div>
 									<div class="absolute inset-x-0 top-[18%] h-px bg-white/10"></div>
@@ -155,13 +155,13 @@ const startHereCardBase =
 							</div>
 						</div>
 
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Desqueezed</p>
-							<p class="mt-1 text-xs text-white/55">Corrected wide frame</p>
-							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">Desqueezed</p>
+							<p class="mt-1 text-xs text-[var(--color-muted-faint)]">Corrected wide frame</p>
+							<div class="mt-4 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black/60">
 								<div class="relative aspect-[16/10]">
-									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,122,26,0.12),transparent_60%)]"></div>
-									<div class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[#FF7A1A]/50"></div>
+									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,var(--color-accent-12),transparent_60%)]"></div>
+									<div class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[var(--color-accent-50)]"></div>
 									<div class="absolute inset-x-0 top-[35%] h-px bg-white/10"></div>
 									<div class="absolute inset-x-0 top-[65%] h-px bg-white/10"></div>
 									<div class="absolute inset-y-0 left-[18%] w-px bg-white/10"></div>
@@ -171,15 +171,15 @@ const startHereCardBase =
 							</div>
 						</div>
 
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Final Output</p>
-							<p class="mt-1 text-xs text-white/55">Letterbox delivery</p>
-							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">Final Output</p>
+							<p class="mt-1 text-xs text-[var(--color-muted-faint)]">Letterbox delivery</p>
+							<div class="mt-4 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black/60">
 								<div class="relative aspect-[16/10]">
 									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,255,255,0.08),transparent_60%)]"></div>
 									<div class="absolute inset-x-0 top-0 h-[22%] bg-black/80"></div>
 									<div class="absolute inset-x-0 bottom-0 h-[22%] bg-black/80"></div>
-									<div class="absolute inset-x-0 bottom-[22%] h-px bg-[#FF7A1A]/35"></div>
+									<div class="absolute inset-x-0 bottom-[22%] h-px bg-[var(--color-accent-border)]"></div>
 									<div class="absolute inset-0 [background:linear-gradient(to_bottom,transparent,rgba(0,0,0,0.20),transparent)]"></div>
 								</div>
 							</div>
@@ -191,36 +191,36 @@ const startHereCardBase =
 
 <section class="scroll-mt-28">
 					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">CHOOSE THE RIGHT FACTOR</p>
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Choose the right squeeze factor.</h2>
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">CHOOSE THE RIGHT FACTOR</p>
+						<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">Choose the right squeeze factor.</h2>
 					</div>
 
 					<div class="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">1.25× / 1.30×</p>
-							<p class="mt-2 text-sm text-white/65">Subtle mobile adapters and light squeeze looks.</p>
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">1.25× / 1.30×</p>
+							<p class="mt-2 text-sm text-[var(--color-muted)]">Subtle mobile adapters and light squeeze looks.</p>
 						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">1.33×</p>
-							<p class="mt-2 text-sm text-white/65">Common mobile anamorphic lenses (fast, reliable framing).</p>
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">1.33×</p>
+							<p class="mt-2 text-sm text-[var(--color-muted)]">Common mobile anamorphic lenses (fast, reliable framing).</p>
 						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">1.50× / 1.55×</p>
-							<p class="mt-2 text-sm text-white/65">Balanced cinematic look and wider corrected frame.</p>
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">1.50× / 1.55×</p>
+							<p class="mt-2 text-sm text-[var(--color-muted)]">Balanced cinematic look and wider corrected frame.</p>
 						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">1.80×</p>
-							<p class="mt-2 text-sm text-white/65">Wider stylized look — preview carefully before export.</p>
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">1.80×</p>
+							<p class="mt-2 text-sm text-[var(--color-muted)]">Wider stylized look — preview carefully before export.</p>
 						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">2.00×</p>
-							<p class="mt-2 text-sm text-white/65">Classic cinema anamorphic workflows and strong squeeze.</p>
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">2.00×</p>
+							<p class="mt-2 text-sm text-[var(--color-muted)]">Classic cinema anamorphic workflows and strong squeeze.</p>
 						</div>
 					</div>
 
-					<div class="mt-4 rounded-3xl border border-white/10 bg-black/40 p-5 text-sm text-white/65">
+					<div class="mt-4 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface-strong)] p-5 text-sm text-[var(--color-muted)]">
 						<p>
-							<span class="font-semibold text-white">Quick check:</span> If faces look too wide, the factor is too high. If footage still looks tall,
+							<span class="font-semibold text-[var(--color-text)]">Quick check:</span> If faces look too wide, the factor is too high. If footage still looks tall,
 							the factor is too low.
 						</p>
 					</div>
@@ -228,36 +228,36 @@ const startHereCardBase =
 
 				<section class="scroll-mt-28">
 					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">COMMON MISTAKES</p>
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Common mistakes (and fast fixes).</h2>
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">COMMON MISTAKES</p>
+						<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">Common mistakes (and fast fixes).</h2>
 					</div>
 
 					<div class="mt-6 grid gap-3 md:grid-cols-2">
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Cropping instead of desqueezing</p>
-							<p class="mt-2 text-sm text-white/65">Crop hides the problem. Correct geometry first, then choose delivery framing.</p>
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">Cropping instead of desqueezing</p>
+							<p class="mt-2 text-sm text-[var(--color-muted)]">Crop hides the problem. Correct geometry first, then choose delivery framing.</p>
 						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Choosing the wrong factor</p>
-							<p class="mt-2 text-sm text-white/65">Preview faces and circles — if they look off, adjust factor before export.</p>
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">Choosing the wrong factor</p>
+							<p class="mt-2 text-sm text-[var(--color-muted)]">Preview faces and circles — if they look off, adjust factor before export.</p>
 						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Exporting before previewing</p>
-							<p class="mt-2 text-sm text-white/65">Always check framing + geometry in preview mode (Fit / True) first.</p>
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">Exporting before previewing</p>
+							<p class="mt-2 text-sm text-[var(--color-muted)]">Always check framing + geometry in preview mode (Fit / True) first.</p>
 						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Forgetting final delivery ratio</p>
-							<p class="mt-2 text-sm text-white/65">Decide whether you’re delivering 16:9, 2.39:1, or social crops after correction.</p>
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+							<p class="text-sm font-semibold text-[var(--color-text)]">Forgetting final delivery ratio</p>
+							<p class="mt-2 text-sm text-[var(--color-muted)]">Decide whether you’re delivering 16:9, 2.39:1, or social crops after correction.</p>
 						</div>
 					</div>
 				</section>
 
 				<section class="scroll-mt-28">
-					<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:p-8">
+					<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[inset_0_1px_0_var(--color-border)] md:p-8">
 						<div class="flex flex-col gap-2">
-							<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">CONTINUE YOUR WORKFLOW</p>
-							<h2 class="text-2xl font-semibold tracking-tight text-white md:text-3xl">Continue your workflow</h2>
-							<p class="mt-1 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
+							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">CONTINUE YOUR WORKFLOW</p>
+							<h2 class="text-2xl font-semibold tracking-tight text-[var(--color-text)] md:text-3xl">Continue your workflow</h2>
+							<p class="mt-1 max-w-2xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
 								Run a quick preview in Web Studio, then move to native apps when you’re ready to shoot or batch export.
 							</p>
 						</div>
@@ -268,26 +268,26 @@ const startHereCardBase =
 								<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
 							</a>
 							<a
-								class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
+								class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-border)]"
 								href="/products"
 							>
 								Explore Products
-								<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
 							</a>
 							<a
-								class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
+								class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-border)]"
 								href="/#ecosystem"
 							>
 								Continue in App
-								<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
 							</a>
 						</div>
 					</div>
 				</section>
 				</div>
 
-				<aside class="hidden lg:block self-start justify-self-end lg:sticky lg:top-28 lg:border-l lg:border-white/10 lg:pl-6 lg:pr-1">
-					<div class="max-h-[calc(100vh-8.25rem)] overflow-auto pr-1 [scrollbar-width:thin] [scrollbar-color:rgba(255,122,26,0.35)_rgba(255,255,255,0.06)]">
+				<aside class="hidden lg:block self-start justify-self-end lg:sticky lg:top-28 lg:border-l lg:border-[var(--color-border)] lg:pl-6 lg:pr-1">
+					<div class="max-h-[calc(100vh-8.25rem)] overflow-auto pr-1 [scrollbar-width:thin] [scrollbar-color:var(--color-accent-border)_var(--color-scroll-track)]">
 						<GuidesNavigator variant="desktop" />
 					</div>
 				</aside>

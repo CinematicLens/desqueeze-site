@@ -3,6 +3,37 @@
 
 <script>
 	(() => {
+		const syncThemeUi = () => {
+			const dark = document.documentElement.classList.contains('dark');
+			document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+			document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+				if (!(btn instanceof HTMLButtonElement)) return;
+				const sun = btn.querySelector('[data-theme-icon-sun]');
+				const moon = btn.querySelector('[data-theme-icon-moon]');
+				// Show sun while light theme is active, moon while dark is active (icons are <svg>, not HTMLElement).
+				if (sun instanceof Element) sun.classList.toggle('hidden', dark);
+				if (moon instanceof Element) moon.classList.toggle('hidden', !dark);
+				btn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+			});
+			document.querySelectorAll('[data-header-logo]').forEach((img) => {
+				if (!(img instanceof HTMLImageElement)) return;
+				const d = img.getAttribute('data-logo-dark') || '';
+				const l = img.getAttribute('data-logo-light') || '';
+				img.src = dark ? d : l;
+			});
+		};
+
+		document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+			if (!(btn instanceof HTMLButtonElement)) return;
+			btn.addEventListener('click', () => {
+				const nextDark = !document.documentElement.classList.contains('dark');
+				document.documentElement.classList.toggle('dark', nextDark);
+				localStorage.setItem('desqueeze-theme', nextDark ? 'dark' : 'light');
+				syncThemeUi();
+			});
+		});
+		syncThemeUi();
+
 		// Inline styles for the FilmStudio carousel (Zoom-like).
 		// (Kept here to avoid adding global CSS files.)
 		const ensureFsStyles = () => {
@@ -24,7 +55,7 @@
 				.fs-pill:hover{
 					background: rgba(255,255,255,0.06);
 					border-color: rgba(255,255,255,0.16);
-					box-shadow: 0 0 0 4px rgba(255,106,0,0.12);
+					box-shadow: 0 0 0 4px var(--color-accent-soft);
 					transform: translateY(-1px);
 				}
 				.fs-carousel-viewport{
@@ -65,7 +96,7 @@
 					border-color: rgba(255,255,255,0.22);
 					box-shadow:
 						0 28px 90px rgba(0,0,0,0.55),
-						0 0 0 4px rgba(255,106,0,0.14);
+						0 0 0 4px var(--color-accent-14);
 				}
 				.fs-slide-inner img{
 					width: 100%;
@@ -143,29 +174,29 @@
 					transform: translateY(-1px);
 				}
 				.fs-showcase-tab.is-active{
-					border-color: rgba(255,106,0,0.55);
-					box-shadow: 0 0 0 4px rgba(255,106,0,0.10);
+					border-color: var(--color-accent-55);
+					box-shadow: 0 0 0 4px var(--color-accent-10);
 					background: rgba(0,0,0,0.42);
 				}
 				.fs-showcase-tab.is-active .fs-showcase-tab-icon.fs-icon-cell{
-					border-color: rgba(255,106,0,0.55);
+					border-color: var(--color-accent-55);
 					box-shadow:
-						0 0 0 1px rgba(255,106,0,0.18),
-						0 0 0 4px rgba(255,106,0,0.10),
-						0 12px 40px rgba(255,106,0,0.12);
+						0 0 0 1px var(--color-accent-18),
+						0 0 0 4px var(--color-accent-10),
+						0 12px 40px var(--color-accent-12);
 				}
 				.fs-icon-cell{
 					box-sizing: border-box;
 					background: #1a1a1a;
 					border-radius: 12px;
 					padding: 12px;
-					border: 1px solid rgba(255,106,0,0.35);
+					border: 1px solid var(--color-accent-border);
 					box-shadow:
-						0 0 0 1px rgba(255,106,0,0.10),
-						0 10px 30px rgba(255,106,0,0.08);
+						0 0 0 1px var(--color-accent-10),
+						0 10px 30px var(--color-accent-08);
 					display: grid;
 					place-items: center;
-					color: rgb(255, 106, 0);
+					color: var(--color-accent);
 					transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 				}
 				.fs-icon-cell svg{
@@ -173,10 +204,10 @@
 				}
 				.fs-icon-cell:hover{
 					transform: scale(1.05);
-					border-color: rgba(255,106,0,0.55);
+					border-color: var(--color-accent-55);
 					box-shadow:
-						0 0 0 1px rgba(255,106,0,0.16),
-						0 12px 40px rgba(255,106,0,0.14);
+						0 0 0 1px var(--color-accent-16),
+						0 12px 40px var(--color-accent-14);
 				}
 				.fs-icon-cell--row{
 					display: flex;
@@ -551,7 +582,7 @@
 				if (emailError instanceof HTMLElement) {
 					emailError.classList.toggle('hidden', ok);
 				}
-				contactEmail.classList.toggle('border-[#ff6a00]', !ok);
+				contactEmail.classList.toggle('border-[var(--color-accent)]', !ok);
 				return ok;
 			};
 

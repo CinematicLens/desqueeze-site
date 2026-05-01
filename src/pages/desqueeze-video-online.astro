@@ -4,17 +4,31 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import GuidesNavigator from '../components/GuidesNavigator.astro';
 import { downloadAppsButtonClass } from '../data/siteNav';
-import { storeUrls } from '../data/storeUrls';
 import { lucideSvg } from '../lib/lucideSvg';
-import { ChevronRight, Zap, Download, Repeat, Smartphone, Cpu, Laptop } from 'lucide';
+import { ChevronRight, Zap, Download, Repeat } from 'lucide';
 
 const pageTitle = 'Desqueeze Video Online | DeSqueeze Studio';
 const pageDescription =
-	'A practical guide to desqueezing video online: squeeze factors, workflow from shoot to delivery, and common mistakes. Use Try Live or DeSqueeze Studio apps for preview and export.';
-const pageKeywords = 'desqueeze video online, online desqueeze video, desqueeze footage online, anamorphic desqueeze online';
+	'Desqueeze video online in the browser: upload footage, pick a squeeze factor (1.33×, 1.5×, and more), preview with Fit or True Desqueezed, then hand off to the app for export and grading.';
+const pageKeywords =
+	'desqueeze video online, online anamorphic desqueeze tool, desqueeze 1.33x online, fix anamorphic video online, browser desqueeze preview, Web Studio';
 
-const startHereCardBase =
-	'group flex min-h-[3.75rem] items-center gap-3 rounded-2xl border px-3.5 py-2.5 transition hover:border-white/25 hover:bg-white/[0.04] sm:min-h-[4rem] sm:gap-4 sm:px-4 sm:py-3 md:px-5';
+const supportedFactors = [
+	'1.25×',
+	'1.30×',
+	'1.33×',
+	'1.35×',
+	'1.42×',
+	'1.45×',
+	'1.50×',
+	'1.55×',
+	'1.60×',
+	'1.66×',
+	'1.75×',
+	'1.80×',
+	'2.00×',
+	'Custom',
+];
 ---
 
 <Layout title={pageTitle} description={pageDescription} keywords={pageKeywords}>
@@ -24,39 +38,48 @@ const startHereCardBase =
 		<section class="relative isolate overflow-hidden border-b border-white/10 bg-black">
 			<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 				<div class="absolute inset-0 bg-[#060606]"></div>
-				<div class="absolute inset-0 opacity-30 [background:radial-gradient(80%_60%_at_50%_10%,rgba(255,122,26,0.14),transparent_60%)]"></div>
+				<div class="absolute inset-0 opacity-30 [background:radial-gradient(80%_60%_at_50%_10%,var(--color-accent-14),transparent_60%)]"></div>
 			</div>
 
 			<div class="page-shell relative z-10 py-14 md:py-20">
 				<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-md md:p-8">
 					<div
-						class="pointer-events-none absolute left-1/2 top-16 h-[220px] w-[520px] -translate-x-1/2 rounded-full blur-3xl opacity-60 [background:radial-gradient(closest-side,rgba(255,122,26,0.18),transparent)]"
+						class="pointer-events-none absolute left-1/2 top-16 h-[220px] w-[520px] -translate-x-1/2 rounded-full blur-3xl opacity-60 [background:radial-gradient(closest-side,var(--color-accent-18),transparent)]"
 						aria-hidden="true"
 					></div>
 
 					<div class="relative grid gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-start">
 						<div class="min-w-0">
-							<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">ANAMORPHIC GUIDE</p>
+							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">ONLINE TOOL GUIDE</p>
 							<h1 class="mt-3 max-w-4xl text-balance text-3xl font-semibold tracking-tight text-white md:text-5xl">Desqueeze Video Online</h1>
 							<p class="mt-4 max-w-3xl text-pretty text-base leading-relaxed text-white/70 md:text-lg">
-								Upload squeezed footage, choose the correct squeeze factor, preview the corrected frame, then export for a clean cinematic delivery.
+								Upload squeezed footage, choose the correct desqueeze factor, preview the corrected frame, then continue in the app for final export and advanced
+								controls.
 							</p>
 
 							<div class="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-								<a class={`${downloadAppsButtonClass} gap-2`} href="/products">
-									Explore Apps
+								<a class={`${downloadAppsButtonClass} gap-2`} href="/try-live">
+									Open Web Studio
 									<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
 								</a>
 								<a
 									class="inline-flex items-center justify-center gap-2 self-start rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/[0.10] sm:self-auto"
-									href="#workflow"
+									href="/products"
 								>
-									See workflow
+									Explore Products
 									<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
 								</a>
 							</div>
-						</div>
 
+							<p class="mt-5 max-w-2xl text-sm text-white/55">
+								Related guides:
+								<a class="font-semibold text-[var(--color-accent)] underline-offset-2 hover:underline" href="/how-to-desqueeze-1-33x">How to Desqueeze 1.33×</a>
+								<span class="text-white/35"> · </span>
+								<a class="font-semibold text-[var(--color-accent)] underline-offset-2 hover:underline" href="/how-to-desqueeze-1-5x">How to Desqueeze 1.5×</a>
+								<span class="text-white/35"> · </span>
+								<a class="font-semibold text-[var(--color-accent)] underline-offset-2 hover:underline" href="/fix-stretched-video">Fix Stretched Video</a>
+							</p>
+						</div>
 					</div>
 
 					<GuidesNavigator variant="mobile" />
@@ -67,226 +90,326 @@ const startHereCardBase =
 		<section class="page-shell py-12 md:py-16">
 			<div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
 				<div class="min-w-0 space-y-12 md:space-y-14">
-				<section id="workflow" class="scroll-mt-28">
-					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">FILMMAKER WORKFLOW</p>
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Desqueeze video online from upload to final delivery.</h2>
-					</div>
-
-					<div class="mt-6 grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] md:items-stretch">
-						<div class="rounded-3xl border border-[#FF7A1A]/20 bg-[#FF7A1A]/[0.06] p-5 shadow-[0_0_0_1px_rgba(255,122,26,0.12),0_0_26px_rgba(255,122,26,0.12)]">
-							<div class="flex items-start justify-between gap-4">
-								<div class="min-w-0">
-									<p class="text-xs font-semibold tracking-[0.18em] text-white/60">SHOOT</p>
-									<p class="mt-2 text-sm font-semibold text-white">Capture squeezed footage</p>
-									<p class="mt-2 text-sm leading-relaxed text-white/65">Capture squeezed anamorphic footage on mobile or cinema camera.</p>
-								</div>
-								<span class="shrink-0 text-[#FF7A1A]" set:html={lucideSvg(Zap, 'h-5 w-5', 20)} aria-hidden="true"></span>
-							</div>
-						</div>
-
-						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
-							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
-						</div>
-
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<div class="flex items-start justify-between gap-4">
-								<div class="min-w-0">
-									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">PREVIEW</p>
-									<p class="mt-2 text-sm font-semibold text-white">Check framing</p>
-									<p class="mt-2 text-sm leading-relaxed text-white/60">Check framing and geometry before editing.</p>
-								</div>
-								<span class="shrink-0 text-white/35" set:html={lucideSvg(ChevronRight, 'h-5 w-5', 20)} aria-hidden="true"></span>
-							</div>
-						</div>
-
-						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
-							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
-						</div>
-
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<div class="flex items-start justify-between gap-4">
-								<div class="min-w-0">
-									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">DESQUEEZE</p>
-									<p class="mt-2 text-sm font-semibold text-white">Correct the image</p>
-									<p class="mt-2 text-sm leading-relaxed text-white/60">Choose the correct squeeze factor and correct the image.</p>
-								</div>
-								<span class="shrink-0 text-white/35" set:html={lucideSvg(Repeat, 'h-5 w-5', 20)} aria-hidden="true"></span>
-							</div>
-						</div>
-
-						<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
-							<span class="text-white/25" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
-						</div>
-
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<div class="flex items-start justify-between gap-4">
-								<div class="min-w-0">
-									<p class="text-xs font-semibold tracking-[0.18em] text-white/55">EXPORT</p>
-									<p class="mt-2 text-sm font-semibold text-white">Deliver clean widescreen</p>
-									<p class="mt-2 text-sm leading-relaxed text-white/60">Deliver corrected footage for edit, web, or client review.</p>
-								</div>
-								<span class="shrink-0 text-white/35" set:html={lucideSvg(Download, 'h-5 w-5', 20)} aria-hidden="true"></span>
-							</div>
-						</div>
-					</div>
-				</section>
-
-				<section class="scroll-mt-28">
-					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">WHAT DESQUEEZE DOES</p>
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Desqueeze video online: squeezed frame → corrected frame → cinematic output.</h2>
-					</div>
-
-					<div class="mt-6 grid gap-4 md:grid-cols-3">
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Squeezed</p>
-							<p class="mt-1 text-xs text-white/55">Tall / incorrect preview</p>
-							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
-								<div class="relative aspect-[16/10]">
-									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,255,255,0.10),transparent_60%)]"></div>
-									<div class="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-[#FF7A1A]/50"></div>
-									<div class="absolute inset-y-0 left-[35%] w-px bg-white/10"></div>
-									<div class="absolute inset-y-0 left-[65%] w-px bg-white/10"></div>
-									<div class="absolute inset-x-0 top-[18%] h-px bg-white/10"></div>
-									<div class="absolute inset-x-0 bottom-[18%] h-px bg-white/10"></div>
-									<div class="absolute inset-0 [background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent_26%,transparent_74%,rgba(255,255,255,0.02))]"></div>
-								</div>
-							</div>
-						</div>
-
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Desqueezed</p>
-							<p class="mt-1 text-xs text-white/55">Corrected wide frame</p>
-							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
-								<div class="relative aspect-[16/10]">
-									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,122,26,0.12),transparent_60%)]"></div>
-									<div class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[#FF7A1A]/50"></div>
-									<div class="absolute inset-x-0 top-[35%] h-px bg-white/10"></div>
-									<div class="absolute inset-x-0 top-[65%] h-px bg-white/10"></div>
-									<div class="absolute inset-y-0 left-[18%] w-px bg-white/10"></div>
-									<div class="absolute inset-y-0 right-[18%] w-px bg-white/10"></div>
-									<div class="absolute inset-0 [background:linear-gradient(to_bottom,rgba(255,255,255,0.03),transparent_30%,transparent_70%,rgba(255,255,255,0.03))]"></div>
-								</div>
-							</div>
-						</div>
-
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Final Output</p>
-							<p class="mt-1 text-xs text-white/55">Letterbox delivery</p>
-							<div class="mt-4 overflow-hidden rounded-2xl border border-white/15 bg-black/60">
-								<div class="relative aspect-[16/10]">
-									<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,255,255,0.08),transparent_60%)]"></div>
-									<div class="absolute inset-x-0 top-0 h-[22%] bg-black/80"></div>
-									<div class="absolute inset-x-0 bottom-0 h-[22%] bg-black/80"></div>
-									<div class="absolute inset-x-0 bottom-[22%] h-px bg-[#FF7A1A]/35"></div>
-									<div class="absolute inset-0 [background:linear-gradient(to_bottom,transparent,rgba(0,0,0,0.20),transparent)]"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
-
-
-				<section class="scroll-mt-28">
-					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">CHOOSE THE RIGHT FACTOR</p>
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Choose the right squeeze factor to desqueeze video online.</h2>
-					</div>
-
-					<div class="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">1.25× / 1.30×</p>
-							<p class="mt-2 text-sm text-white/65">Subtle mobile adapters and light squeeze looks.</p>
-						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">1.33×</p>
-							<p class="mt-2 text-sm text-white/65">Common mobile anamorphic lenses (fast, reliable framing).</p>
-						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">1.50× / 1.55×</p>
-							<p class="mt-2 text-sm text-white/65">Balanced cinematic look and wider corrected frame.</p>
-						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">1.80×</p>
-							<p class="mt-2 text-sm text-white/65">Wider stylized look — preview carefully before export.</p>
-						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">2.00×</p>
-							<p class="mt-2 text-sm text-white/65">Classic cinema anamorphic workflows and strong squeeze.</p>
-						</div>
-					</div>
-
-					<div class="mt-4 rounded-3xl border border-white/10 bg-black/40 p-5 text-sm text-white/65">
-						<p>
-							<span class="font-semibold text-white">Quick check:</span> If faces look too wide, the factor is too high. If footage still looks tall,
-							the factor is too low.
-						</p>
-					</div>
-				</section>
-
-				<section class="scroll-mt-28">
-					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">COMMON MISTAKES</p>
-						<h2 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Desqueeze video online: common mistakes (and fast fixes).</h2>
-					</div>
-
-					<div class="mt-6 grid gap-3 md:grid-cols-2">
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Cropping instead of desqueezing</p>
-							<p class="mt-2 text-sm text-white/65">Crop hides the problem. Correct geometry first, then choose delivery framing.</p>
-						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Choosing the wrong factor</p>
-							<p class="mt-2 text-sm text-white/65">Preview faces and circles — if they look off, adjust factor before export.</p>
-						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Exporting before previewing</p>
-							<p class="mt-2 text-sm text-white/65">Always check framing + geometry in preview mode (Fit / True) first.</p>
-						</div>
-						<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-							<p class="text-sm font-semibold text-white">Forgetting final delivery ratio</p>
-							<p class="mt-2 text-sm text-white/65">Decide whether you’re delivering 16:9, 2.39:1, or social crops after correction.</p>
-						</div>
-					</div>
-				</section>
-
-				<section class="scroll-mt-28">
-					<div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:p-8">
+					<section id="workflow" class="scroll-mt-28">
 						<div class="flex flex-col gap-2">
-							<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">CONTINUE YOUR WORKFLOW</p>
-							<h2 class="text-2xl font-semibold tracking-tight text-white md:text-3xl">Desqueeze video online and continue your workflow</h2>
-							<p class="mt-1 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
-								Run a quick preview in Web Studio, then move to native apps when you’re ready to shoot or batch export.
+							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">WEB STUDIO WORKFLOW</p>
+							<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">Preview the correction before you export.</h2>
+						</div>
+
+						<div class="mt-6 grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] md:items-stretch">
+							<div class="rounded-3xl border border-[var(--color-accent-20)] bg-[var(--color-accent-06)] p-5 shadow-[0_0_0_1px_var(--color-accent-12),0_0_26px_var(--color-accent-12)]">
+								<div class="flex items-start justify-between gap-4">
+									<div class="min-w-0">
+										<p class="text-xs font-semibold tracking-[0.18em] text-[var(--color-muted)]">STEP 1</p>
+										<p class="mt-2 text-sm font-semibold text-[var(--color-text)]">Upload media</p>
+										<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+											Add a video or image to check geometry inside the browser.
+										</p>
+									</div>
+									<span class="shrink-0 text-[var(--color-accent)]" set:html={lucideSvg(Zap, 'h-5 w-5', 20)} aria-hidden="true"></span>
+								</div>
+							</div>
+
+							<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+							</div>
+
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<div class="flex items-start justify-between gap-4">
+									<div class="min-w-0">
+										<p class="text-xs font-semibold tracking-[0.18em] text-[var(--color-muted-faint)]">STEP 2</p>
+										<p class="mt-2 text-sm font-semibold text-[var(--color-text)]">Choose factor</p>
+										<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+											Select 1.33×, 1.5×, 1.55×, 1.8×, 2×, or a custom value.
+										</p>
+									</div>
+									<span class="shrink-0 text-[var(--color-muted-faint)]" set:html={lucideSvg(Repeat, 'h-5 w-5', 20)} aria-hidden="true"></span>
+								</div>
+							</div>
+
+							<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+							</div>
+
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<div class="flex items-start justify-between gap-4">
+									<div class="min-w-0">
+										<p class="text-xs font-semibold tracking-[0.18em] text-[var(--color-muted-faint)]">STEP 3</p>
+										<p class="mt-2 text-sm font-semibold text-[var(--color-text)]">Preview instantly</p>
+										<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+											See how the corrected frame fits before committing to export.
+										</p>
+									</div>
+									<span class="shrink-0 text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-5 w-5', 20)} aria-hidden="true"></span>
+								</div>
+							</div>
+
+							<div class="hidden md:grid place-items-center px-1" aria-hidden="true">
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-6 w-6', 24)}></span>
+							</div>
+
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<div class="flex items-start justify-between gap-4">
+									<div class="min-w-0">
+										<p class="text-xs font-semibold tracking-[0.18em] text-[var(--color-muted-faint)]">STEP 4</p>
+										<p class="mt-2 text-sm font-semibold text-[var(--color-text)]">Continue workflow</p>
+										<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+											Move to the native app when you need final export, LUTs, or batch processing.
+										</p>
+									</div>
+									<span class="shrink-0 text-[var(--color-muted-faint)]" set:html={lucideSvg(Download, 'h-5 w-5', 20)} aria-hidden="true"></span>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="scroll-mt-28">
+						<div class="flex flex-col gap-2">
+							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">WHAT THE ONLINE TOOL DOES</p>
+							<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">Quick preview, correct factor, cleaner handoff.</h2>
+						</div>
+
+						<div class="mt-6 grid gap-4 md:grid-cols-3">
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">Browser preview</p>
+								<p class="mt-1 text-xs text-[var(--color-muted-faint)]">Factor check in the browser</p>
+								<p class="mt-3 text-sm leading-relaxed text-[var(--color-muted)]">
+									Quickly check if the footage needs 1.33×, 1.5×, 1.55×, 1.8×, or 2× correction.
+								</p>
+								<div class="mt-4 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black/60">
+									<div class="relative aspect-[16/10]">
+										<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,255,255,0.10),transparent_60%)]"></div>
+										<div class="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-[var(--color-accent-50)]"></div>
+										<div class="absolute inset-y-0 left-[35%] w-px bg-white/10"></div>
+										<div class="absolute inset-y-0 left-[65%] w-px bg-white/10"></div>
+										<div class="absolute inset-x-0 top-[18%] h-px bg-white/10"></div>
+										<div class="absolute inset-x-0 bottom-[18%] h-px bg-white/10"></div>
+										<div class="absolute inset-0 [background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent_26%,transparent_74%,rgba(255,255,255,0.02))]"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">Fit vs true width</p>
+								<p class="mt-1 text-xs text-[var(--color-muted-faint)]">Two ways to read the preview</p>
+								<p class="mt-3 text-sm leading-relaxed text-[var(--color-muted)]">
+									Fit mode shows the full corrected frame. True Desqueezed shows the real corrected width.
+								</p>
+								<div class="mt-4 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black/60">
+									<div class="relative aspect-[16/10]">
+										<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,var(--color-accent-12),transparent_60%)]"></div>
+										<div class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[var(--color-accent-50)]"></div>
+										<div class="absolute inset-x-0 top-[35%] h-px bg-white/10"></div>
+										<div class="absolute inset-x-0 top-[65%] h-px bg-white/10"></div>
+										<div class="absolute inset-y-0 left-[18%] w-px bg-white/10"></div>
+										<div class="absolute inset-y-0 right-[18%] w-px bg-white/10"></div>
+										<div class="absolute inset-0 [background:linear-gradient(to_bottom,rgba(255,255,255,0.03),transparent_30%,transparent_70%,rgba(255,255,255,0.03))]"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">App handoff</p>
+								<p class="mt-1 text-xs text-[var(--color-muted-faint)]">Export and grade in app</p>
+								<p class="mt-3 text-sm leading-relaxed text-[var(--color-muted)]">
+									Use the app for final export quality, LUT grading, and longer workflows.
+								</p>
+								<div class="mt-4 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black/60">
+									<div class="relative aspect-[16/10]">
+										<div class="absolute inset-0 opacity-70 [background:radial-gradient(80%_60%_at_50%_20%,rgba(255,255,255,0.08),transparent_60%)]"></div>
+										<div class="absolute inset-x-0 top-0 h-[22%] bg-black/80"></div>
+										<div class="absolute inset-x-0 bottom-0 h-[22%] bg-black/80"></div>
+										<div class="absolute inset-x-0 bottom-[22%] h-px bg-[var(--color-accent-border)]"></div>
+										<div class="absolute inset-0 [background:linear-gradient(to_bottom,transparent,rgba(0,0,0,0.20),transparent)]"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="scroll-mt-28">
+						<div class="flex flex-col gap-2">
+							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">SUPPORTED FACTORS</p>
+							<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">Choose the factor that matches your lens or footage.</h2>
+						</div>
+
+						<div class="mt-6 flex flex-wrap gap-2">
+							{
+								supportedFactors.map((label) => (
+									<span class="inline-flex items-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-3 py-1.5 text-xs font-semibold text-[var(--color-text)] shadow-[inset_0_1px_0_var(--color-border)]">
+										{label}
+									</span>
+								))
+							}
+						</div>
+
+						<div class="mt-4 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface-strong)] p-5 text-sm text-[var(--color-muted)]">
+							<p>
+								If you are not sure, start with <span class="font-semibold text-[var(--color-text)]">1.33×</span> for mobile anamorphic footage, then compare faces
+								and circular objects. For deeper ratio workflows, see
+								<a class="font-semibold text-[var(--color-accent)] underline-offset-2 hover:underline" href="/how-to-desqueeze-1-33x">1.33×</a>
+								or
+								<a class="font-semibold text-[var(--color-accent)] underline-offset-2 hover:underline" href="/how-to-desqueeze-1-5x">1.5×</a> guides.
 							</p>
+						</div>
+					</section>
+
+					<section class="scroll-mt-28">
+						<div class="flex flex-col gap-2">
+							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">PREVIEW MODES</p>
+							<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">Fit to Screen vs True Desqueezed.</h2>
+						</div>
+
+						<div class="mt-6 grid gap-4 md:grid-cols-2">
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">Fit to Screen</p>
+								<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+									Shows the full corrected image or video inside the preview area. Letterbox or pillarbox bars may appear naturally.
+								</p>
+							</div>
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">True Desqueezed</p>
+								<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+									Shows the real corrected width after horizontal stretch. Useful when you want to inspect the actual geometry.
+								</p>
+							</div>
+						</div>
+
+						<div class="mt-4 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface-strong)] p-5 text-sm text-[var(--color-muted)]">
+							<p>
+								<span class="font-semibold text-[var(--color-text)]">Note:</span> Black bars are a display result, not an effect added to the footage.
+							</p>
+						</div>
+					</section>
+
+					<section class="scroll-mt-28">
+						<div class="flex flex-col gap-2">
+							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">IMAGE OR VIDEO</p>
+							<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">Use the right workflow for your media.</h2>
+						</div>
+
+						<div class="mt-6 grid gap-4 md:grid-cols-2">
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">Image preview</p>
+								<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+									Use still frames to quickly check geometry, compare ratios, and confirm the correct factor.
+								</p>
+							</div>
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">Video preview</p>
+								<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+									Use short clips to verify motion, framing, and whether faces or objects look natural after correction.
+								</p>
+							</div>
+						</div>
+
+						<div class="mt-4 rounded-3xl border border-[var(--color-accent-20)] bg-[var(--color-accent-06)] p-5 text-sm text-[var(--color-muted)]">
+							<p>
+								<span class="font-semibold text-[var(--color-text)]">Batch note:</span> Keep one media type per batch. Do not mix images and videos in one upload
+								session.
+							</p>
+						</div>
+					</section>
+
+					<section class="scroll-mt-28">
+						<div class="flex flex-col gap-2">
+							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">WEB OR APP</p>
+							<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">When to use Web Studio and when to use the app.</h2>
+						</div>
+
+						<div class="mt-6 grid gap-4 md:grid-cols-2">
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">Web Studio</p>
+								<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+									Best for quick preview, factor testing, and checking if footage is squeezed correctly.
+								</p>
+							</div>
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">Native apps</p>
+								<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+									Best for final export, higher quality output, LUT grading, longer clips, and batch workflows.
+								</p>
+							</div>
 						</div>
 
 						<div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
 							<a class={`${downloadAppsButtonClass} gap-2`} href="/try-live">
-								Try Web Studio
+								Open Web Studio
 								<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
 							</a>
 							<a
-								class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
+								class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-nav-hover-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-border)]"
 								href="/products"
 							>
 								Explore Products
-								<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
-							</a>
-							<a
-								class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30"
-								href="/products"
-							>
-								Continue in App
-								<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
 							</a>
 						</div>
-					</div>
-				</section>
+					</section>
+
+					<section class="scroll-mt-28">
+						<div class="flex flex-col gap-2">
+							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">ONLINE TOOL TIPS</p>
+							<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">Avoid these online preview mistakes.</h2>
+						</div>
+
+						<div class="mt-6 grid gap-3 md:grid-cols-2">
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">Uploading mixed batches</p>
+								<p class="mt-2 text-sm text-[var(--color-muted)]">Keep images and videos separate so settings stay clear.</p>
+							</div>
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">Judging by black bars only</p>
+								<p class="mt-2 text-sm text-[var(--color-muted)]">Bars can appear naturally. Check faces, circles, and straight lines.</p>
+							</div>
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">Using the wrong factor</p>
+								<p class="mt-2 text-sm text-[var(--color-muted)]">If faces look too wide, reduce the factor. If footage still looks tall, increase it.</p>
+							</div>
+							<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]">
+								<p class="text-sm font-semibold text-[var(--color-text)]">Expecting web preview to replace final export</p>
+								<p class="mt-2 text-sm text-[var(--color-muted)]">
+									Use Web Studio to confirm geometry, then use the app for final delivery workflows.
+								</p>
+							</div>
+						</div>
+
+						<p class="mt-6 text-sm text-[var(--color-muted)]">
+							Troubleshooting odd geometry?
+							<a class="font-semibold text-[var(--color-accent)] underline-offset-2 hover:underline" href="/fix-stretched-video">Fix Stretched Video</a> walks through
+							diagnosis before correction.
+						</p>
+					</section>
+
+					<section class="scroll-mt-28">
+						<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[inset_0_1px_0_var(--color-border)] md:p-8">
+							<div class="flex flex-col gap-2">
+								<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">START ONLINE</p>
+								<h2 class="text-2xl font-semibold tracking-tight text-[var(--color-text)] md:text-3xl">Preview the desqueeze before you continue.</h2>
+								<p class="mt-1 max-w-2xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+									Use Web Studio to confirm the correction, then continue in the app when you need final export, LUTs, and batch processing.
+								</p>
+							</div>
+
+							<div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+								<a class={`${downloadAppsButtonClass} gap-2`} href="/try-live">
+									Open Web Studio
+									<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+								<a
+									class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-nav-hover-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-border)]"
+									href="/products"
+								>
+									Explore Products
+									<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+							</div>
+						</div>
+					</section>
 				</div>
 
-				<aside class="hidden lg:block self-start justify-self-end lg:sticky lg:top-28 lg:border-l lg:border-white/10 lg:pl-6 lg:pr-1">
-					<div class="max-h-[calc(100vh-8.25rem)] overflow-auto pr-1 [scrollbar-width:thin] [scrollbar-color:rgba(255,122,26,0.35)_rgba(255,255,255,0.06)]">
+				<aside class="hidden lg:block self-start justify-self-end lg:sticky lg:top-28 lg:border-l lg:border-[var(--color-border)] lg:pl-6 lg:pr-1">
+					<div class="max-h-[calc(100vh-8.25rem)] overflow-auto pr-1 [scrollbar-width:thin] [scrollbar-color:var(--color-accent-border)_var(--color-scroll-track)]">
 						<GuidesNavigator variant="desktop" />
 					</div>
 				</aside>
@@ -296,4 +419,3 @@ const startHereCardBase =
 		<SiteFooter />
 	</main>
 </Layout>
-

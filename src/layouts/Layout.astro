@@ -41,10 +41,23 @@ const loadMonetization = import.meta.env.PROD;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
+		<script is:inline>
+			(() => {
+				try {
+					const saved = localStorage.getItem('desqueeze-theme');
+					const theme = saved || 'dark';
+					document.documentElement.classList.toggle('dark', theme === 'dark');
+					document.documentElement.dataset.theme = theme;
+				} catch {
+					document.documentElement.classList.add('dark');
+					document.documentElement.dataset.theme = 'dark';
+				}
+			})();
+		</script>
 		<link rel="icon" href="/favicon.ico" sizes="any" />
 		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -106,10 +119,10 @@ const loadMonetization = import.meta.env.PROD;
 			)
 		}
 	</head>
-	<body class="bg-black text-white antialiased">
+	<body class="bg-[var(--color-bg)] text-[var(--color-text)] antialiased transition-colors duration-200">
 		<slot />
 		<button
-			class="fixed bottom-5 right-5 z-40 hidden items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-3 text-xs font-semibold text-white/90 shadow-lg backdrop-blur transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30"
+			class="fixed bottom-5 right-5 z-40 hidden items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-4 py-3 text-xs font-semibold text-[var(--color-text)] shadow-lg backdrop-blur transition hover:bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-border)]"
 			type="button"
 			aria-label="Scroll to top"
 			data-scroll-top

@@ -1,0 +1,83 @@
+/* Central theme tokens — Cine Gold accent. Light: :root, dark: html.dark */
+
+:root {
+	color-scheme: light;
+
+	--color-bg: #f7f7f5;
+	--color-surface: rgba(0, 0, 0, 0.04);
+	--color-surface-strong: rgba(0, 0, 0, 0.07);
+	--color-border: rgba(0, 0, 0, 0.12);
+	--color-text: #111111;
+	--color-muted: rgba(0, 0, 0, 0.65);
+	--color-muted-faint: rgba(0, 0, 0, 0.45);
+	--color-nav-idle: rgba(17, 17, 17, 0.72);
+	--color-nav-hover-surface: rgba(0, 0, 0, 0.06);
+	--color-scroll-track: rgba(0, 0, 0, 0.06);
+
+	--color-accent: #D6A84F;
+	--color-accent-soft: rgba(214, 168, 79, 0.14);
+	--color-accent-border: rgba(214, 168, 79, 0.38);
+	--color-accent-06: rgba(214, 168, 79, 0.06);
+	--color-accent-08: rgba(214, 168, 79, 0.08);
+	--color-accent-10: rgba(214, 168, 79, 0.1);
+	--color-accent-12: rgba(214, 168, 79, 0.12);
+	--color-accent-14: rgba(214, 168, 79, 0.14);
+	--color-accent-15: rgba(214, 168, 79, 0.15);
+	--color-accent-16: rgba(214, 168, 79, 0.16);
+	--color-accent-18: rgba(214, 168, 79, 0.18);
+	--color-accent-20: rgba(214, 168, 79, 0.2);
+	--color-accent-22: rgba(214, 168, 79, 0.22);
+	--color-accent-25: rgba(214, 168, 79, 0.25);
+	--color-accent-30: rgba(214, 168, 79, 0.3);
+	--color-accent-28: rgba(214, 168, 79, 0.28);
+	--color-accent-40: rgba(214, 168, 79, 0.4);
+	--color-accent-45: rgba(214, 168, 79, 0.45);
+	--color-accent-50: rgba(214, 168, 79, 0.5);
+	--color-accent-55: rgba(214, 168, 79, 0.55);
+	--color-accent-70: rgba(214, 168, 79, 0.7);
+	--color-accent-80: rgba(214, 168, 79, 0.8);
+}
+
+html.dark {
+	color-scheme: dark;
+
+	--color-bg: #060606;
+	--color-surface: rgba(255, 255, 255, 0.03);
+	--color-surface-strong: rgba(255, 255, 255, 0.06);
+	--color-border: rgba(255, 255, 255, 0.1);
+	--color-text: #ffffff;
+	--color-muted: rgba(255, 255, 255, 0.65);
+	--color-muted-faint: rgba(255, 255, 255, 0.45);
+	--color-nav-idle: rgba(255, 255, 255, 0.8);
+	--color-nav-hover-surface: rgba(255, 255, 255, 0.09);
+	--color-scroll-track: rgba(255, 255, 255, 0.06);
+
+	--color-accent: #D6A84F;
+	--color-accent-soft: rgba(214, 168, 79, 0.14);
+	--color-accent-border: rgba(214, 168, 79, 0.38);
+	--color-accent-06: rgba(214, 168, 79, 0.06);
+	--color-accent-08: rgba(214, 168, 79, 0.08);
+	--color-accent-10: rgba(214, 168, 79, 0.1);
+	--color-accent-12: rgba(214, 168, 79, 0.12);
+	--color-accent-14: rgba(214, 168, 79, 0.14);
+	--color-accent-15: rgba(214, 168, 79, 0.15);
+	--color-accent-16: rgba(214, 168, 79, 0.16);
+	--color-accent-18: rgba(214, 168, 79, 0.18);
+	--color-accent-20: rgba(214, 168, 79, 0.2);
+	--color-accent-22: rgba(214, 168, 79, 0.22);
+	--color-accent-25: rgba(214, 168, 79, 0.25);
+	--color-accent-30: rgba(214, 168, 79, 0.3);
+	--color-accent-28: rgba(214, 168, 79, 0.28);
+	--color-accent-40: rgba(214, 168, 79, 0.4);
+	--color-accent-45: rgba(214, 168, 79, 0.45);
+	--color-accent-50: rgba(214, 168, 79, 0.5);
+	--color-accent-55: rgba(214, 168, 79, 0.55);
+	--color-accent-70: rgba(214, 168, 79, 0.7);
+	--color-accent-80: rgba(214, 168, 79, 0.8);
+}
+
+/* Web Studio / try-live: keep preview stage black in both themes */
+[data-preview-frame],
+[data-preview-clip] {
+	background-color: #000000;
+}

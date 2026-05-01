@@ -265,12 +265,12 @@ const productsPlatformTabsInit = `(() => {
     tabs.forEach((t) => {
       const k = t.getAttribute('data-platform-tab') || DEFAULT;
       const active = k === key;
-      t.classList.toggle('border-[#FF7A1A]/35', active);
-      t.classList.toggle('bg-[#FF7A1A]/10', active);
-      t.classList.toggle('text-[#FF7A1A]', active);
-      t.classList.toggle('border-white/10', !active);
-      t.classList.toggle('bg-black/40', !active);
-      t.classList.toggle('text-white/65', !active);
+      t.classList.toggle('border-[var(--color-accent-border)]', active);
+      t.classList.toggle('bg-[var(--color-accent-soft)]', active);
+      t.classList.toggle('text-[var(--color-accent)]', active);
+      t.classList.toggle('border-[var(--color-border)]', !active);
+      t.classList.toggle('bg-[var(--color-surface-strong)]', !active);
+      t.classList.toggle('text-[var(--color-muted)]', !active);
     });
 
     sections.forEach((s) => {
@@ -296,14 +296,14 @@ const productsPlatformTabsInit = `(() => {
 		<SiteHeader page="products" />
 
 		<section class="page-shell py-14 md:py-20">
-			<h1 class="text-3xl font-semibold tracking-tight md:text-4xl">Products</h1>
-			<p class="mt-3 max-w-3xl text-white/70">
+			<h1 class="text-3xl font-semibold tracking-tight text-[var(--color-text)] md:text-4xl">Products</h1>
+			<p class="mt-3 max-w-3xl text-[var(--color-muted)]">
 				Pick your platform, then choose the right tool for capture, de-squeeze, grading, utility processing, and delivery.
 			</p>
 
 			<!-- Platform tabs -->
 			<div class="mt-8">
-				<div class="-mx-2 overflow-x-auto px-2 [scrollbar-width:thin] [scrollbar-color:rgba(255,122,26,0.35)_rgba(255,255,255,0.06)]">
+				<div class="-mx-2 overflow-x-auto px-2 [scrollbar-width:thin] [scrollbar-color:var(--color-accent-border)_var(--color-scroll-track)]">
 					<div class="flex w-max items-center gap-2 pb-1">
 						{platforms.map((p) => (
 							<button
@@ -311,8 +311,8 @@ const productsPlatformTabsInit = `(() => {
 								class:list={[
 									'rounded-full border px-3.5 py-1.5 text-xs font-semibold transition',
 									p.key === 'apple'
-										? 'border-[#FF7A1A]/35 bg-[#FF7A1A]/10 text-[#FF7A1A]'
-										: 'border-white/10 bg-black/40 text-white/65 hover:bg-white/[0.04]',
+										? 'border-[var(--color-accent-border)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]'
+										: 'border-[var(--color-border)] bg-[var(--color-surface-strong)] text-[var(--color-muted)] hover:bg-[var(--color-surface)]',
 								]}
 								data-platform-tab={p.key}
 							>
@@ -327,37 +327,37 @@ const productsPlatformTabsInit = `(() => {
 				<!-- iPhone & iPad -->
 				<section data-platform-section="ios">
 					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">IPHONE & IPAD APPS</p>
-						<p class="text-sm text-white/70">Shoot, preview, de-squeeze and export on mobile.</p>
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">IPHONE & IPAD APPS</p>
+						<p class="text-sm text-[var(--color-muted)]">Shoot, preview, de-squeeze and export on mobile.</p>
 					</div>
 					<div class="mt-6 grid gap-4 lg:grid-cols-2">
 						{apps
 							.filter((a) => a.platforms.includes('ios'))
 							.map((a) => (
-								<article class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" data-app-card data-platforms={a.platforms.join(',')}>
+								<article class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]" data-app-card data-platforms={a.platforms.join(',')}>
 									<div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:gap-4">
 										<div class="flex min-w-0 items-start gap-4">
-											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-strong)]">
 												{a.iconUrl ? (
 													<img src={a.iconUrl} alt={`${a.name} app icon`} class="h-full w-full object-cover" loading="lazy" decoding="async" />
 												) : (
-													<span class="text-xs font-semibold text-white/70">{a.name.slice(0, 2).toUpperCase()}</span>
+													<span class="text-xs font-semibold text-[var(--color-muted)]">{a.name.slice(0, 2).toUpperCase()}</span>
 												)}
 											</span>
 											<div class="min-w-0">
-												<p class="text-sm font-semibold text-white">{a.name}</p>
-												<p class="mt-1 text-sm text-white/65">{a.positioning}</p>
-												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-white/45">{a.role}</p>
+												<p class="text-sm font-semibold text-[var(--color-text)]">{a.name}</p>
+												<p class="mt-1 text-sm text-[var(--color-muted)]">{a.positioning}</p>
+												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-[var(--color-muted-faint)]">{a.role}</p>
 											</div>
 										</div>
 
 										<ProductStorePill variant="app-store" href={a.ctaHref} accessibilityLabel={a.ctaLabel} />
 									</div>
 
-									<ul class="mt-4 grid gap-2 text-sm text-white/70">
+									<ul class="mt-4 grid gap-2 text-sm text-[var(--color-muted)]">
 										{a.features.map((f) => (
 											<li class="flex gap-2">
-												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF7A1A]/70" aria-hidden="true"></span>
+												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent-70)]" aria-hidden="true"></span>
 												<span class="min-w-0">{f}</span>
 											</li>
 										))}
@@ -366,7 +366,7 @@ const productsPlatformTabsInit = `(() => {
 									{a.hasScreenshots && (
 										<div class="mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black" data-fs-carousel-root data-fs-shots={JSON.stringify(filmStudioScreenshots)}>
 											<div class="relative px-4 py-5 md:px-6">
-												<p class="text-xs font-semibold tracking-[0.18em] text-white/60">SCREENSHOTS</p>
+												<p class="text-xs font-semibold tracking-[0.18em] text-[var(--color-muted)]">SCREENSHOTS</p>
 												<div class="mt-3 fs-carousel-viewport" data-fs-viewport>
 													<div class="fs-carousel-track" data-fs-track>
 														{filmStudioScreenshots.map((src, i) => (
@@ -403,37 +403,37 @@ const productsPlatformTabsInit = `(() => {
 				<!-- Android -->
 				<section data-platform-section="android" class="hidden">
 					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">ANDROID APPS</p>
-						<p class="text-sm text-white/70">Live monitoring, batch de-squeeze, LUT/CDL and 4K workflows.</p>
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">ANDROID APPS</p>
+						<p class="text-sm text-[var(--color-muted)]">Live monitoring, batch de-squeeze, LUT/CDL and 4K workflows.</p>
 					</div>
 					<div class="mt-6 grid gap-4 lg:grid-cols-2">
 						{apps
 							.filter((a) => a.platforms.includes('android'))
 							.map((a) => (
-								<article class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" data-app-card data-platforms={a.platforms.join(',')}>
+								<article class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]" data-app-card data-platforms={a.platforms.join(',')}>
 									<div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:gap-4">
 										<div class="flex min-w-0 items-start gap-4">
-											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-strong)]">
 												{a.iconUrl ? (
 													<img src={a.iconUrl} alt={`${a.name} app icon`} class="h-full w-full object-cover" loading="lazy" decoding="async" />
 												) : (
-													<span class="text-xs font-semibold text-white/70">{a.name.slice(0, 2).toUpperCase()}</span>
+													<span class="text-xs font-semibold text-[var(--color-muted)]">{a.name.slice(0, 2).toUpperCase()}</span>
 												)}
 											</span>
 											<div class="min-w-0">
-												<p class="text-sm font-semibold text-white">{a.name}</p>
-												<p class="mt-1 text-sm text-white/65">{a.positioning}</p>
-												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-white/45">{a.role}</p>
+												<p class="text-sm font-semibold text-[var(--color-text)]">{a.name}</p>
+												<p class="mt-1 text-sm text-[var(--color-muted)]">{a.positioning}</p>
+												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-[var(--color-muted-faint)]">{a.role}</p>
 											</div>
 										</div>
 
 										<ProductStorePill variant="google-play" href={a.ctaHref} accessibilityLabel={a.ctaLabel} />
 									</div>
 
-									<ul class="mt-4 grid gap-2 text-sm text-white/70">
+									<ul class="mt-4 grid gap-2 text-sm text-[var(--color-muted)]">
 										{a.features.map((f) => (
 											<li class="flex gap-2">
-												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF7A1A]/70" aria-hidden="true"></span>
+												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent-70)]" aria-hidden="true"></span>
 												<span class="min-w-0">{f}</span>
 											</li>
 										))}
@@ -447,37 +447,37 @@ const productsPlatformTabsInit = `(() => {
 				<!-- Mac -->
 				<section data-platform-section="mac">
 					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">MAC APPS</p>
-						<p class="text-sm text-white/70">Live grading, de-squeeze, utility processing and production organization.</p>
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">MAC APPS</p>
+						<p class="text-sm text-[var(--color-muted)]">Live grading, de-squeeze, utility processing and production organization.</p>
 					</div>
 					<div class="mt-6 grid gap-4 lg:grid-cols-2">
 						{apps
 							.filter((a) => a.platforms.includes('mac'))
 							.map((a) => (
-								<article class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" data-app-card data-platforms={a.platforms.join(',')}>
+								<article class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]" data-app-card data-platforms={a.platforms.join(',')}>
 									<div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:gap-4">
 										<div class="flex min-w-0 items-start gap-4">
-											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-strong)]">
 												{a.iconUrl ? (
 													<img src={a.iconUrl} alt={`${a.name} app icon`} class="h-full w-full object-cover" loading="lazy" decoding="async" />
 												) : (
-													<span class="text-xs font-semibold text-white/70">{a.name.slice(0, 2).toUpperCase()}</span>
+													<span class="text-xs font-semibold text-[var(--color-muted)]">{a.name.slice(0, 2).toUpperCase()}</span>
 												)}
 											</span>
 											<div class="min-w-0">
-												<p class="text-sm font-semibold text-white">{a.name}</p>
-												<p class="mt-1 text-sm text-white/65">{a.positioning}</p>
-												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-white/45">{a.role}</p>
+												<p class="text-sm font-semibold text-[var(--color-text)]">{a.name}</p>
+												<p class="mt-1 text-sm text-[var(--color-muted)]">{a.positioning}</p>
+												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-[var(--color-muted-faint)]">{a.role}</p>
 											</div>
 										</div>
 
 										<ProductStorePill variant="mac-app-store" href={a.ctaHref} accessibilityLabel={a.ctaLabel} />
 									</div>
 
-									<ul class="mt-4 grid gap-2 text-sm text-white/70">
+									<ul class="mt-4 grid gap-2 text-sm text-[var(--color-muted)]">
 										{a.features.map((f) => (
 											<li class="flex gap-2">
-												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF7A1A]/70" aria-hidden="true"></span>
+												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent-70)]" aria-hidden="true"></span>
 												<span class="min-w-0">{f}</span>
 											</li>
 										))}
@@ -491,37 +491,37 @@ const productsPlatformTabsInit = `(() => {
 				<!-- Windows -->
 				<section data-platform-section="windows" class="hidden">
 					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">WINDOWS APPS</p>
-						<p class="text-sm text-white/70">Desktop-grade batch de-squeeze and handoff-friendly export.</p>
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">WINDOWS APPS</p>
+						<p class="text-sm text-[var(--color-muted)]">Desktop-grade batch de-squeeze and handoff-friendly export.</p>
 					</div>
 					<div class="mt-6 grid gap-4 lg:grid-cols-2">
 						{apps
 							.filter((a) => a.platforms.includes('windows'))
 							.map((a) => (
-								<article class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" data-app-card data-platforms={a.platforms.join(',')}>
+								<article class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]" data-app-card data-platforms={a.platforms.join(',')}>
 									<div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:gap-4">
 										<div class="flex min-w-0 items-start gap-4">
-											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
+											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-strong)]">
 												{a.iconUrl ? (
 													<img src={a.iconUrl} alt={`${a.name} app icon`} class="h-full w-full object-cover" loading="lazy" decoding="async" />
 												) : (
-													<span class="text-xs font-semibold text-white/70">{a.name.slice(0, 2).toUpperCase()}</span>
+													<span class="text-xs font-semibold text-[var(--color-muted)]">{a.name.slice(0, 2).toUpperCase()}</span>
 												)}
 											</span>
 											<div class="min-w-0">
-												<p class="text-sm font-semibold text-white">{a.name}</p>
-												<p class="mt-1 text-sm text-white/65">{a.positioning}</p>
-												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-white/45">{a.role}</p>
+												<p class="text-sm font-semibold text-[var(--color-text)]">{a.name}</p>
+												<p class="mt-1 text-sm text-[var(--color-muted)]">{a.positioning}</p>
+												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-[var(--color-muted-faint)]">{a.role}</p>
 											</div>
 										</div>
 
 										<ProductStorePill variant="microsoft-store" href={a.ctaHref} accessibilityLabel={a.ctaLabel} />
 									</div>
 
-									<ul class="mt-4 grid gap-2 text-sm text-white/70">
+									<ul class="mt-4 grid gap-2 text-sm text-[var(--color-muted)]">
 										{a.features.map((f) => (
 											<li class="flex gap-2">
-												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF7A1A]/70" aria-hidden="true"></span>
+												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent-70)]" aria-hidden="true"></span>
 												<span class="min-w-0">{f}</span>
 											</li>
 										))}
@@ -535,33 +535,33 @@ const productsPlatformTabsInit = `(() => {
 				<!-- Web -->
 				<section data-platform-section="web" class="hidden">
 					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[#FF7A1A]">WEB STUDIO</p>
-						<p class="text-sm text-white/70">Quick browser-based previews and light batch processing.</p>
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">WEB STUDIO</p>
+						<p class="text-sm text-[var(--color-muted)]">Quick browser-based previews and light batch processing.</p>
 					</div>
 					<div class="mt-6 grid gap-4 lg:grid-cols-2">
 						{apps
 							.filter((a) => a.platforms.includes('web'))
 							.map((a) => (
-								<article class="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" data-app-card data-platforms={a.platforms.join(',')}>
+								<article class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[inset_0_1px_0_var(--color-border)]" data-app-card data-platforms={a.platforms.join(',')}>
 									<div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:gap-4">
 										<div class="flex min-w-0 items-start gap-4">
-											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/50">
-												<span class="text-xs font-semibold text-white/70">WS</span>
+											<span class="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-strong)]">
+												<span class="text-xs font-semibold text-[var(--color-muted)]">WS</span>
 											</span>
 											<div class="min-w-0">
-												<p class="text-sm font-semibold text-white">{a.name}</p>
-												<p class="mt-1 text-sm text-white/65">{a.positioning}</p>
-												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-white/45">{a.role}</p>
+												<p class="text-sm font-semibold text-[var(--color-text)]">{a.name}</p>
+												<p class="mt-1 text-sm text-[var(--color-muted)]">{a.positioning}</p>
+												<p class="mt-2 text-xs font-semibold tracking-[0.16em] text-[var(--color-muted-faint)]">{a.role}</p>
 											</div>
 										</div>
 
 										<ProductStorePill variant="web" href={a.ctaHref} accessibilityLabel={a.ctaLabel} />
 									</div>
 
-									<ul class="mt-4 grid gap-2 text-sm text-white/70">
+									<ul class="mt-4 grid gap-2 text-sm text-[var(--color-muted)]">
 										{a.features.map((f) => (
 											<li class="flex gap-2">
-												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF7A1A]/70" aria-hidden="true"></span>
+												<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent-70)]" aria-hidden="true"></span>
 												<span class="min-w-0">{f}</span>
 											</li>
 										))}

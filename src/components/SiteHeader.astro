@@ -3,6 +3,7 @@ import {
 	downloadAppsButtonClass,
 	downloadAppsHref,
 	getHeaderNav,
+	HEADER_LOGO_LIGHT_SRC,
 	HEADER_LOGO_SRC,
 	siteNavLinkActiveClass,
 	siteNavLinkClass,
@@ -21,25 +22,35 @@ const mobilePanelId = `site-mobile-nav-${page}`;
 const downloadHref = downloadAppsHref(page);
 ---
 
-<header class="sticky top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur-xl" data-mobile-nav>
-	<div class="page-shell flex min-h-[4.25rem] items-center justify-between gap-3 py-3 md:min-h-[4.75rem] md:gap-4 md:py-3.5">
-		<a
-			href="/"
-			class="inline-flex shrink-0 items-center rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black/80"
-			aria-label="DeSqueeze Studio"
-		>
-			<img
-				src={HEADER_LOGO_SRC}
-				alt=""
-				width="320"
-				height="85"
-				class="h-12 w-auto max-h-[4.75rem] max-w-[min(320px,78vw)] origin-left object-contain object-left sm:h-14 md:h-16 [filter:brightness(1.22)_contrast(1.16)_drop-shadow(0_0_12px_rgba(255,255,255,0.34))_drop-shadow(0_2px_18px_rgba(70,150,255,0.26))]"
-				loading="eager"
-				fetchpriority="high"
-				decoding="async"
-			/>
-		</a>
-		<nav class="hidden items-center gap-0.5 lg:flex" aria-label="Main" data-nav-surface="desktop">
+<header
+	class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-bg)_78%,transparent)] backdrop-blur-xl"
+	data-mobile-nav
+>
+	<div
+		class="page-shell grid min-h-[4.25rem] w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 py-3 md:min-h-[4.75rem] md:gap-4 md:py-3.5"
+	>
+		<div class="flex min-w-0 justify-self-start">
+			<a
+				href="/"
+				class="inline-flex shrink-0 items-center rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-border)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)]"
+				aria-label="DeSqueeze Studio"
+			>
+				<img
+					data-header-logo
+					data-logo-dark={HEADER_LOGO_SRC}
+					data-logo-light={HEADER_LOGO_LIGHT_SRC}
+					src={HEADER_LOGO_SRC}
+					alt=""
+					width="320"
+					height="85"
+					class="h-12 w-auto max-h-[4.75rem] max-w-[min(320px,78vw)] origin-left object-contain object-left sm:h-14 md:h-16 [filter:brightness(1.22)_contrast(1.16)_drop-shadow(0_0_12px_rgba(255,255,255,0.34))_drop-shadow(0_2px_18px_rgba(70,150,255,0.26))]"
+					loading="eager"
+					fetchpriority="high"
+					decoding="async"
+				/>
+			</a>
+		</div>
+		<nav class="hidden items-center justify-self-center gap-0.5 lg:flex" aria-label="Main" data-nav-surface="desktop">
 			{
 				items.map((item) => (
 					<a
@@ -53,10 +64,24 @@ const downloadHref = downloadAppsHref(page);
 				))
 			}
 		</nav>
-		<div class="flex shrink-0 items-center gap-2">
+		<div class="flex min-w-0 shrink-0 items-center justify-self-end gap-2">
 			<button
 				type="button"
-				class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 bg-white/[0.06] text-white/90 hover:bg-white/[0.10] focus:outline-none focus:ring-2 focus:ring-white/30 lg:hidden"
+				class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-border)]"
+				data-theme-toggle
+				aria-label="Switch to dark theme"
+			>
+				<svg data-theme-icon-sun class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<circle cx="12" cy="12" r="4"></circle>
+					<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke-linecap="round"></path>
+				</svg>
+				<svg data-theme-icon-moon class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-linecap="round" stroke-linejoin="round"></path>
+				</svg>
+			</button>
+			<button
+				type="button"
+				class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-border)] lg:hidden"
 				aria-expanded="false"
 				aria-controls={mobilePanelId}
 				data-mobile-nav-toggle
@@ -71,7 +96,7 @@ const downloadHref = downloadAppsHref(page);
 	</div>
 	<div
 		id={mobilePanelId}
-		class="hidden flex-col border-t border-white/10 bg-black/92 py-2 backdrop-blur-xl lg:hidden"
+		class="hidden flex-col border-t border-[var(--color-border)] bg-[var(--color-bg)] py-2 backdrop-blur-xl lg:hidden"
 		data-mobile-nav-panel
 	>
 		<nav class="page-shell flex flex-col gap-0.5 py-2" aria-label="Main" data-nav-surface="mobile">

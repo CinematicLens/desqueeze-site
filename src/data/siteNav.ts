@@ -1,19 +1,22 @@
 /** Header logo asset (`public/images/logo_for_dark_bg.png`). */
 export const HEADER_LOGO_SRC = '/images/logo_for_dark_bg.png';
 
+/** Logo for light theme header (`public/images/logo for light bg.png`). */
+export const HEADER_LOGO_LIGHT_SRC = '/images/logo%20for%20light%20bg.png';
+
 export const downloadAppsButtonClass =
-	'inline-flex items-center justify-center rounded-full bg-[#FF7A1A] px-[18px] py-[10px] text-xs font-semibold text-white hover:bg-[#ff8f3d] focus:outline-none focus:ring-2 focus:ring-[#FF7A1A]/50';
+	'inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] px-[18px] py-[10px] text-xs font-semibold text-black hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-border)]';
 
 /** Desktop header nav: readable type + glass pill hover */
 export const siteNavLinkClass =
-	'rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition-all duration-200 ease-out hover:bg-white/[0.09] hover:text-white hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A]/45';
+	'rounded-lg px-3 py-2 text-sm font-medium text-[var(--color-nav-idle)] transition-all duration-200 ease-out hover:bg-[var(--color-nav-hover-surface)] hover:text-[var(--color-text)] hover:shadow-[inset_0_0_0_1px_var(--color-border)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-border)]';
 
-export const siteNavLinkActiveClass = `${siteNavLinkClass} bg-white/[0.07] text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]`;
+export const siteNavLinkActiveClass = `${siteNavLinkClass} bg-[var(--color-surface-strong)] text-[var(--color-text)] shadow-[inset_0_0_0_1px_var(--color-border)]`;
 
 export const siteNavMobileLinkClass =
-	'rounded-lg px-3 py-2.5 text-base font-medium text-white/85 transition-colors duration-200 hover:bg-white/[0.08] hover:text-[#FF7A1A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A]/45';
+	'rounded-lg px-3 py-2.5 text-base font-medium text-[var(--color-muted)] transition-colors duration-200 hover:bg-[var(--color-nav-hover-surface)] hover:text-[var(--color-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-border)]';
 
-export const siteNavMobileLinkActiveClass = `${siteNavMobileLinkClass} bg-white/[0.08] text-white hover:text-white`;
+export const siteNavMobileLinkActiveClass = `${siteNavMobileLinkClass} bg-[var(--color-surface-strong)] text-[var(--color-text)] hover:text-[var(--color-text)]`;
 
 export type SiteHeaderPage = 'home' | 'products' | 'guides' | 'try-live';
 
