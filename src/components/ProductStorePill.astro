@@ -13,8 +13,8 @@ const { variant, href, accessibilityLabel } = Astro.props;
 const isExternal = variant !== 'web';
 
 const copy: Record<ProductStorePillVariant, { line1: string; line2: string }> = {
-	'app-store': { line1: 'Download on the', line2: 'App Store' },
-	'mac-app-store': { line1: 'Download on the', line2: 'Mac App Store' },
+	'app-store': { line1: 'Buy on the', line2: 'App Store' },
+	'mac-app-store': { line1: 'Buy on the', line2: 'Mac App Store' },
 	'google-play': { line1: 'GET IT ON', line2: 'Google Play' },
 	'microsoft-store': { line1: 'Get it from', line2: 'Microsoft Store' },
 	web: { line1: 'Open in browser', line2: 'Web Studio' },
