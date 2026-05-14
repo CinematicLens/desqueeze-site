@@ -7,16 +7,35 @@ interface Props {
 
 const { variant = 'desktop' } = Astro.props;
 
-const items = [
+const hubItems = [
+	{ label: 'CineLut Live Grade', short: 'CineLut', href: '/guides#guide-cinelut-live-grade' },
+	{ label: 'FilmStudio', short: 'Film', href: '/guides#guide-filmstudio' },
+	{ label: 'Windows apps', short: 'Win', href: '/guides#guide-windows' },
+	{ label: 'Android apps', short: 'And', href: '/guides#guide-android' },
+	{ label: 'More on Mac / iOS', short: 'More', href: '/guides#guide-more-mac' },
+	{ label: 'Web Studio', short: 'Web', href: '/guides#guide-web-studio' },
+	{ label: 'Anamorphic (detailed)', short: 'Ana', href: '/guides#guide-anamorphic' },
+];
+
+const topicItems = [
 	{ label: 'How to Desqueeze 1.33x', short: '1.33x', href: '/how-to-desqueeze-1-33x' },
 	{ label: 'How to Desqueeze 1.5x', short: '1.5x', href: '/how-to-desqueeze-1-5x' },
 	{ label: 'Fix Stretched Video', short: 'Fix Video', href: '/fix-stretched-video' },
 	{ label: 'Desqueeze Video Online', short: 'Online Tool', href: '/desqueeze-video-online' },
 ];
 
+const items = [...hubItems, ...topicItems];
+
 const normalize = (p: string) => (p || '/').replace(/\/+$/, '') || '/';
 const currentPath = normalize(Astro.url?.pathname ?? '/');
-const isActive = (href: string) => normalize(href) === currentPath;
+const currentHash = (Astro.url?.hash ?? '').replace(/^#/, '');
+
+const isActive = (href: string) => {
+	const [pathPart, frag] = href.split('#');
+	if (normalize(pathPart) !== currentPath) return false;
+	if (frag) return currentHash === frag;
+	return !currentHash;
+};
 
 const baseLink =
 	'flex w-full items-center justify-between gap-3 rounded-xl border px-3 py-2 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-border)]';

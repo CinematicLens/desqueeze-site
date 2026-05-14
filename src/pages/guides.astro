@@ -4,12 +4,13 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import GuidesNavigator from '../components/GuidesNavigator.astro';
 import { downloadAppsButtonClass } from '../data/siteNav';
+import { storeUrls } from '../data/storeUrls';
 import { lucideSvg } from '../lib/lucideSvg';
 import { ChevronRight, Zap, Download, Repeat } from 'lucide';
 
-const pageTitle = 'How to De-Squeeze 1.33× Anamorphic Footage | DeSqueeze Studio';
+const pageTitle = 'Filmmaking App Guides — CineLut Live Grade, FilmStudio, Anamorphic | DeSqueeze Studio';
 const pageDescription =
-	'Learn how to de-squeeze 1.33×, 1.5×, 1.8× and 2× anamorphic footage online, on iPhone, Android, Mac and Windows.';
+	'Product guides for CineLut Live Grade, FilmStudio, Web Studio, Anamorphic Desqueezer, Windows and Android apps, plus how to de-squeeze 1.33×–2× footage for a clean cinematic frame.';
 
 const startHereCardBase =
 	'group flex min-h-[3.75rem] items-center gap-3 rounded-2xl border px-3.5 py-2.5 transition hover:border-white/25 hover:bg-white/[0.04] sm:min-h-[4rem] sm:gap-4 sm:px-4 sm:py-3 md:px-5';
@@ -34,13 +35,13 @@ const startHereCardBase =
 
 					<div class="relative grid gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-start">
 						<div class="min-w-0">
-							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">ANAMORPHIC GUIDE</p>
+							<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">PRODUCT GUIDES</p>
 							<h1 class="mt-3 max-w-4xl text-balance text-3xl font-semibold tracking-tight text-white md:text-5xl">
-								How to De-Squeeze 1.33× Anamorphic Footage
+								Guides for every filmmaking tool in the suite
 							</h1>
 							<p class="mt-4 max-w-3xl text-pretty text-base leading-relaxed text-white/70 md:text-lg">
-								Fix squeezed footage from Moment, Sirui, Moondog Labs, and other anamorphic lenses — preview, correct, and export for a clean
-								cinematic frame.
+								Start with <strong class="font-semibold text-white/90">CineLut Live Grade</strong> and <strong class="font-semibold text-white/90">FilmStudio</strong> below, then jump to Windows and Android where you need batch or live mobile workflows. The detailed
+								<strong class="font-semibold text-white/90">Anamorphic Desqueezer</strong> geometry section covers 1.33× through 2× — preview, correct, and export for a clean cinematic frame.
 							</p>
 
 							<div class="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -50,9 +51,23 @@ const startHereCardBase =
 								</a>
 								<a
 									class="inline-flex items-center justify-center gap-2 self-start rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/[0.10] sm:self-auto"
-									href="#workflow"
+									href="#guide-cinelut-live-grade"
 								>
-									See workflow
+									CineLut guide
+									<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+								<a
+									class="inline-flex items-center justify-center gap-2 self-start rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/[0.10] sm:self-auto"
+									href="#guide-filmstudio"
+								>
+									FilmStudio guide
+									<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+								</a>
+								<a
+									class="inline-flex items-center justify-center gap-2 self-start rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/[0.10] sm:self-auto"
+									href="#guide-anamorphic"
+								>
+									Anamorphic guide
 									<span class="text-white/55" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
 								</a>
 							</div>
@@ -67,10 +82,172 @@ const startHereCardBase =
 		<section class="page-shell py-12 md:py-16">
 			<div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
 				<div class="min-w-0 space-y-12 md:space-y-14">
-				<section id="workflow" class="scroll-mt-28">
+				<section id="guide-cinelut-live-grade" class="scroll-mt-28">
 					<div class="flex flex-col gap-2">
-						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">FILMMAKER WORKFLOW</p>
-						<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">From shoot to final delivery.</h2>
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">CINELUT LIVE GRADE · MAC</p>
+						<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">CineLut Live Grade — live LUT &amp; CDL on set</h2>
+						<p class="mt-2 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							Use CineLut Live Grade when you want a <strong class="font-semibold text-[var(--color-text)]">camera feed over SDI or HDMI</strong> on a MacBook, with LUTs, ASC-CDL-style primaries, and scopes updating in real time while you record graded <strong class="font-semibold text-[var(--color-text)]">ProRes</strong> to disk—so dailies match what the DP signed off on.
+						</p>
+						<p class="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							<strong class="font-semibold text-[var(--color-text)]">Typical flow:</strong> connect a supported capture device → choose your input format and monitoring (waveform, parade, vectorscope) → load a show LUT and trim CDL until the look locks → record takes with timecode / burn-in options if you need them → export CDL, LUT, AMF, or EDL+CDL packages so Silverstack, DaVinci Resolve, or editorial can inherit the same grade without round-tripping guesses.
+						</p>
+						<p class="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							<strong class="font-semibold text-[var(--color-text)]">Why it saves money:</strong> you can lean on fast Mac storage and CPUs instead of expensive in-camera media for every roll, while still keeping a disciplined on-set signal path.
+						</p>
+						<div class="mt-5 flex flex-wrap gap-3">
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-4 py-2 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface)]"
+								href={storeUrls.cineLutMac}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Mac App Store — CineLut Live Grade
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-4 py-2 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface)]"
+								href="/products#cinelut"
+							>
+								Product overview
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+						</div>
+					</div>
+				</section>
+
+				<section id="guide-filmstudio" class="scroll-mt-28">
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">FILMSTUDIO · IPHONE · IPAD · MAC</p>
+						<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">FilmStudio — field-ready cinema camera on Apple devices</h2>
+						<p class="mt-2 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							FilmStudio is for <strong class="font-semibold text-[var(--color-text)]">capture discipline</strong>: manual ISO, shutter, focus, and white balance; zebras, peaking, histogram and waveform; timecode and take naming; and export paths that match how video village labels reels. It pairs naturally with anamorphic rigs when you need honest framing before you de-squeeze in post.
+						</p>
+						<p class="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							<strong class="font-semibold text-[var(--color-text)]">On-set habit:</strong> build presets per lens serial, lock AE/AF when the block is stable, and tag takes while the slate is fresh so editorial and Anamorphic Desqueezer metadata stay aligned. On Mac (Apple Silicon), use the same App Store listing where Apple surfaces the Mac build.
+						</p>
+						<p class="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							<strong class="font-semibold text-[var(--color-text)]">After the shoot:</strong> move squeezed clips into Anamorphic Desqueezer or the Web Studio for ratio correction, or into CineLut Live Grade if you are live-grading from a camera feed on Mac.
+						</p>
+						<div class="mt-5 flex flex-wrap gap-3">
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-4 py-2 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface)]"
+								href={storeUrls.filmStudioIos}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								App Store — FilmStudio
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-4 py-2 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface)]"
+								href="/products#filmstudio"
+							>
+								Product overview
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+						</div>
+					</div>
+				</section>
+
+				<section id="guide-windows" class="scroll-mt-28">
+					<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[inset_0_1px_0_var(--color-border)] md:p-7">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">WINDOWS</p>
+						<h2 class="mt-2 text-lg font-semibold tracking-tight text-[var(--color-text)] md:text-xl">PC dailies, batch desqueeze, and desktop photo</h2>
+						<p class="mt-3 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							On Windows, <strong class="font-semibold text-[var(--color-text)]">AnamorphicDesqueezePro</strong> is the tower-friendly batch tool: folder-based jobs, CinemaScope presets, LUT/CDL, and EDL-friendly exports when you want laptop-class throughput without moving drives to a Mac.
+						</p>
+						<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							Add <strong class="font-semibold text-[var(--color-text)]">CineSnap AI</strong> for cinematic photo edits and <strong class="font-semibold text-[var(--color-text)]">DocRev Manager</strong> when paperwork and revisions need a dedicated Microsoft Store app—same studio, different jobs.
+						</p>
+						<div class="mt-4 flex flex-wrap gap-2">
+							<a class="text-sm font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2 hover:brightness-110" href={storeUrls.windowsPro} target="_blank" rel="noopener noreferrer">AnamorphicDesqueezePro ↗</a>
+							<span class="text-[var(--color-muted-faint)]">·</span>
+							<a class="text-sm font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2 hover:brightness-110" href={storeUrls.cineSnapAiWindows} target="_blank" rel="noopener noreferrer">CineSnap AI (Windows) ↗</a>
+							<span class="text-[var(--color-muted-faint)]">·</span>
+							<a class="text-sm font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2 hover:brightness-110" href={storeUrls.docRevWindows} target="_blank" rel="noopener noreferrer">DocRev Manager ↗</a>
+						</div>
+					</div>
+				</section>
+
+				<section id="guide-android" class="scroll-mt-28">
+					<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[inset_0_1px_0_var(--color-border)] md:p-7">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">ANDROID</p>
+						<h2 class="mt-2 text-lg font-semibold tracking-tight text-[var(--color-text)] md:text-xl">Batch geometry on the go, or live desqueeze on set</h2>
+						<p class="mt-3 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							<strong class="font-semibold text-[var(--color-text)]">Anamorphic Desqueezer</strong> on Google Play is the batch + LUT + LiveGrade-style monitoring path when you need true CinemaScope exports up to 4K without opening a full NLE on the cart.
+						</p>
+						<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							<strong class="font-semibold text-[var(--color-text)]">Anamorphic Desqueeze Pro Cam</strong> is the live monitor + Post Studio + recording lane when you want corrected stills and clips landing in DCIM without a desktop round-trip.
+						</p>
+						<div class="mt-4 flex flex-wrap gap-2">
+							<a class="text-sm font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2 hover:brightness-110" href={storeUrls.androidDesqueeze} target="_blank" rel="noopener noreferrer">Anamorphic Desqueezer ↗</a>
+							<span class="text-[var(--color-muted-faint)]">·</span>
+							<a class="text-sm font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2 hover:brightness-110" href={storeUrls.androidProCam} target="_blank" rel="noopener noreferrer">Pro Cam ↗</a>
+						</div>
+					</div>
+				</section>
+
+				<section id="guide-more-mac" class="scroll-mt-28">
+					<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface-strong)] p-6 shadow-[inset_0_1px_0_var(--color-border)] md:p-7">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">MORE MAC &amp; IOS</p>
+						<h2 class="mt-2 text-lg font-semibold tracking-tight text-[var(--color-text)] md:text-xl">MediaUtility, DMS, and CineSnap AI</h2>
+						<ul class="mt-3 list-disc space-y-2 pl-5 text-sm text-[var(--color-muted)] md:text-base">
+							<li>
+								<strong class="font-semibold text-[var(--color-text)]">MediaUtility</strong> — compress, resize, and convert stills and video on iPhone, iPad, and Mac.
+								<a class="ml-1 font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2" href={storeUrls.mediaUtilityIos} target="_blank" rel="noopener noreferrer">App Store ↗</a>
+							</li>
+							<li>
+								<strong class="font-semibold text-[var(--color-text)]">Document Management System</strong> — call sheets, delivery memos, and versioned notes in one searchable library on Mac.
+								<a class="ml-1 font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2" href={storeUrls.dmsMac} target="_blank" rel="noopener noreferrer">Mac App Store ↗</a>
+							</li>
+							<li>
+								<strong class="font-semibold text-[var(--color-text)]">CineSnap AI</strong> — cinematic photo editor on iPhone, iPad, and Windows (Microsoft Store).
+								<a class="ml-1 font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2" href={storeUrls.cineSnapIos} target="_blank" rel="noopener noreferrer">iOS ↗</a>
+							</li>
+						</ul>
+					</div>
+				</section>
+
+				<section id="guide-web-studio" class="scroll-mt-28">
+					<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[inset_0_1px_0_var(--color-border)] md:p-7">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">WEB STUDIO · BROWSER</p>
+						<h2 class="mt-2 text-lg font-semibold tracking-tight text-[var(--color-text)] md:text-xl">Preview squeeze and framing without installing an app</h2>
+						<p class="mt-3 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							<strong class="font-semibold text-[var(--color-text)]">Web Studio</strong> runs in the browser: load a clip, set 1.33×–2× squeeze and lens orientation, and confirm geometry before you move the same ratios into Anamorphic Desqueezer, Windows batch, or your NLE.
+						</p>
+						<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							Use <a class="font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2" href="/desqueeze-video-online">Desqueeze video online</a> for the full landing walkthrough, or jump straight into{' '}
+							<a class="font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2" href="/try-live">Try Web Studio ↗</a>.
+						</p>
+						<div class="mt-4 flex flex-wrap gap-3">
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-4 py-2 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface)]"
+								href="/try-live"
+							>
+								Open Web Studio
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-4 py-2 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface)]"
+								href="/products#web-studio"
+							>
+								Product overview
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+						</div>
+					</div>
+				</section>
+
+				<section id="guide-anamorphic" class="scroll-mt-28">
+					<div id="workflow"></div>
+					<div class="flex flex-col gap-2">
+						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">ANAMORPHIC DESQUEEZER · DETAILED</p>
+						<h2 class="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">From shoot to final delivery — geometry, factors, and exports</h2>
+						<p class="mt-2 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+							Fix squeezed footage from Moment, Sirui, Moondog Labs, and other anamorphic lenses — preview, correct ratios from 1.25× through 2×, and export for a clean cinematic frame on iPhone, iPad, Mac, Android, Windows, or in the Web Studio. Native flagship workflows live in{' '}
+							<a class="font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2" href={storeUrls.anamorphicApple} target="_blank" rel="noopener noreferrer">Anamorphic Desqueezer on the App Store ↗</a>.
+						</p>
 					</div>
 
 					<div class="mt-6 grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] md:items-stretch">
