@@ -1,10 +1,11 @@
 name: Deploy Astro to GitHub Pages
 
+# Production (GitHub Pages): deploys only from the default `main` branch.
+# Merge or push to `main` to go live — do not rely on other branches for production.
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -17,6 +18,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -44,6 +46,7 @@ jobs:
           path: ./dist
 
   deploy:
+    if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

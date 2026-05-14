@@ -16,7 +16,7 @@ export const HOME_DEFAULT_TITLE =
 export const HOME_DEFAULT_DESCRIPTION =
 	'DeSqueeze Studio: FilmStudio on iPhone, iPad, and Mac — manual ISO/shutter/focus/WB, film presets, zebras, peaking, histogram and waveform, timecode and takes, safe recording and export; plus Anamorphic Desqueezer, CineLut Live Grade, MediaUtility, and DMS. Web Studio for browser previews.';
 
-export const PRODUCTS_PAGE_TITLE = 'Film Suite Products — DeSqueeze Studio';
+export const PRODUCTS_PAGE_TITLE = 'FilmMaking Products — DeSqueeze Studio';
 
 export const PRODUCTS_PAGE_DESCRIPTION =
 	'Deep dives on FilmStudio, Anamorphic Desqueezer, and CineLut Live Grade — capture, de-squeeze, and live grade workflows for iPhone, iPad, and Mac.';
