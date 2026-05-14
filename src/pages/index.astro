@@ -383,14 +383,14 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 
 				<div class="mt-8">
 					<div class="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-5" aria-label="Film Suite tools">
-						<!-- Desqueeze (Start here) -->
+						<!-- Desqueeze (Apple users start here) -->
 						<div class="relative flex-1 overflow-visible rounded-2xl border border-[var(--color-accent-45)] bg-[linear-gradient(180deg,var(--color-accent-08),rgba(0,0,0,0.2))] p-5 pt-12 shadow-[0_0_0_1px_var(--color-accent-10),0_18px_60px_rgba(0,0,0,0.55)]">
 							<div class="pointer-events-none absolute inset-0 opacity-80 [background:radial-gradient(55%_55%_at_20%_18%,var(--color-accent-18),transparent_62%)]" aria-hidden="true"></div>
 							<div class="pointer-events-none absolute inset-0 opacity-60 [background:radial-gradient(55%_55%_at_90%_70%,var(--color-accent-10),transparent_62%)]" aria-hidden="true"></div>
 							<div class="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2">
 								<span class="inline-flex items-center gap-2 rounded-full border border-[var(--color-accent-border)] bg-black/70 px-3 py-1 text-[11px] font-semibold tracking-wide text-[var(--color-accent)] shadow-[0_10px_30px_rgba(0,0,0,0.55)]">
 									<span class="text-[var(--color-accent)]" set:html={lucideSvg(Star, 'h-3.5 w-3.5', 14)} aria-hidden="true"></span>
-									START HERE
+									Apple Users Start Here
 								</span>
 						</div>
 							<div class="relative flex h-full flex-col">
@@ -585,22 +585,24 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 						<span class="text-white/70" set:html={lucideSvg(Timer, 'h-5 w-5', 20)} aria-hidden="true" />
 							<div class="min-w-0">
 								<p class="text-lg font-semibold leading-none text-white md:text-xl">0</p>
-								<p class="mt-1 text-xs font-medium text-white/60">Guesswork in the pipeline</p>
+								<p class="mt-1 text-xs font-medium text-white/60">All-in-one “creative suite” tradeoffs</p>
 							</div>
 						</div>
 					</div>
 				</div>
 
 				<div class="mt-12 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:p-6" data-workflow-pause-area>
-<p class="text-sm font-semibold tracking-[0.22em] text-[var(--color-accent)] uppercase">A clear 4-step pipeline.</p>
-<h3 class="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 tracking-tight">
-	<span class="text-xl font-semibold text-white md:text-2xl">Workflow.</span>
-	<span class="text-sm font-medium text-white/70 md:text-base">Move through monitor → grade → export.</span>
-</h3>
+					<p class="text-sm font-semibold tracking-[0.22em] text-[var(--color-accent)] uppercase">Pro crews to indie filmmakers</p>
+					<h3 class="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 tracking-tight">
+						<span class="text-xl font-semibold text-white md:text-2xl">Every tool is designed with real filmmaking in mind.</span>
+						<span class="text-sm font-medium text-white/70 md:text-base">
+							From high-end pipelines to solo shoots, each app stays focused on one job—not feature bloat. Try free trials or limited free options where we offer them, and prove the fit on your own footage before you buy.
+						</span>
+					</h3>
 
 					<div
 						class="mt-5 pt-3 max-sm:-mx-1 max-sm:overflow-x-auto max-sm:px-1 max-sm:pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-						aria-label="4-step workflow diagram"
+						aria-label="Four-step filmmaking path from monitor to export"
 						data-workflow-pipeline
 					>
 <div class="max-sm:flex max-sm:min-w-max max-sm:items-center max-sm:gap-3 sm:flex sm:w-full sm:items-center sm:justify-center sm:gap-3" data-workflow-steps>
@@ -674,7 +676,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 						<button type="button" class="h-1.5 w-1.5 rounded-full bg-white/25 opacity-80 transition-[transform,background-color,opacity] duration-300 ease-in-out" aria-label="Go to step 3" data-dot="3"></button>
 						<button type="button" class="h-1.5 w-1.5 rounded-full bg-white/25 opacity-80 transition-[transform,background-color,opacity] duration-300 ease-in-out" aria-label="Go to step 4" data-dot="4"></button>
 					</div>
-					<p class="mt-4 text-center text-xs font-medium text-white/55">Each step is built to work perfectly with the next.</p>
+					<p class="mt-4 text-center text-xs font-medium text-white/55">Each app is built for one job; the handoff to the next step stays obvious.</p>
 
 <div class="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-4" data-detail-cards>
 						<div class="flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-accent-30)] bg-black/25 opacity-65 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[transform,opacity,box-shadow,border-color] duration-400 ease-in-out will-change-transform" data-detail-card="1">
@@ -967,8 +969,19 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 				<div id="suite-apps" class="mt-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 					<div>
 						<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">YOUR ECOSYSTEM</p>
-						<h3 class="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">Get the right tools for your pipeline.</h3>
-						<p class="mt-2 max-w-2xl text-sm text-white/70">Powerful apps. One seamless ecosystem.</p>
+						<h3 class="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">
+							Get the right tools for filmmaking, video, and photo editing
+						</h3>
+						<p class="mt-2 max-w-2xl text-sm text-white/70">
+							Choose by platform—iPhone, iPad, Mac, Android, or Windows—and pick the app that fits your workflow. On Windows, try{' '}
+							<a
+								class="font-semibold text-fuchsia-200 underline decoration-white/25 underline-offset-2 hover:text-fuchsia-100"
+								href={storeUrls.cineSnapAiWindows}
+								target="_blank"
+								rel="noopener noreferrer"
+							>CineSnap AI</a>
+							{' '}for cinematic photo editing on the Microsoft Store, too.
+						</p>
 					</div>
 					<a
 						class="inline-flex items-center justify-center gap-2 self-start rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-xs font-semibold text-white/90 hover:bg-white/[0.10] sm:self-auto"
