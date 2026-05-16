@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('Filmmaking suite landing', () => {
   test('loads and shows hero CTA', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/Turn your iPhone and MacBook/i);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(/Turn your iPhone, high-end camera, and MacBook/i);
     await page.getByTestId('cta-try-filmstudio').click();
     await expect(page.locator('#suite')).toBeVisible();
     await expect(page.locator('#suite')).toContainText(/one workflow/i);
