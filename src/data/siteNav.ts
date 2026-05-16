@@ -29,7 +29,7 @@ export function getHeaderNav(page: SiteHeaderPage): { items: NavItem[]; activeId
 			activeId: 'home',
 			items: [
 				{ id: 'home', label: 'Home', href: '/' },
-				{ id: 'try-live', label: 'Web Studio', href: '/try-live' },
+				{ id: 'try-live', label: 'Preview Online', href: '/try-live' },
 				{ id: 'products', label: 'FilmMaking Products', href: '/products' },
 				{ id: 'guides', label: 'Guides', href: '/guides' },
 				{ id: 'contact', label: 'Contact', href: '#contact' },
@@ -42,7 +42,7 @@ export function getHeaderNav(page: SiteHeaderPage): { items: NavItem[]; activeId
 			activeId: 'try-live',
 			items: [
 				{ id: 'home', label: 'Home', href: '/' },
-				{ id: 'try-live', label: 'Web Studio', href: '/try-live' },
+				{ id: 'try-live', label: 'Preview Online', href: '/try-live' },
 				{ id: 'products', label: 'FilmMaking Products', href: '/products' },
 				{ id: 'guides', label: 'Guides', href: '/guides' },
 				{ id: 'contact', label: 'Contact', href: '/#contact' },
@@ -55,7 +55,7 @@ export function getHeaderNav(page: SiteHeaderPage): { items: NavItem[]; activeId
 			activeId: 'guides',
 			items: [
 				{ id: 'home', label: 'Home', href: '/' },
-				{ id: 'try-live', label: 'Web Studio', href: '/try-live' },
+				{ id: 'try-live', label: 'Preview Online', href: '/try-live' },
 				{ id: 'products', label: 'FilmMaking Products', href: '/products' },
 				{ id: 'guides', label: 'Guides', href: '/guides' },
 				{ id: 'contact', label: 'Contact', href: '/#contact' },
@@ -67,7 +67,7 @@ export function getHeaderNav(page: SiteHeaderPage): { items: NavItem[]; activeId
 		activeId: 'products',
 		items: [
 			{ id: 'home', label: 'Home', href: '/' },
-			{ id: 'try-live', label: 'Web Studio', href: '/try-live' },
+			{ id: 'try-live', label: 'Preview Online', href: '/try-live' },
 			{ id: 'products', label: 'FilmMaking Products', href: '/products' },
 			{ id: 'guides', label: 'Guides', href: '/guides' },
 			{ id: 'contact', label: 'Contact', href: '/#contact' },
