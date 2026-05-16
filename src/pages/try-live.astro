@@ -813,6 +813,43 @@ const pageKeywords = 'try live preview, anamorphic desqueeze preview, desqueeze 
 			</script>
 		</section>
 
+		<section class="page-shell pb-12 md:pb-16" aria-label="Native anamorphic apps">
+			<div class="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 md:p-8">
+				<p class="text-xs font-semibold tracking-[0.22em] text-[var(--color-accent)]">NATIVE APPS</p>
+				<h2 class="mt-2 text-lg font-semibold tracking-tight text-[var(--color-text)] md:text-xl">Web Studio for a quick preview — apps for full export</h2>
+				<p class="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+					Use <strong class="font-semibold text-[var(--color-text)]">Web Studio</strong> here to check squeeze and framing in the browser. When you need batch export, LUT/CDL, EDL handoff, or live monitoring, continue in the native tool for your platform.
+				</p>
+				<div class="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+					<a
+						class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-4 py-2.5 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface)]"
+						href={storeUrls.anamorphicApple}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Anamorphic Desqueezer — iPhone · iPad · Mac
+						<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+					</a>
+					<a
+						class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-4 py-2.5 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface)]"
+						href={storeUrls.windowsPro}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						AnamorphicDesqueezePro — Windows
+						<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+					</a>
+					<a
+						class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-accent-border)] bg-[var(--color-accent-soft)] px-4 py-2.5 text-sm font-semibold text-[var(--color-accent)] hover:bg-[var(--color-accent-15)]"
+						href="/guides#guide-anamorphic"
+					>
+						Read the guides
+						<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+					</a>
+				</div>
+			</div>
+		</section>
+
 		<SiteFooter />
 	</main>
 </Layout>

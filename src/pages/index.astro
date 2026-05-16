@@ -422,10 +422,16 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 								</div>
 
 								<div class="mt-5 h-px w-full bg-white/10"></div>
-								<a class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-accent)] hover:brightness-110" href="#suite-apps">
-									Learn more
-									<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
-								</a>
+								<div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+									<a class="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-accent)] hover:brightness-110" href="#suite-apps">
+										Learn more
+										<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+									</a>
+									<a class="inline-flex items-center gap-2 text-sm font-semibold text-white/75 hover:text-white" href="/try-live">
+										Web Studio
+										<span class="text-white/45" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+									</a>
+								</div>
 							</div>
 						</div>
 
@@ -1087,10 +1093,16 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 														<span class="inline-flex shrink-0 items-center rounded-full border border-[var(--color-accent-25)] bg-[var(--color-accent)]/[0.10] px-2 py-0.5 text-[10px] font-semibold tracking-[0.14em] text-[var(--color-accent)]">PRIMARY</span>
 													</div>
 													<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-2">Live de-squeeze and accurate monitoring.</p>
-													<a class="relative z-[1] mt-4 inline-flex items-center gap-2 text-xs font-semibold text-[var(--color-accent)] hover:brightness-110" href={storeUrls.anamorphicApple} target="_blank" rel="noopener noreferrer">
-														Fix footage
-														<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
-													</a>
+													<div class="relative z-[1] mt-4 flex flex-col gap-2">
+														<a class="inline-flex items-center gap-2 text-xs font-semibold text-[var(--color-accent)] hover:brightness-110" href={storeUrls.anamorphicApple} target="_blank" rel="noopener noreferrer">
+															Fix footage
+															<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+														</a>
+														<a class="inline-flex items-center gap-2 text-xs font-semibold text-white/70 hover:text-white" href="/try-live">
+															Web Studio
+															<span class="text-white/45" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+														</a>
+													</div>
 												</div>
 											</div>
 											<div class="group relative flex min-h-[165px] flex-col rounded-2xl border border-sky-500/25 bg-black/35 p-5">
@@ -1363,10 +1375,16 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 												<p class="mt-4 max-w-[220px] text-sm leading-relaxed text-white/70 line-clamp-3">
 									Live anamorphic + grading, post desqueeze, batch LUT/CDL, and EDL handoff for PC dailies.
 								</p>
-												<a class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-sky-300 hover:text-sky-200" href={storeUrls.windowsPro} target="_blank" rel="noopener noreferrer">
-													Fix footage
-													<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
-												</a>
+												<div class="mt-4 flex flex-col gap-2">
+													<a class="inline-flex items-center gap-2 text-xs font-semibold text-sky-300 hover:text-sky-200" href={storeUrls.windowsPro} target="_blank" rel="noopener noreferrer">
+														Fix footage
+														<span set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+													</a>
+													<a class="inline-flex items-center gap-2 text-xs font-semibold text-white/70 hover:text-white" href="/try-live">
+														Web Studio
+														<span class="text-white/45" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+													</a>
+												</div>
 											</div>
 										</div>
 
@@ -2140,6 +2158,13 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 									</span>
 								</span>
 								<span class="shrink-0 text-white/40" set:html={lucideSvg(ExternalLink, 'h-3.5 w-3.5', 14)} aria-hidden="true" />
+							</a>
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-sky-500/35 bg-sky-500/10 px-4 py-2.5 text-sky-200 hover:bg-sky-500/20"
+								href="/try-live"
+							>
+								Web Studio preview
+								<span class="shrink-0 text-sky-300/60" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true" />
 							</a>
 						</div>
 					</div>

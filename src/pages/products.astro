@@ -31,6 +31,8 @@ type AppCard = {
 	features: string[];
 	ctaLabel: string;
 	ctaHref: string;
+	/** Optional browser preview (Web Studio) for anamorphic tools */
+	webStudioHref?: string;
 	iconUrl?: string;
 	hasScreenshots?: boolean;
 };
@@ -69,6 +71,7 @@ const apps: AppCard[] = [
 		],
 		ctaLabel: 'Buy on the App Store',
 		ctaHref: storeUrls.anamorphicApple,
+		webStudioHref: '/try-live',
 		iconUrl: anamorphicMeta?.artworkUrl512,
 	},
 	{
@@ -195,6 +198,7 @@ const apps: AppCard[] = [
 		],
 		ctaLabel: 'Get it on Microsoft Store',
 		ctaHref: storeUrls.windowsPro,
+		webStudioHref: '/try-live',
 		iconUrl: windowsProMicrosoftMeta?.artworkUrl512 ?? '/images/app-icons/windows-desqueezepro.png',
 	},
 	{
@@ -364,6 +368,12 @@ const productsPlatformTabsInit = `(() => {
 										))}
 									</ul>
 
+									{a.webStudioHref ? (
+										<div class="mt-4">
+											<ProductStorePill variant="web" href={a.webStudioHref} accessibilityLabel="Preview squeeze in Web Studio" />
+										</div>
+									) : null}
+
 									{a.hasScreenshots && (
 										<div class="mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black" data-fs-carousel-root data-fs-shots={JSON.stringify(filmStudioScreenshots)}>
 											<div class="relative px-4 py-5 md:px-6">
@@ -440,6 +450,12 @@ const productsPlatformTabsInit = `(() => {
 										))}
 									</ul>
 
+									{a.webStudioHref ? (
+										<div class="mt-4">
+											<ProductStorePill variant="web" href={a.webStudioHref} accessibilityLabel="Preview squeeze in Web Studio" />
+										</div>
+									) : null}
+
 								</article>
 							))}
 					</div>
@@ -483,6 +499,12 @@ const productsPlatformTabsInit = `(() => {
 											</li>
 										))}
 									</ul>
+
+									{a.webStudioHref ? (
+										<div class="mt-4">
+											<ProductStorePill variant="web" href={a.webStudioHref} accessibilityLabel="Preview squeeze in Web Studio" />
+										</div>
+									) : null}
 
 								</article>
 							))}
@@ -528,6 +550,12 @@ const productsPlatformTabsInit = `(() => {
 										))}
 									</ul>
 
+									{a.webStudioHref ? (
+										<div class="mt-4">
+											<ProductStorePill variant="web" href={a.webStudioHref} accessibilityLabel="Preview squeeze in Web Studio" />
+										</div>
+									) : null}
+
 								</article>
 							))}
 					</div>
@@ -567,6 +595,12 @@ const productsPlatformTabsInit = `(() => {
 											</li>
 										))}
 									</ul>
+
+									{a.webStudioHref ? (
+										<div class="mt-4">
+											<ProductStorePill variant="web" href={a.webStudioHref} accessibilityLabel="Preview squeeze in Web Studio" />
+										</div>
+									) : null}
 
 								</article>
 							))}

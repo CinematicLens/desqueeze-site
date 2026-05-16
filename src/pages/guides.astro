@@ -96,7 +96,8 @@ const startHereCardBase =
 							Use <strong class="font-semibold text-[var(--color-text)]">Anamorphic Desqueezer</strong> on iPhone, iPad, or MacBook when you need a native flagship pipeline: import squeezed clips from FilmStudio or cinema cameras, dial <strong class="font-semibold text-[var(--color-text)]">1.25× through 2×</strong> squeeze, preview in real time, and export clean widescreen masters without round-tripping through a full NLE for every pass.
 						</p>
 						<p class="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
-							<strong class="font-semibold text-[var(--color-text)]">iPhone / iPad on set:</strong> queue dailies on the cart, sanity-check lens orientation, and hand off ProRes or HEVC that already matches the village monitor. <strong class="font-semibold text-[var(--color-text)]">MacBook:</strong> same ratios and batch muscle for location pulls when you want keyboard shortcuts and larger scopes before you commit to Resolve or Avid.
+							<strong class="font-semibold text-[var(--color-text)]">iPhone / iPad on set:</strong> queue dailies on the cart, sanity-check lens orientation, and hand off ProRes or HEVC that already matches the village monitor. <strong class="font-semibold text-[var(--color-text)]">MacBook:</strong> same ratios and batch muscle for location pulls when you want keyboard shortcuts and larger scopes before you commit to Resolve or Avid. No app installed yet?{' '}
+							<a class="font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2" href="/try-live">Preview in Web Studio ↗</a>.
 						</p>
 						<p class="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
 							For the long-form walkthrough (shoot → export, factors, mistakes), jump to{' '}
@@ -117,6 +118,13 @@ const startHereCardBase =
 								href="/products#anamorphic"
 							>
 								Product overview
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-[var(--color-accent-border)] bg-[var(--color-accent-soft)] px-4 py-2 text-sm font-semibold text-[var(--color-accent)] hover:bg-[var(--color-accent-15)]"
+								href="/try-live"
+							>
+								Web Studio
 								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
 							</a>
 						</div>
@@ -207,8 +215,27 @@ const startHereCardBase =
 							<li>Local processing for longer clips and higher bitrates</li>
 						</ul>
 						<p class="mt-4 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
-							Use CDL trims to lock a show LUT across a reel, then lean on <strong class="font-semibold text-[var(--color-text)]">EDL</strong> when editorial needs shot lists, handles, and reconform metadata alongside the corrected masters—the same handoff philosophy as CineLut Live Grade on Mac, tuned for Windows batch pipelines.
+							Use CDL trims to lock a show LUT across a reel, then lean on <strong class="font-semibold text-[var(--color-text)]">EDL</strong> when editorial needs shot lists, handles, and reconform metadata alongside the corrected masters—the same handoff philosophy as CineLut Live Grade on Mac, tuned for Windows batch pipelines. Confirm squeeze and framing in the browser first with{' '}
+							<a class="font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2" href="/try-live">Web Studio ↗</a>.
 						</p>
+						<div class="mt-4 flex flex-wrap gap-3">
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-4 py-2 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface)]"
+								href={storeUrls.windowsPro}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Microsoft Store — AnamorphicDesqueezePro
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+							<a
+								class="inline-flex items-center gap-2 rounded-full border border-[var(--color-accent-border)] bg-[var(--color-accent-soft)] px-4 py-2 text-sm font-semibold text-[var(--color-accent)] hover:bg-[var(--color-accent-15)]"
+								href="/try-live"
+							>
+								Web Studio
+								<span class="text-[var(--color-muted-faint)]" set:html={lucideSvg(ChevronRight, 'h-4 w-4', 16)} aria-hidden="true"></span>
+							</a>
+						</div>
 						<p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
 							<strong class="font-semibold text-[var(--color-text)]">Check in app:</strong> Store builds move often—open AnamorphicDesqueezePro and review the Microsoft Store listing and in-app export / grade panels for the exact <strong class="font-semibold text-[var(--color-text)]">EDL, CDL, and LUT</strong> options in your installed version before you freeze a deliverables memo.
 						</p>
@@ -224,7 +251,7 @@ const startHereCardBase =
 							Add <strong class="font-semibold text-[var(--color-text)]">CineSnap AI (Windows)</strong> when you need <strong class="font-semibold text-[var(--color-text)]">individual photo editing</strong>—full-frame looks, crops, and compare—then <strong class="font-semibold text-[var(--color-text)]">export in batch</strong> across a folder or gallery so weddings, stills pulls, and social crops ship with the same grade.
 						</p>
 						<div class="mt-4 flex flex-wrap gap-2">
-							<a class="text-sm font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2 hover:brightness-110" href={storeUrls.windowsPro} target="_blank" rel="noopener noreferrer">AnamorphicDesqueezePro ↗</a>
+							<a class="text-sm font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2 hover:brightness-110" href="/try-live">Web Studio ↗</a>
 							<span class="text-[var(--color-muted-faint)]">·</span>
 							<a class="text-sm font-semibold text-[var(--color-accent)] underline decoration-[var(--color-accent-border)] underline-offset-2 hover:brightness-110" href={storeUrls.cineSnapAiWindows} target="_blank" rel="noopener noreferrer">CineSnap AI (Windows) ↗</a>
 							<span class="text-[var(--color-muted-faint)]">·</span>
