@@ -2,7 +2,7 @@ name: Validate site
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, static-html]
   pull_request:
 
 jobs:
