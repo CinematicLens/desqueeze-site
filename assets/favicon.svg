@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="DeSqueeze Studio">
+  <defs>
+    <linearGradient id="bg" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#243447"/>
+      <stop offset="1" stop-color="#141c28"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="18" y1="20" x2="46" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f0d78a"/>
+      <stop offset="1" stop-color="#c9a227"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- widescreen / desqueeze frame -->
+  <rect x="15" y="22" width="34" height="20" rx="4" fill="none" stroke="url(#gold)" stroke-width="2.6"/>
+  <path d="M11 32h5M48 32h5" stroke="#4dd4e8" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="32" cy="32" r="3.2" fill="#00bcd4"/>
+  <path d="M22 40h20" stroke="#4dd4e8" stroke-width="1.6" stroke-linecap="round" opacity="0.85"/>
+</svg>
