@@ -41,6 +41,12 @@ jobs:
       - name: Build with Astro
         run: npm run build
 
+      - name: Verify Pages files
+        run: |
+          test -f dist/index.html
+          test -f dist/CNAME
+          grep -q 'anamorphic-desqueeze.com' dist/CNAME
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

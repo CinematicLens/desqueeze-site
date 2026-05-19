@@ -15,15 +15,22 @@ Re-run without new commits: GitHub → **Actions** → **Deploy Astro to GitHub 
 
 Check status: https://github.com/CinematicLens/desqueeze-site/actions
 
+### If the custom domain shows 404
+
+1. Repo → **Settings** → **Pages** → **Build and deployment**
+2. **Source** must be **GitHub Actions** (not “Deploy from a branch”).
+3. Under **Custom domain**, set `anamorphic-desqueeze.com` and wait for DNS check.
+4. Re-run **Deploy Astro to GitHub Pages** from the Actions tab.
+
+The build includes `public/CNAME` so the custom domain is attached to each deploy.
+
 ## Preview (`astro-migration` branch)
 
-- **URL:** https://cinematiclens.github.io/desqueeze-site/astro-preview/
-- **Branch:** `astro-migration`
-- **How:** Push to `astro-migration` → **Preview deploy (astro-migration)** workflow
+Run locally:
 
 ```bash
 git checkout astro-migration
-git push origin astro-migration
+npm ci && npm run dev
 ```
 
 ## Local
