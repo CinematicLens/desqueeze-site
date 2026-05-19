@@ -1,11 +1,8 @@
 name: Deploy Astro to GitHub Pages
 
-# Production (GitHub Pages): deploys only from the default `main` branch.
-# Merge or push to `main` to go live — do not rely on other branches for production.
+# Astro deploy is manual only while production uses the static HTML site on `static-html`.
+# Live site: push `static-html` → Deploy static HTML to GitHub Pages.
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:

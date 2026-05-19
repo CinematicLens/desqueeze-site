@@ -1,10 +1,17 @@
 # Deploy
 
-## Production (live site)
+## Production (live site) — static HTML
 
 - **URL:** https://anamorphic-desqueeze.com
+- **Branch:** `static-html` (pre-Astro: `index.html`, product pages, etc.)
+- **How:** Push to `static-html` → **Deploy static HTML to GitHub Pages**
+
+See [STATIC-SITE.md](./STATIC-SITE.md).
+
+## Astro site (manual deploy from `main`)
+
 - **Branch:** `main`
-- **How:** Push to `main` → GitHub Actions runs **Deploy Astro to GitHub Pages**
+- **How:** GitHub Actions → **Deploy Astro to GitHub Pages** → **Run workflow** (not auto on push)
 
 ```bash
 git checkout main
