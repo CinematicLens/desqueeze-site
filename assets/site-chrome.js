@@ -18,4 +18,9 @@
   } else {
     scrollOnLoad();
   }
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+      scrollOnLoad();
+    }
+  });
 })();

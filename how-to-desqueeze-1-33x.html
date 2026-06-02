@@ -39,7 +39,7 @@
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6348292037303976"
     crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="./style.css?v=27" />
+  <link rel="stylesheet" href="./style.css?v=29" />
 
   <style>
     :root {
@@ -157,34 +157,70 @@
       font-size: 0.8rem;
       margin: 0 0 6px 4px;
     }
+
+    /* Top intro cards (light page — dark text) */
+    .intro-card {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(11,15,20,0.14);
+      border-radius: 16px;
+      padding: 14px 16px;
+      color: var(--fg);
+      line-height: 1.6;
+    }
+    .intro-card__title {
+      color: #0b0f14;
+      font-weight: 800;
+      font-size: 1.15rem;
+      margin: 0 0 6px 0;
+    }
+    .intro-card__heading {
+      color: #0b0f14;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+    .intro-card p,
+    .intro-card li,
+    .intro-card div:not(.intro-card__title):not(.intro-card__heading) {
+      color: var(--muted);
+    }
+    .intro-card strong {
+      color: #0b0f14;
+    }
+    .intro-card a {
+      color: #0369a1;
+      font-weight: 700;
+    }
+    .intro-card a:hover {
+      color: #0c4a6e;
+    }
   </style>
 </head>
 
 <body>
 
   <!-- ===================== TOP ASO TEXT ===================== -->
-  <section id="top-aso" style="max-width:1200px;margin:18px auto 0;padding:0 1.5rem;color:var(--muted);line-height:1.6;">
-    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:16px;padding:14px 16px;">
-      <div style="color:#fff;font-weight:800;font-size:1.15rem;margin:0 0 6px 0;">
+  <section id="top-aso" style="max-width:1200px;margin:18px auto 0;padding:0 1.5rem;">
+    <div class="intro-card">
+      <div class="intro-card__title">
         Anamorphic De-Squeeze Tool Online — Web Desqueeze Studio
       </div>
 
-      <div style="color:#fff;font-weight:700;margin-top:10px;">What is anamorphic de-squeeze and why fix distortion?</div>
-      <div>
+      <div class="intro-card__heading">What is anamorphic de-squeeze and why fix distortion?</div>
+      <p>
         <strong>Anamorphic lenses</strong> squeeze the image horizontally to capture a wider field of view on a normal sensor.
         This unique look is popular with professional filmmakers and those utilizing affordable mobile anamorphic lenses
         (like those from Moment, Sirui, or Moondog Labs) on their iPhone or Android devices.
         Without de-squeezing, footage looks tall and skinny. This online anamorphic de-squeeze tool fixes the anamorphic distortion,
         stretching the footage back to its intended cinematic aspect ratio (e.g., 2.39:1) so your shots look professional instead of stretched.
-      </div>
+      </p>
 
-      <div style="color:#fff;font-weight:700;margin-top:10px;">How to De-Squeeze Photos and Videos Online (Batch Processing)</div>
-      <div>
+      <div class="intro-card__heading">How to De-Squeeze Photos and Videos Online (Batch Processing)</div>
+      <p>
         Our web studio makes it easy to use this anamorphic video editor online, right in your browser, no downloads required.
         We support batch processing of up to 10 files at once for efficiency. It's the perfect anamorphic aspect ratio converter for quick edits.
-      </div>
+      </p>
 
-      <div style="color:#fff;font-weight:700;margin-top:10px;">Supported Formats &amp; Key Features:</div>
+      <div class="intro-card__heading">Supported Formats &amp; Key Features:</div>
       <ul style="margin:6px 0 0 18px;">
         <li>Preview horizontal de-squeeze in real-time.</li>
         <li>Export fully corrected MP4, JPG, and PNG files.</li>
@@ -195,19 +231,19 @@
   </section>
 
   <!-- ===================== TOOLS SECTION AT TOP ===================== -->
-  <section id="tools" style="max-width:1200px;margin:14px auto 0;padding:0 1.5rem;color:var(--muted);line-height:1.6;">
-    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:16px;padding:14px 16px;">
-      <h2 style="margin:0;color:#fff;font-size:1.2rem;">Also on iOS, Android, and Windows</h2>
+  <section id="tools" style="max-width:1200px;margin:14px auto 0;padding:0 1.5rem;">
+    <div class="intro-card">
+      <h2 class="intro-card__title" style="font-size:1.2rem;">Also on iOS, Android, and Windows</h2>
 
       <p style="margin:10px 0 0;">
         This page is the <strong>browser tool</strong> itself. Native installers, store links, and workflow routing live on the
-        <a href="/guides.html" style="color:#93c5fd;">Guides index</a> so we do not repeat the same catalog block here and on every lens URL.
+        <a href="/guides.html">Guides index</a> so we do not repeat the same catalog block here and on every lens URL.
         Same correction math (1.33×–2×) applies everywhere when you need to leave the web preview.
       </p>
       <p style="margin:10px 0 0;">
-        <a href="/index.html#settings" style="color:#93c5fd;font-weight:700;">Jump to Web Studio on the hub</a>
-        · <a href="/anamorphic-desqueeze-iphone.html" style="color:#93c5fd;font-weight:700;">iPhone &amp; iPad app page</a>
-        · <a href="https://www.facebook.com/profile.php?id=61582013559827" target="_blank" rel="noopener" style="color:#93c5fd;">Community (Facebook)</a>
+        <a href="/index.html#settings">Jump to Web Studio on the hub</a>
+        · <a href="/anamorphic-desqueeze-iphone.html">iPhone &amp; iPad app page</a>
+        · <a href="https://www.facebook.com/profile.php?id=61582013559827" target="_blank" rel="noopener">Community (Facebook)</a>
       </p>
     </div>
   </section>

@@ -762,6 +762,15 @@ progress.hidden { display: none; }
   row-gap: 10px;
   padding: 16px 1.5rem;
 }
+@media (min-width: 1101px) {
+  .site-header__inner {
+    flex-wrap: nowrap;
+    min-height: 60px;
+  }
+  .nav {
+    flex-wrap: nowrap;
+  }
+}
 .brand {
   display: flex;
   align-items: center;
