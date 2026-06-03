@@ -762,7 +762,7 @@ progress.hidden { display: none; }
   row-gap: 10px;
   padding: 16px 1.5rem;
 }
-@media (min-width: 1101px) {
+@media (min-width: 1280px) {
   .site-header__inner {
     flex-wrap: nowrap;
     min-height: 60px;
