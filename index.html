@@ -466,6 +466,28 @@
     :root[data-theme="dark"] .hero-cta-note a { color: #7dd3fc; }
     :root[data-theme="dark"] .sticky-buy { background: rgba(10,13,18,.96); }
     :root[data-theme="dark"] .sticky-buy__secondary { background: rgba(255,255,255,.08); }
+
+    /* ===================== B2B / studios band (intentionally dark in both themes) ===================== */
+    .b2b-band { max-width: 1200px; margin: 1.25rem auto 0; padding: 0 1.5rem; }
+    .b2b-band__inner {
+      background: linear-gradient(160deg, #0b0f14 0%, #11161e 100%);
+      color: #e2e8f0;
+      border: 1px solid rgba(0,188,212,.35);
+      border-radius: 18px;
+      padding: 1.5rem 1.5rem 1.6rem;
+      box-shadow: 0 18px 44px rgba(0,0,0,.18);
+    }
+    .b2b-band__eyebrow { margin: 0 0 .35rem; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #38bdf8; }
+    .b2b-band__title { margin: 0 0 .5rem; font-size: clamp(1.3rem, 2.6vw, 1.7rem); font-weight: 800; letter-spacing: -.02em; color: #f8fafc; }
+    .b2b-band__lede { margin: 0 0 .9rem; max-width: 70ch; line-height: 1.55; color: rgba(226,232,240,.86); font-size: .96rem; }
+    .b2b-band__points { margin: 0 0 1.1rem; padding: 0; list-style: none; display: grid; gap: .4rem; }
+    .b2b-band__points li { color: rgba(226,232,240,.82); font-size: .9rem; }
+    .b2b-band__points strong { color: #f8fafc; }
+    .b2b-band__ctas { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .b2b-cta { display: inline-block; padding: .6rem 1.1rem; border-radius: 11px; font-size: .9rem; font-weight: 700; text-decoration: none; border: 1px solid rgba(148,163,184,.4); color: #e2e8f0; background: rgba(255,255,255,.06); transition: border-color .15s, background .15s; }
+    .b2b-cta:hover { background: rgba(255,255,255,.12); border-color: rgba(56,189,248,.6); }
+    .b2b-cta--primary { background: var(--accent); color: #0b0f14; border-color: rgba(0,0,0,.25); }
+    .b2b-cta--primary:hover { filter: brightness(1.06); }
   </style>
 </head>
 
@@ -506,7 +528,25 @@
           <p class="hub-hero__tool-body">Live LUT and CDL on MacBook with scopes, capture, and dailies. See the <a href="/cinelutlivegrade.html">CineLut Live Grade product overview</a>.</p>
         </section>
       </div>
-      <p class="hub-hero__skips"><a href="/anamorphic-desqueeze-iphone.html">Anamorphic Desqueezer</a> · <a href="/cinelutlivegrade.html">CineLut Live Grade</a> · <a href="/mediautility.html">MediaUtility</a> · <a href="/document-management-system.html">Document Management System</a> · <a href="/cinema-monitors.html">Cinema Monitor</a> · <a href="#settings">Web Studio</a> · <a href="#app-store-strip">App Store</a></p>
+      <p class="hub-hero__skips"><a href="#for-studios">For Studios &amp; Productions</a> · <a href="/anamorphic-desqueeze-iphone.html">Anamorphic Desqueezer</a> · <a href="/cinelutlivegrade.html">CineLut Live Grade</a> · <a href="/mediautility.html">MediaUtility</a> · <a href="/document-management-system.html">Document Management System</a> · <a href="/cinema-monitors.html">Cinema Monitor</a> · <a href="#settings">Web Studio</a> · <a href="#app-store-strip">App Store</a></p>
+    </div>
+  </section>
+
+  <section class="b2b-band" id="for-studios" aria-labelledby="b2b-title">
+    <div class="b2b-band__inner">
+      <p class="b2b-band__eyebrow">For studios, rental houses &amp; post facilities</p>
+      <h2 class="b2b-band__title" id="b2b-title">Enterprise &amp; volume licensing for professional productions</h2>
+      <p class="b2b-band__lede">On-set live grading, dailies, and anamorphic finishing that fit a professional pipeline — ProRes capture with CDL/AMF/EDL round-trip into DaVinci Resolve and Silverstack. Footage is processed locally on your hardware, and volume or site licensing covers DIT carts, edit bays, and rental fleets.</p>
+      <ul class="b2b-band__points">
+        <li><strong>Pipeline-ready:</strong> ProRes, CDL / AMF / EDL dailies into Resolve &amp; editorial</li>
+        <li><strong>Secure by default:</strong> local, on-set processing — no forced cloud upload</li>
+        <li><strong>Volume &amp; site licensing:</strong> fleet deployment with priority support &amp; onboarding</li>
+      </ul>
+      <div class="b2b-band__ctas">
+        <a class="b2b-cta b2b-cta--primary" href="mailto:teamcentersap@gmail.com?subject=Studio%20%26%20volume%20licensing%20enquiry&amp;body=Company%3A%0AProductions%20%2F%20team%20size%3A%0ATools%20of%20interest%20(CineLut%20Live%20Grade%2C%20Anamorphic%2C%20Windows%20tools)%3A%0ARequirements%3A%0A">Contact sales</a>
+        <a class="b2b-cta" href="mailto:teamcentersap@gmail.com?subject=Volume%20licensing%20enquiry">Volume licensing enquiry</a>
+        <a class="b2b-cta" href="/cinelutlivegrade.html">See CineLut Live Grade</a>
+      </div>
     </div>
   </section>
 
@@ -1041,6 +1081,7 @@
     <div class="site-footer__inner">
       <div>© <span id="y"></span> DeSqueeze Studio</div>
       <div class="site-footer__links">
+        <a href="#for-studios">Studios &amp; licensing</a>
         <a href="/guides.html">Guides</a>
         <a href="/privacy.html">Privacy</a>
         <a href="/terms.html">Terms</a>
