@@ -2072,6 +2072,15 @@ a.page-cta:hover {
 :root[data-theme="dark"] .guides-list .guide-desc {
   color: var(--muted);
 }
+:root[data-theme="dark"] .section-label {
+  color: rgba(226, 232, 240, 0.6);
+}
+:root[data-theme="dark"] .chooser a {
+  border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+:root[data-theme="dark"] .hero-image {
+  background: rgba(255, 255, 255, 0.04);
+}
 
 /* Flagship + DMS blocks */
 :root[data-theme="dark"] .hero-block,
