@@ -1997,8 +1997,15 @@ a.page-cta:hover {
 }
 
 /* Spec table */
+:root[data-theme="dark"] .specs-table thead {
+  background: rgba(255, 255, 255, 0.08);
+}
+:root[data-theme="dark"] .specs-table th,
+:root[data-theme="dark"] .specs-table td {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
 :root[data-theme="dark"] .specs-table th {
-  color: var(--muted);
+  color: #e2e8f0;
 }
 :root[data-theme="dark"] .specs-table td {
   color: var(--text);
