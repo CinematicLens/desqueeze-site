@@ -1942,3 +1942,227 @@ a.page-cta:hover {
   text-align: left;
 }
 
+/* =========================================================
+   Dark theme
+   Activated by the data-theme="dark" flag on <html>
+   (set by assets/site-chrome.js). Light theme is untouched
+   when the flag is absent. Goal: every surface stays readable.
+   ========================================================= */
+:root[data-theme="dark"] {
+  --bg: #0a0d12;
+  --bg-elevated: #12171f;
+  --panel: rgba(255, 255, 255, 0.05);
+  --card: rgba(255, 255, 255, 0.06);
+  --text: #eef2f7;
+  --muted: rgba(226, 232, 240, 0.74);
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.16);
+  --border: rgba(255, 255, 255, 0.14);
+  --danger: #f87171;
+}
+
+/* Web Studio tool controls */
+:root[data-theme="dark"] button,
+:root[data-theme="dark"] .file span {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+:root[data-theme="dark"] button:hover,
+:root[data-theme="dark"] .file span:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] input[type="number"],
+:root[data-theme="dark"] input[type="text"],
+:root[data-theme="dark"] input[type="file"] {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text);
+}
+:root[data-theme="dark"] .queue-item {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Pills / strips */
+:root[data-theme="dark"] .pill-strip {
+  color: var(--text);
+}
+:root[data-theme="dark"] .workflow-strip__text,
+:root[data-theme="dark"] .anamorphic-flow-strip__inner {
+  background: var(--panel);
+}
+:root[data-theme="dark"] .workflow-strip__text span {
+  color: #5eead4;
+}
+
+/* Spec table */
+:root[data-theme="dark"] .specs-table th {
+  color: var(--muted);
+}
+:root[data-theme="dark"] .specs-table td {
+  color: var(--text);
+}
+:root[data-theme="dark"] .specs-table tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Use-case cards */
+:root[data-theme="dark"] .usecase-card__body {
+  color: var(--muted);
+}
+:root[data-theme="dark"] .usecase-card__links a {
+  color: #5eead4;
+}
+
+/* Trust strip */
+:root[data-theme="dark"] .trust-strip {
+  color: #a5f3fc;
+}
+:root[data-theme="dark"] .trust-strip a {
+  color: #67e8f9;
+}
+:root[data-theme="dark"] .trust-strip a:hover {
+  color: #cffafe;
+}
+
+/* App-UI screenshot labels */
+:root[data-theme="dark"] .app-ui-card__label {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Header */
+:root[data-theme="dark"] .site-header {
+  background: rgba(10, 13, 18, 0.92);
+}
+
+/* Product cards on the hub */
+:root[data-theme="dark"] .product-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.03) 100%);
+}
+:root[data-theme="dark"] .product-card__title {
+  color: var(--text);
+}
+
+/* Lists, legal & guides surfaces */
+:root[data-theme="dark"] .app-list li,
+:root[data-theme="dark"] .quick-start,
+:root[data-theme="dark"] .chooser li,
+:root[data-theme="dark"] .guides-list a {
+  background: var(--panel);
+}
+:root[data-theme="dark"] .legal-page a {
+  color: #5eead4;
+}
+:root[data-theme="dark"] .guides-list a {
+  color: var(--text);
+}
+:root[data-theme="dark"] .guides-list a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+:root[data-theme="dark"] .guides-list .guide-desc {
+  color: var(--muted);
+}
+
+/* Flagship + DMS blocks */
+:root[data-theme="dark"] .hero-block,
+:root[data-theme="dark"] .info-block,
+:root[data-theme="dark"] .dms-page .hero,
+:root[data-theme="dark"] .dms-page .block {
+  background: var(--panel);
+}
+:root[data-theme="dark"] .dms-page .btn {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Product page shell */
+:root[data-theme="dark"] .product-panel {
+  background: var(--panel);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+:root[data-theme="dark"] .product-more {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+:root[data-theme="dark"] .product-platform-row a {
+  background: rgba(255, 255, 255, 0.06);
+}
+:root[data-theme="dark"] .product-body a {
+  color: #5eead4;
+}
+
+/* Guides skin hero was a light band by design — darken so the
+   page matches the rest of the dark theme and text stays light. */
+:root[data-theme="dark"] .product-skin--guides .product-hero {
+  background: linear-gradient(168deg, #141821 0%, #0a0c10 55%, #07080b 100%);
+  color: #cbd5e1;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+}
+:root[data-theme="dark"] .product-skin--guides .product-hero__title {
+  color: #f8fafc;
+}
+:root[data-theme="dark"] .product-skin--guides .product-hero__lede {
+  color: rgba(203, 213, 225, 0.92);
+}
+:root[data-theme="dark"] .product-skin--guides .product-hero__lede strong {
+  color: #f8fafc;
+}
+:root[data-theme="dark"] .product-skin--guides .product-hero__eyebrow {
+  color: rgba(203, 213, 225, 0.72);
+}
+:root[data-theme="dark"] .product-skin--guides .product-hero a,
+:root[data-theme="dark"] .product-skin--guides .product-hero a:hover {
+  color: #7dd3fc !important;
+}
+:root[data-theme="dark"] .product-skin--guides .product-spec-strip__item dt {
+  color: rgba(203, 213, 225, 0.72);
+}
+:root[data-theme="dark"] .product-skin--guides .product-spec-strip__item dd {
+  color: #f1f5f9;
+}
+:root[data-theme="dark"] .product-skin--guides .product-cta {
+  color: #e2e8f0 !important;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+:root[data-theme="dark"] .product-skin--guides .product-cta:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(248, 250, 252, 0.45);
+}
+:root[data-theme="dark"] .product-skin--guides .product-cta--primary {
+  color: #0b0f14 !important;
+}
+
+/* Theme toggle control (injected by site-chrome.js) */
+.theme-toggle {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font: 600 0.82rem 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+  transition: border-color 0.15s, transform 0.15s;
+}
+.theme-toggle:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.theme-toggle::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: var(--accent);
+}
+

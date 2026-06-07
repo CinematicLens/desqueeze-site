@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Primary markets: United States & Canada (English). Site serves worldwide.
+Sitemap: https://anamorphic-desqueeze.com/sitemap.xml
