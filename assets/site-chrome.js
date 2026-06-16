@@ -64,10 +64,56 @@
     document.body.appendChild(btn);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', buildThemeToggle);
-  } else {
+  var SOCIAL = {
+    youtube: 'https://www.youtube.com/channel/UCRfqU-WJgQDfaQ2mJXFbhyg',
+    facebook: 'https://www.facebook.com/profile.php?id=61582013559827'
+  };
+  var STORES = {
+    apple: 'https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068',
+    google: 'https://play.google.com/store/apps/details?id=com.squeezer.app'
+  };
+
+  function buildFooterTrust() {
+    var footer = document.querySelector('.site-footer');
+    if (!footer || footer.querySelector('.site-footer__trust')) {
+      return;
+    }
+
+    var trust = document.createElement('div');
+    trust.className = 'site-footer__trust';
+    trust.setAttribute('aria-label', 'Store reviews and community');
+
+    trust.innerHTML =
+      '<div class="store-trust">' +
+        '<a class="store-trust__badge store-trust__badge--apple" href="' + STORES.apple + '" target="_blank" rel="noopener noreferrer">' +
+          '<span class="store-trust__label">App Store <span class="store-trust__sub">See ratings &amp; reviews</span></span>' +
+        '</a>' +
+        '<a class="store-trust__badge store-trust__badge--google" href="' + STORES.google + '" target="_blank" rel="noopener noreferrer">' +
+          '<span class="store-trust__label">Google Play <span class="store-trust__sub">See ratings &amp; reviews · 1K+ downloads</span></span>' +
+        '</a>' +
+      '</div>' +
+      '<div class="social-trust" aria-label="Community links">' +
+        '<a class="social-trust__link social-trust__link--youtube" href="' + SOCIAL.youtube + '" target="_blank" rel="noopener noreferrer">YouTube channel</a>' +
+        '<a class="social-trust__link social-trust__link--facebook" href="' + SOCIAL.facebook + '" target="_blank" rel="noopener noreferrer">Facebook</a>' +
+      '</div>';
+
+    var inner = footer.querySelector('.site-footer__inner');
+    if (inner) {
+      footer.insertBefore(trust, inner);
+    } else {
+      footer.appendChild(trust);
+    }
+  }
+
+  function onDomReady() {
     buildThemeToggle();
+    buildFooterTrust();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', onDomReady);
+  } else {
+    onDomReady();
   }
 
   if ('scrollRestoration' in history) {

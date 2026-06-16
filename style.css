@@ -865,6 +865,113 @@ progress.hidden { display: none; }
   border-top: 1px solid var(--border);
   margin-top: 48px;
 }
+.site-footer__trust {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+}
+.store-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+.store-trust__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.25;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.store-trust__badge:hover {
+  border-color: rgba(0, 188, 212, 0.45);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+.store-trust__stars {
+  color: #f59e0b;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+}
+.store-trust__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.store-trust__sub {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.social-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+.social-trust__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.social-trust__link:hover {
+  color: var(--text);
+  border-color: rgba(0, 188, 212, 0.45);
+}
+.social-trust__link--youtube::before {
+  content: "▶";
+  margin-right: 0.35rem;
+  font-size: 0.65rem;
+  color: #dc2626;
+}
+.social-trust__link--facebook::before {
+  content: "f";
+  margin-right: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #2563eb;
+}
+.trust-strip__stores,
+.trust-strip__social {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.75rem;
+  align-items: center;
+}
+.trust-strip__stores a,
+.trust-strip__social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  color: #0e7490;
+  font-weight: 700;
+}
+.trust-strip__stores a:hover,
+.trust-strip__social a:hover {
+  color: #0f172a;
+}
 .site-footer__inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -2031,6 +2138,18 @@ a.page-cta:hover {
 }
 :root[data-theme="dark"] .trust-strip a:hover {
   color: #cffafe;
+}
+:root[data-theme="dark"] .trust-strip__stores a,
+:root[data-theme="dark"] .trust-strip__social a {
+  background: rgba(255, 255, 255, 0.08);
+}
+:root[data-theme="dark"] .store-trust__badge,
+:root[data-theme="dark"] .social-trust__link {
+  background: rgba(255, 255, 255, 0.06);
+}
+:root[data-theme="dark"] .store-trust__badge:hover,
+:root[data-theme="dark"] .social-trust__link:hover {
+  border-color: rgba(56, 189, 248, 0.45);
 }
 
 /* App-UI screenshot labels */
