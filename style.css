@@ -1780,6 +1780,15 @@ progress.hidden { display: none; }
   align-items: center;
 }
 
+.product-hero__figure {
+  margin: 1.35rem 0 0;
+  max-width: min(920px, 100%);
+}
+
+.product-hero__figure img {
+  max-height: min(420px, 62vw);
+}
+
 .product-cta {
   display: inline-flex;
   align-items: center;
