@@ -1799,6 +1799,10 @@ progress.hidden { display: none; }
   object-fit: contain;
 }
 
+.product-hero__figure--top {
+  margin: 0 0 1.35rem;
+}
+
 .product-cta {
   display: inline-flex;
   align-items: center;
