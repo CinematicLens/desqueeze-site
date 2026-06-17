@@ -1789,6 +1789,16 @@ progress.hidden { display: none; }
   max-height: min(420px, 62vw);
 }
 
+.product-hero__figure--portrait {
+  max-width: min(520px, 100%);
+}
+
+.product-hero__figure--portrait img {
+  max-height: min(640px, 78vh);
+  width: 100%;
+  object-fit: contain;
+}
+
 .product-cta {
   display: inline-flex;
   align-items: center;
