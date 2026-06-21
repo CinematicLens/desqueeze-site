@@ -1927,6 +1927,100 @@ progress.hidden { display: none; }
   }
 }
 
+/* Cinema Monitor — split hero (text left, promo image right) */
+.cinema-monitor-hero {
+  background:
+    radial-gradient(ellipse 75% 55% at 90% 15%, rgba(245, 158, 11, 0.1), transparent 50%),
+    radial-gradient(ellipse 60% 45% at 5% 85%, rgba(56, 189, 248, 0.08), transparent 45%),
+    linear-gradient(168deg, #121825 0%, #0a0e18 52%, #050810 100%);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  padding: 2rem 1.5rem 2.25rem;
+}
+
+.cinema-monitor-hero__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.85fr);
+  gap: 1.75rem 2rem;
+  align-items: center;
+}
+
+.cinema-monitor-hero__eyebrow {
+  margin: 0 0 0.45rem;
+  font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.cinema-monitor-hero__title {
+  margin: 0;
+  font-size: clamp(1.55rem, 3.5vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #f8fafc;
+}
+
+.cinema-monitor-hero__lede {
+  margin: 0.65rem 0 0;
+  font-size: 0.96rem;
+  line-height: 1.55;
+  color: rgba(203, 213, 225, 0.92);
+  max-width: 48ch;
+}
+
+.cinema-monitor-hero__copy .product-spec-strip {
+  margin-top: 1rem;
+}
+
+.cinema-monitor-hero__visual {
+  margin: 0;
+  max-width: min(420px, 100%);
+  justify-self: end;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  background: rgba(8, 12, 18, 0.9);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.cinema-monitor-hero__visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.cinema-monitor-hero__caption {
+  margin: 0;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  color: rgba(203, 213, 225, 0.9);
+  background: rgba(10, 14, 22, 0.95);
+  border-top: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+@media (max-width: 900px) {
+  .cinema-monitor-hero__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .cinema-monitor-hero__visual {
+    justify-self: center;
+    max-width: min(360px, 100%);
+    order: -1;
+  }
+}
+
 :root[data-theme="dark"] .anamorphic-landing__body .anamorphic-landing__panel {
   background: rgba(18, 23, 31, 0.92);
   border-color: rgba(148, 163, 184, 0.2);
