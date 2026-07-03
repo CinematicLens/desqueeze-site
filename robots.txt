@@ -2,4 +2,5 @@ User-agent: *
 Allow: /
 
 # Primary markets: United States & Canada (English). Site serves worldwide.
+# Submit sitemap in Google Search Console: https://search.google.com/search-console
 Sitemap: https://anamorphic-desqueeze.com/sitemap.xml

@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/cinelutlivegrade.html" }
+    { "source": "/", "destination": "/index.html" }
   ]
 }

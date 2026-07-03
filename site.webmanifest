@@ -1,0 +1,25 @@
+{
+  "name": "DeSqueeze Studio — Anamorphic Desqueeze & Filmmaking Tools",
+  "short_name": "DeSqueeze",
+  "description": "Anamorphic desqueeze, live LUT grading, and professional filmmaking tools for iOS, Android, Mac, Windows, and web.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "theme_color": "#0a0c10",
+  "background_color": "#f8f5ea",
+  "display": "browser",
+  "lang": "en"
+}

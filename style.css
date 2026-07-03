@@ -1517,6 +1517,61 @@ progress.hidden { display: none; }
     order: -1;
   }
 }
+
+/* Product landing pages: full-width split hero outside .product-main */
+.hub-hero--product h1 {
+  font-size: clamp(1.55rem, 3.5vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  max-width: 48ch;
+}
+.hub-hero__copy .product-spec-strip {
+  margin-top: 1rem;
+}
+.hub-hero__copy .product-hero__ctas {
+  margin-top: 1.2rem;
+}
+.hub-hero__visual--portrait {
+  border-color: rgba(245, 158, 11, 0.28);
+}
+.hub-hero__visual--portrait .hub-hero__visual-caption {
+  border-top-color: rgba(245, 158, 11, 0.2);
+}
+
+/* AnamorphicDesqueezer iPhone promo — full-width top banner */
+.anamorphic-promo-banner {
+  margin: 0;
+  padding: 0;
+  background: #050608;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+}
+.anamorphic-promo-banner__link {
+  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
+  line-height: 0;
+}
+.anamorphic-promo-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.product-skin--scope .hub-hero--product {
+  background:
+    radial-gradient(ellipse 75% 55% at 90% 15%, rgba(245, 158, 11, 0.1), transparent 50%),
+    radial-gradient(ellipse 60% 45% at 5% 85%, rgba(129, 140, 248, 0.1), transparent 45%),
+    linear-gradient(168deg, #121825 0%, #0a0e18 52%, #050810 100%);
+}
+.product-skin--anamorphic .hub-hero--product {
+  background:
+    radial-gradient(ellipse 80% 60% at 85% 20%, rgba(245, 158, 11, 0.08), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 10% 80%, rgba(56, 189, 248, 0.1), transparent 50%),
+    linear-gradient(165deg, #0f1419 0%, #0a0d12 45%, #06080c 100%);
+}
+
 .hub-hero h1 {
   margin: 0;
   font-size: clamp(1.08rem, 2.4vw, 1.52rem);
