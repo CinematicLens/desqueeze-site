@@ -73,8 +73,7 @@
     google: 'https://play.google.com/store/apps/details?id=com.squeezer.app'
   };
   var ANAMORPHIC_PROMO = {
-    src: '/assets/anamorphic-desqueezer-iphone-hero.png?v=2',
-    icon: '/assets/app-icons/ios-anamorphic.png',
+    src: '/assets/anamorphic-desqueezer-iphone-hero.png?v=3',
     href: '/anamorphic-desqueeze-iphone.html',
     alt: 'AnamorphicDesqueezer — See Anamorphic. Correctly. For Mobile, iPad, iPhone, MacBook, and Windows.',
     width: 1024,
@@ -99,26 +98,6 @@
     return ANAMORPHIC_PROMO_SKIP_PAGES.indexOf(path) === -1;
   }
 
-  function createAnamorphicPromoIcon() {
-    var icon = document.createElement('img');
-    icon.className = 'anamorphic-promo-banner__icon';
-    icon.src = ANAMORPHIC_PROMO.icon;
-    icon.width = 72;
-    icon.height = 72;
-    icon.alt = '';
-    icon.setAttribute('aria-hidden', 'true');
-    icon.decoding = 'async';
-    return icon;
-  }
-
-  function decorateAnamorphicPromoVisual(container) {
-    if (!container || container.querySelector('.anamorphic-promo-banner__icon')) {
-      return;
-    }
-    container.classList.add('anamorphic-promo-banner__frame');
-    container.appendChild(createAnamorphicPromoIcon());
-  }
-
   function buildAnamorphicPromoBanner() {
     if (!shouldShowAnamorphicPromo()) {
       return;
@@ -131,7 +110,6 @@
       return;
     }
     if (document.querySelector('.hub-hero__visual img[src*="anamorphic-desqueezer"]')) {
-      decorateAnamorphicPromoVisual(document.querySelector('.hub-hero__visual--square'));
       return;
     }
 
@@ -159,7 +137,6 @@
     img.loading = 'eager';
     img.decoding = 'async';
 
-    frame.appendChild(createAnamorphicPromoIcon());
     frame.appendChild(img);
     link.appendChild(frame);
     inner.appendChild(link);
