@@ -1539,24 +1539,60 @@ progress.hidden { display: none; }
   border-top-color: rgba(245, 158, 11, 0.2);
 }
 
-/* AnamorphicDesqueezer iPhone promo — full-width top banner */
+/* AnamorphicDesqueezer mobile promo — banner with app icon in left corner */
 .anamorphic-promo-banner {
   margin: 0;
-  padding: 0;
-  background: #050608;
+  padding: 0.65rem 1rem 0.75rem;
+  background:
+    radial-gradient(ellipse 55% 80% at 0% 50%, rgba(56, 189, 248, 0.12), transparent 55%),
+    linear-gradient(180deg, #07090d 0%, #050608 100%);
   border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+}
+.anamorphic-promo-banner__inner {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .anamorphic-promo-banner__link {
   display: block;
-  max-width: 1200px;
-  margin: 0 auto;
-  line-height: 0;
+  text-decoration: none;
+  color: inherit;
 }
-.anamorphic-promo-banner img {
+.anamorphic-promo-banner__frame {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  background: #050608;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+.anamorphic-promo-banner__icon {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  z-index: 2;
+  width: clamp(52px, 8vw, 72px);
+  height: clamp(52px, 8vw, 72px);
+  border-radius: 18%;
+  object-fit: cover;
+  border: 2px solid rgba(125, 211, 252, 0.45);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  pointer-events: none;
+}
+.anamorphic-promo-banner__art,
+.anamorphic-promo-banner__frame > img:not(.anamorphic-promo-banner__icon) {
   display: block;
   width: 100%;
   height: auto;
   object-fit: contain;
+}
+.hub-hero__visual.anamorphic-promo-banner__frame {
+  overflow: hidden;
+}
+.hub-hero__visual.anamorphic-promo-banner__frame .anamorphic-promo-banner__icon {
+  top: 0.65rem;
+  left: 0.65rem;
 }
 
 .product-skin--scope .hub-hero--product {

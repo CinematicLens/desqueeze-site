@@ -74,13 +74,55 @@
   };
   var ANAMORPHIC_PROMO = {
     src: '/assets/anamorphic-desqueezer-iphone-hero.png',
+    icon: '/assets/app-icons/ios-anamorphic.png',
     href: '/anamorphic-desqueeze-iphone.html',
     alt: 'AnamorphicDesqueezer for mobile — See Anamorphic. Correctly. Live monitor, scopes, and CinemaScope export.',
     width: 1024,
     height: 1024
   };
 
+  var ANAMORPHIC_PROMO_SKIP_PAGES = [
+    '/cinelutlivegrade.html',
+    '/mediautility.html',
+    '/document-management-system.html',
+    '/photo-editing.html',
+    '/windows-tools.html',
+    '/cinema-monitors.html',
+    '/virtual-monitors.html'
+  ];
+
+  function shouldShowAnamorphicPromo() {
+    var path = (window.location.pathname || '').replace(/\/$/, '') || '/index.html';
+    if (path === '/' || path === '/index') {
+      path = '/index.html';
+    }
+    return ANAMORPHIC_PROMO_SKIP_PAGES.indexOf(path) === -1;
+  }
+
+  function createAnamorphicPromoIcon() {
+    var icon = document.createElement('img');
+    icon.className = 'anamorphic-promo-banner__icon';
+    icon.src = ANAMORPHIC_PROMO.icon;
+    icon.width = 72;
+    icon.height = 72;
+    icon.alt = '';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.decoding = 'async';
+    return icon;
+  }
+
+  function decorateAnamorphicPromoVisual(container) {
+    if (!container || container.querySelector('.anamorphic-promo-banner__icon')) {
+      return;
+    }
+    container.classList.add('anamorphic-promo-banner__frame');
+    container.appendChild(createAnamorphicPromoIcon());
+  }
+
   function buildAnamorphicPromoBanner() {
+    if (!shouldShowAnamorphicPromo()) {
+      return;
+    }
     var header = document.querySelector('.site-header');
     if (!header) {
       return;
@@ -89,6 +131,7 @@
       return;
     }
     if (document.querySelector('.hub-hero__visual img[src*="anamorphic-desqueezer"]')) {
+      decorateAnamorphicPromoVisual(document.querySelector('.hub-hero__visual--square'));
       return;
     }
 
@@ -97,11 +140,18 @@
     banner.setAttribute('role', 'region');
     banner.setAttribute('aria-label', 'AnamorphicDesqueezer for mobile');
 
+    var inner = document.createElement('div');
+    inner.className = 'anamorphic-promo-banner__inner';
+
     var link = document.createElement('a');
     link.className = 'anamorphic-promo-banner__link';
     link.href = ANAMORPHIC_PROMO.href;
 
+    var frame = document.createElement('div');
+    frame.className = 'anamorphic-promo-banner__frame';
+
     var img = document.createElement('img');
+    img.className = 'anamorphic-promo-banner__art';
     img.src = ANAMORPHIC_PROMO.src;
     img.width = ANAMORPHIC_PROMO.width;
     img.height = ANAMORPHIC_PROMO.height;
@@ -109,8 +159,11 @@
     img.loading = 'eager';
     img.decoding = 'async';
 
-    link.appendChild(img);
-    banner.appendChild(link);
+    frame.appendChild(createAnamorphicPromoIcon());
+    frame.appendChild(img);
+    link.appendChild(frame);
+    inner.appendChild(link);
+    banner.appendChild(inner);
     header.insertAdjacentElement('afterend', banner);
   }
 
