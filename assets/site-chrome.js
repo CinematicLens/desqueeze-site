@@ -73,10 +73,10 @@
     google: 'https://play.google.com/store/apps/details?id=com.squeezer.app'
   };
   var ANAMORPHIC_PROMO = {
-    src: '/assets/anamorphic-desqueezer-iphone-hero.png',
+    src: '/assets/anamorphic-desqueezer-iphone-hero.png?v=2',
     icon: '/assets/app-icons/ios-anamorphic.png',
     href: '/anamorphic-desqueeze-iphone.html',
-    alt: 'AnamorphicDesqueezer for mobile — See Anamorphic. Correctly. Live monitor, scopes, and CinemaScope export.',
+    alt: 'AnamorphicDesqueezer — See Anamorphic. Correctly. For Mobile, iPad, iPhone, MacBook, and Windows.',
     width: 1024,
     height: 1024
   };
