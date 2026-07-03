@@ -72,6 +72,47 @@
     apple: 'https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068',
     google: 'https://play.google.com/store/apps/details?id=com.squeezer.app'
   };
+  var ANAMORPHIC_PROMO = {
+    src: '/assets/anamorphic-desqueezer-iphone-hero.png',
+    href: '/anamorphic-desqueeze-iphone.html',
+    alt: 'AnamorphicDesqueezer for mobile — See Anamorphic. Correctly. Live monitor, scopes, and CinemaScope export.',
+    width: 1024,
+    height: 1024
+  };
+
+  function buildAnamorphicPromoBanner() {
+    var header = document.querySelector('.site-header');
+    if (!header) {
+      return;
+    }
+    if (document.querySelector('.anamorphic-promo-banner')) {
+      return;
+    }
+    if (document.querySelector('.hub-hero__visual img[src*="anamorphic-desqueezer"]')) {
+      return;
+    }
+
+    var banner = document.createElement('div');
+    banner.className = 'anamorphic-promo-banner';
+    banner.setAttribute('role', 'region');
+    banner.setAttribute('aria-label', 'AnamorphicDesqueezer for mobile');
+
+    var link = document.createElement('a');
+    link.className = 'anamorphic-promo-banner__link';
+    link.href = ANAMORPHIC_PROMO.href;
+
+    var img = document.createElement('img');
+    img.src = ANAMORPHIC_PROMO.src;
+    img.width = ANAMORPHIC_PROMO.width;
+    img.height = ANAMORPHIC_PROMO.height;
+    img.alt = ANAMORPHIC_PROMO.alt;
+    img.loading = 'eager';
+    img.decoding = 'async';
+
+    link.appendChild(img);
+    banner.appendChild(link);
+    header.insertAdjacentElement('afterend', banner);
+  }
 
   function buildFooterTrust() {
     var footer = document.querySelector('.site-footer');
@@ -106,6 +147,7 @@
   }
 
   function onDomReady() {
+    buildAnamorphicPromoBanner();
     buildThemeToggle();
     buildFooterTrust();
   }
