@@ -92,7 +92,39 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="./style.css?v=43" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is anamorphic desqueeze?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Anamorphic lenses squeeze the image horizontally when recording. Desqueeze restores the correct cinematic aspect ratio (for example 2.39:1 CinemaScope) so faces and circles look natural."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where can I buy Anamorphic Desqueezer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Official apps are on the Apple App Store (iPhone, iPad, Mac), Google Play (Android batch and Pro Cam), and the Microsoft Store (Windows). See https://anamorphic-desqueeze.com/get-apps.html for all store links."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I try desqueeze before buying?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Use the free Web Studio on anamorphic-desqueeze.com for 1.33×–2× previews and small batches, then install the native app for live monitor, ProRes, and full batch workflows."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="./style.css?v=44" />
 </head>
 <body class="product-skin product-skin--anamorphic anamorphic-landing">
 
@@ -104,10 +136,9 @@
       <nav class="nav">
         <a href="/index.html#filmstudio">Filmmaking</a>
         <a href="/anamorphic.html" aria-current="page">Anamorphic Flow</a>
+        <a href="/get-apps.html">Get apps</a>
         <a href="/cinelutlivegrade.html">LiveGrade · DIT · Dailies</a>
         <a href="/mediautility.html">Utilities</a>
-        <a href="/document-management-system.html">Organize</a>
-        <a href="/photo-editing.html">Photo Editing</a>
         <a href="/windows-tools.html">Windows</a>
         <a href="/cinema-monitors.html">Android-Anamorphic</a>
         <a href="/guides.html">Guides</a>
@@ -127,10 +158,16 @@
             <li>Batch video and stills — 1.33× through 2× — with true CinemaScope export</li>
             <li>iOS · Android · Mac · Windows · free Web Studio in one ecosystem</li>
           </ul>
+          <div class="sell-trust" aria-label="Trust signals">
+            <span>Official App Store · Play · Microsoft</span>
+            <span>No region lock</span>
+            <span>Try Web Studio free</span>
+          </div>
           <div class="product-hero__ctas">
-            <a class="product-cta product-cta--primary" href="/anamorphic-desqueeze-iphone.html">Anamorphic Desqueezer overview</a>
+            <a class="product-cta product-cta--primary" href="https://apps.apple.com/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">Get on App Store</a>
+            <a class="product-cta product-cta--primary" href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener">Get on Google Play</a>
+            <a class="product-cta product-cta--primary" href="/get-apps.html">All store links</a>
             <a class="product-cta" href="/index.html#settings">Try Web Studio (free)</a>
-            <a class="product-cta" href="https://apps.apple.com/za/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">App Store ↗</a>
           </div>
         </div>
         <figure class="hub-hero__visual hub-hero__visual--square" aria-labelledby="anamorphic-promo-caption">
@@ -184,6 +221,16 @@
         </div>
       </section>
 
+      <section class="product-panel anamorphic-landing__panel" id="get-apps">
+        <h2>Get the apps (official stores)</h2>
+        <p>Install where you shoot and finish. Full store list with FAQs: <a href="/get-apps.html">Get apps</a>.</p>
+        <div class="product-hero__ctas">
+          <a class="product-cta product-cta--primary" href="https://apps.apple.com/app/anamorphicdesqueezer/id6757354068" target="_blank" rel="noopener">App Store — iPhone / iPad / Mac</a>
+          <a class="product-cta product-cta--primary" href="https://play.google.com/store/apps/details?id=com.squeezer.app" target="_blank" rel="noopener">Google Play — Android batch</a>
+          <a class="product-cta product-cta--primary" href="https://apps.microsoft.com/detail/9ph01d6pq8x3" target="_blank" rel="noopener">Microsoft Store — Windows</a>
+        </div>
+      </section>
+
       <section class="product-panel anamorphic-landing__panel" id="anamorphic-guides">
         <h2>Guides &amp; lens workflows</h2>
         <p class="anamorphic-landing__guide-links">
@@ -213,6 +260,6 @@
     </div>
   </footer>
   <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
-  <script src="/assets/site-chrome.js?v=17"></script>
+  <script src="/assets/site-chrome.js?v=18"></script>
 </body>
 </html>

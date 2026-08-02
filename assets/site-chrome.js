@@ -83,7 +83,8 @@
     '/photo-editing.html',
     '/windows-tools.html',
     '/cinema-monitors.html',
-    '/virtual-monitors.html'
+    '/virtual-monitors.html',
+    '/get-apps.html'
   ];
 
   function shouldShowAnamorphicPromo() {
