@@ -177,6 +177,14 @@
   var GEO_LANG_KEY = 'site-geo-lang';
   var GEO_COUNTRY_KEY = 'site-geo-country';
   var LANG_SOURCE = 'en';
+  /* Real SEO locale pages (add more languages one by one). */
+  var LOCALIZED_PAGES = {
+    ja: {
+      '/': '/ja/',
+      '/index.html': '/ja/',
+      '/anamorphic.html': '/ja/anamorphic.html'
+    }
+  };
   var RTL_LANGS = { ar: 1, fa: 1, he: 1, ur: 1, yi: 1, ps: 1 };
   var WORLD_LANGUAGES = [
     { code: 'en', name: 'English' },
@@ -293,6 +301,78 @@
       return base;
     }
     return LANG_SOURCE;
+  }
+
+  function pageLocale() {
+    var attr = document.body && document.body.getAttribute('data-locale');
+    if (attr) {
+      return normalizeLang(attr);
+    }
+    var path = window.location.pathname || '';
+    if (path === '/ja' || path === '/ja/' || path.indexOf('/ja/') === 0) {
+      return 'ja';
+    }
+    return null;
+  }
+
+  function normalizePathKey(path) {
+    var p = (path || '/').split('?')[0].split('#')[0];
+    if (!p || p === '/') {
+      return '/';
+    }
+    if (p === '/index' || p === '/index.html') {
+      return '/index.html';
+    }
+    if (p === '/ja' || p === '/ja/' || p === '/ja/index.html') {
+      return '/ja/';
+    }
+    if (p.charAt(p.length - 1) === '/' && p.length > 1) {
+      p = p.slice(0, -1);
+    }
+    return p;
+  }
+
+  function englishPathKey(pathKey) {
+    var p = normalizePathKey(pathKey);
+    if (p === '/ja/' || p === '/ja') {
+      return '/';
+    }
+    if (p.indexOf('/ja/') === 0) {
+      return p.slice(3) || '/';
+    }
+    return p === '/index.html' ? '/' : p;
+  }
+
+  function localizedUrlFor(lang, pathKey) {
+    var map = LOCALIZED_PAGES[lang];
+    if (!map) {
+      return null;
+    }
+    var enKey = englishPathKey(pathKey);
+    if (enKey === '/index.html') {
+      enKey = '/';
+    }
+    if (map[enKey]) {
+      return map[enKey];
+    }
+    if (map['/']) {
+      return map['/'];
+    }
+    return null;
+  }
+
+  function pathsEquivalent(a, b) {
+    function norm(p) {
+      p = normalizePathKey(p);
+      if (p === '/index.html') {
+        return '/';
+      }
+      if (p === '/ja/') {
+        return '/ja';
+      }
+      return p;
+    }
+    return norm(a) === norm(b);
   }
 
   function readGoogTransCookie() {
@@ -516,6 +596,28 @@
         localStorage.setItem(LANG_MANUAL_KEY, '1');
       }
     } catch (e) {}
+
+    var pathKey = normalizePathKey(window.location.pathname || '/');
+
+    // Prefer real SEO pages when they exist (Japan → /ja/...).
+    if (next !== LANG_SOURCE) {
+      var localized = localizedUrlFor(next, pathKey);
+      if (localized && !pathsEquivalent(pathKey, localized)) {
+        setGoogTransCookie(LANG_SOURCE);
+        applyDocumentDirection(next);
+        location.assign(localized);
+        return;
+      }
+    } else {
+      var enPath = englishPathKey(pathKey);
+      if (pageLocale() && !pathsEquivalent(pathKey, enPath === '/' ? '/' : enPath)) {
+        setGoogTransCookie(LANG_SOURCE);
+        applyDocumentDirection(LANG_SOURCE);
+        location.assign(enPath === '/' ? '/' : enPath);
+        return;
+      }
+    }
+
     setGoogTransCookie(next);
     applyDocumentDirection(next);
     if (reload === false) {
@@ -639,8 +741,35 @@
   }
 
   function buildLanguageSwitcher() {
+    var nativeLocale = pageLocale();
+
     resolveAutoLang().then(function (active) {
+      if (nativeLocale) {
+        active = nativeLocale;
+      }
       applyDocumentDirection(active);
+
+      var pathKey = normalizePathKey(window.location.pathname || '/');
+
+      // Auto region (e.g. Japan) → real /ja/ SEO page when available.
+      if (!nativeLocale && active !== LANG_SOURCE) {
+        var localized = localizedUrlFor(active, pathKey);
+        if (localized && !pathsEquivalent(pathKey, localized)) {
+          setGoogTransCookie(LANG_SOURCE);
+          try {
+            sessionStorage.setItem(GEO_LANG_KEY, active);
+          } catch (e) {}
+          location.replace(localized);
+          return;
+        }
+      }
+
+      // Native localized HTML — no Google Translate overlay.
+      if (nativeLocale) {
+        setGoogTransCookie(LANG_SOURCE);
+        mountLanguageSwitcher(active);
+        return;
+      }
 
       var reloadGuard = null;
       try {

@@ -3,24 +3,47 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://anamorphic-desqueeze.com/</loc>
-    <lastmod>2026-06-17</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
     <xhtml:link rel="alternate" hreflang="en-us" href="https://anamorphic-desqueeze.com/"/>
     <xhtml:link rel="alternate" hreflang="en-ca" href="https://anamorphic-desqueeze.com/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://anamorphic-desqueeze.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/ja/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.98</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://anamorphic-desqueeze.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
   </url>
   <url>
     <loc>https://anamorphic-desqueeze.com/index.html</loc>
-    <lastmod>2026-06-17</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.99</priority>
   </url>
   <url>
     <loc>https://anamorphic-desqueeze.com/anamorphic.html</loc>
-    <lastmod>2026-06-17</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://anamorphic-desqueeze.com/ja/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/ja/anamorphic.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://anamorphic-desqueeze.com/ja/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
   </url>
   <url>
     <loc>https://anamorphic-desqueeze.com/anamorphic-desqueeze-iphone.html</loc>
