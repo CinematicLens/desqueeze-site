@@ -336,29 +336,28 @@
   }
 
   function setGoogTransCookie(lang) {
-    var host = location.hostname;
     var expireClear = 'Thu, 01 Jan 1970 00:00:00 GMT';
     var expireSet = 'Sat, 01 Jan 2050 00:00:00 GMT';
-    var paths = ['/', ''];
-    var domains = ['', host, '.' + host];
+    var host = location.hostname;
 
-    function writeCookie(value, expires) {
-      for (var d = 0; d < domains.length; d++) {
-        for (var p = 0; p < paths.length; p++) {
-          var cookie = 'googtrans=' + value + '; expires=' + expires + '; path=' + (paths[p] || '/');
-          if (domains[d]) {
-            cookie += '; domain=' + domains[d];
-          }
-          document.cookie = cookie;
-        }
+    function write(value, expires, domain) {
+      var cookie = 'googtrans=' + value + '; expires=' + expires + '; path=/';
+      if (domain) {
+        cookie += '; domain=' + domain;
       }
+      document.cookie = cookie;
     }
 
     if (!lang || lang === LANG_SOURCE) {
-      writeCookie('', expireClear);
+      write('', expireClear, '');
+      write('', expireClear, host);
+      write('', expireClear, '.' + host);
       return;
     }
-    writeCookie('/' + LANG_SOURCE + '/' + lang, expireSet);
+    var value = '/' + LANG_SOURCE + '/' + lang;
+    write(value, expireSet, '');
+    write(value, expireSet, host);
+    write(value, expireSet, '.' + host);
   }
 
   function applyDocumentDirection(lang) {
@@ -371,6 +370,20 @@
     return readStoredLang() || detectBrowserLang();
   }
 
+  function triggerGoogleCombo(lang) {
+    var combo = document.querySelector('.goog-te-combo');
+    if (!(combo instanceof HTMLSelectElement)) {
+      return false;
+    }
+    var value = lang === LANG_SOURCE ? '' : lang;
+    if (combo.value === value) {
+      return true;
+    }
+    combo.value = value;
+    combo.dispatchEvent(new Event('change'));
+    return true;
+  }
+
   function setLanguage(lang, reload) {
     var next = normalizeLang(lang);
     try {
@@ -378,18 +391,18 @@
     } catch (e) {}
     setGoogTransCookie(next);
     applyDocumentDirection(next);
-    if (reload !== false) {
-      location.reload();
+    if (reload === false) {
+      triggerGoogleCombo(next);
+      return;
     }
+    try {
+      sessionStorage.setItem('site-lang-reload', '1');
+    } catch (e) {}
+    location.reload();
   }
 
   function buildLanguageSwitcher() {
     if (document.querySelector('.lang-switcher')) {
-      return;
-    }
-
-    var headerInner = document.querySelector('.site-header__inner');
-    if (!headerInner) {
       return;
     }
 
@@ -401,18 +414,30 @@
       }
     } catch (e) {}
 
-    // First visit in a non-English locale: set cookie and reload once so translation applies.
-    if (active !== LANG_SOURCE && !readGoogTransCookie()) {
+    // Apply non-English locale once (never loop if cookies are blocked).
+    var reloadGuard = null;
+    try {
+      reloadGuard = sessionStorage.getItem('site-lang-reload');
+    } catch (e) {}
+    if (active !== LANG_SOURCE && !readGoogTransCookie() && reloadGuard !== '1') {
       setGoogTransCookie(active);
+      try {
+        sessionStorage.setItem('site-lang-reload', '1');
+      } catch (e) {}
       location.reload();
       return;
     }
+    try {
+      sessionStorage.removeItem('site-lang-reload');
+    } catch (e) {}
     if (active === LANG_SOURCE && readGoogTransCookie()) {
       setGoogTransCookie(LANG_SOURCE);
     }
 
     var wrap = document.createElement('div');
     wrap.className = 'lang-switcher';
+    wrap.setAttribute('role', 'navigation');
+    wrap.setAttribute('aria-label', 'Website language');
 
     var label = document.createElement('label');
     label.className = 'lang-switcher__label';
@@ -440,15 +465,8 @@
 
     wrap.appendChild(label);
     wrap.appendChild(select);
+    document.body.appendChild(wrap);
 
-    var buyCta = headerInner.querySelector('.header-buy-cta');
-    if (buyCta) {
-      headerInner.insertBefore(wrap, buyCta);
-    } else {
-      headerInner.appendChild(wrap);
-    }
-
-    // Hidden Google Translate host (required for page translation)
     if (!document.getElementById('google_translate_element')) {
       var host = document.createElement('div');
       host.id = 'google_translate_element';
@@ -469,6 +487,14 @@
         },
         'google_translate_element'
       );
+      // Retry until the hidden Google combo exists, then sync.
+      var tries = 0;
+      var timer = setInterval(function () {
+        tries += 1;
+        if (triggerGoogleCombo(active) || tries > 20) {
+          clearInterval(timer);
+        }
+      }, 250);
     };
 
     if (!document.getElementById('google-translate-script')) {
