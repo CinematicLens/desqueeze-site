@@ -178,29 +178,6 @@
   var GEO_LANG_KEY = 'site-geo-lang';
   var GEO_COUNTRY_KEY = 'site-geo-country';
   var LANG_SOURCE = 'en';
-  /* Real SEO locale pages (separate HTML folders). Lang code -> URL folder. */
-  var LOCALE_FOLDERS = {
-    ja: 'ja', ko: 'ko', de: 'de', es: 'es', pt: 'pt', 'zh-CN': 'zh', hi: 'hi', fr: 'fr',
-    it: 'it', nl: 'nl', pl: 'pl', ru: 'ru', uk: 'uk', tr: 'tr', ar: 'ar', th: 'th',
-    vi: 'vi', id: 'id', ms: 'ms', fil: 'fil', sv: 'sv', da: 'da', no: 'no', fi: 'fi',
-    cs: 'cs', ro: 'ro', hu: 'hu', el: 'el', he: 'he', bn: 'bn', ta: 'ta', 'zh-TW': 'zh-tw'
-  };
-  var LOCALIZED_PAGES = {};
-  Object.keys(LOCALE_FOLDERS).forEach(function (lang) {
-    var folder = LOCALE_FOLDERS[lang];
-    LOCALIZED_PAGES[lang] = {
-      '/': '/' + folder + '/',
-      '/index.html': '/' + folder + '/',
-      '/anamorphic.html': '/' + folder + '/anamorphic.html'
-    };
-  });
-  var LOCALE_PATH_RE = /^\/(ja|ko|de|es|pt|zh-tw|zh|hi|fr|it|nl|pl|ru|uk|tr|ar|th|vi|id|ms|fil|sv|da|no|fi|cs|ro|hu|el|he|bn|ta)(\/|$)/;
-  var FOLDER_TO_LANG = {
-    ja: 'ja', ko: 'ko', de: 'de', es: 'es', pt: 'pt', zh: 'zh-CN', 'zh-tw': 'zh-TW',
-    hi: 'hi', fr: 'fr', it: 'it', nl: 'nl', pl: 'pl', ru: 'ru', uk: 'uk', tr: 'tr',
-    ar: 'ar', th: 'th', vi: 'vi', id: 'id', ms: 'ms', fil: 'fil', sv: 'sv', da: 'da',
-    no: 'no', fi: 'fi', cs: 'cs', ro: 'ro', hu: 'hu', el: 'el', he: 'he', bn: 'bn', ta: 'ta'
-  };
   var RTL_LANGS = { ar: 1, fa: 1, he: 1, ur: 1, yi: 1, ps: 1 };
   var WORLD_LANGUAGES = [
     { code: 'en', name: 'English' },
@@ -317,82 +294,6 @@
       return base;
     }
     return LANG_SOURCE;
-  }
-
-  function pageLocale() {
-    var attr = document.body && document.body.getAttribute('data-locale');
-    if (attr) {
-      return normalizeLang(attr);
-    }
-    var path = window.location.pathname || '';
-    var match = path.match(LOCALE_PATH_RE);
-    if (match) {
-      return FOLDER_TO_LANG[match[1]] || match[1];
-    }
-    return null;
-  }
-
-  function normalizePathKey(path) {
-    var p = (path || '/').split('?')[0].split('#')[0];
-    if (!p || p === '/') {
-      return '/';
-    }
-    if (p === '/index' || p === '/index.html') {
-      return '/index.html';
-    }
-    var loc = p.match(/^\/(ja|ko|de|es|pt|zh-tw|zh|hi|fr|it|nl|pl|ru|uk|tr|ar|th|vi|id|ms|fil|sv|da|no|fi|cs|ro|hu|el|he|bn|ta)(?:\/index\.html)?\/?$/);
-    if (loc) {
-      return '/' + loc[1] + '/';
-    }
-    if (p.charAt(p.length - 1) === '/' && p.length > 1) {
-      p = p.slice(0, -1);
-    }
-    return p;
-  }
-
-  function englishPathKey(pathKey) {
-    var p = normalizePathKey(pathKey);
-    var loc = p.match(/^\/(ja|ko|de|es|pt|zh-tw|zh|hi|fr|it|nl|pl|ru|uk|tr|ar|th|vi|id|ms|fil|sv|da|no|fi|cs|ro|hu|el|he|bn|ta)(\/.*)?$/);
-    if (loc) {
-      var rest = loc[2] || '/';
-      if (rest === '/' || rest === '/index.html' || rest === '') {
-        return '/';
-      }
-      return rest;
-    }
-    return p === '/index.html' ? '/' : p;
-  }
-
-  function localizedUrlFor(lang, pathKey) {
-    var map = LOCALIZED_PAGES[lang];
-    if (!map) {
-      return null;
-    }
-    var enKey = englishPathKey(pathKey);
-    if (enKey === '/index.html') {
-      enKey = '/';
-    }
-    if (map[enKey]) {
-      return map[enKey];
-    }
-    if (map['/']) {
-      return map['/'];
-    }
-    return null;
-  }
-
-  function pathsEquivalent(a, b) {
-    function norm(p) {
-      p = normalizePathKey(p);
-      if (p === '/index.html') {
-        return '/';
-      }
-      if (/^\/(ja|ko|de|es|pt|zh-tw|zh|hi|fr|it|nl|pl|ru|uk|tr|ar|th|vi|id|ms|fil|sv|da|no|fi|cs|ro|hu|el|he|bn|ta)\/$/.test(p)) {
-        return p.slice(0, -1);
-      }
-      return p;
-    }
-    return norm(a) === norm(b);
   }
 
   function readGoogTransCookie() {
@@ -616,28 +517,6 @@
         localStorage.setItem(LANG_MANUAL_KEY, '1');
       }
     } catch (e) {}
-
-    var pathKey = normalizePathKey(window.location.pathname || '/');
-
-    // Prefer real SEO pages when they exist (Japan → /ja/...).
-    if (next !== LANG_SOURCE) {
-      var localized = localizedUrlFor(next, pathKey);
-      if (localized && !pathsEquivalent(pathKey, localized)) {
-        setGoogTransCookie(LANG_SOURCE);
-        applyDocumentDirection(next);
-        location.assign(localized);
-        return;
-      }
-    } else {
-      var enPath = englishPathKey(pathKey);
-      if (pageLocale() && !pathsEquivalent(pathKey, enPath === '/' ? '/' : enPath)) {
-        setGoogTransCookie(LANG_SOURCE);
-        applyDocumentDirection(LANG_SOURCE);
-        location.assign(enPath === '/' ? '/' : enPath);
-        return;
-      }
-    }
-
     setGoogTransCookie(next);
     applyDocumentDirection(next);
     if (reload === false) {
@@ -761,35 +640,8 @@
   }
 
   function buildLanguageSwitcher() {
-    var nativeLocale = pageLocale();
-
     resolveAutoLang().then(function (active) {
-      if (nativeLocale) {
-        active = nativeLocale;
-      }
       applyDocumentDirection(active);
-
-      var pathKey = normalizePathKey(window.location.pathname || '/');
-
-      // Auto region (e.g. Japan) → real /ja/ SEO page when available.
-      if (!nativeLocale && active !== LANG_SOURCE) {
-        var localized = localizedUrlFor(active, pathKey);
-        if (localized && !pathsEquivalent(pathKey, localized)) {
-          setGoogTransCookie(LANG_SOURCE);
-          try {
-            sessionStorage.setItem(GEO_LANG_KEY, active);
-          } catch (e) {}
-          location.replace(localized);
-          return;
-        }
-      }
-
-      // Native localized HTML — no Google Translate overlay.
-      if (nativeLocale) {
-        setGoogTransCookie(LANG_SOURCE);
-        mountLanguageSwitcher(active);
-        return;
-      }
 
       var reloadGuard = null;
       try {
