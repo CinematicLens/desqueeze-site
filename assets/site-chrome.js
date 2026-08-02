@@ -538,9 +538,17 @@
     }
 
     var wrap = document.createElement('div');
-    wrap.className = 'lang-switcher';
+    wrap.className = 'lang-switcher lang-switcher--pulse';
     wrap.setAttribute('role', 'navigation');
-    wrap.setAttribute('aria-label', 'Website language');
+    wrap.setAttribute('aria-label', 'Translate this website');
+    wrap.title = 'Translate this website';
+
+    var cue = document.createElement('span');
+    cue.className = 'lang-switcher__cue';
+    cue.setAttribute('aria-hidden', 'true');
+    cue.innerHTML =
+      '<span class="lang-switcher__cursor"></span>' +
+      '<span class="lang-switcher__hint">Translate</span>';
 
     var label = document.createElement('label');
     label.className = 'lang-switcher__label';
@@ -550,7 +558,7 @@
     var select = document.createElement('select');
     select.id = 'site-lang-select';
     select.className = 'lang-switcher__select';
-    select.setAttribute('aria-label', 'Choose website language');
+    select.setAttribute('aria-label', 'Translate website — choose language');
 
     for (var i = 0; i < WORLD_LANGUAGES.length; i++) {
       var opt = document.createElement('option');
@@ -562,10 +570,30 @@
       select.appendChild(opt);
     }
 
+    function markInteracted() {
+      wrap.classList.remove('lang-switcher--pulse');
+      wrap.classList.add('lang-switcher--used');
+      try {
+        sessionStorage.setItem('site-lang-hint-seen', '1');
+      } catch (e) {}
+    }
+
     select.addEventListener('change', function () {
+      markInteracted();
       setLanguage(select.value, true, true);
     });
+    select.addEventListener('focus', markInteracted);
+    select.addEventListener('pointerdown', markInteracted);
+    wrap.addEventListener('pointerdown', markInteracted);
 
+    try {
+      if (sessionStorage.getItem('site-lang-hint-seen') === '1') {
+        wrap.classList.remove('lang-switcher--pulse');
+        wrap.classList.add('lang-switcher--used');
+      }
+    } catch (e) {}
+
+    wrap.appendChild(cue);
     wrap.appendChild(label);
     wrap.appendChild(select);
     document.body.appendChild(wrap);
