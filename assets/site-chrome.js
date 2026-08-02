@@ -177,50 +177,29 @@
   var GEO_LANG_KEY = 'site-geo-lang';
   var GEO_COUNTRY_KEY = 'site-geo-country';
   var LANG_SOURCE = 'en';
-  /* Real SEO locale pages — market priority: JP, KR, DE, ES, PT-BR, ZH, HI, FR. */
-  var LOCALIZED_PAGES = {
-    ja: {
-      '/': '/ja/',
-      '/index.html': '/ja/',
-      '/anamorphic.html': '/ja/anamorphic.html'
-    },
-    ko: {
-      '/': '/ko/',
-      '/index.html': '/ko/',
-      '/anamorphic.html': '/ko/anamorphic.html'
-    },
-    de: {
-      '/': '/de/',
-      '/index.html': '/de/',
-      '/anamorphic.html': '/de/anamorphic.html'
-    },
-    es: {
-      '/': '/es/',
-      '/index.html': '/es/',
-      '/anamorphic.html': '/es/anamorphic.html'
-    },
-    pt: {
-      '/': '/pt/',
-      '/index.html': '/pt/',
-      '/anamorphic.html': '/pt/anamorphic.html'
-    },
-    'zh-CN': {
-      '/': '/zh/',
-      '/index.html': '/zh/',
-      '/anamorphic.html': '/zh/anamorphic.html'
-    },
-    hi: {
-      '/': '/hi/',
-      '/index.html': '/hi/',
-      '/anamorphic.html': '/hi/anamorphic.html'
-    },
-    fr: {
-      '/': '/fr/',
-      '/index.html': '/fr/',
-      '/anamorphic.html': '/fr/anamorphic.html'
-    }
+  /* Real SEO locale pages (separate HTML folders). Lang code -> URL folder. */
+  var LOCALE_FOLDERS = {
+    ja: 'ja', ko: 'ko', de: 'de', es: 'es', pt: 'pt', 'zh-CN': 'zh', hi: 'hi', fr: 'fr',
+    it: 'it', nl: 'nl', pl: 'pl', ru: 'ru', uk: 'uk', tr: 'tr', ar: 'ar', th: 'th',
+    vi: 'vi', id: 'id', ms: 'ms', fil: 'fil', sv: 'sv', da: 'da', no: 'no', fi: 'fi',
+    cs: 'cs', ro: 'ro', hu: 'hu', el: 'el', he: 'he', bn: 'bn', ta: 'ta', 'zh-TW': 'zh-tw'
   };
-  var LOCALE_PATH_RE = /^\/(ja|ko|de|es|pt|zh|hi|fr)(\/|$)/;
+  var LOCALIZED_PAGES = {};
+  Object.keys(LOCALE_FOLDERS).forEach(function (lang) {
+    var folder = LOCALE_FOLDERS[lang];
+    LOCALIZED_PAGES[lang] = {
+      '/': '/' + folder + '/',
+      '/index.html': '/' + folder + '/',
+      '/anamorphic.html': '/' + folder + '/anamorphic.html'
+    };
+  });
+  var LOCALE_PATH_RE = /^\/(ja|ko|de|es|pt|zh-tw|zh|hi|fr|it|nl|pl|ru|uk|tr|ar|th|vi|id|ms|fil|sv|da|no|fi|cs|ro|hu|el|he|bn|ta)(\/|$)/;
+  var FOLDER_TO_LANG = {
+    ja: 'ja', ko: 'ko', de: 'de', es: 'es', pt: 'pt', zh: 'zh-CN', 'zh-tw': 'zh-TW',
+    hi: 'hi', fr: 'fr', it: 'it', nl: 'nl', pl: 'pl', ru: 'ru', uk: 'uk', tr: 'tr',
+    ar: 'ar', th: 'th', vi: 'vi', id: 'id', ms: 'ms', fil: 'fil', sv: 'sv', da: 'da',
+    no: 'no', fi: 'fi', cs: 'cs', ro: 'ro', hu: 'hu', el: 'el', he: 'he', bn: 'bn', ta: 'ta'
+  };
   var RTL_LANGS = { ar: 1, fa: 1, he: 1, ur: 1, yi: 1, ps: 1 };
   var WORLD_LANGUAGES = [
     { code: 'en', name: 'English' },
@@ -347,7 +326,7 @@
     var path = window.location.pathname || '';
     var match = path.match(LOCALE_PATH_RE);
     if (match) {
-      return match[1] === 'zh' ? 'zh-CN' : match[1];
+      return FOLDER_TO_LANG[match[1]] || match[1];
     }
     return null;
   }
@@ -360,7 +339,7 @@
     if (p === '/index' || p === '/index.html') {
       return '/index.html';
     }
-    var loc = p.match(/^\/(ja|ko|de|es|pt|zh|hi|fr)(?:\/index\.html)?\/?$/);
+    var loc = p.match(/^\/(ja|ko|de|es|pt|zh-tw|zh|hi|fr|it|nl|pl|ru|uk|tr|ar|th|vi|id|ms|fil|sv|da|no|fi|cs|ro|hu|el|he|bn|ta)(?:\/index\.html)?\/?$/);
     if (loc) {
       return '/' + loc[1] + '/';
     }
@@ -372,7 +351,7 @@
 
   function englishPathKey(pathKey) {
     var p = normalizePathKey(pathKey);
-    var loc = p.match(/^\/(ja|ko|de|es|pt|zh|hi|fr)(\/.*)?$/);
+    var loc = p.match(/^\/(ja|ko|de|es|pt|zh-tw|zh|hi|fr|it|nl|pl|ru|uk|tr|ar|th|vi|id|ms|fil|sv|da|no|fi|cs|ro|hu|el|he|bn|ta)(\/.*)?$/);
     if (loc) {
       var rest = loc[2] || '/';
       if (rest === '/' || rest === '/index.html' || rest === '') {
@@ -407,7 +386,7 @@
       if (p === '/index.html') {
         return '/';
       }
-      if (/^\/(ja|ko|de|es|pt|zh|hi|fr)\/$/.test(p)) {
+      if (/^\/(ja|ko|de|es|pt|zh-tw|zh|hi|fr|it|nl|pl|ru|uk|tr|ar|th|vi|id|ms|fil|sv|da|no|fi|cs|ro|hu|el|he|bn|ta)\/$/.test(p)) {
         return p.slice(0, -1);
       }
       return p;
