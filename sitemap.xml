@@ -8,18 +8,15 @@
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
     <xhtml:link rel="alternate" hreflang="en-us" href="https://anamorphic-desqueeze.com/"/>
-    <xhtml:link rel="alternate" hreflang="en-ca" href="https://anamorphic-desqueeze.com/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://anamorphic-desqueeze.com/ja/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
-  </url>
-  <url>
-    <loc>https://anamorphic-desqueeze.com/ja/</loc>
-    <lastmod>2026-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.98</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://anamorphic-desqueeze.com/ja/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://anamorphic-desqueeze.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://anamorphic-desqueeze.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://anamorphic-desqueeze.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://anamorphic-desqueeze.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://anamorphic-desqueeze.com/zh/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://anamorphic-desqueeze.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://anamorphic-desqueeze.com/fr/"/>
   </url>
   <url>
     <loc>https://anamorphic-desqueeze.com/index.html</loc>
@@ -34,15 +31,13 @@
     <priority>0.95</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
     <xhtml:link rel="alternate" hreflang="ja" href="https://anamorphic-desqueeze.com/ja/anamorphic.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
-  </url>
-  <url>
-    <loc>https://anamorphic-desqueeze.com/ja/anamorphic.html</loc>
-    <lastmod>2026-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://anamorphic-desqueeze.com/ja/anamorphic.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://anamorphic-desqueeze.com/ko/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://anamorphic-desqueeze.com/de/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://anamorphic-desqueeze.com/es/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://anamorphic-desqueeze.com/pt/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://anamorphic-desqueeze.com/zh/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://anamorphic-desqueeze.com/hi/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://anamorphic-desqueeze.com/fr/anamorphic.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
   </url>
   <url>
@@ -147,4 +142,151 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
+
+  <!-- LOCALE_SEO_START -->
+  <url>
+    <loc>https://anamorphic-desqueeze.com/ja/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.97</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://anamorphic-desqueeze.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/ja/anamorphic.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.94</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://anamorphic-desqueeze.com/ja/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/ko/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.97</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://anamorphic-desqueeze.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/ko/anamorphic.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.94</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://anamorphic-desqueeze.com/ko/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/de/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.97</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://anamorphic-desqueeze.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/de/anamorphic.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.94</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://anamorphic-desqueeze.com/de/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/es/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.97</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://anamorphic-desqueeze.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/es/anamorphic.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.94</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://anamorphic-desqueeze.com/es/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/pt/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.97</priority>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://anamorphic-desqueeze.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/pt/anamorphic.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.94</priority>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://anamorphic-desqueeze.com/pt/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/zh/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.97</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://anamorphic-desqueeze.com/zh/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/zh/anamorphic.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.94</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://anamorphic-desqueeze.com/zh/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/hi/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.97</priority>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://anamorphic-desqueeze.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/hi/anamorphic.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.94</priority>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://anamorphic-desqueeze.com/hi/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/fr/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.97</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://anamorphic-desqueeze.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/"/>
+  </url>
+  <url>
+    <loc>https://anamorphic-desqueeze.com/fr/anamorphic.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.94</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://anamorphic-desqueeze.com/fr/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anamorphic-desqueeze.com/anamorphic.html"/>
+  </url>
+  <!-- LOCALE_SEO_END -->
 </urlset>
