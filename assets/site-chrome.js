@@ -173,6 +173,9 @@
    * Preference is remembered; first visit follows the browser language.
    */
   var LANG_KEY = 'site-lang';
+  var LANG_MANUAL_KEY = 'site-lang-manual';
+  var GEO_LANG_KEY = 'site-geo-lang';
+  var GEO_COUNTRY_KEY = 'site-geo-country';
   var LANG_SOURCE = 'en';
   var RTL_LANGS = { ar: 1, fa: 1, he: 1, ur: 1, yi: 1, ps: 1 };
   var WORLD_LANGUAGES = [
@@ -305,17 +308,15 @@
     }
   }
 
-  function readStoredLang() {
+  function readManualLang() {
     try {
-      var stored = localStorage.getItem(LANG_KEY);
-      if (stored) {
-        return normalizeLang(stored);
+      if (localStorage.getItem(LANG_MANUAL_KEY) === '1') {
+        var stored = localStorage.getItem(LANG_KEY);
+        if (stored) {
+          return normalizeLang(stored);
+        }
       }
     } catch (e) {}
-    var fromCookie = readGoogTransCookie();
-    if (fromCookie) {
-      return normalizeLang(fromCookie);
-    }
     return null;
   }
 
@@ -333,6 +334,133 @@
       }
     }
     return LANG_SOURCE;
+  }
+
+  /* Country → language (region auto). Example: Japan (JP) → Japanese (ja). */
+  var COUNTRY_LANG = {
+    JP: 'ja', KR: 'ko', CN: 'zh-CN', TW: 'zh-TW', HK: 'zh-TW', MO: 'zh-TW',
+    ES: 'es', MX: 'es', AR: 'es', CO: 'es', CL: 'es', PE: 'es', VE: 'es',
+    EC: 'es', GT: 'es', CU: 'es', BO: 'es', DO: 'es', HN: 'es', PY: 'es',
+    SV: 'es', NI: 'es', CR: 'es', PA: 'es', UY: 'es', PR: 'es',
+    FR: 'fr', MC: 'fr', SN: 'fr', CI: 'fr', ML: 'fr', MG: 'fr', CD: 'fr',
+    CM: 'fr', HT: 'fr',
+    DE: 'de', AT: 'de', LI: 'de',
+    PT: 'pt', BR: 'pt', AO: 'pt', MZ: 'pt',
+    IT: 'it', SM: 'it', VA: 'it',
+    NL: 'nl',
+    PL: 'pl',
+    RU: 'ru',
+    UA: 'uk',
+    TR: 'tr',
+    SA: 'ar', AE: 'ar', EG: 'ar', IQ: 'ar', JO: 'ar', KW: 'ar', LB: 'ar',
+    MA: 'ar', OM: 'ar', QA: 'ar', TN: 'ar', BH: 'ar', DZ: 'ar', LY: 'ar',
+    SY: 'ar', YE: 'ar', SD: 'ar',
+    IL: 'he',
+    IN: 'hi',
+    BD: 'bn',
+    LK: 'si',
+    NP: 'ne',
+    PK: 'ur',
+    TH: 'th',
+    VN: 'vi',
+    ID: 'id',
+    MY: 'ms',
+    PH: 'fil',
+    SE: 'sv',
+    DK: 'da',
+    NO: 'no',
+    FI: 'fi',
+    CZ: 'cs',
+    SK: 'sk',
+    RO: 'ro',
+    HU: 'hu',
+    GR: 'el',
+    BG: 'bg',
+    HR: 'hr',
+    RS: 'sr',
+    SI: 'sl',
+    LT: 'lt',
+    LV: 'lv',
+    EE: 'et',
+    IS: 'is',
+    IE: 'ga',
+    GE: 'ka',
+    AM: 'hy',
+    AZ: 'az',
+    KZ: 'kk',
+    UZ: 'uz',
+    MN: 'mn',
+    IR: 'fa',
+    AF: 'fa',
+    ET: 'am',
+    KE: 'sw',
+    TZ: 'sw',
+    ZA: 'af',
+    MM: 'my',
+    KH: 'km',
+    LA: 'lo',
+    AL: 'sq',
+    MK: 'mk',
+    BA: 'bs',
+    BY: 'be',
+    MT: 'mt',
+    CY: 'el'
+  };
+
+  function langFromCountry(countryCode) {
+    if (!countryCode) {
+      return null;
+    }
+    var mapped = COUNTRY_LANG[String(countryCode).toUpperCase()];
+    return mapped && langSupported(mapped) ? mapped : null;
+  }
+
+  function fetchRegionLang() {
+    try {
+      var cached = sessionStorage.getItem(GEO_LANG_KEY);
+      if (cached) {
+        return Promise.resolve(normalizeLang(cached));
+      }
+      var cachedCountry = sessionStorage.getItem(GEO_COUNTRY_KEY);
+      if (cachedCountry) {
+        var fromCache = langFromCountry(cachedCountry);
+        if (fromCache) {
+          sessionStorage.setItem(GEO_LANG_KEY, fromCache);
+          return Promise.resolve(fromCache);
+        }
+      }
+    } catch (e) {}
+
+    // Lightweight country lookup (no API key). Japan → JP → ja, etc.
+    return fetch('https://get.geojs.io/v1/ip/country.json', { credentials: 'omit' })
+      .then(function (res) {
+        if (!res.ok) {
+          throw new Error('geo failed');
+        }
+        return res.json();
+      })
+      .then(function (data) {
+        var country = (data && (data.country || data.country_code)) || '';
+        try {
+          sessionStorage.setItem(GEO_COUNTRY_KEY, String(country).toUpperCase());
+        } catch (e) {}
+        var lang = langFromCountry(country) || detectBrowserLang();
+        try {
+          sessionStorage.setItem(GEO_LANG_KEY, lang);
+        } catch (e) {}
+        return lang;
+      })
+      .catch(function () {
+        return detectBrowserLang();
+      });
+  }
+
+  function resolveAutoLang() {
+    var manual = readManualLang();
+    if (manual) {
+      return Promise.resolve(manual);
+    }
+    return fetchRegionLang();
   }
 
   function setGoogTransCookie(lang) {
@@ -366,10 +494,6 @@
     document.documentElement.setAttribute('lang', lang === LANG_SOURCE ? 'en' : lang);
   }
 
-  function currentLang() {
-    return readStoredLang() || detectBrowserLang();
-  }
-
   function triggerGoogleCombo(lang) {
     var combo = document.querySelector('.goog-te-combo');
     if (!(combo instanceof HTMLSelectElement)) {
@@ -384,10 +508,13 @@
     return true;
   }
 
-  function setLanguage(lang, reload) {
+  function setLanguage(lang, reload, manual) {
     var next = normalizeLang(lang);
     try {
       localStorage.setItem(LANG_KEY, next);
+      if (manual) {
+        localStorage.setItem(LANG_MANUAL_KEY, '1');
+      }
     } catch (e) {}
     setGoogTransCookie(next);
     applyDocumentDirection(next);
@@ -401,37 +528,13 @@
     location.reload();
   }
 
-  function buildLanguageSwitcher() {
+  function mountLanguageSwitcher(active) {
     if (document.querySelector('.lang-switcher')) {
-      return;
-    }
-
-    var active = currentLang();
-    applyDocumentDirection(active);
-    try {
-      if (!localStorage.getItem(LANG_KEY)) {
-        localStorage.setItem(LANG_KEY, active);
+      var existing = document.getElementById('site-lang-select');
+      if (existing) {
+        existing.value = active;
       }
-    } catch (e) {}
-
-    // Apply non-English locale once (never loop if cookies are blocked).
-    var reloadGuard = null;
-    try {
-      reloadGuard = sessionStorage.getItem('site-lang-reload');
-    } catch (e) {}
-    if (active !== LANG_SOURCE && !readGoogTransCookie() && reloadGuard !== '1') {
-      setGoogTransCookie(active);
-      try {
-        sessionStorage.setItem('site-lang-reload', '1');
-      } catch (e) {}
-      location.reload();
       return;
-    }
-    try {
-      sessionStorage.removeItem('site-lang-reload');
-    } catch (e) {}
-    if (active === LANG_SOURCE && readGoogTransCookie()) {
-      setGoogTransCookie(LANG_SOURCE);
     }
 
     var wrap = document.createElement('div');
@@ -460,13 +563,15 @@
     }
 
     select.addEventListener('change', function () {
-      setLanguage(select.value, true);
+      setLanguage(select.value, true, true);
     });
 
     wrap.appendChild(label);
     wrap.appendChild(select);
     document.body.appendChild(wrap);
+  }
 
+  function loadGoogleTranslate(active) {
     if (!document.getElementById('google_translate_element')) {
       var host = document.createElement('div');
       host.id = 'google_translate_element';
@@ -487,7 +592,6 @@
         },
         'google_translate_element'
       );
-      // Retry until the hidden Google combo exists, then sync.
       var tries = 0;
       var timer = setInterval(function () {
         tries += 1;
@@ -504,6 +608,37 @@
       script.async = true;
       document.body.appendChild(script);
     }
+  }
+
+  function buildLanguageSwitcher() {
+    resolveAutoLang().then(function (active) {
+      applyDocumentDirection(active);
+
+      var reloadGuard = null;
+      try {
+        reloadGuard = sessionStorage.getItem('site-lang-reload');
+      } catch (e) {}
+
+      if (active !== LANG_SOURCE && !readGoogTransCookie() && reloadGuard !== '1') {
+        setGoogTransCookie(active);
+        try {
+          sessionStorage.setItem('site-lang-reload', '1');
+          sessionStorage.setItem(GEO_LANG_KEY, active);
+        } catch (e) {}
+        location.reload();
+        return;
+      }
+      try {
+        sessionStorage.removeItem('site-lang-reload');
+      } catch (e) {}
+
+      if (active === LANG_SOURCE && readGoogTransCookie()) {
+        setGoogTransCookie(LANG_SOURCE);
+      }
+
+      mountLanguageSwitcher(active);
+      loadGoogleTranslate(active);
+    });
   }
 
   function onDomReady() {
