@@ -116,13 +116,13 @@
     { id: 'filmmaking', label: 'Filmmaking', href: '/index.html#filmstudio' },
     { id: 'anamorphic', label: 'Anamorphic Flow', href: '/anamorphic.html' },
     { id: 'cinema-monitor', label: 'CineMonitors', href: '/cinema-monitors.html' },
-    { id: 'livegrade', label: 'LiveGrade', href: '/cinelutlivegrade.html', title: 'LiveGrade · DIT · Dailies' },
     { id: 'get-apps', label: 'Get apps', href: '/get-apps.html' },
     { id: 'utilities', label: 'Utilities', href: '/mediautility.html' },
     { id: 'organize', label: 'Organize', href: '/document-management-system.html' },
     { id: 'photos', label: 'Photos', href: '/photo-editing.html', title: 'Photo Editing' },
     { id: 'win-anamorphic', label: 'WindowsAnamorphic', href: '/windows-tools.html' },
-    { id: 'guides', label: 'Guides', href: '/guides.html' }
+    { id: 'guides', label: 'Guides', href: '/guides.html' },
+    { id: 'livegrade', label: 'LiveGrade', href: '/cinelutlivegrade.html', title: 'LiveGrade · DIT · Dailies' }
   ];
 
   var NAV_ACTIVE_BY_PATH = {
