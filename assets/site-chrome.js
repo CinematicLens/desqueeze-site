@@ -121,7 +121,7 @@
     { id: 'utilities', label: 'Utilities', href: '/mediautility.html' },
     { id: 'organize', label: 'Organize', href: '/document-management-system.html' },
     { id: 'photos', label: 'Photos', href: '/photo-editing.html', title: 'Photo Editing' },
-    { id: 'win-anamorphic', label: 'WindowAnamorphic', href: '/windows-tools.html' },
+    { id: 'win-anamorphic', label: 'WindowsAnamorphic', href: '/windows-tools.html' },
     { id: 'guides', label: 'Guides', href: '/guides.html' }
   ];
 
