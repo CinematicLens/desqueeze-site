@@ -88,11 +88,26 @@
     '/get-apps.html'
   ];
 
-  function shouldShowAnamorphicPromo() {
-    var path = (window.location.pathname || '').replace(/\/$/, '') || '/index.html';
-    if (path === '/' || path === '/index') {
-      path = '/index.html';
+  function normalizePromoPath(raw) {
+    var path = (raw || '/').split('?')[0].split('#')[0];
+    if (!path || path === '/') {
+      return '/index.html';
     }
+    path = path.replace(/\/$/, '');
+    if (path === '/index') {
+      return '/index.html';
+    }
+    if (path.indexOf('.') === -1) {
+      path = path + '.html';
+    }
+    return path;
+  }
+
+  function shouldShowAnamorphicPromo() {
+    if (document.body && document.body.getAttribute('data-no-anamorphic-promo') === 'true') {
+      return false;
+    }
+    var path = normalizePromoPath(window.location.pathname);
     return ANAMORPHIC_PROMO_SKIP_PAGES.indexOf(path) === -1;
   }
 
