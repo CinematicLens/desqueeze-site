@@ -742,6 +742,48 @@ progress.hidden { display: none; }
   background: rgba(241, 245, 249, 0.92);
 }
 
+/* Combined field monitors page — full uncropped iPad screenshots at top */
+.monitor-showcase {
+  max-width: 1200px;
+  margin: 0 auto 2.25rem;
+  padding: 0 1.5rem;
+}
+.monitor-showcase__title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.02em;
+}
+.monitor-showcase__sub {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+}
+.monitor-showcase__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+@media (max-width: 768px) {
+  .monitor-showcase__grid {
+    grid-template-columns: 1fr;
+  }
+}
+.monitor-showcase .app-ui-card__media {
+  padding: 0.65rem;
+  background: #080c12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.monitor-showcase .app-ui-card img {
+  width: 100%;
+  max-width: 100%;
+  max-height: none;
+  height: auto;
+  object-fit: contain;
+}
+
 /* ----- Shared site chrome (all pages) ----- */
 .site-header {
   position: sticky;
@@ -755,12 +797,11 @@ progress.hidden { display: none; }
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
-  gap: 16px 24px;
+  gap: 12px 20px;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  row-gap: 10px;
-  padding: 16px 1.5rem;
+  flex-wrap: nowrap;
+  padding: 14px 1.25rem;
 }
 @media (min-width: 1280px) {
   .site-header__inner {
@@ -801,18 +842,26 @@ progress.hidden { display: none; }
 }
 .nav {
   display: flex;
-  gap: 12px 18px;
+  gap: 8px 12px;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   flex: 1 1 auto;
   justify-content: flex-end;
   min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar {
+  display: none;
 }
 .nav a {
   color: var(--muted);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
   font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: color 0.2s;
 }
 .nav a:hover {
@@ -839,25 +888,29 @@ progress.hidden { display: none; }
 }
 @media (max-width: 1100px) {
   .site-header__inner {
-    padding: 12px 1.5rem;
-    align-items: flex-start;
+    padding: 12px 1rem;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 12px;
   }
   .brand {
-    flex: 1 1 auto;
+    flex: 0 1 auto;
+    min-width: 0;
+    font-size: 0.95rem;
   }
   .nav {
-    flex: 1 1 100%;
-    justify-content: flex-start;
-    order: 2;
-    gap: 10px 14px;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    min-width: 0;
+    gap: 8px 10px;
   }
   .nav a {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
   }
   .header-buy-cta {
-    width: 100%;
-    margin-top: 4px;
-    order: 3;
+    flex-shrink: 0;
+    padding: 7px 12px;
+    font-size: 0.78rem;
   }
 }
 

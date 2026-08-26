@@ -56,7 +56,42 @@
     "author": { "@type": "Organization", "name": "DeSqueeze Studio" }
   }
   </script>
-  <link rel="stylesheet" href="./style.css?v=44" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to use CineMonitor on iPad",
+    "description": "Connect a camera HDMI feed through a UVC capture card to USB-C iPad Pro or iPad Air and monitor live with scopes, LUTs, and focus tools in HDMI Monitor - Cine.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Gather hardware",
+        "text": "Use an iPad Pro or iPad Air with USB-C and iPadOS 17+. Connect the camera HDMI out to a UVC-compatible HDMI capture device, then plug the capture device into the iPad with USB-C. Use a powered hub or capture card with pass-through power if the card needs extra current."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Install and open the app",
+        "text": "Install HDMI Monitor - Cine (CineMonitor) from the App Store. Mount the iPad in landscape, connect the capture card, then open the app. Allow camera or external video access if iPadOS prompts you."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Confirm the live feed",
+        "text": "Select the external UVC input when it appears. Check the resolution and frame-rate readout, audio meters, and that the preview reconnects after hot-plugging the cable."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Monitor exposure and focus",
+        "text": "Turn on waveform, histogram, RGB parade, or vectorscope overlays. Add zebra, false color, and focus peaking. Use the 1×, 2×, or 4× zoom loupe to check critical focus on the live feed."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Apply LUTs and framelines",
+        "text": "Import industry-standard .cube 3D LUTs, adjust LUT intensity, and use instant A/B bypass to compare graded vs clean preview. Enable 1.85:1, 2.39:1, or custom composition guides for framing on set."
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="./style.css?v=46" />
 </head>
 <body class="product-skin product-skin--ios" data-no-anamorphic-promo="true">
   <header class="site-header">
@@ -64,18 +99,7 @@
       <a href="/" class="brand">
         <span>DeSqueeze Studio</span>
       </a>
-      <nav class="nav">
-        <a href="/index.html#filmstudio">Filmmaking</a>
-        <a href="/cinema-monitors.html">Cinema Monitor</a>
-        <a href="/index.html#anamorphic-flow">Anamorphic Flow</a>
-        <a href="/cinelutlivegrade.html">LiveGrade · DIT · Dailies</a>
-        <a href="/mediautility.html">Utilities</a>
-        <a href="/document-management-system.html">Organize</a>
-        <a href="/photo-editing.html">Photo Editing</a>
-        <a href="/windows-tools.html">WindowAnamorphic</a>
-        <a href="/cinemonitor.html" aria-current="page">CineMonitor</a>
-        <a href="/guides.html">Guides</a>
-      </nav>
+      <nav class="nav" aria-label="Main"></nav>
     </div>
   </header>
 
@@ -104,8 +128,9 @@
       </dl>
       <div class="product-hero__ctas">
         <a class="product-cta product-cta--primary" href="https://apps.apple.com/in/app/hdmi-monitor-cine/id6799375966" target="_blank" rel="noopener">Download on App Store</a>
+        <a class="product-cta" href="#how-to-use-ipad">How to use on iPad</a>
         <a class="product-cta" href="/index.html#cinemonitor">View on filmmaker hub</a>
-        <a class="product-cta" href="/virtual-monitors.html">Virtual Monitors overview</a>
+        <a class="product-cta" href="/cinema-monitors.html#monitor-showcase">Cinema Monitors (iPad + Android)</a>
       </div>
     </header>
 
@@ -122,19 +147,14 @@
         <p class="note">Requires a compatible HDMI/UVC capture device. Designed for landscape iPad Pro and iPad Air with USB-C. General-purpose monitor — no anamorphic desqueeze (see <a href="/cinema-monitors.html">Cinema Monitor on Android</a> or <a href="/anamorphic-desqueeze-iphone.html">Anamorphic Desqueezer</a> for desqueeze workflows).</p>
       </section>
 
+      <section class="product-panel" id="how-to-use-ipad" aria-labelledby="cinemonitor-howto-heading">
+        <h2 id="cinemonitor-howto-heading">How to use on iPad</h2>
+        <p>Step-by-step setup (connect capture card, scopes, LUTs, framing) lives on the combined monitor page:</p>
+        <p><a class="product-cta product-cta--primary" href="/cinema-monitors.html#how-to-ipad">How to use HDMI Monitor - Cine on iPad →</a></p>
+      </section>
+
       <div class="app-ui-section" style="margin-top: 0; padding: 0;" aria-label="CineMonitor app screenshots">
-        <h2 class="app-ui-section__title">App screenshots</h2>
-        <p class="app-ui-section__sub">Scopes and LUT library from the App Store listing.</p>
-        <div class="app-ui-grid">
-          <figure class="app-ui-card">
-            <img src="/assets/hdmi-monitor-cine/hdmi-monitor-cine-scopes.jpg" width="1242" height="2688" alt="CineMonitor on iPad — color scopes, waveform, and live HDMI preview" loading="lazy" decoding="async" />
-            <figcaption class="app-ui-card__label">Color scopes &amp; live preview</figcaption>
-          </figure>
-          <figure class="app-ui-card">
-            <img src="/assets/hdmi-monitor-cine/hdmi-monitor-cine-lut.jpg" width="1242" height="2688" alt="CineMonitor on iPad — LUT library with .cube import" loading="lazy" decoding="async" />
-            <figcaption class="app-ui-card__label">LUT library (.cube import)</figcaption>
-          </figure>
-        </div>
+        <p class="app-ui-section__sub">Full App Store screenshots and combined Android + iPad guide: <a href="/cinema-monitors.html#monitor-showcase">Cinema Monitors overview</a>.</p>
       </div>
 
       <section class="product-panel">
@@ -167,6 +187,6 @@
     </div>
   </footer>
   <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
-  <script src="/assets/site-chrome.js?v=20"></script>
+  <script src="/assets/site-chrome.js?v=23"></script>
 </body>
 </html>

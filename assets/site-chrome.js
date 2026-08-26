@@ -111,6 +111,82 @@
     return ANAMORPHIC_PROMO_SKIP_PAGES.indexOf(path) === -1;
   }
 
+  /* -------- Site-wide main nav (single source of truth) -------- */
+  var SITE_NAV = [
+    { id: 'filmmaking', label: 'Filmmaking', href: '/index.html#filmstudio' },
+    { id: 'anamorphic', label: 'Anamorphic Flow', href: '/anamorphic.html' },
+    { id: 'cinema-monitor', label: 'Cinema Monitor', href: '/cinema-monitors.html' },
+    { id: 'cinemonitor', label: 'CineMonitor', href: '/cinema-monitors.html#ipad-hdmi-monitor-cine' },
+    { id: 'livegrade', label: 'LiveGrade', href: '/cinelutlivegrade.html', title: 'LiveGrade · DIT · Dailies' },
+    { id: 'get-apps', label: 'Get apps', href: '/get-apps.html' },
+    { id: 'utilities', label: 'Utilities', href: '/mediautility.html' },
+    { id: 'organize', label: 'Organize', href: '/document-management-system.html' },
+    { id: 'photos', label: 'Photos', href: '/photo-editing.html', title: 'Photo Editing' },
+    { id: 'win-anamorphic', label: 'WindowAnamorphic', href: '/windows-tools.html' },
+    { id: 'guides', label: 'Guides', href: '/guides.html' }
+  ];
+
+  var NAV_ACTIVE_BY_PATH = {
+    '/index.html': 'filmmaking',
+    '/filmstudio.html': 'filmmaking',
+    '/cinema-monitors.html': 'cinema-monitor',
+    '/virtual-monitors.html': 'cinema-monitor',
+    '/cinemonitor.html': 'cinemonitor',
+    '/anamorphic.html': 'anamorphic',
+    '/anamorphic-desqueeze-iphone.html': 'anamorphic',
+    '/moment-anamorphic-desqueeze.html': 'anamorphic',
+    '/sirui-anamorphic-desqueeze.html': 'anamorphic',
+    '/cinemascope-export-online.html': 'anamorphic',
+    '/get-apps.html': 'get-apps',
+    '/cinelutlivegrade.html': 'livegrade',
+    '/mediautility.html': 'utilities',
+    '/document-management-system.html': 'organize',
+    '/photo-editing.html': 'photos',
+    '/windows-tools.html': 'win-anamorphic',
+    '/guides.html': 'guides',
+    '/how-to-desqueeze-1-33x.html': 'guides'
+  };
+
+  function resolveActiveNavId() {
+    var path = normalizePromoPath(window.location.pathname);
+    var hash = (window.location.hash || '').replace(/^#/, '');
+    if (path === '/cinema-monitors.html' && (hash === 'ipad-hdmi-monitor-cine' || hash === 'how-to-ipad' || hash === 'monitor-showcase')) {
+      return 'cinemonitor';
+    }
+    if (path === '/cinema-monitors.html' && (hash === 'cinema-monitor-android' || hash === 'how-to-android')) {
+      return 'cinema-monitor';
+    }
+    if (Object.prototype.hasOwnProperty.call(NAV_ACTIVE_BY_PATH, path)) {
+      return NAV_ACTIVE_BY_PATH[path];
+    }
+    return null;
+  }
+
+  function buildSiteNav() {
+    var nav = document.querySelector('.site-header .nav');
+    if (!nav) {
+      return;
+    }
+    var activeId = resolveActiveNavId();
+    nav.setAttribute('aria-label', 'Main');
+    while (nav.firstChild) {
+      nav.removeChild(nav.firstChild);
+    }
+    for (var i = 0; i < SITE_NAV.length; i++) {
+      var item = SITE_NAV[i];
+      var link = document.createElement('a');
+      link.href = item.href;
+      link.textContent = item.label;
+      if (item.title) {
+        link.setAttribute('title', item.title);
+      }
+      if (item.id === activeId) {
+        link.setAttribute('aria-current', 'page');
+      }
+      nav.appendChild(link);
+    }
+  }
+
   function buildAnamorphicPromoBanner() {
     if (!shouldShowAnamorphicPromo()) {
       return;
@@ -687,6 +763,7 @@
   }
 
   function onDomReady() {
+    buildSiteNav();
     buildAnamorphicPromoBanner();
     buildLanguageSwitcher();
     buildThemeToggle();
