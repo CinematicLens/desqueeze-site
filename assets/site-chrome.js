@@ -116,7 +116,6 @@
     { id: 'filmmaking', label: 'Filmmaking', href: '/index.html#filmstudio' },
     { id: 'anamorphic', label: 'Anamorphic Flow', href: '/anamorphic.html' },
     { id: 'cinema-monitor', label: 'Cinema Monitor', href: '/cinema-monitors.html' },
-    { id: 'cinemonitor', label: 'CineMonitor', href: '/cinema-monitors.html#ipad-hdmi-monitor-cine' },
     { id: 'livegrade', label: 'LiveGrade', href: '/cinelutlivegrade.html', title: 'LiveGrade · DIT · Dailies' },
     { id: 'get-apps', label: 'Get apps', href: '/get-apps.html' },
     { id: 'utilities', label: 'Utilities', href: '/mediautility.html' },
@@ -131,7 +130,7 @@
     '/filmstudio.html': 'filmmaking',
     '/cinema-monitors.html': 'cinema-monitor',
     '/virtual-monitors.html': 'cinema-monitor',
-    '/cinemonitor.html': 'cinemonitor',
+    '/cinemonitor.html': 'cinema-monitor',
     '/anamorphic.html': 'anamorphic',
     '/anamorphic-desqueeze-iphone.html': 'anamorphic',
     '/moment-anamorphic-desqueeze.html': 'anamorphic',
@@ -149,13 +148,6 @@
 
   function resolveActiveNavId() {
     var path = normalizePromoPath(window.location.pathname);
-    var hash = (window.location.hash || '').replace(/^#/, '');
-    if (path === '/cinema-monitors.html' && (hash === 'ipad-hdmi-monitor-cine' || hash === 'how-to-ipad' || hash === 'monitor-showcase')) {
-      return 'cinemonitor';
-    }
-    if (path === '/cinema-monitors.html' && (hash === 'cinema-monitor-android' || hash === 'how-to-android')) {
-      return 'cinema-monitor';
-    }
     if (Object.prototype.hasOwnProperty.call(NAV_ACTIVE_BY_PATH, path)) {
       return NAV_ACTIVE_BY_PATH[path];
     }

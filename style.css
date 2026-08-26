@@ -783,6 +783,17 @@ progress.hidden { display: none; }
   height: auto;
   object-fit: contain;
 }
+.monitor-showcase__grid--single {
+  grid-template-columns: minmax(0, 420px);
+  justify-content: center;
+}
+.hub-hero__visual > img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
 
 /* ----- Shared site chrome (all pages) ----- */
 .site-header {
