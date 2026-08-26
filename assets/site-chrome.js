@@ -115,7 +115,7 @@
   var SITE_NAV = [
     { id: 'filmmaking', label: 'Filmmaking', href: '/index.html#filmstudio' },
     { id: 'anamorphic', label: 'Anamorphic Flow', href: '/anamorphic.html' },
-    { id: 'cinema-monitor', label: 'Cinema Monitor', href: '/cinema-monitors.html' },
+    { id: 'cinema-monitor', label: 'CineMonitors', href: '/cinema-monitors.html' },
     { id: 'livegrade', label: 'LiveGrade', href: '/cinelutlivegrade.html', title: 'LiveGrade · DIT · Dailies' },
     { id: 'get-apps', label: 'Get apps', href: '/get-apps.html' },
     { id: 'utilities', label: 'Utilities', href: '/mediautility.html' },
