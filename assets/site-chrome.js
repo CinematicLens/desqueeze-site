@@ -84,6 +84,7 @@
     '/windows-tools.html',
     '/cinema-monitors.html',
     '/virtual-monitors.html',
+    '/cinemonitor.html',
     '/get-apps.html'
   ];
 
