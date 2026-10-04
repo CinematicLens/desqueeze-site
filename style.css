@@ -1693,14 +1693,60 @@ progress.hidden { display: none; }
 .hub-hero a:hover {
   color: #bae6fd !important;
 }
+.hub-hero__lead {
+  margin: 0.65rem 0 0;
+  max-width: 52ch;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: rgba(226, 232, 240, 0.94);
+}
 .hub-hero__tools {
   margin-top: 1.05rem;
   display: flex;
   flex-direction: column;
   gap: 0.95rem;
 }
+.hub-hero__tools--secondary {
+  margin-top: 0.55rem;
+  gap: 0.65rem;
+}
+.hub-hero__secondary-heading {
+  margin: 1.35rem 0 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.95);
+}
 .hub-hero__tool {
   margin: 0;
+}
+.hub-hero__tool--primary {
+  margin-top: 1rem;
+  padding: 1rem 1.05rem;
+  border-radius: 14px;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  background: linear-gradient(165deg, rgba(8, 14, 22, 0.92), rgba(56, 189, 248, 0.1));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+}
+.hub-hero__tool--compact .hub-hero__tool-title {
+  font-size: 0.88rem;
+}
+.hub-hero__tool--compact .hub-hero__tool-body {
+  font-size: 0.84rem;
+  line-height: 1.48;
+}
+.hub-hero__tool-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+.hub-hero__buy {
+  font-weight: 700;
+  color: #7dd3fc !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 .hub-hero__tool-title {
   margin: 0 0 0.35rem;
@@ -2369,6 +2415,14 @@ progress.hidden { display: none; }
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
+}
+.sell-band--primary .sell-band__inner {
+  border-color: rgba(56, 189, 248, 0.55);
+  background: linear-gradient(160deg, rgba(10, 16, 24, 0.98), rgba(56, 189, 248, 0.12));
+}
+.sell-band--set-apps .sell-band__inner {
+  border-color: rgba(245, 158, 11, 0.35);
+  background: linear-gradient(160deg, rgba(14, 12, 10, 0.95), rgba(245, 158, 11, 0.07));
 }
 .guide-install-cta {
   margin: 1.25rem 0;
