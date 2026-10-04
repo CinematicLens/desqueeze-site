@@ -85,7 +85,13 @@
     '/cinema-monitors.html',
     '/virtual-monitors.html',
     '/cinemonitor.html',
-    '/get-apps.html'
+    '/get-apps.html',
+    '/guides.html',
+    '/how-to-desqueeze-1-33x.html',
+    '/anamorphic-desqueeze-iphone.html',
+    '/moment-anamorphic-desqueeze.html',
+    '/sirui-anamorphic-desqueeze.html',
+    '/cinemascope-export-online.html'
   ];
 
   function normalizePromoPath(raw) {
