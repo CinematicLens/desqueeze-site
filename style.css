@@ -11,6 +11,38 @@
   --accent-soft: rgba(0, 188, 212, 0.12);
   --border: rgba(11, 15, 20, 0.14);
   --danger: #f87171;
+  --link: #0e7490;
+  --link-hover: #155e75;
+  --link-underline: rgba(14, 116, 144, 0.38);
+}
+
+/* Inline prose links — component buttons/nav keep their own colors */
+a.prose-link,
+.product-body p a:not(.product-cta):not(.b2b-cta):not(.flagship-cta),
+.product-panel p a:not(.product-cta),
+.product-card__body a,
+.anamorphic-flow-strip__lede a,
+.workflow-strip__text a,
+.hero-cta-note a,
+.sub a:not(.btn),
+section.seo-copy a {
+  color: var(--link);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--link-underline);
+  text-underline-offset: 2px;
+}
+a.prose-link:hover,
+.product-body p a:not(.product-cta):not(.b2b-cta):not(.flagship-cta):hover,
+.product-panel p a:not(.product-cta):hover,
+.product-card__body a:hover,
+.anamorphic-flow-strip__lede a:hover,
+.workflow-strip__text a:hover,
+.hero-cta-note a:hover,
+.sub a:not(.btn):hover,
+section.seo-copy a:hover {
+  color: var(--link-hover);
+  text-decoration-color: rgba(14, 116, 144, 0.55);
 }
 
 html {
@@ -342,14 +374,6 @@ progress.hidden { display: none; }
 .anamorphic-flow-strip__lede:last-child {
   margin-bottom: 0;
 }
-.anamorphic-flow-strip__lede a {
-  font-weight: 700;
-  color: #0e7490;
-  text-decoration: none;
-}
-.anamorphic-flow-strip__lede a:hover {
-  text-decoration: underline;
-}
 
 /* Product strip + cards */
 
@@ -416,13 +440,14 @@ progress.hidden { display: none; }
   color: rgba(148, 163, 184, 0.95);
 }
 .product-card__tag a {
-  color: #0e7490;
-  font-weight: 700;
+  color: var(--link);
+  font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: none;
   text-decoration: none;
 }
 .product-card__tag a:hover {
+  color: var(--link-hover);
   text-decoration: underline;
 }
 
@@ -1567,11 +1592,12 @@ progress.hidden { display: none; }
   border-top: 1px solid rgba(56, 189, 248, 0.18);
 }
 .hub-hero__visual-caption a {
-  color: #7dd3fc !important;
+  color: rgba(203, 213, 225, 0.88) !important;
   text-decoration: none !important;
+  font-weight: 600;
 }
 .hub-hero__visual-caption a:hover {
-  color: #bae6fd !important;
+  color: #f1f5f9 !important;
 }
 @media (max-width: 900px) {
   .hub-hero__inner--split {
@@ -1674,24 +1700,26 @@ progress.hidden { display: none; }
 
 .hub-hero h1 {
   margin: 0;
-  font-size: clamp(1.08rem, 2.4vw, 1.52rem);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.28;
+  font-size: clamp(1.65rem, 3.8vw, 2.35rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
   color: #f8fafc;
   max-width: min(46rem, 100%);
 }
 .hub-hero .product-hero__eyebrow {
   opacity: 0.95;
 }
-.hub-hero a {
-  color: #7dd3fc !important;
-  font-weight: 700;
+.hub-hero__tool-body a:not(.product-cta) {
+  color: rgba(186, 201, 220, 0.95);
+  font-weight: 500;
   text-decoration: underline;
+  text-decoration-color: rgba(148, 163, 184, 0.42);
   text-underline-offset: 2px;
 }
-.hub-hero a:hover {
-  color: #bae6fd !important;
+.hub-hero__tool-body a:not(.product-cta):hover {
+  color: #f1f5f9;
+  text-decoration-color: rgba(226, 232, 240, 0.45);
 }
 .hub-hero__lead {
   margin: 0.65rem 0 0;
@@ -1743,10 +1771,15 @@ progress.hidden { display: none; }
   margin-top: 0.85rem;
 }
 .hub-hero__buy {
-  font-weight: 700;
-  color: #7dd3fc !important;
+  font-weight: 600;
+  color: rgba(186, 230, 253, 0.92) !important;
   text-decoration: underline;
+  text-decoration-color: rgba(56, 189, 248, 0.35);
   text-underline-offset: 2px;
+}
+.hub-hero__buy:hover {
+  color: #f0f9ff !important;
+  text-decoration-color: rgba(186, 230, 253, 0.55);
 }
 .hub-hero__tool-title {
   margin: 0 0 0.35rem;
@@ -1792,6 +1825,17 @@ progress.hidden { display: none; }
   line-height: 1.55;
   color: rgba(148, 163, 184, 0.96);
   max-width: 68ch;
+}
+.hub-hero__skips a {
+  color: rgba(148, 163, 184, 0.95);
+  font-weight: 500;
+  text-decoration: none;
+}
+.hub-hero__skips a:hover {
+  color: #e2e8f0;
+  text-decoration: underline;
+  text-decoration-color: rgba(148, 163, 184, 0.5);
+  text-underline-offset: 2px;
 }
 
 /* CineLut: dark hero inside flagship column */
@@ -1906,9 +1950,10 @@ progress.hidden { display: none; }
 .product-skin--guides .product-hero__eyebrow {
   color: #64748b;
 }
-.product-skin--guides .product-hero a,
-.product-skin--guides .product-hero a:hover {
-  color: #0369a1 !important;
+.product-skin--guides .product-hero__lede a:not(.product-cta),
+.product-skin--guides .product-hero p a:not(.product-cta) {
+  color: #0369a1;
+  font-weight: 500;
 }
 .product-skin--guides .product-spec-strip {
   border-top-color: rgba(15, 23, 42, 0.1);
@@ -2263,15 +2308,18 @@ progress.hidden { display: none; }
   color: rgba(203, 213, 225, 0.92);
 }
 
-.product-hero a {
-  color: #7dd3fc !important;
-  font-weight: 700;
+.product-hero__lede a:not(.product-cta):not(.b2b-cta):not(.flagship-cta),
+.product-hero p a:not(.product-cta):not(.b2b-cta):not(.flagship-cta) {
+  color: rgba(186, 201, 220, 0.95);
+  font-weight: 500;
   text-decoration: underline;
+  text-decoration-color: rgba(148, 163, 184, 0.42);
   text-underline-offset: 2px;
 }
-
-.product-hero a:hover {
-  color: #bae6fd !important;
+.product-hero__lede a:not(.product-cta):not(.b2b-cta):not(.flagship-cta):hover,
+.product-hero p a:not(.product-cta):not(.b2b-cta):not(.flagship-cta):hover {
+  color: #f1f5f9;
+  text-decoration-color: rgba(226, 232, 240, 0.45);
 }
 
 .product-spec-strip {
@@ -2446,15 +2494,6 @@ progress.hidden { display: none; }
   padding-top: 0.15rem;
 }
 
-.product-body a {
-  color: #0e7490;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.product-body a:hover {
-  text-decoration: underline;
-}
 
 .product-panel {
   background: #ffffff;
@@ -2698,6 +2737,9 @@ a.page-cta:hover {
   --accent-soft: rgba(56, 189, 248, 0.16);
   --border: rgba(255, 255, 255, 0.14);
   --danger: #f87171;
+  --link: rgba(186, 201, 220, 0.95);
+  --link-hover: #f1f5f9;
+  --link-underline: rgba(148, 163, 184, 0.42);
 }
 
 /* Web Studio tool controls */
@@ -2758,18 +2800,21 @@ a.page-cta:hover {
   color: var(--muted);
 }
 :root[data-theme="dark"] .usecase-card__links a {
-  color: #5eead4;
+  color: var(--link);
+}
+:root[data-theme="dark"] .usecase-card__links a:hover {
+  color: var(--link-hover);
 }
 
 /* Trust strip */
 :root[data-theme="dark"] .trust-strip {
-  color: #a5f3fc;
+  color: rgba(186, 230, 253, 0.85);
 }
 :root[data-theme="dark"] .trust-strip a {
-  color: #67e8f9;
+  color: var(--link);
 }
 :root[data-theme="dark"] .trust-strip a:hover {
-  color: #cffafe;
+  color: var(--link-hover);
 }
 :root[data-theme="dark"] .trust-strip__stores a,
 :root[data-theme="dark"] .trust-strip__social a {
@@ -2811,7 +2856,10 @@ a.page-cta:hover {
   background: var(--panel);
 }
 :root[data-theme="dark"] .legal-page a {
-  color: #5eead4;
+  color: var(--link);
+}
+:root[data-theme="dark"] .legal-page a:hover {
+  color: var(--link-hover);
 }
 :root[data-theme="dark"] .guides-list a {
   color: var(--text);
@@ -2856,9 +2904,6 @@ a.page-cta:hover {
 :root[data-theme="dark"] .product-platform-row a {
   background: rgba(255, 255, 255, 0.06);
 }
-:root[data-theme="dark"] .product-body a {
-  color: #5eead4;
-}
 
 /* Guides skin hero was a light band by design — darken so the
    page matches the rest of the dark theme and text stays light. */
@@ -2879,9 +2924,13 @@ a.page-cta:hover {
 :root[data-theme="dark"] .product-skin--guides .product-hero__eyebrow {
   color: rgba(203, 213, 225, 0.72);
 }
-:root[data-theme="dark"] .product-skin--guides .product-hero a,
-:root[data-theme="dark"] .product-skin--guides .product-hero a:hover {
-  color: #7dd3fc !important;
+:root[data-theme="dark"] .product-skin--guides .product-hero__lede a:not(.product-cta),
+:root[data-theme="dark"] .product-skin--guides .product-hero p a:not(.product-cta) {
+  color: rgba(186, 201, 220, 0.95);
+}
+:root[data-theme="dark"] .product-skin--guides .product-hero__lede a:not(.product-cta):hover,
+:root[data-theme="dark"] .product-skin--guides .product-hero p a:not(.product-cta):hover {
+  color: #f1f5f9;
 }
 :root[data-theme="dark"] .product-skin--guides .product-spec-strip__item dt {
   color: rgba(203, 213, 225, 0.72);
