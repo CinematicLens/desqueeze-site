@@ -12,7 +12,8 @@
     "astro": "astro",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:report": "playwright show-report"
+    "test:report": "playwright show-report",
+    "sync:static-html": "bash scripts/sync-astro-offline-to-static-html.sh"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
