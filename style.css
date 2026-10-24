@@ -1563,7 +1563,13 @@ html[data-theme="dark"] .product-skin {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   gap: 1.5rem 2rem;
-  align-items: center;
+  align-items: start;
+}
+.hub-hero__copy {
+  padding-top: 0.35rem;
+}
+.hub-hero__copy .product-hero__ctas {
+  max-width: 36rem;
 }
 .hub-hero__visual {
   margin: 0;
@@ -2643,6 +2649,42 @@ html[data-theme="dark"] .product-skin {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+/* Consistent App Store phone tiles (same frame + caption pattern) */
+.feature-showcase__grid--phone {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.feature-tile--phone .feature-tile__media {
+  aspect-ratio: 9 / 19.5;
+  max-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #070b12;
+}
+.feature-tile--phone .feature-tile__media img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+.feature-tile--phone .feature-tile__body {
+  flex: 1;
+  min-height: 5.5rem;
+}
+@media (max-width: 900px) {
+  .feature-showcase__grid--phone {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 520px) {
+  .feature-showcase__grid--phone {
+    grid-template-columns: 1fr 1fr;
+  }
+  .feature-tile--phone .feature-tile__media {
+    max-height: 280px;
+  }
 }
 .feature-tile__body {
   padding: 0.85rem 0.95rem 1rem;
