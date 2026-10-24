@@ -118,7 +118,7 @@
   }
 
   /* -------- Site-wide main nav (sales priority only) -------- */
-  /* Hidden from nav (pages still live): MediaUtility, DMS, Photos, FilmStudio, Light Cine, Windows tools */
+  /* Hidden from nav (pages still live): MediaUtility, DMS, Photos, Light Cine, Windows tools. FilmStudio = P2 listed on home, not nav. */
   var SITE_NAV = [
     { id: 'anamorphic', label: 'Anamorphic', href: '/anamorphic.html' },
     { id: 'get-apps', label: 'Get apps', href: '/get-apps.html' },

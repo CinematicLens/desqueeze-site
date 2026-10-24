@@ -4,7 +4,8 @@
 
 1. **AnamorphicDesqueezer Pro Lifetime** — almost all revenue
 2. **AnamorphicDesqueezer** app + **HDMI Monitor Pro** + **CineLut Live Grade**
-3. Everything else is noise for revenue
+3. **FilmStudio** — occasional paid sales (keep listed, not hero)
+4. Everything else is noise for revenue
 
 ## What people install (units)
 
@@ -21,6 +22,7 @@
 | P1 | ACamViewfinder | Hero secondary + product grid |
 | P1 | CineMonitor (HDMI Monitor - Cine) | Nav + product grid |
 | P1 | CineLut Live Grade | Nav + product grid |
-| Hidden | Light Cine, FilmStudio, MediaUtility, DMS, Photos, Windows tools page | Pages stay live; removed from nav/hero/app bar; collapsed under “Other apps” on home |
+| P2 | FilmStudio | Product grid + app bar + guides (not hero / not nav) |
+| Hidden | Light Cine, MediaUtility, DMS, Photos, Windows tools page | Pages stay live; collapsed under “Other apps” |
 
 Do not lead with “try Web Studio first.” Web Studio is secondary after the App Store CTA.
