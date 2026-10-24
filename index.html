@@ -71,7 +71,7 @@
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6348292037303976"
     crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="./style.css?v=52" />
+  <link rel="stylesheet" href="./style.css?v=53" />
 
   <!-- Structured Data: Organization + SoftwareApplication -->
   <script type="application/ld+json">
@@ -543,6 +543,22 @@
         <figure class="anamorphic-bokeh" aria-hidden="true">
           <img src="/assets/anamorphic-oval-bokeh.jpg" width="1280" height="720" alt="">
         </figure>
+        <script>
+          (function () {
+            var card = document.querySelector(".hub-hero__tool--primary");
+            var frame = document.querySelector(".anamorphic-bokeh");
+            if (!card || !frame) return;
+            var fit = function () {
+              var box = card.getBoundingClientRect();
+              frame.style.width = box.width + "px";
+              frame.style.height = box.height + "px";
+              frame.style.borderRadius = getComputedStyle(card).borderRadius;
+            };
+            fit();
+            if (window.ResizeObserver) new ResizeObserver(fit).observe(card);
+            window.addEventListener("resize", fit);
+          })();
+        </script>
         <h2 class="hub-hero__secondary-heading" id="hub-set-apps-heading">On-set apps — buy once, use on the job</h2>
         <div class="hub-hero__tools hub-hero__tools--secondary" aria-labelledby="hub-set-apps-heading">
           <section class="hub-hero__tool hub-hero__tool--compact" aria-labelledby="hub-tool-cinemonitor">

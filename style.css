@@ -2433,18 +2433,20 @@ html[data-theme="dark"] .product-skin {
 
 .anamorphic-bokeh {
   margin: 0.9rem 0 0.15rem;
-  width: min(100%, 15rem);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(var(--studio-accent-rgb), 0.42);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
 }
 
 .anamorphic-bokeh img {
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
+  height: 100%;
   object-fit: cover;
   object-position: center;
-  border-radius: 50%;
-  box-shadow: 0 0 28px rgba(255, 122, 26, 0.4);
 }
 
 .product-card--anamorphic {
