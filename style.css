@@ -1565,6 +1565,9 @@ html[data-theme="dark"] .product-skin {
   gap: 1.5rem 2rem;
   align-items: start;
 }
+.hub-hero__inner--home {
+  max-width: 920px;
+}
 .hub-hero__copy {
   padding-top: 0.35rem;
 }
