@@ -1938,6 +1938,8 @@ html[data-theme="dark"] .product-skin {
 .product-hero {
   background: var(--studio-hero-bg);
   color: #cbd5e1;
+  /* Horizontal padding cancels product-main padding via negative margin so
+     hero text lines up with store-shots / feature-showcase / product-body. */
   padding: 2rem 1.5rem 1.85rem;
   margin: 0 -1.5rem 1.75rem;
   border-bottom: 3px solid var(--product-accent, var(--accent));
@@ -1946,7 +1948,7 @@ html[data-theme="dark"] .product-skin {
 
 @media (min-width: 720px) {
   .product-hero {
-    margin: 0 0 1.75rem;
+    margin: 0 -1.5rem 1.75rem;
     border-radius: 0 0 14px 14px;
   }
 }
@@ -2489,6 +2491,21 @@ html[data-theme="dark"] .product-skin {
   max-width: 960px;
   margin: 1.35rem auto 0;
   padding: 0 1.15rem 0.25rem;
+}
+/* Inside product-main the column already has 1.5rem gutters — don't double-inset */
+.product-main > .store-shots {
+  max-width: none;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+.product-main > .feature-showcase {
+  max-width: none;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
 }
 .store-shots__title {
   margin: 0 0 0.3rem;
