@@ -179,10 +179,19 @@ Demo: https://www.youtube.com/watch?v=FEtxiSnYVy4
 
 ---
 
+## Promo URLs (use these — not the homepage)
+
+| Audience | Link |
+|---|---|
+| Sirui shooters | https://anamorphic-desqueeze.com/sirui-anamorphic-desqueeze.html |
+| Moment shooters | https://anamorphic-desqueeze.com/moment-anamorphic-desqueeze.html |
+| General iPhone | https://anamorphic-desqueeze.com/anamorphic-desqueeze-iphone.html |
+| Direct App Store | https://apps.apple.com/app/anamorphicdesqueezer/id6757354068 |
+
 ## Today’s order
 
 1. Paste App Store listing (§1) in Connect → submit if metadata needs review  
 2. Turn on exact-match Search Ads (§2) if Ads account is ready  
-3. Post §3 in one lens group  
+3. Post §3 in one lens group (link the Sirui or Moment URL above)  
 4. Film §5 once (or share the existing demo)  
 5. Send §6 to 5 channels
