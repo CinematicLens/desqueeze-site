@@ -244,7 +244,7 @@
     trust.innerHTML =
       '<div class="store-trust">' +
         '<a class="store-trust__badge store-trust__badge--apple" href="' + STORES.apple + '" target="_blank" rel="noopener noreferrer">' +
-          '<span class="store-trust__label">App Store <span class="store-trust__sub">See ratings &amp; reviews</span></span>' +
+          '<span class="store-trust__label">Apple App Store <span class="store-trust__sub">See ratings &amp; reviews</span></span>' +
         '</a>' +
         '<a class="store-trust__badge store-trust__badge--google" href="' + STORES.google + '" target="_blank" rel="noopener noreferrer">' +
           '<span class="store-trust__label">Google Play <span class="store-trust__sub">See ratings &amp; reviews · 1K+ downloads</span></span>' +
