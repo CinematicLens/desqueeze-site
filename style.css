@@ -2473,6 +2473,91 @@ html[data-theme="dark"] .product-skin {
   background: rgba(255, 255, 255, 0.04);
   color: var(--text);
 }
+.need-path {
+  max-width: 1200px;
+  margin: 0.35rem auto 0;
+  padding: 0 1.5rem 0.35rem;
+}
+.need-path__inner {
+  padding: 1.15rem 1.2rem 1.25rem;
+  border-radius: 16px;
+  border: 1px solid rgba(var(--studio-accent-rgb), 0.28);
+  background:
+    radial-gradient(ellipse 70% 80% at 100% 0%, rgba(245, 158, 11, 0.08), transparent 55%),
+    linear-gradient(165deg, rgba(10, 14, 22, 0.96), rgba(var(--studio-accent-rgb), 0.07));
+}
+.need-path__title {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #f8fafc;
+}
+.need-path__lede {
+  margin: 0.4rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: rgba(186, 201, 220, 0.92);
+  max-width: 56ch;
+}
+.need-path__grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.need-path__item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 0.85rem 0.9rem;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(8, 12, 20, 0.72);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+}
+.need-path__item:hover {
+  border-color: rgba(var(--studio-accent-rgb), 0.55);
+  background: rgba(12, 18, 28, 0.92);
+  transform: translateY(-2px);
+}
+.need-path__item--primary {
+  border-color: rgba(var(--studio-accent-rgb), 0.48);
+  background: linear-gradient(160deg, rgba(12, 18, 28, 0.95), rgba(var(--studio-accent-rgb), 0.14));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+.need-path__item img {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+}
+.need-path__label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #f1f5f9;
+  line-height: 1.25;
+}
+.need-path__hint {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: rgba(148, 163, 184, 0.95);
+}
+@media (max-width: 900px) {
+  .need-path__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 520px) {
+  .need-path__grid {
+    grid-template-columns: 1fr;
+  }
+}
 .sell-band {
   max-width: 1200px;
   margin: 1.25rem auto 0;
