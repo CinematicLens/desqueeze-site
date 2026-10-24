@@ -2473,6 +2473,41 @@ html[data-theme="dark"] .product-skin {
   background: rgba(255, 255, 255, 0.04);
   color: var(--text);
 }
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.sticky-buy {
+  display: none;
+}
+.product-skin--sticky-buy .sticky-buy {
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  justify-content: center;
+  padding: 0.65rem 1rem calc(0.65rem + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(180deg, transparent, rgba(5, 8, 14, 0.92) 28%);
+  pointer-events: none;
+}
+.product-skin--sticky-buy .sticky-buy .product-cta {
+  pointer-events: auto;
+  min-width: min(22rem, 92vw);
+  text-align: center;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+}
+.product-skin--sticky-buy .site-footer {
+  padding-bottom: 5.5rem;
+}
 .need-path {
   max-width: 1200px;
   margin: 0.35rem auto 0;
