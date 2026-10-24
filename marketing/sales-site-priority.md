@@ -13,15 +13,14 @@
 3. AnamorphicDesqueezer
 4. FilmStudio / Light Cine / others — low
 
-## Site rule
+## Site rule (live)
 
-| Priority | Product | Why on the site |
+| Priority | Product | Site treatment |
 |---|---|---|
-| P0 | Anamorphic Desqueezer | Only real money product — hero, CTAs, SEO |
-| P1 | ACamViewfinder | Highest install demand — on-set focus buyers |
-| P1 | CineMonitor (HDMI Monitor - Cine) | Second paid lane |
-| P1 | CineLut Live Grade | Paid Mac grade lane |
-| P2 | Light Cine, FilmStudio | Keep listed, not hero |
-| P3 | MediaUtility, DMS, LifeCue | Linked only — do not lead traffic here |
+| P0 | Anamorphic Desqueezer | Hero, CTAs, SEO, nav |
+| P1 | ACamViewfinder | Hero secondary + product grid |
+| P1 | CineMonitor (HDMI Monitor - Cine) | Nav + product grid |
+| P1 | CineLut Live Grade | Nav + product grid |
+| Hidden | Light Cine, FilmStudio, MediaUtility, DMS, Photos, Windows tools page | Pages stay live; removed from nav/hero/app bar; collapsed under “Other apps” on home |
 
 Do not lead with “try Web Studio first.” Web Studio is secondary after the App Store CTA.

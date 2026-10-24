@@ -117,23 +117,18 @@
     return ANAMORPHIC_PROMO_SKIP_PAGES.indexOf(path) === -1;
   }
 
-  /* -------- Site-wide main nav (single source of truth) -------- */
+  /* -------- Site-wide main nav (sales priority only) -------- */
+  /* Hidden from nav (pages still live): MediaUtility, DMS, Photos, FilmStudio, Light Cine, Windows tools */
   var SITE_NAV = [
-    { id: 'filmmaking', label: 'Filmmaking', href: '/index.html#filmstudio' },
-    { id: 'anamorphic', label: 'Anamorphic Flow', href: '/anamorphic.html' },
-    { id: 'cinema-monitor', label: 'CineMonitors', href: '/cinema-monitors.html' },
+    { id: 'anamorphic', label: 'Anamorphic', href: '/anamorphic.html' },
     { id: 'get-apps', label: 'Get apps', href: '/get-apps.html' },
-    { id: 'utilities', label: 'Utilities', href: '/mediautility.html' },
-    { id: 'organize', label: 'Organize', href: '/document-management-system.html' },
-    { id: 'photos', label: 'Photos', href: '/photo-editing.html', title: 'Photo Editing' },
-    { id: 'win-anamorphic', label: 'WindowsAnamorphic', href: '/windows-tools.html' },
-    { id: 'guides', label: 'Guides', href: '/guides.html' },
-    { id: 'livegrade', label: 'LiveGrade', href: '/cinelutlivegrade.html', title: 'LiveGrade · DIT · Dailies' }
+    { id: 'cinema-monitor', label: 'CineMonitor', href: '/cinemonitor.html' },
+    { id: 'livegrade', label: 'CineLut', href: '/cinelutlivegrade.html', title: 'CineLut Live Grade' },
+    { id: 'guides', label: 'Guides', href: '/guides.html' }
   ];
 
   var NAV_ACTIVE_BY_PATH = {
-    '/index.html': 'filmmaking',
-    '/filmstudio.html': 'filmmaking',
+    '/index.html': 'anamorphic',
     '/cinema-monitors.html': 'cinema-monitor',
     '/virtual-monitors.html': 'cinema-monitor',
     '/cinemonitor.html': 'cinema-monitor',
@@ -144,10 +139,6 @@
     '/cinemascope-export-online.html': 'anamorphic',
     '/get-apps.html': 'get-apps',
     '/cinelutlivegrade.html': 'livegrade',
-    '/mediautility.html': 'utilities',
-    '/document-management-system.html': 'organize',
-    '/photo-editing.html': 'photos',
-    '/windows-tools.html': 'win-anamorphic',
     '/guides.html': 'guides',
     '/how-to-desqueeze-1-33x.html': 'guides'
   };
