@@ -358,8 +358,8 @@
 				scrollToAccordion(raw, reduceMotion ? 'auto' : 'smooth');
 			};
 
-			// Default: keep the first accordion open (FilmStudio).
-			if (!window.location.hash) setOpen('filmstudio');
+			// Default: open Anamorphic Desqueezer (primary promo app).
+			if (!window.location.hash) setOpen('anamorphic');
 			else openFromHash();
 			window.addEventListener('hashchange', openFromHash);
 		}

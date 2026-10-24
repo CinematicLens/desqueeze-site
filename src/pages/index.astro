@@ -186,15 +186,20 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 						</ul>
 
 						<div class="mt-5 flex flex-col gap-2.5 sm:mt-6 sm:flex-row sm:items-center sm:flex-wrap sm:gap-3">
-							<a class={heroPrimaryCtaClass} href="#suite" data-testid="cta-try-filmstudio">
-								<span>Start Shooting with AnamorphicDesqueezer</span>
+							<a
+								class={`${heroPrimaryCtaClass} cta-appstore-flash`}
+								href={storeUrls.anamorphicApple}
+								target="_blank"
+								rel="noopener noreferrer"
+								data-testid="cta-anamorphic-appstore"
+							>
+								<span>Get Anamorphic Desqueezer on iPhone</span>
 								<span set:html={lucideSvg(ChevronRight, 'h-4 w-4 shrink-0 opacity-95', 16)} aria-hidden="true"></span>
 							</a>
 							<a class={heroSecondaryCtaClass} href="#suite-apps">
 								<span>Explore suite apps</span>
 								<span set:html={lucideSvg(ChevronRight, 'h-4 w-4 shrink-0 opacity-95', 16)} aria-hidden="true"></span>
 							</a>
-						
 						</div>
 
 						<p class="mt-4 flex flex-wrap items-center gap-2 text-xs font-medium leading-relaxed text-[#FF7A1A] sm:mt-5 sm:text-sm">
@@ -203,7 +208,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 									d="M12 3.5l1.8 4.1 4.5.4-3.4 3 1 4.4L12 14.2 7.1 15.4l1-4.4-3.4-3 4.5-.4L12 3.5z"
 									stroke-linejoin="round"></path>
 							</svg>
-							<span>Start with FilmStudio — most filmmakers begin here.</span>
+							<span>Start with Anamorphic Desqueezer — fix squeeze on iPhone first.</span>
 						</p>
 				</div>
 			</div>
@@ -368,7 +373,7 @@ const filmStudioScreenshots = loadFilmStudioScreenshots();
 							One Workflow. <span class="text-[rgb(255,106,0)]">From Capture to Final.</span>
 						</h2>
 						<p class="mt-4 max-w-xl text-pretty text-base font-medium leading-relaxed text-white/85 md:text-lg lg:max-w-2xl">
-							Start with FilmStudio. Add tools only when needed.
+							Start with Anamorphic Desqueezer. Add on-set tools only when needed.
 						</p>
 						<p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-white/70 md:text-base lg:max-w-2xl">
 							Built for real filmmaking workflows.

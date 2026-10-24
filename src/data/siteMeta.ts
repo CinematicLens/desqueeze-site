@@ -11,10 +11,10 @@ export const DEFAULT_KEYWORDS =
 	'FilmStudio app, iPhone cinema camera, Anamorphic Desqueezer, CineLut Live Grade, live LUT grading, MacBook DIT, MediaUtility, anamorphic desqueeze iOS, 1.33x 2x desqueeze, cinemascope, filmmaking apps App Store';
 
 export const HOME_DEFAULT_TITLE =
-	'Professional Filmmaking Tools — FilmStudio, Anamorphic, CineLut & More | DeSqueeze Studio';
+	'Anamorphic Desqueezer for iPhone — Live De-Squeeze & CinemaScope | DeSqueeze Studio';
 
 export const HOME_DEFAULT_DESCRIPTION =
-	'DeSqueeze Studio: FilmStudio on iPhone, iPad, and Mac — manual ISO/shutter/focus/WB, film presets, zebras, peaking, histogram and waveform, timecode and takes, safe recording and export; plus Anamorphic Desqueezer, CineLut Live Grade, MediaUtility, and DMS. Web Studio for browser previews.';
+	'Anamorphic Desqueezer on iPhone: live de-squeeze, 1.33×–2× ratios, and CinemaScope export. Add FilmStudio, CineLut Live Grade, and other on-set tools when you need them.';
 
 export const PRODUCTS_PAGE_TITLE = 'Film Suite Products — DeSqueeze Studio';
 

@@ -4,9 +4,9 @@ test.describe('Filmmaking suite landing', () => {
   test('loads and shows hero CTA', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/shoot with confidence/i);
-    await page.getByTestId('cta-try-filmstudio').click();
-    await expect(page.locator('#suite')).toBeVisible();
-    await expect(page.locator('#suite')).toContainText(/one workflow/i);
+    const cta = page.getByTestId('cta-anamorphic-appstore');
+    await expect(cta).toBeVisible();
+    await expect(cta).toHaveAttribute('href', /anamorphicdesqueezer/i);
   });
 
   test('shows three product sections', async ({ page }) => {
@@ -25,27 +25,27 @@ test.describe('Filmmaking suite landing', () => {
     const anamorphic = page.locator('#anamorphic [data-suite-trigger="anamorphic"]');
     const cinelut = page.locator('#cinelut [data-suite-trigger="cinelut"]');
 
-    // Site script opens FilmStudio by default when there is no hash — first click would close it.
-    await expect(filmstudio).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.locator('#pane-filmstudio')).toBeVisible();
-    await expect(page.locator('#pane-anamorphic')).toBeHidden();
-
-    await anamorphic.click();
+    // Site script opens Anamorphic by default when there is no hash — first click would close it.
     await expect(anamorphic).toHaveAttribute('aria-expanded', 'true');
-    await expect(filmstudio).toHaveAttribute('aria-expanded', 'false');
     await expect(page.locator('#pane-anamorphic')).toBeVisible();
+    await expect(page.locator('#pane-filmstudio')).toBeHidden();
     await expect(page.getByRole('heading', { name: /anamorphic desqueezer/i })).toBeVisible();
-
-    await cinelut.click();
-    await expect(cinelut).toHaveAttribute('aria-expanded', 'true');
-    await expect(anamorphic).toHaveAttribute('aria-expanded', 'false');
-    await expect(page.locator('#pane-cinelut')).toBeVisible();
-    await expect(page.locator('#pane-cinelut').locator('iframe[title="CineLut Live Grade demo"]')).toBeVisible();
 
     await filmstudio.click();
     await expect(filmstudio).toHaveAttribute('aria-expanded', 'true');
-    await expect(cinelut).toHaveAttribute('aria-expanded', 'false');
+    await expect(anamorphic).toHaveAttribute('aria-expanded', 'false');
     await expect(page.locator('#pane-filmstudio')).toBeVisible();
+
+    await cinelut.click();
+    await expect(cinelut).toHaveAttribute('aria-expanded', 'true');
+    await expect(filmstudio).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.locator('#pane-cinelut')).toBeVisible();
+    await expect(page.locator('#pane-cinelut').locator('iframe[title="CineLut Live Grade demo"]')).toBeVisible();
+
+    await anamorphic.click();
+    await expect(anamorphic).toHaveAttribute('aria-expanded', 'true');
+    await expect(cinelut).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.locator('#pane-anamorphic')).toBeVisible();
   });
 
   test('has no horizontal scrolling at common viewports', async ({ page }) => {

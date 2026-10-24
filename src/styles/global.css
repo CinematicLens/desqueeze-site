@@ -31,3 +31,28 @@ html {
 [data-suite-banner-icons] svg {
 	stroke-width: 1.35;
 }
+
+/* Hero App Store CTA: soft flash to draw attention for Anamorphic Desqueezer */
+@keyframes cta-appstore-flash {
+	0%,
+	100% {
+		box-shadow: 0 8px 28px rgba(255, 122, 26, 0.35);
+		filter: brightness(1);
+	}
+	50% {
+		box-shadow:
+			0 8px 36px rgba(255, 122, 26, 0.7),
+			0 0 0 6px rgba(255, 122, 26, 0.22);
+		filter: brightness(1.12);
+	}
+}
+
+.cta-appstore-flash {
+	animation: cta-appstore-flash 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.cta-appstore-flash {
+		animation: none;
+	}
+}
