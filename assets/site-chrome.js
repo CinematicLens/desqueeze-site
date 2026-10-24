@@ -117,16 +117,16 @@
     return ANAMORPHIC_PROMO_SKIP_PAGES.indexOf(path) === -1;
   }
 
-  /* -------- Site-wide main nav (sales priority) -------- */
-  /* P3 low-hanging fruit in nav: Organize, Photos. Hidden: Light Cine, Windows tools page. FilmStudio = P2 on home only. */
+  /* -------- Site-wide main nav -------- */
+  /* Only Document Management System is hidden from nav (page still live). */
   var SITE_NAV = [
     { id: 'anamorphic', label: 'Anamorphic', href: '/anamorphic.html' },
     { id: 'get-apps', label: 'Get apps', href: '/get-apps.html' },
     { id: 'cinema-monitor', label: 'CineMonitor', href: '/cinemonitor.html' },
     { id: 'livegrade', label: 'CineLut', href: '/cinelutlivegrade.html', title: 'CineLut Live Grade' },
     { id: 'utilities', label: 'MediaUtility', href: '/mediautility.html', title: 'MediaUtility · compress · edit' },
-    { id: 'organize', label: 'Organize', href: '/document-management-system.html', title: 'Document Management System' },
     { id: 'photos', label: 'Photos', href: '/photo-editing.html', title: 'CineSnap AI · Photo editing' },
+    { id: 'win-anamorphic', label: 'Windows', href: '/windows-tools.html', title: 'Windows anamorphic tools' },
     { id: 'guides', label: 'Guides', href: '/guides.html' }
   ];
 
@@ -143,8 +143,8 @@
     '/get-apps.html': 'get-apps',
     '/cinelutlivegrade.html': 'livegrade',
     '/mediautility.html': 'utilities',
-    '/document-management-system.html': 'organize',
     '/photo-editing.html': 'photos',
+    '/windows-tools.html': 'win-anamorphic',
     '/guides.html': 'guides',
     '/how-to-desqueeze-1-33x.html': 'guides'
   };
