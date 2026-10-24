@@ -23,26 +23,26 @@ Live Record · ProRes · FCPXML
 
 **Promotional text** (170 chars — editable anytime, no review):
 ```
-See Anamorphic. Correctly. Live-record desqueezed on iPhone — not a post-only fix. Scopes, CinemaScope ProRes / 10-bit, FCPXML, batch merge.
+For cinematographers: live-record anamorphic desqueezed on iPhone. Scopes on set. CinemaScope ProRes / FCPXML for editorial.
 ```
 
 **Site hero (canonical saleable copy — keep App Store / ads aligned):**
 ```
-ANAMORPHIC DESQUEEZER · LIVE RECORD + POST
-See Anamorphic. Correctly.
-Live-record desqueezed on iPhone and iPad — not a post-only fix. Scopes on set, true CinemaScope export, ProRes / 10-bit, FCPXML, and batch merge for editorial. One app from capture through delivery.
+FOR CINEMATOGRAPHERS · LIVE ANAMORPHIC ON IPHONE
+Frame anamorphic. Record it right.
+Stop fixing squeeze in post. Live-record desqueezed with on-set scopes, then hand editorial true CinemaScope — ProRes / 10-bit and FCPXML. One app from roll to delivery on iPhone, iPad, and Mac.
 Anamorphic Desqueezer
-Live record with real-time desqueeze · waveform, false color, peaking, zebras · ProRes / 10-bit · FCPXML · batch + merge · iPhone, iPad, and Mac.
-Get Anamorphic Desqueezer
+Built for DPs and operators: real-time desqueeze while you roll · waveform, false color, peaking, zebras · CinemaScope export · ProRes / FCPXML · batch merge.
+Get it on the App Store
 ```
 
 **Description** (paste as-is — matches shipped features + site hero):
 ```
-See Anamorphic. Correctly.
+Frame anamorphic. Record it right.
 
-Live-record desqueezed on iPhone and iPad — not a post-only fix. Scopes on set, true CinemaScope export, ProRes / 10-bit, FCPXML, and batch merge for editorial. One app from capture through delivery.
+Built for cinematographers. Stop fixing squeeze in post. Live-record desqueezed with on-set scopes, then hand editorial true CinemaScope — ProRes / 10-bit and FCPXML. One app from roll to delivery on iPhone, iPad, and Mac.
 
-Live record with real-time desqueeze · waveform, false color, peaking, zebras · ProRes / 10-bit · FCPXML · batch + merge · iPhone, iPad, and Mac.
+Real-time desqueeze while you roll · waveform, false color, peaking, zebras · CinemaScope export · ProRes / FCPXML · batch merge.
 
 LIVE RECORD
 • Real-time desqueeze while you shoot — not a post-only fix
