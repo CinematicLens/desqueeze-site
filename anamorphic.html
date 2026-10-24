@@ -93,7 +93,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="./style.css?v=57" />
+  <link rel="stylesheet" href="./style.css?v=58" />
 </head>
 <body class="product-skin product-skin--anamorphic anamorphic-landing">
 
@@ -146,38 +146,81 @@
     </section>
 
     <div class="product-main">
+    <section class="feature-showcase" aria-labelledby="anamorphic-features-title" style="padding: 0 1.15rem;">
+      <h2 class="feature-showcase__title" id="anamorphic-features-title">What Anamorphic Desqueeze does</h2>
+      <p class="feature-showcase__lede">One job: fix squeezed footage so it looks cinematic — live on set or in post. Clear features below.</p>
+      <div class="feature-showcase__grid">
+        <article class="feature-tile">
+          <div class="feature-tile__media">
+            <img src="/assets/anamorphic-oval-bokeh.jpg" width="1280" height="720" alt="Oval anamorphic bokeh after correct desqueeze" loading="lazy">
+          </div>
+          <div class="feature-tile__body">
+            <h3>Live desqueeze</h3>
+            <p>See correct geometry while you shoot. Match 1.33×–2× (or Custom) to the ring on the lens.</p>
+          </div>
+        </article>
+        <article class="feature-tile">
+          <div class="feature-tile__media">
+            <img src="/assets/cinema-scope-export.png" width="1200" height="675" alt="CinemaScope 2.39:1 export" loading="lazy">
+          </div>
+          <div class="feature-tile__body">
+            <h3>CinemaScope export</h3>
+            <p>True 2.39:1 delivery — ProRes / 10-bit on Apple, batch MP4 / stills on Android and Windows.</p>
+          </div>
+        </article>
+        <article class="feature-tile">
+          <div class="feature-tile__media">
+            <img src="/assets/import-export-ui.png" width="1200" height="800" alt="Batch import and export" loading="lazy">
+          </div>
+          <div class="feature-tile__body">
+            <h3>Batch post</h3>
+            <p>Correct a whole day of clips. Folder batch on Windows; multi-file on mobile and Web Studio.</p>
+          </div>
+        </article>
+        <article class="feature-tile">
+          <div class="feature-tile__media">
+            <img src="/assets/anamorphic-desqueeze-ecosystem.png" width="1024" height="1024" alt="Anamorphic Desqueeze across platforms" loading="lazy">
+          </div>
+          <div class="feature-tile__body">
+            <h3>Every platform</h3>
+            <p>iPhone / iPad / Mac · Android · Windows · free Web Studio — pick where you shoot and finish.</p>
+          </div>
+        </article>
+      </div>
+      <ul class="feature-list-clear" aria-label="Anamorphic features">
+        <li><strong>Ratios</strong><span>1.15×–2.0× presets + Custom — Sirui, Moment, Moondog, Vazen, and others</span></li>
+        <li><strong>Scopes</strong><span>Zebras · waveform · false color · peaking (native apps)</span></li>
+        <li><strong>Export</strong><span>CinemaScope 2.39:1 · ProRes / FCPXML on Apple · MP4 / stills elsewhere</span></li>
+        <li><strong>Try free</strong><span>Web Studio for 1.33×–2× previews and small batches — no install</span></li>
+      </ul>
+    </section>
+
     <div class="product-body anamorphic-landing__body">
       <section class="product-panel anamorphic-landing__panel" id="anamorphic-flow">
-        <h2>Anamorphic flow</h2>
-        <p>This lane treats anamorphic as its own pipeline: ratio math, monitoring, batch correction, and export. Start in the free <a href="/index.html#settings">Web Studio</a> for 1.33×–2× previews and batch ×10 MP4/JPG/PNG.</p>
-        <p>On <strong>iPhone, iPad, and MacBook</strong>, <a href="/anamorphic-desqueeze-iphone.html">Anamorphic Desqueezer</a> is the native flagship: live monitor and post, ProRes and 10-bit paths, scopes, and FCPXML so editorial inherits the same geometry. <a href="/filmstudio.html">FilmStudio</a> stays the capture-side companion when you are framing widescreen in-camera.</p>
-        <p><strong>Android (Google Play):</strong> <a href="/index.html#android-anamorphic-batch">Anamorphic Desqueezer</a> for batch video and stills, Cinemascope 2.39:1 up to 4K, LUT pipeline, and LiveGrade-style monitoring with 3D LUT + CDL. <a href="/index.html#android-anamorphic-pro-cam">Anamorphic Desqueeze Pro Cam</a> for live de-squeeze on set.</p>
-        <p><strong>Windows:</strong> <a href="/index.html#windows-anamorphic-pro">AnamorphicDesqueezePro</a> for folder-based batch de-squeeze, CinemaScope presets, LUT/CDL, and EDL-friendly exports.</p>
+        <h2>How the flow works</h2>
+        <ol>
+          <li><strong>Try free</strong> — <a href="/index.html#settings">Web Studio</a> for 1.33×–2× previews and batch ×10.</li>
+          <li><strong>Shoot live</strong> — <a href="/anamorphic-desqueeze-iphone.html">Anamorphic Desqueezer</a> on iPhone / iPad / Mac (flagship), or Pro Cam on Android.</li>
+          <li><strong>Finish batch</strong> — Android Desqueezer or Windows AnamorphicDesqueezePro for folder post.</li>
+          <li><strong>Grade</strong> — optional <a href="/cinelutlivegrade.html">CineLut Live Grade</a> for LUT/CDL dailies on Mac.</li>
+        </ol>
       </section>
 
       <section class="product-panel anamorphic-landing__panel" id="anamorphic-platforms">
-        <h2>Platforms in the ecosystem</h2>
-        <div class="anamorphic-platform-grid">
-          <article class="anamorphic-platform-card">
-            <h3>Mobile apps</h3>
-            <p>Live desqueeze and edit on iOS and Android — monitor on set, batch correct, export CinemaScope.</p>
-            <a href="/anamorphic-desqueeze-iphone.html">iOS overview →</a>
-          </article>
-          <article class="anamorphic-platform-card">
-            <h3>Web Studio</h3>
-            <p>Quick processing and batch export in the browser — no install, ideal for tests and small batches.</p>
-            <a href="/index.html#settings">Open Web Studio →</a>
-          </article>
-          <article class="anamorphic-platform-card">
-            <h3>Desktop</h3>
-            <p>Windows batch throughput with LUT/CDL and EDL-friendly exports for post pipelines.</p>
-            <a href="/windows-tools.html">Windows tools →</a>
-          </article>
-          <article class="anamorphic-platform-card">
-            <h3>Grade &amp; deliver</h3>
-            <p>Pair with <a href="/cinelutlivegrade.html">CineLut Live Grade</a> for live LUT/CDL, then export MP4 for social and delivery.</p>
-            <a href="/cinelutlivegrade.html">CineLut Live Grade →</a>
-          </article>
+        <h2>Platforms — pick yours</h2>
+        <div class="platform-shot-grid">
+          <figure class="platform-shot">
+            <a href="/anamorphic-desqueeze-iphone.html"><img src="/assets/product-ios.png" width="800" height="600" alt="Anamorphic Desqueezer on Apple" loading="lazy"></a>
+            <figcaption><a href="/anamorphic-desqueeze-iphone.html">iPhone · iPad · Mac →</a></figcaption>
+          </figure>
+          <figure class="platform-shot">
+            <a href="/get-apps.html#android"><img src="/assets/product-android.png" width="800" height="600" alt="Anamorphic Desqueeze on Android" loading="lazy"></a>
+            <figcaption><a href="/get-apps.html#android">Android →</a></figcaption>
+          </figure>
+          <figure class="platform-shot">
+            <a href="/windows-tools.html"><img src="/assets/product-windows.png" width="800" height="600" alt="AnamorphicDesqueezePro on Windows" loading="lazy"></a>
+            <figcaption><a href="/windows-tools.html">Windows →</a></figcaption>
+          </figure>
         </div>
       </section>
 
