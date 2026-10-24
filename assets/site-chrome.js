@@ -265,6 +265,7 @@
    */
   var LANG_KEY = 'site-lang';
   var LANG_MANUAL_KEY = 'site-lang-manual';
+  var LANG_OFFER_DISMISS_KEY = 'site-lang-offer-dismissed';
   var GEO_LANG_KEY = 'site-geo-lang';
   var GEO_COUNTRY_KEY = 'site-geo-country';
   var LANG_SOURCE = 'en';
@@ -546,12 +547,25 @@
       });
   }
 
-  function resolveAutoLang() {
-    var manual = readManualLang();
-    if (manual) {
-      return Promise.resolve(manual);
+  function langDisplayName(code) {
+    var normalized = normalizeLang(code);
+    for (var i = 0; i < WORLD_LANGUAGES.length; i++) {
+      if (WORLD_LANGUAGES[i].code === normalized) {
+        return WORLD_LANGUAGES[i].name;
+      }
     }
-    return fetchRegionLang();
+    return normalized;
+  }
+
+  /* Suggest a local language for an optional top offer — never auto-apply. */
+  function suggestLocalLang() {
+    var browser = detectBrowserLang();
+    if (browser !== LANG_SOURCE) {
+      return Promise.resolve(browser);
+    }
+    return fetchRegionLang().then(function (geo) {
+      return geo && geo !== LANG_SOURCE ? geo : LANG_SOURCE;
+    });
   }
 
   function setGoogTransCookie(lang) {
@@ -619,6 +633,92 @@
     location.reload();
   }
 
+  function dismissLangOffer(persist) {
+    var bar = document.querySelector('.lang-offer');
+    if (bar && bar.parentNode) {
+      bar.parentNode.removeChild(bar);
+    }
+    document.documentElement.classList.remove('has-lang-offer');
+    if (persist) {
+      try {
+        localStorage.setItem(LANG_OFFER_DISMISS_KEY, '1');
+      } catch (e) {}
+    }
+  }
+
+  function mountLangOffer(suggested) {
+    if (!suggested || suggested === LANG_SOURCE) {
+      return;
+    }
+    try {
+      if (localStorage.getItem(LANG_OFFER_DISMISS_KEY) === '1') {
+        return;
+      }
+    } catch (e) {}
+    if (document.querySelector('.lang-offer')) {
+      return;
+    }
+
+    var name = langDisplayName(suggested);
+    var bar = document.createElement('div');
+    bar.className = 'lang-offer';
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', 'Language suggestion');
+
+    var inner = document.createElement('div');
+    inner.className = 'lang-offer__inner';
+
+    var text = document.createElement('p');
+    text.className = 'lang-offer__text';
+    text.innerHTML =
+      'This site is in English. View in <strong>' +
+      name +
+      '</strong>? You can change language anytime from the control at the bottom.';
+
+    var actions = document.createElement('div');
+    actions.className = 'lang-offer__actions';
+
+    var accept = document.createElement('button');
+    accept.type = 'button';
+    accept.className = 'lang-offer__btn lang-offer__btn--primary';
+    accept.textContent = 'View in ' + name;
+    accept.addEventListener('click', function () {
+      dismissLangOffer(true);
+      setLanguage(suggested, true, true);
+    });
+
+    var stay = document.createElement('button');
+    stay.type = 'button';
+    stay.className = 'lang-offer__btn';
+    stay.textContent = 'Stay in English';
+    stay.addEventListener('click', function () {
+      try {
+        localStorage.setItem(LANG_KEY, LANG_SOURCE);
+        localStorage.setItem(LANG_MANUAL_KEY, '1');
+      } catch (e) {}
+      setGoogTransCookie(LANG_SOURCE);
+      dismissLangOffer(true);
+    });
+
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'lang-offer__close';
+    close.setAttribute('aria-label', 'Close language suggestion');
+    close.textContent = '×';
+    close.addEventListener('click', function () {
+      dismissLangOffer(true);
+    });
+
+    actions.appendChild(accept);
+    actions.appendChild(stay);
+    inner.appendChild(text);
+    inner.appendChild(actions);
+    inner.appendChild(close);
+    bar.appendChild(inner);
+    document.body.insertBefore(bar, document.body.firstChild);
+    document.documentElement.classList.add('has-lang-offer');
+  }
+
   function mountLanguageSwitcher(active) {
     if (document.querySelector('.lang-switcher')) {
       var existing = document.getElementById('site-lang-select');
@@ -629,17 +729,10 @@
     }
 
     var wrap = document.createElement('div');
-    wrap.className = 'lang-switcher lang-switcher--pulse';
+    wrap.className = 'lang-switcher lang-switcher--used';
     wrap.setAttribute('role', 'navigation');
-    wrap.setAttribute('aria-label', 'Translate this website');
-    wrap.title = 'Translate this website';
-
-    var cue = document.createElement('span');
-    cue.className = 'lang-switcher__cue';
-    cue.setAttribute('aria-hidden', 'true');
-    cue.innerHTML =
-      '<span class="lang-switcher__cursor"></span>' +
-      '<span class="lang-switcher__hint">Translate</span>';
+    wrap.setAttribute('aria-label', 'Language');
+    wrap.title = 'Choose language';
 
     var label = document.createElement('label');
     label.className = 'lang-switcher__label';
@@ -649,7 +742,7 @@
     var select = document.createElement('select');
     select.id = 'site-lang-select';
     select.className = 'lang-switcher__select';
-    select.setAttribute('aria-label', 'Translate website — choose language');
+    select.setAttribute('aria-label', 'Choose language');
 
     for (var i = 0; i < WORLD_LANGUAGES.length; i++) {
       var opt = document.createElement('option');
@@ -661,30 +754,14 @@
       select.appendChild(opt);
     }
 
-    function markInteracted() {
-      wrap.classList.remove('lang-switcher--pulse');
-      wrap.classList.add('lang-switcher--used');
-      try {
-        sessionStorage.setItem('site-lang-hint-seen', '1');
-      } catch (e) {}
-    }
-
     select.addEventListener('change', function () {
-      markInteracted();
+      try {
+        localStorage.setItem(LANG_OFFER_DISMISS_KEY, '1');
+      } catch (e) {}
+      dismissLangOffer(false);
       setLanguage(select.value, true, true);
     });
-    select.addEventListener('focus', markInteracted);
-    select.addEventListener('pointerdown', markInteracted);
-    wrap.addEventListener('pointerdown', markInteracted);
 
-    try {
-      if (sessionStorage.getItem('site-lang-hint-seen') === '1') {
-        wrap.classList.remove('lang-switcher--pulse');
-        wrap.classList.add('lang-switcher--used');
-      }
-    } catch (e) {}
-
-    wrap.appendChild(cue);
     wrap.appendChild(label);
     wrap.appendChild(select);
     document.body.appendChild(wrap);
@@ -729,35 +806,39 @@
     }
   }
 
+  /*
+   * Localization model (how serious sites behave when full /ja /fr pages don't exist yet):
+   * 1. Default English — never auto-redirect / auto-translate by IP or country.
+   * 2. Optional top offer: "View in [local language]?" — dismissible.
+   * 3. Permanent language control at the bottom — user choice only.
+   * 4. Remember explicit choice. Machine translate runs only after the user picks.
+   */
   function buildLanguageSwitcher() {
-    resolveAutoLang().then(function (active) {
-      applyDocumentDirection(active);
+    var manual = readManualLang();
+    var active = manual || LANG_SOURCE;
 
-      var reloadGuard = null;
+    /* Clear old forced geo-translate (e.g. stuck Hindi) when the user never chose. */
+    if (!manual && readGoogTransCookie()) {
+      setGoogTransCookie(LANG_SOURCE);
       try {
-        reloadGuard = sessionStorage.getItem('site-lang-reload');
+        if (sessionStorage.getItem('site-lang-force-clear') !== '1') {
+          sessionStorage.setItem('site-lang-force-clear', '1');
+          location.reload();
+          return;
+        }
+        sessionStorage.removeItem('site-lang-force-clear');
       } catch (e) {}
+    }
 
-      if (active !== LANG_SOURCE && !readGoogTransCookie() && reloadGuard !== '1') {
-        setGoogTransCookie(active);
-        try {
-          sessionStorage.setItem('site-lang-reload', '1');
-          sessionStorage.setItem(GEO_LANG_KEY, active);
-        } catch (e) {}
-        location.reload();
-        return;
-      }
-      try {
-        sessionStorage.removeItem('site-lang-reload');
-      } catch (e) {}
+    applyDocumentDirection(active);
+    mountLanguageSwitcher(active);
+    loadGoogleTranslate(active);
 
-      if (active === LANG_SOURCE && readGoogTransCookie()) {
-        setGoogTransCookie(LANG_SOURCE);
-      }
-
-      mountLanguageSwitcher(active);
-      loadGoogleTranslate(active);
-    });
+    if (!manual) {
+      suggestLocalLang().then(function (suggested) {
+        mountLangOffer(suggested);
+      });
+    }
   }
 
   function onDomReady() {
