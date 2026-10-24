@@ -117,13 +117,14 @@
     return ANAMORPHIC_PROMO_SKIP_PAGES.indexOf(path) === -1;
   }
 
-  /* -------- Site-wide main nav (sales priority only) -------- */
-  /* Hidden from nav (pages still live): MediaUtility, DMS, Photos, Light Cine, Windows tools. FilmStudio = P2 listed on home, not nav. */
+  /* -------- Site-wide main nav (sales priority) -------- */
+  /* Hidden from nav: DMS, Photos, Light Cine, Windows tools, FilmStudio (P2 on home only). */
   var SITE_NAV = [
     { id: 'anamorphic', label: 'Anamorphic', href: '/anamorphic.html' },
     { id: 'get-apps', label: 'Get apps', href: '/get-apps.html' },
     { id: 'cinema-monitor', label: 'CineMonitor', href: '/cinemonitor.html' },
     { id: 'livegrade', label: 'CineLut', href: '/cinelutlivegrade.html', title: 'CineLut Live Grade' },
+    { id: 'utilities', label: 'MediaUtility', href: '/mediautility.html', title: 'MediaUtility · compress · edit' },
     { id: 'guides', label: 'Guides', href: '/guides.html' }
   ];
 
@@ -139,6 +140,7 @@
     '/cinemascope-export-online.html': 'anamorphic',
     '/get-apps.html': 'get-apps',
     '/cinelutlivegrade.html': 'livegrade',
+    '/mediautility.html': 'utilities',
     '/guides.html': 'guides',
     '/how-to-desqueeze-1-33x.html': 'guides'
   };
