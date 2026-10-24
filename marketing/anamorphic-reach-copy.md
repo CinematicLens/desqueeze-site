@@ -23,14 +23,26 @@ Live Record · ProRes · FCPXML
 
 **Promotional text** (170 chars — editable anytime, no review):
 ```
-Live-record desqueezed on iPhone. Scopes on set. CinemaScope ProRes, 10-bit, FCPXML, batch merge. Sirui, Moment, Moondog, Vazen, Atlas — and custom ratios.
+See Anamorphic. Correctly. Live-record desqueezed on iPhone — not a post-only fix. Scopes, CinemaScope ProRes / 10-bit, FCPXML, batch merge.
 ```
 
-**Description** (paste as-is — matches shipped features):
+**Site hero (canonical saleable copy — keep App Store / ads aligned):**
 ```
-Live-record anamorphic. Export CinemaScope. One app from capture through delivery.
+ANAMORPHIC DESQUEEZER · LIVE RECORD + POST
+See Anamorphic. Correctly.
+Live-record desqueezed on iPhone and iPad — not a post-only fix. Scopes on set, true CinemaScope export, ProRes / 10-bit, FCPXML, and batch merge for editorial. One app from capture through delivery.
+Anamorphic Desqueezer
+Live record with real-time desqueeze · waveform, false color, peaking, zebras · ProRes / 10-bit · FCPXML · batch + merge · iPhone, iPad, and Mac.
+Get Anamorphic Desqueezer
+```
 
-Anamorphic Desqueezer is built for filmmakers who shoot anamorphic and need the take corrected while they roll — then handed to editorial without fixing geometry later.
+**Description** (paste as-is — matches shipped features + site hero):
+```
+See Anamorphic. Correctly.
+
+Live-record desqueezed on iPhone and iPad — not a post-only fix. Scopes on set, true CinemaScope export, ProRes / 10-bit, FCPXML, and batch merge for editorial. One app from capture through delivery.
+
+Live record with real-time desqueeze · waveform, false color, peaking, zebras · ProRes / 10-bit · FCPXML · batch + merge · iPhone, iPad, and Mac.
 
 LIVE RECORD
 • Real-time desqueeze while you shoot — not a post-only fix
