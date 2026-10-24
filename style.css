@@ -2410,6 +2410,48 @@ html[data-theme="dark"] .product-skin {
   filter: brightness(1.06);
 }
 
+.cta-appstore-flash {
+  animation: cta-appstore-flash 1.6s ease-in-out infinite;
+}
+
+@keyframes cta-appstore-flash {
+  0%, 100% {
+    box-shadow: 0 8px 28px rgba(255, 122, 26, 0.35);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 8px 36px rgba(255, 122, 26, 0.7), 0 0 0 6px rgba(255, 122, 26, 0.22);
+    filter: brightness(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-appstore-flash {
+    animation: none;
+  }
+}
+
+.anamorphic-bokeh {
+  margin: 0.9rem 0 0.15rem;
+  width: min(100%, 15rem);
+}
+
+.anamorphic-bokeh img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  box-shadow: 0 0 28px rgba(255, 122, 26, 0.4);
+}
+
+.product-card--anamorphic {
+  border-color: rgba(255, 122, 26, 0.55);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(255, 122, 26, 0.2) inset;
+}
+
 .sell-trust {
   display: flex;
   flex-wrap: wrap;
