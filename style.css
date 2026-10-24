@@ -1637,6 +1637,33 @@ html[data-theme="dark"] .product-skin {
 .hub-hero__visual--portrait {
   border-color: rgba(245, 158, 11, 0.28);
 }
+.hub-hero__visual--anamorphic-bokeh {
+  border-color: rgba(255, 122, 26, 0.35);
+  align-self: center;
+}
+.hub-hero__visual--anamorphic-bokeh .hub-hero__visual-link img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  max-height: min(52vh, 420px);
+}
+.hub-hero__visual--anamorphic-bokeh .hub-hero__visual-caption {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+.hub-hero__visual--anamorphic-bokeh .hub-hero__visual-caption a {
+  color: #ffb078 !important;
+}
+.hub-hero__visual--anamorphic-bokeh .hub-hero__visual-caption a:hover {
+  color: #ffd0b0 !important;
+}
+@media (min-width: 901px) {
+  .hub-hero__inner--split {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+  }
+}
 .hub-hero__visual--portrait .hub-hero__visual-caption {
   border-top-color: rgba(245, 158, 11, 0.2);
 }
