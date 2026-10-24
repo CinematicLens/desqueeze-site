@@ -123,6 +123,7 @@
   /* Only Document Management System is hidden from nav (page still live). */
   var SITE_NAV = [
     { id: 'anamorphic', label: 'Anamorphic', href: '/anamorphic.html' },
+    { id: 'products', label: 'Products', href: '/products/#anamorphic', title: 'Film Suite products · Anamorphic deep dive' },
     { id: 'get-apps', label: 'Get apps', href: '/get-apps.html' },
     { id: 'acam', label: 'ACam', href: '/acamviewfinder.html', title: 'ACamViewfinder · focus / diopter' },
     { id: 'light-cine', label: 'Light Cine', href: '/light-cine.html', title: 'Light Cine · expose & light' },
@@ -147,6 +148,9 @@
     '/sirui-anamorphic-desqueeze.html': 'anamorphic',
     '/cinemascope-export-online.html': 'anamorphic',
     '/get-apps.html': 'get-apps',
+    '/products': 'products',
+    '/products/': 'products',
+    '/products/index.html': 'products',
     '/cinelutlivegrade.html': 'livegrade',
     '/mediautility.html': 'utilities',
     '/photo-editing.html': 'photos',
