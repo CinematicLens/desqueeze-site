@@ -1,0 +1,21 @@
+---
+import { clinic } from '../data/clinic';
+---
+
+<footer class="border-t border-[color-mix(in_oklab,var(--leaf)_18%,transparent)] bg-[var(--ink)] text-[var(--foam)]">
+	<div class="page-shell flex flex-col gap-6 py-12 md:flex-row md:items-end md:justify-between">
+		<div>
+			<p class="brand-font text-2xl">{clinic.name}</p>
+			<p class="mt-2 max-w-sm text-sm text-[var(--mist)]">{clinic.tagline}</p>
+		</div>
+		<div class="text-sm text-[var(--mist)]">
+			<p>{clinic.address}</p>
+			<p class="mt-1">
+				<a class="underline-offset-4 hover:underline" href={`tel:${clinic.phone.replace(/\s/g, '')}`}>{clinic.phone}</a>
+			</p>
+			<p class="mt-1">
+				<a class="underline-offset-4 hover:underline" href={`mailto:${clinic.email}`}>{clinic.email}</a>
+			</p>
+		</div>
+	</div>
+</footer>
